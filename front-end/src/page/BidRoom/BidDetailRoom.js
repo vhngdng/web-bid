@@ -71,6 +71,32 @@ function BidDetailRoom() {
         // eslint-disable-next-line no-undef
         stompClient.connect({}, onConnected, onError);
     });
+    const increasePrice = useCallback((increaseAmount) => {
+        setPrice((prev) => prev + increaseAmount);
+        console.log('price increase');
+        console.log(increaseAmount);
+    });
+    const onMessagePublicReceived = useCallback((payload) => {
+        let payloadData = JSON.parse(payload.body);
+
+        // refetch();
+        switch (payloadData.status) {
+            case 'JOIN':
+                if (!(payloadData in participants)) {
+                    setParticipants((prev) => [...prev, payloadData]);
+                }
+                break;
+            case 'MESSAGE':
+                increasePrice(payloadData.increaseAmount);
+                break;
+            case 'LEAVE':
+                console.log('leave');
+                setParticipants((prev) =>
+                    prev.filter((p) => p.username !== payloadData.username),
+                );
+                break;
+        }
+    });
     const onConnected = useCallback(() => {
         setUserData({ ...userData, connected: true });
         stompClient.subscribe(`/room/${id}`, onMessagePublicReceived);
@@ -79,6 +105,7 @@ function BidDetailRoom() {
     const onError = useCallback(
         (err) => {
             console.log(err);
+            sendCloseSocket();
             navigate('/');
         },
         [id, stompClient, userData],
@@ -123,38 +150,6 @@ function BidDetailRoom() {
 
     if (isLoading || participantLoading) return <Loader />;
     // if (participantSuccess && isSuccess) fetParticipant();
-    const increasePrice = (increaseAmount) => {
-        setPrice((prev) => prev + increaseAmount);
-        console.log('price increase');
-        console.log(increaseAmount);
-    };
-
-    var onMessagePublicReceived = (payload) => {
-        let payloadData = JSON.parse(payload.body);
-
-        // refetch();
-        switch (payloadData.status) {
-            case 'JOIN':
-                console.log(participants);
-
-                if (payloadData.username === userData.username) break;
-                if (participants.length && !(payloadData in participants)) {
-                    console.log('check duplicate');
-                    console.log(participants.map((p) => p.username));
-                    setParticipants((prev) => [...prev, payloadData]);
-                }
-                break;
-            case 'MESSAGE':
-                increasePrice(payloadData.increaseAmount);
-                break;
-            case 'LEAVE':
-                console.log('leave');
-                setParticipants((prev) =>
-                    prev.filter((p) => p.username !== payloadData.username),
-                );
-                break;
-        }
-    };
 
     const closeModal = () => {
         setIsOpen(false);
