@@ -1,0 +1,9 @@
+.container  {
+  display: flex;
+  justify-content: space-between;
+}
+
+.disabled-link a{
+  pointer-events: none;
+  color: rgb(41, 40, 40);
+}
