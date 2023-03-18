@@ -4,5 +4,7 @@ public enum STATUS_BID {
   DEACTIVE,
   ACTIVE,
   FINISH,
-  PROCESSING
+  PROCESSING,
+
+  SUCCESS
 }

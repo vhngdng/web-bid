@@ -44,7 +44,7 @@ public class JpaAuditingConfig {
   }
 
   @Bean(name = "auditingDateTimeProvider")
-  public DateTimeProvider dateTimeProvider() {
+  public DateTimeProvider auditingDateTimeProvider() {
     return () -> Optional.of(LocalDateTime.now());
   }
 }

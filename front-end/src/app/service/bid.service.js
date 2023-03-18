@@ -5,7 +5,7 @@ import { logout, tokenReceived } from '../slice/auth.slice';
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/v1/bid-room',
+    baseUrl: 'http://localhost:8080/api/v1',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token;
         if (token) {
@@ -62,12 +62,43 @@ export const bidApi = createApi({
     baseQuery: baseQueryWithReauth,
     endpoints: (builder) => ({
         getBidRoom: builder.query({
-            query: () => '',
+            query: () => 'bid-room',
         }),
         getBidRoomWithId: builder.query({
-            query: (id) => `${id}`,
+            query: (id) => `bid-room/${id}`,
+        }),
+        getRequestToChangeBidSuccess: builder.query({
+            query: () => `admin/bid-room/before-finish`,
+        }),
+        updateSuccessBid: builder.mutation({
+            query: (id) => `admin/bid-room/${id}-success`,
+        }),
+        runBidRoom: builder.mutation({
+            query: (id) => ({
+                url: `admin/update/${id}`,
+                method: 'POST',
+                body: { status: 'DEACTIVE' },
+            }),
+        }),
+        createBid: builder.mutation({
+            query: (body) => ({
+                url: `admin/bid-room`,
+                method: 'POST',
+                body,
+            }),
+        }),
+        getAllBidPreparingToRun: builder.query({
+            query: () => `admin/bid-room/prepare`,
         }),
     }),
 });
 
-export const { useGetBidRoomQuery, useGetBidRoomWithIdQuery } = bidApi;
+export const {
+    useGetBidRoomQuery,
+    useGetBidRoomWithIdQuery,
+    useGetRequestToChangeBidSuccessQuery,
+    useUpdateSuccessBidMutation,
+    useCreateBidMutation,
+    useGetAllBidPreparingToRunQuery,
+    useRunBidRoomMutation,
+} = bidApi;

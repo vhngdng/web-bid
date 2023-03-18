@@ -1,16 +1,17 @@
 package com.example.finalproject.entity;
 
 import com.example.finalproject.ENUM.STATUS_BID;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,7 +24,8 @@ import java.util.List;
 @Setter
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Bid {
+@DynamicUpdate
+public class Bid implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -31,6 +33,7 @@ public class Bid {
   @Column
   private String type;
   @Column
+  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
   private LocalDateTime dayOfSale;
   @Column(name = "conditionReport", columnDefinition = "TEXT")
   private String conditionReport;
@@ -50,22 +53,19 @@ public class Bid {
   @JoinColumn(name = "winningBidder_id", referencedColumnName = "user_id")
   private User winningBidder;
 
-  @OneToMany(mappedBy = "bid", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-  @JsonBackReference
+  @OneToMany(mappedBy = "bid", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+  @JsonIgnore
   private List<BidParticipant> bidParticipants;
   @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "bids")
   private List<Message> messages;
-  @OneToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "transaction_id", unique = true)
+  @OneToOne(mappedBy = "bid", cascade = {CascadeType.DETACH, CascadeType.PERSIST}, fetch = FetchType.EAGER)
   private Transaction transaction;
 
-  @OneToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  @OneToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
   @JoinColumn(name = "property_id", nullable = false, updatable = false)
   private Property property;
-
-  @OneToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "status_id", referencedColumnName = "id")
-  private StatusBid status;
+  @Column(name = "status",nullable = true, updatable = true , columnDefinition = "varchar(255) default 'DEACTIVE'")
+  private String status;
 
 
   @CreatedDate
@@ -78,6 +78,16 @@ public class Bid {
   @Column(name = "lastModifiedBy")
   protected String lastModifiedBy;
   @LastModifiedDate
-  @Column(name = "lastModifiedDate",updatable = false, unique = true)
+  @Column(name = "lastModifiedDate")
   protected LocalDateTime lastModifiedDate;
+
+
+
+
+
+
+//  @PrePersist
+//  public void postPersist() {
+//
+//  }
 }

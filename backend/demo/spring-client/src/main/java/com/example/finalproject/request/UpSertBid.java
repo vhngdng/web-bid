@@ -1,8 +1,7 @@
 package com.example.finalproject.request;
 
-import com.example.finalproject.entity.*;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +14,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpSertBid {
-
+  private Long id;
   private String type;
   private LocalDateTime dayOfSale;
   private String conditionReport;
@@ -24,12 +24,9 @@ public class UpSertBid {
   private Long priceStep;  // bước giá
   private Long updatePrice;
   private Long lastPrice;
-
-  private User auctioneer;
-  private User winningBidder;
-
-
-  private Transaction transaction;
-
-  private Property property;
+  private String status;
+  private Long auctioneerId;
+  private Long winningBidderId;
+  private Integer transactionId;
+  private Integer propertyId;
 }

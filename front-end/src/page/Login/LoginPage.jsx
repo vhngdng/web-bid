@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 function Login() {
     const { isAuthenticated } = useSelector((state) => state.auth);
+    const { auth } = useSelector((state) => state.auth);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [login] = useLoginMutation();

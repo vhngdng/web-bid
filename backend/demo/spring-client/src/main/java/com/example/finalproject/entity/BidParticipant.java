@@ -1,5 +1,8 @@
 package com.example.finalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BidParticipant {
 //  @Column
 //  @Id
@@ -23,11 +27,13 @@ public class BidParticipant {
 
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
   @JoinColumn(name = "bid_id")
+  @JsonIgnoreProperties(value = {"createdAt", "lastModifiedBy", "lastModifiedDate"})
   private Bid bid;
 
-
+  @JsonInclude(JsonInclude.Include.NON_NULL)
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
   @JoinColumn(name = "participant_id")
+  @JsonIgnoreProperties(value = {"createdAt", "lastModifiedBy", "lastModifiedDate"})
   private User user;
 
   private String nickName;

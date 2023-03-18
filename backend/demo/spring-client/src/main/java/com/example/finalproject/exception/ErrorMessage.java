@@ -1,12 +1,13 @@
 package com.example.finalproject.exception;
 
-import lombok.Builder;
+import lombok.*;
 
 import java.time.LocalDateTime;
 @Builder
+@AllArgsConstructor @NoArgsConstructor
+@Getter @Setter
 public class ErrorMessage {
   private int status;
   private LocalDateTime timestamp;
-  private String message;
-  private String error;
+  private Object message;
 }

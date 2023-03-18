@@ -67,17 +67,17 @@ public class User {
   private Set<Role> roles = new HashSet<>();
 
   @OneToMany(mappedBy = "auctioneer", fetch = FetchType.LAZY)
-  @JsonBackReference
+  @JsonIgnore
   private List<Bid> auctioneerBids;
   @OneToMany(mappedBy = "winningBidder", fetch = FetchType.LAZY)
-  @JsonBackReference
+  @JsonIgnore
   private List<Bid> winningBidderBids;
   @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
   @JsonBackReference
   private List<Property> properties;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-  @JsonBackReference
+  @JsonIgnore
   private List<BidParticipant> bidParticipants;
   public void addRole(Role role) {
     this.roles.add(role);
@@ -93,7 +93,7 @@ public class User {
   }
   @CreatedDate
   @Column(name = "creationDate", updatable = false)
-  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ssssssssssss")
+  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
   private LocalDateTime createdAt;
 
   @LastModifiedBy
@@ -102,7 +102,7 @@ public class User {
 
   @LastModifiedDate
   @Column(name = "lastModifiedDate")
-  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ssssssssssss")
+  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
   private LocalDateTime lastModifiedDate;
 //  @CreatedDate
 //  @Column(name = "creationDate", updatable = false)

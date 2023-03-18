@@ -6,8 +6,9 @@ function DefaultLayout() {
     return (
         <div>
             <HeaderDefault />
-            DefaultLayout
-            <Outlet />
+            <section>
+                <Outlet />
+            </section>
         </div>
     );
 }

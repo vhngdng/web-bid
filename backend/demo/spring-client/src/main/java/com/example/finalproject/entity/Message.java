@@ -46,21 +46,19 @@ public class Message {
 
   @Column
   private Long increaseAmount;
-
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "status_id", referencedColumnName = "id")
-  private StatusMessage status;
+  @Column(name = "status", nullable = false)
+  private String status;
 
   @CreatedDate
-  @Column(name = "creationDate", updatable = false, unique = true)
+  @Column(name = "created_Date", updatable = false)
   protected LocalDateTime createdAt;
 
   @LastModifiedBy
-  @Column(name = "lastModifiedBy")
+  @Column(name = "last_modified_by")
   protected String lastModifiedBy;
 
   @LastModifiedDate
-  @Column(name = "lastModifiedDate",updatable = false, unique = true)
+  @Column(name = "last_modified_date")
   protected LocalDateTime lastModifiedDate;
 
 

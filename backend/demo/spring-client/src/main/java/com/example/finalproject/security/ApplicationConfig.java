@@ -4,8 +4,10 @@ import com.example.finalproject.entity.Role;
 import com.example.finalproject.entity.User;
 import com.example.finalproject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.GrantedAuthority;
@@ -54,6 +56,7 @@ public class ApplicationConfig {
   }
 
   @Bean
+  @Scope(value= ConfigurableBeanFactory.SCOPE_PROTOTYPE)
   public AuthenticationProvider authenticationProvider() {
     DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
     daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());

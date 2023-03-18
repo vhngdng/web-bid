@@ -1,6 +1,7 @@
 package com.example.finalproject;
 
 import com.example.finalproject.ENUM.Provider;
+import com.example.finalproject.ENUM.STATUS_BID;
 import com.example.finalproject.entity.*;
 import com.example.finalproject.repository.*;
 import com.github.javafaker.Faker;
@@ -64,18 +65,19 @@ public class InitTest {
               .dayOfSale(LocalDateTime.now())
               .reservePrice(9000000000L)
               .priceStep(10000000L)
+              .status(STATUS_BID.DEACTIVE.name())
               .build();
       bidRepository.save(bid);
 
-      for (int j = 0; j < 3; j++) {
-        BidParticipant participant = new BidParticipant();
-        participant.setBid(bid);
-        participant.setUser(userRepository
-                .findAll()
-                .get((int) (Math.random() * userRepository.count())));
-        bidParticipantRepository.save(participant);
-
-      }
+//      for (int j = 0; j < 3; j++) {
+//        BidParticipant participant = new BidParticipant();
+//        participant.setBid(bid);
+//        participant.setUser(userRepository
+//                .findAll()
+//                .get((int) (Math.random() * userRepository.count())));
+//        bidParticipantRepository.save(participant);
+//
+//      }
     }
   }
 
@@ -94,4 +96,6 @@ public class InitTest {
       propertyRepository.save(property);
     }
   }
+
+
 }

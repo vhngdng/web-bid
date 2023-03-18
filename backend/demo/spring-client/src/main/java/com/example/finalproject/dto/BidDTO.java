@@ -4,6 +4,7 @@ import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Transaction;
 import com.example.finalproject.entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BidDTO {
   private Long id;
   private String type;
@@ -29,7 +31,6 @@ public class BidDTO {
   private Long priceStep;  // bước giá
   private Long updatePrice;
   private Long lastPrice;
-  private Long bid;
   @JsonProperty("auctioneer")
   @JsonIgnoreProperties("roles")
   private UserDTO auctioneer;

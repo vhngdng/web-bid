@@ -1,15 +1,25 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+// eslint-disable-next-line no-unused-vars
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import { useGetBidRoomWithIdQuery } from '~/app/service/bid.service';
 import Loader from '~/Loader';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './moduleScss/BidDetailRoom.module.scss';
 import Modal from 'react-modal';
 
 import { useGetParticipantWithBidIdQuery } from '~/app/service/participant.service';
+import {
+    joinParticipant,
+    leaveParticipant,
+} from '~/app/slice/participant.slice';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import NotificationTimer from '~/notificationTimer';
+import { Button } from '@material-tailwind/react';
+
 var stompClient = null;
 var Sock = null;
 const cx = classNames.bind(styles);
@@ -23,12 +33,17 @@ const customStyles = {
         transform: 'translate(-50%, -50%)',
     },
 };
+
 function BidDetailRoom() {
     const [isOpen, setIsOpen] = useState(false);
     // eslint-disable-next-line no-unused-vars
+    const dispatch = useDispatch();
     const [isClose, setIsClose] = useState(false);
     const { auth } = useSelector((state) => state.auth);
     const [participants, setParticipants] = useState([]);
+    const [userWinning, setUserWinning] = useState({});
+    const [isBidClose, setIsBidClose] = useState(false);
+    const [bidRoomStatus, setBidRoomStatus] = useState('');
     const { id } = useParams();
     const {
         data: member,
@@ -45,95 +60,66 @@ function BidDetailRoom() {
         message: '',
     });
     const ref = useRef();
+    useEffect(() => {
+        if (isBidClose) {
+            navigate('/forbidden');
+        }
+    }, [isBidClose, data]);
 
     useEffect(() => {
         const fetParticipant = () => {
             setPrice(data.updatePrice || data.reservePrice);
+            // if (data.winningBidder.email) {
+            //     setUserWinning({
+            //         username: data.winningBidder.email,
+            //     });
+            // }
             // eslint-disable-next-line no-unused-vars
-
-            setParticipants([...member]);
+            if (!participants.length)
+                setParticipants(
+                    member.filter((m) => m.username !== userData.username),
+                );
         };
         if (participantSuccess && isSuccess && !participants.length) {
             fetParticipant(member);
         }
     }, [stompClient]);
 
+    const addEventNotiClose = useCallback(() => {
+        toast.success(<NotificationTimer timer={Date.now()} />, {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: undefined,
+        });
+    }, []);
     useEffect(() => {
-        if (isClose) {
+        window.addEventListener('beforeunload', sendCloseSocket);
+        return () => {
+            window.removeEventListener('beforeunload', sendCloseSocket);
+        };
+    }, []);
+    useEffect(() => {
+        if (isSuccess) {
+            addEventNotiClose();
+            setBidRoomStatus(data.status);
+        }
+    }, [isSuccess]);
+    useEffect(() => {
+        if (bidRoomStatus === 'FINISH') {
+            sendFinishBidMessage();
+        }
+    }, [price, userWinning, bidRoomStatus]);
+    useEffect(() => {
+        if (bidRoomStatus === 'FINISH' || isClose) {
             Sock.close();
         }
-    }, [isClose]);
-    const navigate = useNavigate();
-    const connect = useCallback(() => {
-        // eslint-disable-next-line no-unused-vars
-        Sock = new SockJS('http://localhost:8080/api/v1/bid');
-        stompClient = over(Sock);
-        // eslint-disable-next-line no-undef
-        stompClient.connect({}, onConnected, onError);
-    });
-    const increasePrice = useCallback((increaseAmount) => {
-        setPrice((prev) => prev + increaseAmount);
-        console.log('price increase');
-        console.log(increaseAmount);
-    });
-    const onMessagePublicReceived = useCallback((payload) => {
-        let payloadData = JSON.parse(payload.body);
+    }, [isClose, isBidClose, bidRoomStatus]);
 
-        // refetch();
-        switch (payloadData.status) {
-            case 'JOIN':
-                if (!(payloadData in participants)) {
-                    setParticipants((prev) => [...prev, payloadData]);
-                }
-                break;
-            case 'MESSAGE':
-                increasePrice(payloadData.increaseAmount);
-                break;
-            case 'LEAVE':
-                console.log('leave');
-                setParticipants((prev) =>
-                    prev.filter((p) => p.username !== payloadData.username),
-                );
-                break;
-        }
-    });
-    const onConnected = useCallback(() => {
-        setUserData({ ...userData, connected: true });
-        stompClient.subscribe(`/room/${id}`, onMessagePublicReceived);
-        userJoin();
-    }, [id, stompClient, userData]);
-    const onError = useCallback(
-        (err) => {
-            console.log(err);
-            sendCloseSocket();
-            navigate('/');
-        },
-        [id, stompClient, userData],
-    );
-
-    const userJoin = useCallback(() => {
-        console.log('chuan bi push');
-        let chatMessage = {
-            senderName: userData.username,
-            nickName: userData.nickName ? userData.nickName : null,
-            bid: id,
-            status: 'JOIN',
-        };
-        stompClient.send(`/app/room/${id}`, {}, JSON.stringify(chatMessage));
-    }, [id, stompClient, userData]);
-
-    const sendValue = useCallback(() => {
-        let chatMessage = {
-            senderName: userData.username,
-            nickName: userData.nickName,
-            receiverName: 'public',
-            bid: id,
-            message: 'test',
-            status: 'MESSAGE',
-            increaseAmount: 2000,
-        };
-        stompClient.send(`/app/room/${id}`, {}, JSON.stringify(chatMessage));
-    }, [id, stompClient, userData]);
     const sendCloseSocket = useCallback(() => {
         let chatMessage = {
             senderName: userData.username,
@@ -146,8 +132,8 @@ function BidDetailRoom() {
         setParticipants([]);
         console.log(participants);
         setIsClose(true);
-    }, [id, stompClient, userData]);
-
+    }, []);
+    const navigate = useNavigate();
     if (isLoading || participantLoading) return <Loader />;
     // if (participantSuccess && isSuccess) fetParticipant();
 
@@ -159,6 +145,105 @@ function BidDetailRoom() {
         connect();
     };
 
+    const connect = () => {
+        // eslint-disable-next-line no-unused-vars
+        Sock = new SockJS('http://localhost:8080/api/v1/bid');
+        stompClient = over(Sock);
+        // eslint-disable-next-line no-undef
+        stompClient.connect({}, onConnected, onError);
+    };
+    const increasePrice = (increaseAmount) => {
+        setPrice((prev) => prev + increaseAmount);
+    };
+    // eslint-disable-next-line no-unused-vars
+    const sendFinishBidMessage = () => {
+        console.log(userWinning);
+        console.log(price);
+        let bidFinishDetail = {
+            id: id,
+            status: 'FINISH',
+            lastPrice: price,
+            winningBidderUsername: userWinning.username,
+            transactionStatus: 'PENDING',
+        };
+        stompClient.send(
+            `/app/finish/room/${id}`,
+            {},
+            JSON.stringify(bidFinishDetail),
+        );
+        setIsBidClose(true);
+    };
+    const onMessagePublicReceived = (payload) => {
+        let payloadData = JSON.parse(payload.body);
+        // refetch();
+        switch (payloadData.status) {
+            case 'JOIN':
+                dispatch(joinParticipant(payloadData));
+                if (!(payloadData in participants)) {
+                    setParticipants((prev) => [...prev, payloadData]);
+                }
+                break;
+            case 'MESSAGE':
+                increasePrice(payloadData.increaseAmount);
+                setUserWinning({
+                    nickName: payloadData.nickName,
+                    username: payloadData.senderName,
+                });
+                break;
+            case 'LEAVE':
+                setParticipants((prev) =>
+                    prev.filter((p) => p.username !== payloadData.username),
+                );
+                dispatch(leaveParticipant(payloadData));
+                break;
+            case 'DEACTIVE':
+                setBidRoomStatus(payloadData.status);
+                setIsBidClose(!isBidClose);
+                break;
+            case 'PROCESSING':
+                setBidRoomStatus(payloadData.status);
+                break;
+            case 'FINISH':
+                console.log(price);
+                setBidRoomStatus(payloadData.status);
+                break;
+        }
+    };
+    const onConnected = () => {
+        setUserData({ ...userData, connected: true });
+        stompClient.subscribe(`/room/${id}`, onMessagePublicReceived);
+        userJoin();
+    };
+    const onError = (err) => {
+        console.log(err);
+        sendCloseSocket();
+        navigate('/');
+    };
+    const userJoin = () => {
+        let chatMessage = {
+            senderName: userData.username,
+            nickName: userData.nickName ? userData.nickName : null,
+            bid: id,
+            status: 'JOIN',
+        };
+        stompClient.send(`/app/room/${id}`, {}, JSON.stringify(chatMessage));
+    };
+
+    const sendValue = () => {
+        let chatMessage = {
+            senderName: userData.username,
+            nickName: userData.nickName,
+            receiverName: 'public',
+            bid: id,
+            message: 'test',
+            status: 'MESSAGE',
+            increaseAmount: 2000,
+        };
+        stompClient.send(`/app/room/${id}`, {}, JSON.stringify(chatMessage));
+    };
+
+    // eslint-disable-next-line no-unused-vars
+
     const handleClose = () => {
         setUserData({
             ...userData,
@@ -166,9 +251,14 @@ function BidDetailRoom() {
         });
         closeModal();
     };
+
+    if (!['ACTIVE', 'PROCESSING'].includes(data.status)) {
+        return <Navigate to="/forbidden" replace="true" />;
+    }
+
     return (
         <>
-            {userData.connected && participants ? (
+            {userData.connected ? (
                 <div className={cx('bid-container')}>
                     <div className={cx('participant-table')}>
                         <ul>
@@ -182,9 +272,17 @@ function BidDetailRoom() {
                     </div>
                     <div className={cx('bid-socket')}>
                         <div>{data.property.name}</div>
+                        <div>
+                            <h3>Highest price of this user</h3>
+                            <h3>
+                                {userWinning.nickName || userWinning.username}
+                            </h3>
+                        </div>
                         <div>{price}</div>
-                        <button onClick={() => sendValue()}>send</button>
-                        <button onClick={() => sendCloseSocket()}>Quit</button>
+                        {bidRoomStatus === 'PROCESSING' && (
+                            <Button onClick={() => sendValue()}>send</Button>
+                        )}
+                        <Button onClick={() => sendCloseSocket()}>Quit</Button>
                     </div>
                 </div>
             ) : (
@@ -192,7 +290,7 @@ function BidDetailRoom() {
                     <div className={cx('container')} ref={ref}>
                         BidDetailRoom
                     </div>
-                    <button onClick={() => setIsOpen(!isOpen)}>Connect</button>
+                    <Button onClick={() => setIsOpen(!isOpen)}>Connect</Button>
                     <Modal
                         isOpen={isOpen}
                         onRequestClose={closeModal}
@@ -211,21 +309,22 @@ function BidDetailRoom() {
                                 })
                             }
                         />
-                        <button
+                        <Button
                             className="btn btn-outline-success"
                             onClick={() => readyToConnect()}
                         >
                             Confirm
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                             className="btn btn-outline-danger"
                             onClick={() => handleClose()}
                         >
                             Cancel
-                        </button>
+                        </Button>
                     </Modal>
                 </>
             )}
+            <ToastContainer />
         </>
     );
 }

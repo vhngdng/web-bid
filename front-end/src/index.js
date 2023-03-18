@@ -6,15 +6,17 @@ import store from './app/store';
 import './index.css';
 import App from './App';
 import GlobalStyles from './component/GlobalStyles';
-
+import { ThemeProvider } from '@material-tailwind/react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
         <Provider store={store}>
             <GlobalStyles>
-                <Router>
-                    <App />
-                </Router>
+                <ThemeProvider>
+                    <Router>
+                        <App />
+                    </Router>
+                </ThemeProvider>
             </GlobalStyles>
         </Provider>
     </React.StrictMode>,

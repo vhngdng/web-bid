@@ -4,12 +4,16 @@ import Loader from '~/Loader';
 import classNames from 'classnames/bind';
 import styles from './moduleScss/BidRoom.module.scss';
 import PrivateRoom from './PrivateRoom';
+import { Button } from '@material-tailwind/react';
 const cx = classNames.bind(styles);
 function BidRoom() {
-    const { data, isLoading, isSuccess } = useGetBidRoomQuery();
+    // eslint-disable-next-line no-unused-vars
+    const { data, isLoading, isSuccess, refetch } = useGetBidRoomQuery();
+
     // const [active, setActive] = useState(true);
+
     if (isLoading) return <Loader />;
-    if (isSuccess) console.log(data);
+    console.log(data);
     return (
         <>
             <ul className={cx('container')}>
@@ -19,16 +23,21 @@ function BidRoom() {
                             key={index}
                             className={cx(
                                 'room',
-                                room.status === 'ACTIVE' ? '' : 'disabled-link',
+                                ['ACTIVE', 'PROCESSING'].includes(room.status)
+                                    ? ''
+                                    : 'disabled-link',
                             )}
                         >
                             <PrivateRoom
                                 room={room}
-                                isActive={room.status === 'ACTIVE'}
+                                isActive={['ACTIVE', 'PROCESSING'].includes(
+                                    room.status,
+                                )}
                             />
                         </li>
                     ))}
             </ul>
+            <Button onClick={() => refetch()}>Refresh</Button>
         </>
     );
 }
