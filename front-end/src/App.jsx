@@ -14,11 +14,12 @@ import AdminHomePage from './page/AdminPage/HomeAdmin';
 import BidCreate from './page/AdminPage/Bid/BidCreate';
 import ForbiddenPage from './page/BidRoom/ForbiddenPage';
 import DefaultLayout from './component/layouts/DefaultLayout';
-import ProfilePage from './page/ProfilePage';
 import OpenBid from './page/AdminPage/Bid/OpenBid';
 import UpPropertyPage from './page/ProfilePage/UpPropertyPage';
 import ProfileDetail from './page/ProfilePage/ProfileDetail';
-import ProfileLayout from './component/layouts/ProfileLayout';
+import ProfilePage from './page/ProfilePage';
+import TransactionPage from './page/ProfilePage/Transaction/TransactionPage';
+import TransactionDetail from './page/ProfilePage/Transaction/TransactionDetail';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -38,19 +39,19 @@ function App() {
                                 element={<BidDetailRoom />}
                             ></Route>
                         </Route>
-                        <Route element={<ProfileLayout />}>
+                        <Route path="profile-detail" element={<ProfilePage />}>
+                            <Route index element={<ProfileDetail />} />
                             <Route
-                                path="/profile-page"
-                                element={<ProfilePage />}
-                            />
-                            <Route
-                                path="/upload-property"
+                                path="upload-property"
                                 element={<UpPropertyPage />}
                             />
-                            <Route
-                                path="/profile-detail"
-                                element={<ProfileDetail />}
-                            />
+                            <Route path="transaction">
+                                <Route index element={<TransactionPage />} />
+                                <Route
+                                    path="bidId/:bidId"
+                                    element={<TransactionDetail />}
+                                />
+                            </Route>
                         </Route>
 
                         <Route
@@ -68,8 +69,8 @@ function App() {
                             <Route path="create-bid" element={<BidCreate />} />
                             <Route path="open-bid" element={<OpenBid />} />
                         </Route>
+                        <Route path="forbidden" element={<ForbiddenPage />} />
                     </Route>
-                    <Route path="forbidden" element={<ForbiddenPage />} />
                 </Route>
             </Routes>
         </>

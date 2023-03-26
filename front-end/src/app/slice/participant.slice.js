@@ -10,33 +10,7 @@ const initialState = [
 const participantSlice = createSlice({
     name: 'partitipantRoom',
     initialState,
-    reducers: {
-        // fetchParticipant: (state, { payload }) => {},
-        joinParticipant: (state, { payload }) => {
-            if (state.filter((room) => room.bidId === payload.bid).length > 0) {
-                console.log('id ton tai');
-                const { participants } = state.filter(
-                    (room) => room.bidId === payload.bidId,
-                );
-                if (!(payload in participants)) {
-                    participants.push(payload);
-                    return state;
-                }
-            } else {
-                state.push({ bidId: payload.bidId, participants: payload });
-                return state;
-            }
-        },
-        leaveParticipant: (state, { payload }) => {
-            const room = state.find((member) => member.bidId === payload.bidId);
-            const index = state.findIndex(room);
-            const updateRoom = room.participants.filter(
-                (p) => p.username !== payload.username,
-            );
-            state[index] = updateRoom;
-            return state;
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder.addMatcher(
             participantApi.endpoints.getParticipantWithBidId.matchFulfilled,

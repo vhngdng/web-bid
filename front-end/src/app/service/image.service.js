@@ -70,9 +70,55 @@ export const imagesApi = createApi({
                 body,
             }),
         }),
+        getAllImagesAfterLogin: builder.query({
+            query: () => ({
+                url: `images/all`,
+                credentials: 'include',
+            }),
+        }),
+        getAvatar: builder.query({
+            query: () => ({
+                url: `images/avatar`,
+                credentials: 'include',
+            }),
+        }),
+        getBackground: builder.query({
+            query: () => ({
+                url: `images/background`,
+                credentials: 'include',
+            }),
+        }),
+        getImageByPropertyId: builder.query({
+            query: (id) => ({
+                url: `images/property/${id}`,
+                credentials: 'include',
+            }),
+        }),
+        readImage: builder.query({
+            query: (id) => ({
+                url: `images/read/${id}`,
+                credentials: 'include',
+            }),
+        }),
+        updateTypeImage: builder.mutation({
+            query: ({ id, ...body }) => ({
+                url: `images/${id}`,
+                method: 'PUT',
+                credentials: 'include',
+                body,
+            }),
+        }),
     }),
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useUploadImageMutation } = imagesApi;
+export const {
+    useUploadImageMutation,
+    useGetAllImagesAfterLoginQuery,
+    useLazyReadImageQuery,
+    useUpdateTypeImageMutation,
+    useGetAvatarQuery,
+    useGetBackgroundQuery,
+    useLazyGetImageByPropertyIdQuery,
+} = imagesApi;

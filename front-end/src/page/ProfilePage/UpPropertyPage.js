@@ -44,7 +44,7 @@ function UpPropertyPage() {
 
     return (
         <>
-            <form>
+            <form className="">
                 <div className="mb-6">
                     <label
                         form="name"
@@ -75,16 +75,16 @@ function UpPropertyPage() {
                         required
                     />
                 </div>
-                <div className="flex items-start mb-6">
+                <div className="flex items-start pt-5 mb-6">
                     <label
-                        className="block mb-2 text-sm font-medium text-gray-900 blue:text-white"
+                        className="block mb-2 mr-2 text-sm font-medium text-gray-900 blue:text-white"
                         form="file_input"
                         htmlFor="image"
                     >
                         Upload file
                     </label>
                     <input
-                        className="block w-1/3 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                        className="block w-3/5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                         id="image"
                         type="file"
                         onChange={(e) => handleFileInputChange(e)}

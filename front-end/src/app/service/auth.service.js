@@ -13,7 +13,15 @@ export const authApi = createApi({
                 body,
             }),
         }),
+        loginGoogle: builder.mutation({
+            query: (idToken) => ({
+                url: `google?idToken=${idToken}`,
+                // headers: {
+                //     'Content-type': 'application/json',
+                // },
+            }),
+        }),
     }),
 });
 
-export const { useLoginMutation } = authApi;
+export const { useLoginMutation, useLoginGoogleMutation } = authApi;

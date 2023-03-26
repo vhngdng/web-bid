@@ -33,17 +33,29 @@ const AuthSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addMatcher(
-            authApi.endpoints.login.matchFulfilled,
-            (state, { payload }) => {
-                state.auth = payload.auth;
-                state.token = payload.token;
-                state.isAuthenticated = payload.isAuthenticated;
-                state.refreshToken = payload.refreshToken;
-                //TODO :Cần lưu vào localStorage
-                setDataToLocalStorage(AUTHPUBLIC, state);
-            },
-        );
+        builder
+            .addMatcher(
+                authApi.endpoints.login.matchFulfilled,
+                (state, { payload }) => {
+                    state.auth = payload.auth;
+                    state.token = payload.token;
+                    state.isAuthenticated = payload.isAuthenticated;
+                    state.refreshToken = payload.refreshToken;
+                    //TODO :Cần lưu vào localStorage
+                    setDataToLocalStorage(AUTHPUBLIC, state);
+                },
+            )
+            .addMatcher(
+                authApi.endpoints.loginGoogle.matchFulfilled,
+                (state, { payload }) => {
+                    state.auth = payload.auth;
+                    state.token = payload.token;
+                    state.isAuthenticated = payload.isAuthenticated;
+                    state.refreshToken = payload.refreshToken;
+                    //TODO :Cần lưu vào localStorage
+                    setDataToLocalStorage(AUTHPUBLIC, state);
+                },
+            );
     },
 });
 

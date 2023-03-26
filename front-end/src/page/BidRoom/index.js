@@ -13,7 +13,6 @@ function BidRoom() {
     // const [active, setActive] = useState(true);
 
     if (isLoading) return <Loader />;
-    console.log(data);
     return (
         <>
             <ul className={cx('container')}>

@@ -5,23 +5,19 @@ import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
 import { useGetBidRoomWithIdQuery } from '~/app/service/bid.service';
 import Loader from '~/Loader';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './moduleScss/BidDetailRoom.module.scss';
 import Modal from 'react-modal';
 
 import { useGetParticipantWithBidIdQuery } from '~/app/service/participant.service';
-import {
-    joinParticipant,
-    leaveParticipant,
-} from '~/app/slice/participant.slice';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NotificationTimer from '~/notificationTimer';
 import { Button } from '@material-tailwind/react';
 
 var stompClient = null;
-var Sock = null;
+// var Sock = null;
 const cx = classNames.bind(styles);
 const customStyles = {
     content: {
@@ -36,8 +32,7 @@ const customStyles = {
 
 function BidDetailRoom() {
     const [isOpen, setIsOpen] = useState(false);
-    // eslint-disable-next-line no-unused-vars
-    const dispatch = useDispatch();
+    const [Sock, setSock] = useState(null);
     const [isClose, setIsClose] = useState(false);
     const { auth } = useSelector((state) => state.auth);
     const [participants, setParticipants] = useState([]);
@@ -64,21 +59,21 @@ function BidDetailRoom() {
         if (isBidClose) {
             navigate('/forbidden');
         }
-    }, [isBidClose, data]);
+    }, [isBidClose]);
 
     useEffect(() => {
         const fetParticipant = () => {
             setPrice(data.updatePrice || data.reservePrice);
-            // if (data.winningBidder.email) {
-            //     setUserWinning({
-            //         username: data.winningBidder.email,
-            //     });
-            // }
             // eslint-disable-next-line no-unused-vars
             if (!participants.length)
                 setParticipants(
                     member.filter((m) => m.username !== userData.username),
                 );
+            console.log(data);
+            if (!!userWinning && data.winningBidder) {
+                console.log('winning');
+                setUserWinning(data.winningBidder);
+            }
         };
         if (participantSuccess && isSuccess && !participants.length) {
             fetParticipant(member);
@@ -113,13 +108,21 @@ function BidDetailRoom() {
         if (bidRoomStatus === 'FINISH') {
             sendFinishBidMessage();
         }
-    }, [price, userWinning, bidRoomStatus]);
+    }, [bidRoomStatus]);
     useEffect(() => {
-        if (bidRoomStatus === 'FINISH' || isClose) {
+        if (isClose) {
+            navigate('/bid-room');
             Sock.close();
+            setSock(null);
         }
-    }, [isClose, isBidClose, bidRoomStatus]);
-
+    }, [isClose]);
+    useEffect(() => {
+        if (Sock) {
+            stompClient = over(Sock);
+            // eslint-disable-next-line no-undef
+            stompClient.connect({}, onConnected, onError);
+        }
+    }, [Sock]);
     const sendCloseSocket = useCallback(() => {
         let chatMessage = {
             senderName: userData.username,
@@ -128,11 +131,11 @@ function BidDetailRoom() {
             message: 'test',
             status: 'LEAVE',
         };
+        console.log(chatMessage.message);
         stompClient.send(`/app/room/${id}`, {}, JSON.stringify(chatMessage));
         setParticipants([]);
-        console.log(participants);
         setIsClose(true);
-    }, []);
+    }, [Sock]);
     const navigate = useNavigate();
     if (isLoading || participantLoading) return <Loader />;
     // if (participantSuccess && isSuccess) fetParticipant();
@@ -147,10 +150,9 @@ function BidDetailRoom() {
 
     const connect = () => {
         // eslint-disable-next-line no-unused-vars
-        Sock = new SockJS('http://localhost:8080/api/v1/bid');
-        stompClient = over(Sock);
-        // eslint-disable-next-line no-undef
-        stompClient.connect({}, onConnected, onError);
+        let newSock = new SockJS('http://localhost:8080/api/v1/bid');
+        // eslint-disable-next-line no-unused-vars
+        setSock(newSock);
     };
     const increasePrice = (increaseAmount) => {
         setPrice((prev) => prev + increaseAmount);
@@ -163,8 +165,7 @@ function BidDetailRoom() {
             id: id,
             status: 'FINISH',
             lastPrice: price,
-            winningBidderUsername: userWinning.username,
-            transactionStatus: 'PENDING',
+            winningBidderUsername: userWinning.email || userWinning.username,
         };
         stompClient.send(
             `/app/finish/room/${id}`,
@@ -178,8 +179,8 @@ function BidDetailRoom() {
         // refetch();
         switch (payloadData.status) {
             case 'JOIN':
-                dispatch(joinParticipant(payloadData));
                 if (!(payloadData in participants)) {
+                    console.log('payload Data', payloadData);
                     setParticipants((prev) => [...prev, payloadData]);
                 }
                 break;
@@ -194,7 +195,6 @@ function BidDetailRoom() {
                 setParticipants((prev) =>
                     prev.filter((p) => p.username !== payloadData.username),
                 );
-                dispatch(leaveParticipant(payloadData));
                 break;
             case 'DEACTIVE':
                 setBidRoomStatus(payloadData.status);
@@ -255,7 +255,7 @@ function BidDetailRoom() {
     if (!['ACTIVE', 'PROCESSING'].includes(data.status)) {
         return <Navigate to="/forbidden" replace="true" />;
     }
-
+    console.log(userWinning);
     return (
         <>
             {userData.connected ? (

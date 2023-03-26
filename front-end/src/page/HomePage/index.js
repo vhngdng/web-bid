@@ -13,7 +13,7 @@ function Home() {
         navigate('/admin');
     };
     const handleRedirectToProfile = () => {
-        navigate('/profile-page');
+        navigate('/profile-detail');
     };
     return (
         <div>

@@ -5,7 +5,10 @@ import { imagesApi } from './service/image.service';
 import { messageApi } from './service/message.service';
 import { participantApi } from './service/participant.service';
 import { propeprtyApi } from './service/property.service';
+import { transactionApi } from './service/transaction.service';
+import { userApi } from './service/user.service';
 import authReducer from './slice/auth.slice';
+import imageReducer from './slice/image.slice';
 import participantReducer from './slice/participant.slice';
 const store = configureStore({
     reducer: {
@@ -15,8 +18,11 @@ const store = configureStore({
         [participantApi.reducerPath]: participantApi.reducer,
         [propeprtyApi.reducerPath]: propeprtyApi.reducer,
         [imagesApi.reducerPath]: imagesApi.reducer,
+        [userApi.reducerPath]: userApi.reducer,
+        [transactionApi.reducerPath]: transactionApi.reducer,
         auth: authReducer,
         participant: participantReducer,
+        image: imageReducer,
     },
     middleware: (getDefaultMiddleWare) =>
         getDefaultMiddleWare().concat(
@@ -26,6 +32,8 @@ const store = configureStore({
             participantApi.middleware,
             propeprtyApi.middleware,
             imagesApi.middleware,
+            userApi.middleware,
+            transactionApi.middleware,
         ),
 });
 

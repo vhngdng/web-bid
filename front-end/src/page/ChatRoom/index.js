@@ -56,7 +56,7 @@ function ChatRoom() {
             senderName: userData.username,
             status: 'JOIN',
         };
-        stompClient.send('/api/v1/bid-room', {}, JSON.stringify(chatMessage));
+        stompClient.send('/app/bid-room', {}, JSON.stringify(chatMessage));
         console.log('chuan bi push');
     };
 
@@ -110,11 +110,7 @@ function ChatRoom() {
                 status: 'MESSAGE',
             };
             console.log('ban vao bid-room');
-            stompClient.send(
-                '/api/v1/bid-room',
-                {},
-                JSON.stringify(chatMessage),
-            );
+            stompClient.send('/app/bid-room', {}, JSON.stringify(chatMessage));
             setUserData({ ...userData, message: '' });
         }
     };
@@ -132,7 +128,7 @@ function ChatRoom() {
                 setPrivateChats(new Map(privateChats));
             }
             stompClient.send(
-                `/api/v1/${tab}/private-message`,
+                `/app/${tab}/private-message`,
                 {},
                 JSON.stringify(chatMessage),
             );

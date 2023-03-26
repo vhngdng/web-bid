@@ -1,0 +1,39 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15.2
+    container_name: postgres
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: "pg_isready -U postgres"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - DB_VENDOR=POSTGRES
+      - DB_ADDR=postgres
+      - DB_URL_HOST=${KC_DB_URL_HOST}
+      - DB_URL_DATABASE=${KC_DB_URL_DATABASE}
+      - DB_USER=${KC_DB_USERNAME}
+      - DB_PASSWORD=${KC_DB_PASSWORD}
+      - KC_HEALTH_ENABLED=true
+    ports:
+      - "8443:8080"
+    command: start --optimized
+    depends_on:
+      - postgres
+    volumes:
+      - ./keycloak-data:/opt/keycloak/data/
+    healthcheck:
+      test: "curl -f http://localhost:8080/health/ready || exit 1"

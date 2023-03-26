@@ -1,25 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
-import {
-    Card,
-    Input,
-    Checkbox,
-    Button,
-    Typography,
-    Radio,
-} from '@material-tailwind/react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Checkbox, Button, Typography, Radio } from '@material-tailwind/react';
 import PropertyModal from './PropertyModal';
 import { useCreateBidMutation } from '~/app/service/bid.service';
 // import classNames from 'classnames/bind';
 import SimpleMdeReact from 'react-simplemde-editor';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useLazyGetImageByPropertyIdQuery } from '~/app/service/image.service';
+import Loader from '~/Loader';
 // import styles from './BidCreate.module.scss';
 // const cx = classNames.bind(styles);
 function BidCreate() {
+    const [fetchImage, { data, isLoading: loadImage }] =
+        useLazyGetImageByPropertyIdQuery();
     const navigate = useNavigate();
     const [createBid] = useCreateBidMutation();
     const [dateTime, setDateTime] = useState('');
     const [property, setProperty] = useState({});
+    const [imageId, setImageId] = useState(null);
     const [reservePrice, setReservePrice] = useState('');
     const [priceStep, setPriceStep] = useState('');
     const [conditionReport, setConditionReport] = useState('');
@@ -27,8 +25,18 @@ function BidCreate() {
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
     useEffect(() => {
-        console.log(type);
-    }, type);
+        if (property.id) {
+            handleFetchImage(property.id);
+        }
+    }, [property]);
+    const handleFetchImage = useCallback(
+        async (id) => {
+            await fetchImage(id);
+            setImageId(data.id);
+        },
+        [property],
+    );
+
     const handleDateTimeChange = (event) => {
         setDateTime(event.target.value);
     };
@@ -53,25 +61,47 @@ function BidCreate() {
             })
             .catch((err) => toast.error(err));
     };
+    if (loadImage) return <Loader />;
+    console.log(imageId);
     return (
-        <>
-            <Card color="transparent" shadow={false} ref={ref}>
-                <Typography variant="h4" color="blue-gray">
+        <div className="flex justify-center">
+            <div className="transparent">
+                <Typography
+                    variant="h4"
+                    color="blue-gray"
+                    className="text-center"
+                >
                     Create Bid Room
                 </Typography>
-                <Typography color="gray" className="mt-1 font-normal">
+                <Typography
+                    color="gray"
+                    className="text-center mt-1 font-normal"
+                >
                     Enter your details to create.
                 </Typography>
-                <form className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96">
+                <form
+                    className="mt-8 mb-2 w-2/3 max-w-screen-xl sm:w-96"
+                    ref={ref}
+                >
                     <div className="mb-4 flex flex-col gap-6">
-                        <Input
-                            size="lg"
-                            label="Property"
-                            defaultValue={property.name}
-                            onClick={() => {
-                                setOpen((prev) => !prev);
-                            }}
-                        />
+                        <div className="relative z-0">
+                            <input
+                                type="text"
+                                id="floating_standard"
+                                className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-indigo-500/50 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-indigo-800 peer"
+                                placeholder=" "
+                                defaultValue={property.name}
+                                onClick={() => {
+                                    setOpen((prev) => !prev);
+                                }}
+                            />
+                            <label
+                                form="floating_standard"
+                                className="absolute text-sm text-gray-500 dark:text-gray-400 rounded-lg duration-300 transform -translate-y-4 scale-75 top-2 z-1 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                            >
+                                Property
+                            </label>
+                        </div>
                         <PropertyModal
                             appElement={ref.current}
                             open={open}
@@ -80,19 +110,40 @@ function BidCreate() {
                         />
                         {property.category && property.owner && (
                             <>
-                                <Input
-                                    size="lg"
-                                    label="Category"
-                                    defaultValue={property.category}
-                                />
-                                <Input
-                                    size="lg"
-                                    label="Owner"
-                                    defaultValue={
-                                        property.owner.username ||
-                                        property.owner.email
-                                    }
-                                />
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        id="floating_outlined"
+                                        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-indigo-500/50 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-indigo-800 peer"
+                                        placeholder=" "
+                                        value={property.category}
+                                    />
+                                    <label
+                                        form="floating_outlined"
+                                        className="absolute text-sm text-gray-500 dark:text-gray-400 rounded-lg duration-300 transform -translate-y-4 scale-75 top-2 z-1 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                                    >
+                                        Category
+                                    </label>
+                                </div>
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        id="floating_outlined"
+                                        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-indigo-500/50 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-indigo-800 peer"
+                                        placeholder=" "
+                                        value={
+                                            property.owner.username ||
+                                            property.owner.email
+                                        }
+                                    />
+                                    <label
+                                        form="floating_outlined"
+                                        className="absolute text-sm text-gray-500 dark:text-gray-400 rounded-lg duration-300 transform -translate-y-4 scale-75 top-2 z-1 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                                    >
+                                        Owner
+                                    </label>
+                                </div>
+
                                 <label>conditionReport</label>
                                 <SimpleMdeReact
                                     value={conditionReport}
@@ -100,23 +151,49 @@ function BidCreate() {
                                         setConditionReport(value)
                                     }
                                 />
-                                <div>Image</div>
-                                <Input
-                                    size="lg"
-                                    label="Reserve Price"
-                                    defaultValue={reservePrice}
-                                    onChange={(e) =>
-                                        setReservePrice(e.target.value)
-                                    }
-                                />
-                                <Input
-                                    size="lg"
-                                    label="Price Step"
-                                    defaultValue={priceStep}
-                                    onChange={(e) =>
-                                        setPriceStep(e.target.value)
-                                    }
-                                />
+                                {data && (
+                                    <img
+                                        alt="Photo avatar"
+                                        src={`http://localhost:8080/api/v1/images/read/${imageId}`}
+                                        className="mx-auto object-cover rounded-full h-24 w-24 bg-white p-1"
+                                    />
+                                )}
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        id="floating_outlined"
+                                        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-indigo-500/50 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-indigo-800 peer"
+                                        placeholder=" "
+                                        defaultValue={reservePrice}
+                                        onChange={(e) =>
+                                            setReservePrice(e.target.value)
+                                        }
+                                    />
+                                    <label
+                                        form="floating_outlined"
+                                        className="absolute text-sm text-gray-500 dark:text-gray-400 rounded-lg duration-300 transform -translate-y-4 scale-75 top-2 z-1 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                                    >
+                                        Reserve Price
+                                    </label>
+                                </div>
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        id="floating_outlined"
+                                        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-indigo-500/50 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-indigo-800 peer"
+                                        placeholder=" "
+                                        defaultValue={priceStep}
+                                        onChange={(e) =>
+                                            setPriceStep(e.target.value)
+                                        }
+                                    />
+                                    <label
+                                        form="floating_outlined"
+                                        className="absolute text-sm text-gray-500 dark:text-gray-400 rounded-lg duration-300 transform -translate-y-4 scale-75 top-2 z-1 origin-[0] bg-white dark:bg-gray-900 px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
+                                    >
+                                        Price Step
+                                    </label>
+                                </div>
                             </>
                         )}
                     </div>
@@ -180,9 +257,9 @@ function BidCreate() {
                         Create
                     </Button>
                 </form>
-            </Card>
+            </div>
             <ToastContainer />
-        </>
+        </div>
     );
 }
 

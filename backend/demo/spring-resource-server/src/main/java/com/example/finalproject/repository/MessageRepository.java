@@ -1,0 +1,20 @@
+package com.example.finalproject.repository;
+
+import com.example.finalproject.entity.Message;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+public interface MessageRepository extends JpaRepository<Message, Long> {
+  @Query("select m from Message m where m.status = ?1 and m.receiverName = ?2")
+  List<Message> findByStatusAndReceiverName(String status, String receiverName);
+
+
+  @Query("select m from Message m inner join m.bids b " +
+          "where b.id = ?1 and b.dayOfSale < ?2")
+  List<Message> findAllMessageInBidRoomActive(Long id, LocalDateTime time);
+
+//  List<Message> findAllByStatusAnd
+}

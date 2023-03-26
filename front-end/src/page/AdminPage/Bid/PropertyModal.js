@@ -22,7 +22,7 @@ function PropertyModal({ appElement, open, setOpen, setProperty }) {
     if (isLoading) return <Loader />;
 
     const handleClose = () => {
-        setProperty('');
+        setProperty({});
         closeModal();
     };
 
