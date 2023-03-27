@@ -56,7 +56,6 @@ function HeaderDefault() {
         }
     }, [Sock]);
 
-    console.log(stompClient);
     useEffect(() => {
         let handler = (e) => {
             if (!refNoti.current.contains(e.target)) {
@@ -73,13 +72,10 @@ function HeaderDefault() {
     }, [isSuccess]);
     const onError = (err) => {
         console.log(err);
-        console.log('call method onError');
         navigate('/');
     };
     const onConnected = () => {
         if (stompClient) {
-            console.log(auth.email);
-            console.log(stompClient);
             stompClient.subscribe(
                 `/user/${auth.email}/private`,
                 onPrivateMessage,
@@ -94,12 +90,13 @@ function HeaderDefault() {
         switch (payloadData.status) {
             case 'PENDING': {
                 if (
+                    // eslint-disable-next-line no-extra-boolean-cast
+                    noti &&
                     noti.some((element) => {
                         if (element.bidId === payloadData.bidId) return false;
                         return true;
                     })
                 ) {
-                    console.log('it is ok');
                     setNoti((prev) => [...prev, payloadData]);
                     toast.success('You have new Notification', {
                         position: 'top-center',
@@ -111,14 +108,27 @@ function HeaderDefault() {
                         progress: undefined,
                         theme: 'light',
                     });
+                } else if (!noti) {
+                    let newNoti = [];
+                    newNoti.push(payloadData);
+                    setNoti(newNoti);
+                    toast.success('You have new Notification', {
+                        position: 'bottom-right',
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                    });
                 }
                 break;
             }
             case 'SUCCESS': {
                 setNoti((prev) =>
-                    prev.filter((notify) => notify.bidId === payloadData.bidId),
+                    prev.filter((notify) => notify.bidId !== payloadData.bidId),
                 );
-                break;
             }
         }
     };
@@ -147,7 +157,6 @@ function HeaderDefault() {
         navigate(`/profile-detail/transaction/bidId/${id}`);
     };
     if (isLoading) return <Loader />;
-    console.log(noti);
     return (
         <nav className=" border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900 ">
             <div className="bg-white container flex flex-wrap items-center justify-around mx-auto w-max ">
@@ -201,14 +210,15 @@ function HeaderDefault() {
                         <li className="flex justify-center items-center relative m-6 inline-flex w-fit">
                             <div
                                 ref={refNoti}
-                                className="relative my-2 block border-t-0 border-b-2 border-transparent px-3 py-3 text-lg font-medium uppercase leading-tight text-[#4b5563] hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-[#2563eb] data-[te-nav-active]:text-[#2563eb] dark:hover:bg-transparent"
+                                className="cursor-pointer relative my-2 block border-t-0 border-b-2 border-transparent px-3 py-3 text-lg font-medium uppercase leading-tight text-[#4b5563] hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-[#2563eb] data-[te-nav-active]:text-[#2563eb] dark:hover:bg-transparent "
+                                onClick={() =>
+                                    setIsOpenNotification((prev) => !prev)
+                                }
                             >
                                 <img
+                                    className="active:animate-bounce duration-700 active:opacity-25 transition  ease-linear"
                                     src={notification.logo.default}
                                     alt="notification"
-                                    onClick={() =>
-                                        setIsOpenNotification((prev) => !prev)
-                                    }
                                 />
                                 {noti &&
                                     noti.length > 0 &&
@@ -219,7 +229,7 @@ function HeaderDefault() {
                                     )}
                                 {isOpenNotification && (
                                     <div
-                                        className={cx('noti-table fixed z-50')}
+                                        className={cx('noti-table fixed z-100')}
                                     >
                                         <div
                                             id="toast-message-cta"
@@ -246,7 +256,10 @@ function HeaderDefault() {
                                                                 Bid id :{' '}
                                                                 {n.bidId}
                                                             </div>
-                                                            <div className="flex justify-center mb-2 text-sm font-normal">
+                                                            <div
+                                                                className={`flex justify-center mb-2 text-sm font-normal
+                                                                `}
+                                                            >
                                                                 Status :{' '}
                                                                 {n.status}
                                                             </div>

@@ -50,7 +50,6 @@ function ImageModal({
     const handleConfirm = () => {
         // console.log(idProperty);
         setImage(selectImageId);
-        console.log(selectImageId);
         updateTypeImage({
             id: selectImageId,
             type: isAvatar ? 'AVATAR' : 'BACKGROUND',
@@ -95,15 +94,16 @@ function ImageModal({
                                                 ? 'border-4 border-blue-500/50'
                                                 : ''
                                         }`}
+                                        onClick={() =>
+                                            handleSelectImage(image.id)
+                                        }
+                                        title={image.name}
                                     >
                                         <p className="text-2xl text-gray-400 dark:text-gray-500">
                                             <img
                                                 alt="Photo avatar"
                                                 src={`http://localhost:8080/api/v1/images/read/${image.id}`}
                                                 className="mx-auto object-cover rounded-full h-24 w-24 bg-white p-1"
-                                                onClick={() =>
-                                                    handleSelectImage(image.id)
-                                                }
                                             />
                                         </p>
                                     </div>

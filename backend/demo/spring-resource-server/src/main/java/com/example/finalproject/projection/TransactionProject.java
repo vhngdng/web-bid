@@ -10,6 +10,6 @@ public interface TransactionProject {
   public String getWinningBidderEmail();
   public String getAuctioneerEmail();
   public LocalDateTime getCreatedAt();
-
+  public Long getLastPrice();
   public LocalDateTime getLastModifiedDate();
 }

@@ -20,6 +20,9 @@ import ProfileDetail from './page/ProfilePage/ProfileDetail';
 import ProfilePage from './page/ProfilePage';
 import TransactionPage from './page/ProfilePage/Transaction/TransactionPage';
 import TransactionDetail from './page/ProfilePage/Transaction/TransactionDetail';
+import PropertyList from './page/ProfilePage/PropertyList';
+import DetailBidRoom from './page/AdminPage/Bid/DetailBidRoom';
+import ListBidRoom from './page/AdminPage/Bid/ListBidRoom';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -52,10 +55,13 @@ function App() {
                                     element={<TransactionDetail />}
                                 />
                             </Route>
+                            <Route
+                                path="property-list"
+                                element={<PropertyList />}
+                            />
                         </Route>
 
                         <Route
-                            path="admin"
                             element={
                                 <AdminProtectedPage
                                     isAllowed={
@@ -65,9 +71,18 @@ function App() {
                                 />
                             }
                         >
-                            <Route index element={<AdminHomePage />} />
-                            <Route path="create-bid" element={<BidCreate />} />
-                            <Route path="open-bid" element={<OpenBid />} />
+                            <Route path="admin" element={<AdminHomePage />}>
+                                <Route index element={<ListBidRoom />} />
+                                <Route
+                                    path="create-bid"
+                                    element={<BidCreate />}
+                                />
+                                <Route path="open-bid" element={<OpenBid />} />
+                                <Route
+                                    path="details-bid"
+                                    element={<DetailBidRoom />}
+                                />
+                            </Route>
                         </Route>
                         <Route path="forbidden" element={<ForbiddenPage />} />
                     </Route>

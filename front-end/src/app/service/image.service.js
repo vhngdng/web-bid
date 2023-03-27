@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
 import { logout, tokenReceived } from '../slice/auth.slice';
@@ -108,6 +109,13 @@ export const imagesApi = createApi({
                 body,
             }),
         }),
+        deleteImage: builder.mutation({
+            query: (id) => ({
+                url: `images/${id}`,
+                method: 'DELETE',
+                credentials: 'include',
+            }),
+        }),
     }),
 });
 
@@ -121,4 +129,5 @@ export const {
     useGetAvatarQuery,
     useGetBackgroundQuery,
     useLazyGetImageByPropertyIdQuery,
+    useDeleteImageMutation,
 } = imagesApi;

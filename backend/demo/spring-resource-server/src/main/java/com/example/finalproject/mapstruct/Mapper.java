@@ -1,21 +1,18 @@
 package com.example.finalproject.mapstruct;
 
-import com.example.finalproject.ENUM.STATUS_TRANSACTION;
 import com.example.finalproject.dto.*;
 import com.example.finalproject.entity.*;
-import com.example.finalproject.repository.BidRepository;
-import com.example.finalproject.repository.PropertyRepository;
-import com.example.finalproject.repository.TransactionRepository;
-import com.example.finalproject.repository.UserRepository;
+import com.example.finalproject.projection.Attendee;
+import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertProperty;
-import com.example.finalproject.response.FinishResponse;
+
 import com.example.finalproject.request.UpSertBid;
+import com.example.finalproject.response.FinishResponse;
 import com.example.finalproject.response.ImageResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -52,22 +49,27 @@ public interface Mapper {
 
   Property toEntiTy(PropertyDTO propertyDTO);
 
+
   PropertyDTO toDTO(Property property);
+
 
   List<PropertyDTO> toListPropertyDTO(List<Property> properties);
 
   List<Property> toListProperty(List<PropertyDTO> propertyDTOS);
 
   Bid toEntiTy(BidDTO bidDTO);
-
-  BidDTO toDTO(Bid bid);
-
-  List<BidDTO> toListBidDTO(List<Bid> bidList);
+  @Mapping(target = "attendees", expression = "java(getAttendees(bid.getId(), userRepository))")
+  BidDTO toDTO(Bid bid, @Context UserRepository userRepository);
+  default List<Attendee> getAttendees(Long bidId, @Context UserRepository userRepository) {
+    return userRepository.findAllAttendeeByBidId(bidId);
+  }
+  List<BidDTO> toListBidDTO(List<Bid> bidList, @Context UserRepository userRepository);
 
   @Mapping(target = "username", source = "user", qualifiedByName = "mapUserToUsername")
   @Mapping(target = "bidId", expression = "java(bidParticipant.getBid().getId())")
+  @Mapping(target = "imageId", expression = "java(findImageId(bidParticipant.getUser().getId(), imageRepository))")
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  BidParticipantDTO toDTO(BidParticipant bidParticipant);
+  BidParticipantDTO toDTO(BidParticipant bidParticipant, @Context ImageRepository imageRepository);
 
   @Named(value = "mapUserToUsername")
   default String mapUserToUsername(User user) {
@@ -77,14 +79,12 @@ public interface Mapper {
 //   BidParticipantDto toDto(BidParticipant bidParticipant);
 
 
-  //  @AfterMapping
-//  default void handleNullUser(@MappingTarget BidParticipantDTO dto, BidParticipant bidParticipant) {
-//    if (bidParticipant.getUser() == null) {
-//      dto.setUsername(null);
-//    }
-//  }
+  default String findImageId(Long bidParticipantId, @Context ImageRepository imageRepository) {
+    Optional<Image> optionalImage = imageRepository.findByUserIdAndType(bidParticipantId, "AVATAR");
+    return optionalImage.map(Image::getId).orElse(null);
+  }
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  List<BidParticipantDTO> toListParticipantDTO(List<BidParticipant> bidParticipantList);
+  List<BidParticipantDTO> toListParticipantDTO(List<BidParticipant> bidParticipantList, @Context ImageRepository imageRepository);
 
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
@@ -168,6 +168,7 @@ public interface Mapper {
   @Mapping(target = "userEmail", expression = "java(image.getUser().getEmail())")
   @Mapping(target = "propertyId", source = "property", qualifiedByName = "mapPropertyToPropertyId")
   @Mapping(target = "url", ignore = true)
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   ImageResponse toImageResponse(Image image);
 
   @Named(value = "mapPropertyToPropertyId")
@@ -197,8 +198,11 @@ public interface Mapper {
   }
 
   @Mapping(target = "bidId", expression = "java(transaction.getBid().getId())")
+
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   TransactionDTO toDTO(Transaction transaction);
+
+
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   List<TransactionDTO> toListTransactionDTO(List<Transaction> transactions);

@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import {
     useGetAvatarQuery,
     useGetBackgroundQuery,
-    useUploadImageMutation,
 } from '~/app/service/image.service';
 import { useGetUserByEmailQuery } from '~/app/service/user.service';
 import Loader from '~/Loader';
@@ -11,42 +12,40 @@ import ImageModal from './ImageModal';
 
 function ProfileDetail() {
     const { data: user, isLoading } = useGetUserByEmailQuery();
-    const { data: avatarData, isSuccess: avatarSuccess } = useGetAvatarQuery();
-    const { data: backgroundData, isSuccess: backgroundSuccess } =
-        useGetBackgroundQuery();
+    const imageStore = useSelector((state) => state.image);
 
     const ref = useRef(null);
     const [avatar, setAvatar] = useState('');
-    // const [uploadImage] = useUploadImageMutation();
     const [backgroundImg, setBackgroundImg] = useState('');
-    // const [selectFunctionSetUrl, setSelectFunctionSetUrl] = useState();
     const [isAvatar, setIsAvatar] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     useEffect(() => {
-        if (avatarData) {
-            setAvatar(avatarData.id);
+        const ava = imageStore.filter((image) => image.type === 'AVATAR')[0];
+        if (ava) {
+            console.log('ava', ava);
+            setAvatar(ava.id);
         }
-    }, [avatarSuccess]);
-    useEffect(() => {
-        if (backgroundData) {
-            console.log(backgroundData);
-            setBackgroundImg(backgroundData.id);
+        const backgr = imageStore.filter(
+            (image) => image.type === 'BACKGROUND',
+        )[0];
+        if (backgr) {
+            console.log('backgr', backgr);
+            setBackgroundImg(backgr.id);
         }
-    }, [backgroundSuccess]);
+    }, [imageStore]);
+
     if (isLoading) return <Loader />;
-    console.log(user);
     const handleChangeBackground = () => {
         setIsAvatar(false);
         setOpenModal(true);
-        console.log(isAvatar);
     };
     const handleChangeAvatar = () => {
         setIsAvatar(true);
         setOpenModal(true);
-        console.log(isAvatar);
     };
+    console.log(imageStore);
+    console.log(backgroundImg);
     console.log(avatar);
-    console.log(user);
     return (
         <>
             <div
@@ -69,7 +68,7 @@ function ProfileDetail() {
                     <div className="flex justify-start px-5 -mt-12 mb-5">
                         <span className="block relative h-32 w-32">
                             <img
-                                alt="Photo by aldi sigun on Unsplash"
+                                alt="Photo"
                                 src={
                                     avatar
                                         ? `http://localhost:8080/api/v1/images/read/${avatar}`

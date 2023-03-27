@@ -16,11 +16,11 @@ public interface ImageRepository extends JpaRepository<Image, String> {
   @Query("select i from Image i where i.user.id = :userId and i.type in ('AVATAR', 'BACKGROUND')")
   List<Image> findAllByUserIdAndType(@Param("userId") Long userId);
 
-  @Query("select i from Image i where i.user.id = :userId and i.type = 'AVATAR'")
-  Optional<Image> findByUserIdAndTypeAvatar(Long userId);
+  @Query("select i from Image i where i.user.id = :userId and i.type = :type")
+  Optional<Image> findByUserIdAndType(@Param("userId")Long userId, @Param("type") String type);
 
-  @Query("select i from Image i where i.user.id = :userId and i.type = 'BACKGROUND'")
-  Optional<Image> findByUserIdAndTypeBackground(Long userId);
+//  @Query("select i from Image i where i.user.id = :userId and i.type = 'BACKGROUND'")
+//  Optional<Image> findByUserIdAndTypeBackground(Long userId);
 
-  Optional<Image> findByPropertyId(Long propertyId);
+
 }

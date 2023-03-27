@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -34,7 +35,12 @@ public class PropertyService {
   }
 
   public List<PropertyDTO> findPropertyByUserLogin(String email) {
-    return mapper.toListPropertyDTO(propertyRepository.findByOwnerEmail(email));
+    List<PropertyDTO> propertieDTOs = mapper.toListPropertyDTO(propertyRepository.findByOwnerEmail(email));
+    propertieDTOs.forEach(propertyDTO -> {
+      Optional<Image> imageOptional = imageRepository.findByPropertyId(propertyDTO.getId());
+      imageOptional.ifPresent(image -> propertyDTO.setImageId(image.getId()));
+    });
+    return propertieDTOs;
   }
 
   public List<PropertyDTO> findAllPropertyNotBid() {

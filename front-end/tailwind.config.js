@@ -9,5 +9,5 @@ module.exports = withMT({
             sans: ['Open Sans', 'sans-serif'],
         },
     },
-    plugins: [],
+    plugins: [require('tailwindcss-animation')],
 });

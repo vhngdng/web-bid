@@ -1,6 +1,7 @@
 package com.example.finalproject.utils;
 
 import com.example.finalproject.ENUM.Provider;
+import com.example.finalproject.ENUM.TYPE_IMAGE;
 import com.example.finalproject.entity.User;
 import com.example.finalproject.exception.OAuth2AuthenticationProcessingException;
 import com.example.finalproject.repository.ImageRepository;
@@ -117,7 +118,7 @@ public class SocialUtils {
   private User updateExistingUser(User existingUser, GoogleIdToken.Payload payload) {
     existingUser.setUsername((String) payload.get("name"));
     if (existingUser.getAvatar() == null &&
-            !imageRepository.findByUserIdAndTypeAvatar(existingUser.getId()).isPresent() &&
+            !imageRepository.findByUserIdAndType(existingUser.getId(), TYPE_IMAGE.AVATAR.name()).isPresent() &&
             payload.get("picture") != null
     ) {
       existingUser.setAvatar((String) payload.get("picture"));

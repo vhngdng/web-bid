@@ -1,6 +1,7 @@
 package com.example.finalproject.entity.listener;
 
 import com.example.finalproject.ENUM.STATUS_TRANSACTION;
+import com.example.finalproject.dto.TransactionDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Transaction;
 import com.example.finalproject.mapstruct.Mapper;
@@ -22,15 +23,19 @@ public class TransactionListener {
   public void onTransactionUpdateAndSendNoti(Transaction transaction) {
     log.error("=============================================================================");
     if(transaction.getStatus() != null && !transaction.getOriginalStatus().equalsIgnoreCase(transaction.getStatus())) {
+      Bid bid = transaction.getBid();
       if(transaction.getStatus().equalsIgnoreCase(STATUS_TRANSACTION.SUCCESS.name())) {
-        Bid bid = transaction.getBid();
         // send noti to auctioneer
         log.error(bid.getAuctioneer().getEmail());
-        simpMessagingTemplate.convertAndSendToUser(bid.getAuctioneer().getEmail(), "private", mapper.toDTO(transaction));  //  /user/${name}/private
+        TransactionDTO transactionDTO = mapper.toDTO(transaction);
+        transactionDTO.setAuctioneerEmail(transaction.getBid().getAuctioneer().getEmail());
+        transactionDTO.setWinningBidderEmail(transaction.getBid().getWinningBidder().getEmail());
+
+        simpMessagingTemplate.convertAndSendToUser(bid.getAuctioneer().getEmail(), "private", transactionDTO);  //  /user/${name}/private
 
         // send noti to winner
         log.error(bid.getWinningBidder().getEmail());
-        simpMessagingTemplate.convertAndSendToUser(bid.getWinningBidder().getEmail(), "private", mapper.toDTO(transaction));  //  /user/${name}/private
+        simpMessagingTemplate.convertAndSendToUser(bid.getWinningBidder().getEmail(), "private", transactionDTO);  //  /user/${name}/private
       }
     }
   }

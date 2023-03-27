@@ -34,7 +34,6 @@ public class ImageController {
                 .body("File cannot be null!");
       }
       log.info(file.getOriginalFilename());
-//      imageService.save(file);
       return ResponseEntity.ok().body(imageService.save(file));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -85,7 +84,14 @@ public class ImageController {
   }
 
   @GetMapping("/property/{id}")
-  public ResponseEntity<?> getImageWithPropertyId(@PathVariable Long id) {
+  public ResponseEntity<?> getImageWithPropertyId(@PathVariable Integer id) {
     return ResponseEntity.ok(imageService.getImageWithPropertyId(id));
   }
+
+  @DeleteMapping("{id}")
+  public ResponseEntity<?> deleteImage(@PathVariable String id) {
+   imageService.delete(id);
+   return ResponseEntity.noContent().build();
+  }
+
 }

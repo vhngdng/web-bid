@@ -6,7 +6,7 @@ import { useCreatePropertyMutation } from '~/app/service/property.service';
 
 function UpPropertyPage() {
     // eslint-disable-next-line no-unused-vars
-    const [uploadImage, response] = useUploadImageMutation();
+    const [uploadImage] = useUploadImageMutation();
     const [createProperty] = useCreatePropertyMutation();
     const [file, setFile] = useState(null);
     const [name, setName] = useState('');

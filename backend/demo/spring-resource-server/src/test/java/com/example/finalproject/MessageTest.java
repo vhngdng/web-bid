@@ -56,5 +56,11 @@ public class MessageTest {
     System.out.println(dayOfSale);
   }
 
-
+  @Test
+  public void findAllmessBySuccessBidId() {
+    Bid bid = bidRepository.findById(62L).get();
+    LocalDateTime lastModified = bid.getLastModifiedDate();
+    LocalDateTime dayOfSale = bid.getDayOfSale();
+    System.out.println(messageRepository.findAllMessageBySuccessBidId(62L, "MESSAGE", dayOfSale , lastModified).stream().map(Message::getId).collect(Collectors.toList()));
+  }
 }

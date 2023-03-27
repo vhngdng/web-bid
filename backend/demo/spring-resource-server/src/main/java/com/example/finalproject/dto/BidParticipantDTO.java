@@ -14,4 +14,5 @@ public class BidParticipantDTO {
   private String username;
   private String nickName;
   private String status;
+  private String imageId;
 }

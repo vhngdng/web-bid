@@ -1,6 +1,5 @@
-import { Button } from '@material-tailwind/react';
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     useGetRequestToChangeBidSuccessQuery,
     useUpdateSuccessBidMutation,
@@ -13,6 +12,7 @@ import { notification } from '~/assets/images';
 import { toast, ToastContainer } from 'react-toastify';
 const cx = classNames.bind(styles);
 
+const customSelectStyle = 'bg-blue-200 text-lime-900 shadow-inner scale-y-90';
 function AdminHomePage() {
     const { data, isLoading, refetch } = useGetRequestToChangeBidSuccessQuery();
     const [updateSuccessBid] = useUpdateSuccessBidMutation();
@@ -20,6 +20,21 @@ function AdminHomePage() {
     const handleShowRequest = () => {
         setIsOpenNotification(!isOpenNotification);
     };
+    const [selectSidebar, setSelectSidebar] = useState(1);
+    const navigate = useNavigate();
+    const location = useLocation();
+    useEffect(() => {
+        console.log(location.pathname);
+        if (location.pathname.includes('details-bid')) {
+            setSelectSidebar(2);
+        } else if (location.pathname.includes('create-bid')) {
+            setSelectSidebar(3);
+        } else if (location.pathname.includes('open-bid')) {
+            setSelectSidebar(4);
+        } else {
+            setSelectSidebar(1);
+        }
+    }, [location]);
     if (isLoading) return <Loader />;
     console.log(data);
 
@@ -127,12 +142,80 @@ function AdminHomePage() {
                         )}
                     </div>
                 </button>
-                <Link to="create-bid">
-                    <Button>Create Bid Room</Button>
-                </Link>
-                <Link to="open-bid">
-                    <Button>Open Bid Room</Button>
-                </Link>
+
+                <div>
+                    <div className="flex flex-row w-full">
+                        <aside
+                            id="default-sidebar"
+                            className="z-40 w-2/5 min-h-full transition-transform -translate-x-full sm:translate-x-0"
+                            aria-label="Sidebar"
+                        >
+                            <div className="h-full w-2/3 px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
+                                <ul>
+                                    <li>
+                                        <button
+                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
+                                    ${
+                                        selectSidebar === 1
+                                            ? customSelectStyle
+                                            : 'bg-gray-200'
+                                    }`}
+                                            onClick={() => navigate('')}
+                                        >
+                                            List Bid Room
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
+                                    ${
+                                        selectSidebar === 2
+                                            ? customSelectStyle
+                                            : 'bg-gray-200'
+                                    }`}
+                                            onClick={() =>
+                                                navigate('details-bid')
+                                            }
+                                        >
+                                            Detail Bid Room
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    ${
+                                        selectSidebar === 3
+                                            ? customSelectStyle
+                                            : 'bg-gray-200'
+                                    }`}
+                                            onClick={() =>
+                                                navigate('create-bid')
+                                            }
+                                        >
+                                            Create Bid Room
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button
+                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    ${
+                                        selectSidebar === 4
+                                            ? customSelectStyle
+                                            : 'bg-gray-200'
+                                    }`}
+                                            onClick={() => navigate('open-bid')}
+                                        >
+                                            Open Bid Room
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+                        <section className="flex flex-col w-3/5">
+                            <Outlet />
+                        </section>
+                    </div>
+                </div>
             </div>
             <ToastContainer />
         </>

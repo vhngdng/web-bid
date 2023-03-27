@@ -3,4 +3,8 @@ const notification = {
     logo: require('~/assets/images/notification.svg'),
 };
 
-export { notification };
+const imageDefault = {
+    logo: require('~/assets/images/propertyDefault.svg'),
+};
+
+export { notification, imageDefault };

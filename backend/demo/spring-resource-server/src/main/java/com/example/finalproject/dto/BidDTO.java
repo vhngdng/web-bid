@@ -3,6 +3,7 @@ package com.example.finalproject.dto;
 import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Transaction;
 import com.example.finalproject.entity.User;
+import com.example.finalproject.projection.Attendee;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -42,4 +43,5 @@ public class BidDTO {
 //  private List<UserDTO> auctionParticipants;
   private Transaction transaction;
   private PropertyDTO property;
+  private List<Attendee> attendees;
 }

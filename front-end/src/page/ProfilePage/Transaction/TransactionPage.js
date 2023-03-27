@@ -56,9 +56,7 @@ function TransactionPage() {
                                                 key={index}
                                                 className="flex-1 border-b transition duration-300 ease-in-out hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer"
                                                 onClick={() =>
-                                                    handleNavigateDetail(
-                                                        t.bidId,
-                                                    )
+                                                    handleNavigateDetail(t.id)
                                                 }
                                             >
                                                 <td className="whitespace-nowrap px-6 py-4 font-medium">

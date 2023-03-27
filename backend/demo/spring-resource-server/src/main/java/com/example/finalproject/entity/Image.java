@@ -52,9 +52,8 @@ public class Image {
   @JsonIgnore
   private User user;
 
-  @OneToOne
+  @OneToOne()
   @JoinColumn(name = "property_id")
-  @JsonIgnore
   private Property property;
 
   @CreatedDate

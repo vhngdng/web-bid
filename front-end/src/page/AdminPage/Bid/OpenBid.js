@@ -1,5 +1,6 @@
 import { Button } from '@material-tailwind/react';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import {
     useGetAllBidPreparingToRunQuery,
@@ -11,9 +12,11 @@ function OpenBid() {
     const { data, isLoading, isSuccess, refetch } =
         useGetAllBidPreparingToRunQuery();
     const [runBidRoom] = useRunBidRoomMutation();
-    if (isLoading) return <Loader />;
-
+    useEffect(() => {
+        refetch();
+    }, [useLocation()]);
     console.log(data);
+    if (isLoading) return <Loader />;
 
     const handleRunBid = async (id) => {
         await runBidRoom(id)

@@ -18,28 +18,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("message")
+@RequestMapping("")
 @Slf4j
 @RequiredArgsConstructor
 public class MessageController {
 
   private final MessageService messageService;
   private final SimpMessagingTemplate simpMessagingTemplate;
-  @GetMapping("public")
+  @GetMapping("message/public")
   public List<MessageDTO> getAllPublicMessage() {
     log.info("Call this method getAllPublicMessage");
     return messageService.findAllPublic();
   }
 
-  @GetMapping("bid/{id}")
+  @GetMapping("message/bid/{id}")
   public ResponseEntity<?> getAllBidMessage(@PathVariable("id") Long id) {
     return ResponseEntity.ok(messageService.getAllBidMessage(id));
   }
 
-  @GetMapping("private")
+  @GetMapping("message/private")
   public void sendPrivateMessage() {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     simpMessagingTemplate.convertAndSendToUser(email, "private", "test");  //  app/user/${name}/private
+  }
 
+  @GetMapping("user/message/success-bid/{transaction-id}")
+  public ResponseEntity<?> getAllMessageBySuccessBidId(@PathVariable("transaction-id") Integer transactionId) {
+    return ResponseEntity.ok(messageService.getAllMessageBySuccessBidId(transactionId));
   }
 }

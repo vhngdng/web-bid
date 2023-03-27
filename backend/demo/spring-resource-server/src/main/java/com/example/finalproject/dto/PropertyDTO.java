@@ -19,7 +19,7 @@ public class PropertyDTO {
   private Integer id;
   private String name;
   private String category;
-  private String imageUrl;
+  private String imageId;
   @JsonIgnoreProperties("roles")
   private UserDTO owner;
   @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")

@@ -7,9 +7,11 @@ import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.repository.ImageRepository;
+import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.TypeImageRequest;
 import com.example.finalproject.response.ImageResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,7 +27,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class ImageService {
+  @Autowired
+  private PropertyRepository propertyRepository;
   @Autowired
   private ImageRepository imageRepository;
   @Autowired
@@ -51,6 +56,7 @@ public class ImageService {
     Image image = imageRepository.save(img);
     return mapper.toImageResponse(image);
   }
+
   public List<ImageResponse> findAllImage() {
     return mapper.toListImageResponse(imageRepository.findAll());
   }
@@ -76,6 +82,7 @@ public class ImageService {
     User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Username with email: " + email + " is not found"));
     return mapper.toListImageResponse(imageRepository.findAllByUserIdAndType(user.getId()));
   }
+
   @Transactional
   public ImageResponse updateType(String id, TypeImageRequest request) {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -83,45 +90,72 @@ public class ImageService {
     Image newImageAva = imageRepository
             .findById(id)
             .orElseThrow(() -> new NotFoundException("Image with id: " + id + " is not found"));
-    if(request.getType().equalsIgnoreCase(TYPE_IMAGE.AVATAR.name())) {
-      Optional<Image> imageAvatar = imageRepository.findByUserIdAndTypeAvatar(user.getId());
-      if(imageAvatar.isPresent() &&
-              !imageAvatar.get().getId().equals(id)){
-          imageAvatar.get().setType(null);
+    Image duplicateImage = null;
+    if (newImageAva.getType() != null && !newImageAva.getType().equalsIgnoreCase(request.getType())) {
+      duplicateImage = Image.builder()
+              .contentType(newImageAva.getContentType())
+              .name(newImageAva.getName())
+              .size(newImageAva.getSize())
+              .data(newImageAva.getData())
+              .user(newImageAva.getUser())
+              .build();
+    }
+    Optional<Image> imageOptional = imageRepository.findByUserIdAndType(user.getId(), request.getType());
+    imageOptional.ifPresent(image -> image.setType(null));
+    switch (request.getType()) {
+      case "AVATAR":
+      case "BACKGROUND": {
+        if (duplicateImage == null) {
+          newImageAva.setType(request.getType());
+        } else {
+          duplicateImage.setType(request.getType());
+          return mapper.toImageResponse(imageRepository.save(duplicateImage));
+        }
+        break;
       }
-      newImageAva.setType(TYPE_IMAGE.AVATAR.name());
-    }else if (request.getType().equalsIgnoreCase(TYPE_IMAGE.BACKGROUND.name())) {
-      Optional<Image> imageBackground = imageRepository.findByUserIdAndTypeBackground(user.getId());
-      if(imageBackground.isPresent() &&
-              !imageBackground.get().getId().equals(id)){
-        imageBackground.get().setType(null);
+      case "PROPERTY": {
+        Optional<Image> imageProperty = imageRepository.findByPropertyId(request.getPropertyId());
+        imageProperty.ifPresent(image -> {
+          image.setType(null);
+          image.setProperty(null);
+        });
+        newImageAva.setType(TYPE_IMAGE.PROPERTY.name());
+        newImageAva.setProperty(
+                propertyRepository.findById(
+                        request.getPropertyId())
+                        .orElseThrow( () ->
+                                new NotFoundException("Property with id " + request.getPropertyId() + " is not found")));
+        break;
       }
-      newImageAva.setType(TYPE_IMAGE.BACKGROUND.name());
-    }else {
-      throw new BadRequestException("The type of image is not valid");
+      default:
+        throw new BadRequestException("The type of image is not valid");
     }
     return mapper.toImageResponse(newImageAva);
-
   }
 
   public ImageResponse getAvatar() {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Username with email: " + email + " is not found"));
     return mapper.toImageResponse(imageRepository
-            .findByUserIdAndTypeAvatar(user.getId())
-            .orElse(null)
-    );
-  }
-  public ImageResponse getBackground() {
-    String email = SecurityContextHolder.getContext().getAuthentication().getName();
-    User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Username with email: " + email + " is not found"));
-    return mapper.toImageResponse(imageRepository
-            .findByUserIdAndTypeBackground(user.getId())
+            .findByUserIdAndType(user.getId(), TYPE_IMAGE.AVATAR.name())
             .orElse(null)
     );
   }
 
-  public ImageResponse getImageWithPropertyId(Long id) {
+  public ImageResponse getBackground() {
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Username with email: " + email + " is not found"));
+    return mapper.toImageResponse(imageRepository
+            .findByUserIdAndType(user.getId(), TYPE_IMAGE.BACKGROUND.name())
+            .orElse(null)
+    );
+  }
+
+  public ImageResponse getImageWithPropertyId(Integer id) {
     return mapper.toImageResponse(imageRepository.findByPropertyId(id).orElseThrow(() -> new NotFoundException("Property with Id : " + id + " is not found")));
+  }
+
+  public void delete(String id) {
+    imageRepository.deleteById(id);
   }
 }

@@ -5,6 +5,7 @@ import com.example.finalproject.entity.BidParticipant;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.repository.BidParticipantRepository;
+import com.example.finalproject.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,11 @@ public class BidParticipantService {
   private BidParticipantRepository bidParticipantRepository;
   @Autowired
   private Mapper mapper;
+  @Autowired
+  private ImageRepository imageRepository;
+
   public List<BidParticipantDTO> getAllParitipantWithBidId(Long id) {
-     return mapper.toListParticipantDTO(bidParticipantRepository.findByBid_Id(id));
+     return mapper.toListParticipantDTO(bidParticipantRepository.findByBid_Id(id), imageRepository);
   }
 
 

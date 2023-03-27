@@ -1,14 +1,11 @@
 package com.example.finalproject.service;
 
-import com.example.finalproject.ENUM.STATUS_BID;
 import com.example.finalproject.ENUM.STATUS_MESSAGE;
-import com.example.finalproject.ENUM.STATUS_TRANSACTION;
 import com.example.finalproject.dto.BidParticipantDTO;
 import com.example.finalproject.dto.MessageDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.BidParticipant;
 import com.example.finalproject.entity.Message;
-import com.example.finalproject.entity.Transaction;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.repository.*;
@@ -30,6 +27,7 @@ import java.util.Optional;
 @Transactional
 @Slf4j
 public class MessageService {
+  private final ImageRepository imageRepository;
   private final TransactionRepository transactionRepository;
   private final UserRepository userRepository;
   private final BidParticipantRepository bidParticipantRepository;
@@ -68,7 +66,7 @@ public class MessageService {
     Optional<BidParticipant> participant = findParticipant(messageDTO);
     if (participant.isPresent()) {
       participant.get().setNickName(messageDTO.getNickName());
-      BidParticipantDTO bidParticipantDTO = mapper.toDTO(bidParticipantRepository.save(participant.get()));
+      BidParticipantDTO bidParticipantDTO = mapper.toDTO(bidParticipantRepository.save(participant.get()), imageRepository);
       bidParticipantDTO.setStatus("JOIN");
       return bidParticipantDTO;
     }
@@ -80,7 +78,7 @@ public class MessageService {
             .user(userRepository
                     .findByEmail(messageDTO.getSenderName())
                     .orElseThrow(() -> new NotFoundException("Bid is not exist with id: " + messageDTO.getBid())))
-            .build()));
+            .build()), imageRepository);
     bidParticipantDTO.setStatus("JOIN");
     return bidParticipantDTO;
 
@@ -134,7 +132,7 @@ public class MessageService {
       bidParticipantRepository.delete(participant.get());
       log.error("======================");
     }
-    BidParticipantDTO bidParticipantDTO = mapper.toDTO(participant.get());
+    BidParticipantDTO bidParticipantDTO = mapper.toDTO(participant.get(), imageRepository);
     bidParticipantDTO.setStatus(STATUS_MESSAGE.LEAVE.name());
     return bidParticipantDTO;
   }
@@ -144,5 +142,12 @@ public class MessageService {
     log.error("no roi vao day");
     mapper.updateFromFinishRequest(request, bid, userRepository);
 
+  }
+
+  public List<MessageDTO> getAllMessageBySuccessBidId(Integer transactionId) {
+    Bid bid = bidRepository.findByTransactionId(transactionId).orElseThrow(() -> new NotFoundException("Bid with transaction id: " + transactionId + " is not found"));
+    LocalDateTime lastModified = bid.getLastModifiedDate();
+    LocalDateTime dayOfSale = bid.getDayOfSale();
+    return mapper.toListDTO(messageRepository.findAllMessageBySuccessBidId(bid.getId(), STATUS_MESSAGE.MESSAGE.name(), dayOfSale, lastModified));
   }
 }

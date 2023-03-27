@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
@@ -47,6 +48,7 @@ function BidDetailRoom() {
     } = useGetParticipantWithBidIdQuery(id);
     const { data, isLoading, isSuccess } = useGetBidRoomWithIdQuery(id);
     const [price, setPrice] = useState(0);
+    const [priceStep, setPriceStep] = useState();
     const [userData, setUserData] = useState({
         username: auth.email,
         nickName: null,
@@ -64,6 +66,7 @@ function BidDetailRoom() {
     useEffect(() => {
         const fetParticipant = () => {
             setPrice(data.updatePrice || data.reservePrice);
+            setPriceStep(data.priceStep);
             // eslint-disable-next-line no-unused-vars
             if (!participants.length)
                 setParticipants(
@@ -98,6 +101,7 @@ function BidDetailRoom() {
             window.removeEventListener('beforeunload', sendCloseSocket);
         };
     }, []);
+
     useEffect(() => {
         if (isSuccess) {
             addEventNotiClose();
@@ -185,6 +189,7 @@ function BidDetailRoom() {
                 }
                 break;
             case 'MESSAGE':
+                console.log(payloadData.increaseAmount);
                 increasePrice(payloadData.increaseAmount);
                 setUserWinning({
                     nickName: payloadData.nickName,
@@ -237,7 +242,7 @@ function BidDetailRoom() {
             bid: id,
             message: 'test',
             status: 'MESSAGE',
-            increaseAmount: 2000,
+            increaseAmount: `${priceStep}`,
         };
         stompClient.send(`/app/room/${id}`, {}, JSON.stringify(chatMessage));
     };
@@ -252,45 +257,117 @@ function BidDetailRoom() {
         closeModal();
     };
 
-    if (!['ACTIVE', 'PROCESSING'].includes(data.status)) {
+    console.log(data);
+    console.log(userWinning);
+    if (!!data && !['ACTIVE', 'PROCESSING'].includes(data.status)) {
         return <Navigate to="/forbidden" replace="true" />;
     }
-    console.log(userWinning);
     return (
         <>
             {userData.connected ? (
-                <div className={cx('bid-container')}>
-                    <div className={cx('participant-table')}>
-                        <ul>
-                            {participants.map((participant, index) => (
-                                <li key={index}>
-                                    {participant.nickName ||
-                                        participant.username}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div className={cx('bid-socket')}>
-                        <div>{data.property.name}</div>
-                        <div>
-                            <h3>Highest price of this user</h3>
-                            <h3>
-                                {userWinning.nickName || userWinning.username}
-                            </h3>
+                <section className="bg-gray-200/25 dark:bg-gray-900">
+                    <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
+                        <div className="relative">
+                            <div className="flex justify-center">
+                                <div className=" absolute w-7/12 h-3/4 bg-center animate-ping transition ease-in-out bg-gradient-to-r from-cyan-500 to-blue-500 opacity-75 rounded-full">
+                                    &nbsp;
+                                </div>
+                                <div className="absolute w-7/12 h-3/4 bg-center animate-ping animation-delay-500 transition ease-in-out bg-gradient-to-r from-yellow-500 to-sky-500 after:transition-all opacity-75 rounded-full">
+                                    &nbsp;
+                                </div>
+                                <div className="absolute w-7/12 h-3/4 bg-center animate-ping animation-delay-700 transition ease-in-out bg-gradient-to-r from-red-500 to-orange-500  after:transition-all opacity-75 rounded-full">
+                                    &nbsp;
+                                </div>
+                                <div className="absolute w-7/12 h-3/4 bg-center animate-ping animation-delay-1000 transition ease-in-out bg-gradient-to-r from-pink-500 to-green-500 after:transition-all opacity-75 rounded-full">
+                                    &nbsp;
+                                </div>
+                            </div>
+                            {!!userWinning && (
+                                <div className="relative  mx-auto mb-8 max-w-screen-sm lg:mb-16 animate-pulse">
+                                    <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
+                                        <span>
+                                            {!!data && data.property.name}
+                                        </span>
+                                        <span> </span>
+                                        {`(${
+                                            !!data && data.property.category
+                                        })`}
+                                    </h2>
+                                    <h3 className="mb-4 text-2xl tracking-tight font-extrabold text-gray-600/50 dark:text-white">
+                                        <span>
+                                            Highest price of this winner
+                                        </span>
+                                    </h3>
+                                    <h1 className="mb-4 text-6xl tracking-tight font-extrabold text-red-500 dark:text-white">
+                                        <div className="mb-3">
+                                            {userWinning.nickName ||
+                                                userWinning.username}
+                                        </div>
+                                        <div className="text-red-900 ">{`${price}`}</div>
+                                    </h1>
+                                    <p className="font-light text-gray-500 sm:text-xl dark:text-gray-400">
+                                        {}
+                                    </p>
+                                </div>
+                            )}
                         </div>
-                        <div>{price}</div>
-                        {bidRoomStatus === 'PROCESSING' && (
-                            <Button onClick={() => sendValue()}>send</Button>
-                        )}
-                        <Button onClick={() => sendCloseSocket()}>Quit</Button>
+                        <div className="mx-auto mb-8 max-w-screen-sm lg:mb-16">
+                            {bidRoomStatus === 'PROCESSING' && (
+                                <Button onClick={() => sendValue()}>
+                                    send
+                                </Button>
+                            )}
+                            <Button onClick={() => sendCloseSocket()}>
+                                Quit
+                            </Button>
+                        </div>
+                        <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                            {participants.map((participant, index) => (
+                                <div
+                                    key={index}
+                                    className="text-center text-gray-500 dark:text-gray-400"
+                                >
+                                    <img
+                                        className="mx-auto mb-4 w-36 h-36 rounded-full"
+                                        src={
+                                            participant.imageId
+                                                ? `http://localhost:8080/api/v1/images/read/${participant.imageId}`
+                                                : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
+                                        }
+                                        alt="Avatar"
+                                    />
+                                    <h3 className="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                        <div
+                                            className={`text-gray-600 truncate
+                                            ${
+                                                userWinning.email ===
+                                                    participant.username &&
+                                                'animate-bounce'
+                                            }
+                                            `}
+                                        >
+                                            {participant.nickName ||
+                                                participant.username}
+                                        </div>
+                                    </h3>
+                                    {userWinning.email ===
+                                        participant.username && (
+                                        <p className="text-green-600 text-xl">
+                                            Winner
+                                        </p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </section>
             ) : (
                 <>
-                    <div className={cx('container')} ref={ref}>
-                        BidDetailRoom
+                    <div className="flex justify-center text-center" ref={ref}>
+                        <Button onClick={() => setIsOpen(!isOpen)}>
+                            Connect
+                        </Button>
                     </div>
-                    <Button onClick={() => setIsOpen(!isOpen)}>Connect</Button>
                     <Modal
                         isOpen={isOpen}
                         onRequestClose={closeModal}
@@ -308,6 +385,7 @@ function BidDetailRoom() {
                                     nickName: e.target.value,
                                 })
                             }
+                            autoFocus
                         />
                         <Button
                             className="btn btn-outline-success"

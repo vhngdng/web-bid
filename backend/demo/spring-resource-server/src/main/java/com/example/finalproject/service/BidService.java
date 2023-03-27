@@ -50,11 +50,11 @@ public class BidService {
   private final QuartUtil quartUtil;
 
   public List<BidDTO> findAllBid() {
-    return mapper.toListBidDTO(bidRepository.findAll());
+    return mapper.toListBidDTO(bidRepository.findAll(), userRepository);
   }
 
   public BidDTO findBidRoomByid(Long id) {
-    return mapper.toDTO(bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with: " + id + " is not found")));
+    return mapper.toDTO(bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with: " + id + " is not found")), userRepository);
   }
   public BidDTO createBidRoom(UpSertBid upSertBid) {
     Bid bid = new Bid();
@@ -62,7 +62,7 @@ public class BidService {
     mapper.createBid(upSertBid, bid, propertyRepository, userRepository);
     bidRepository.save(bid);
 //    schedulerChangeBidStatus(bidRepository.save(bid));
-    return mapper.toDTO(bid);
+    return mapper.toDTO(bid, userRepository);
   }
 
   public BidDTO closeBidRoom(UpSertBid upSertBid, Long id) {
@@ -91,7 +91,7 @@ public class BidService {
               .status("ACTIVE")
               .build();
     }
-    return mapper.toDTO(oldBid);
+    return mapper.toDTO(oldBid, userRepository);
   }
   public BidDTO updateBidRoom(UpSertBid upSertBid, Long id) {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id " + id + " was not found"));
@@ -106,7 +106,7 @@ public class BidService {
     }
     mapper.updateBid(upSertBid, bid);
     schedulerChangeBidStatus(bid);
-    return mapper.toDTO(bid);
+    return mapper.toDTO(bid, userRepository);
   }
 
   public void schedulerChangeBidStatus(Bid bid) {
@@ -154,7 +154,7 @@ public class BidService {
 //      throw new BadRequestException("The email of auctioneer is not valid");
 //    }
     List<Bid> listBidFinish = bidRepository.findListBidRoomBeforeFinish(auctioneerEmail, STATUS_TRANSACTION.SUCCESS.name());
-    return mapper.toListBidDTO(listBidFinish);
+    return mapper.toListBidDTO(listBidFinish, userRepository);
   }
 
   public BidDTO upDateBidRoomSuccess(String auctioneerEmail, Long id) {
@@ -163,10 +163,14 @@ public class BidService {
     Property property = bid.getProperty();
     property.setOwner(bid.getWinningBidder());
     propertyRepository.save(property);
-    return mapper.toDTO(bidRepository.save(bid));
+    return mapper.toDTO(bidRepository.save(bid), userRepository);
   }
 
   public List<BidDTO> getAllBidPreparingToRun() {
-    return mapper.toListBidDTO(bidRepository.findAllBidPreparingToRun());
+    return mapper.toListBidDTO(bidRepository.findAllBidPreparingToRun(), userRepository);
+  }
+
+  public List<BidDTO> findBidRoomBeforeStartDate(Long id) {
+    return null;
   }
 }

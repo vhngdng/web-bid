@@ -5,7 +5,7 @@ import { logout, tokenReceived } from '../slice/auth.slice';
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/v1/message',
+    baseUrl: 'http://localhost:8080/api/v1',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token;
         if (token) {
@@ -62,9 +62,13 @@ export const messageApi = createApi({
     baseQuery: baseQueryWithReauth,
     endpoints: (builder) => ({
         getAllPublicChat: builder.query({
-            query: () => 'public',
+            query: () => 'message/public',
+        }),
+        getAllMessageFromSuccessBid: builder.query({
+            query: (id) => `user/message/success-bid/${id}`,
         }),
     }),
 });
 
-export const { useGetAllPublicChatQuery } = messageApi;
+export const { useGetAllPublicChatQuery, useGetAllMessageFromSuccessBidQuery } =
+    messageApi;

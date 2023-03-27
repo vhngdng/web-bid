@@ -8,22 +8,7 @@ const initialState = [];
 const ImageSlice = createSlice({
     name: 'image',
     initialState,
-    reducers: {
-        changeType: (state, { payload }) => {
-            state.map((image) => {
-                if (image.type === payload.type) {
-                    image.type === null;
-                    return image;
-                }
-            });
-            state.map((image) => {
-                if (image.id === payload.id) {
-                    image.type === payload.type;
-                    return image;
-                }
-            });
-        },
-    },
+    reducers: {},
     extraReducers: (builder) => {
         builder
             .addMatcher(
@@ -37,12 +22,29 @@ const ImageSlice = createSlice({
                 imagesApi.endpoints.uploadImage.matchFulfilled,
                 (state, { payload }) => {
                     state.push(payload);
+                },
+            )
+            .addMatcher(
+                imagesApi.endpoints.updateTypeImage.matchFulfilled,
+                (state, { payload }) => {
+                    state.map((image) => {
+                        if (image.type === payload.type) {
+                            image.type = null;
+                        }
+                        return image;
+                    });
+                    state.map((image) => {
+                        if (image.id === payload.id) {
+                            image.type = payload.type;
+                        }
+                        return image;
+                    });
                     return state;
                 },
             );
     },
 });
 
-export const { changeType } = ImageSlice.actions;
+export const {} = ImageSlice.actions;
 
 export default ImageSlice.reducer;

@@ -70,6 +70,13 @@ export const transactionApi = createApi({
         getTransactionById: builder.query({
             query: (id) => `user/transaction/${id}`,
         }),
+        updateTransactionStatus: builder.mutation({
+            query: (body) => ({
+                url: `user/transaction/update-status`,
+                method: 'PUT',
+                body,
+            }),
+        }),
     }),
 });
 
@@ -77,4 +84,5 @@ export const {
     useGetAllTransactionQuery,
     useGetAllTransactionNotSuccessQuery,
     useGetTransactionByIdQuery,
+    useUpdateTransactionStatusMutation,
 } = transactionApi;

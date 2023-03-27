@@ -10,7 +10,7 @@ function Home() {
         navigate('/chat-room');
     };
     const handleRedirectToAdminPage = () => {
-        navigate('/admin');
+        navigate('admin');
     };
     const handleRedirectToProfile = () => {
         navigate('/profile-detail');

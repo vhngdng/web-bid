@@ -26,7 +26,7 @@ public class BidParticipant {
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "participant_id")
   private User user;
-
+  @Column
   private String nickName;
 
 

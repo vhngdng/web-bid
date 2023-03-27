@@ -75,4 +75,9 @@ public class BidController {
   public ResponseEntity<?> getAllBidPreparingToRun() {
     return ResponseEntity.ok(bidService.getAllBidPreparingToRun());
   }
+
+  @GetMapping("bid-room/ready/{id}")
+  public ResponseEntity<?> findBidRoomBeforeStartDate(@PathVariable("id") Long id) {
+    return ResponseEntity.ok(bidService.findBidRoomBeforeStartDate(id));
+  }
 }

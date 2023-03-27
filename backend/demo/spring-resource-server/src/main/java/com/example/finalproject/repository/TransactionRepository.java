@@ -14,13 +14,13 @@ import java.util.Optional;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
   @Query("select t from Transaction t where t.status <> :status and (t.bid.auctioneer.id = :userId or t.bid.winningBidder.id =: userId)")
   List<Transaction> findAllByStatusAndBid(@Param("status") String status, @Param("userId") Long userId);
-  @Query("select t.id as id,  t.status as status, t.bid.winningBidder.email as winningBidderEmail, t.bid.id as bidId, " +
+  @Query("select t.id as id,  t.status as status, t.bid.winningBidder.email as winningBidderEmail, t.bid.id as bidId, t.bid.lastPrice as lastPrice, " +
           "t.bid.auctioneer.email as auctioneerEmail, t.createdAt as createdAt, t.lastModifiedDate as lastModifiedDate " +
           "from Transaction t " +
           "where t.bid.auctioneer.id = :userId or t.bid.winningBidder.id =: userId")
   List<TransactionProject> findAllTransactionByUserLogin(@Param("userId") Long userId);
 
-  @Query("select t.id as id,  t.status as status, t.bid.winningBidder.email as winningBidderEmail, t.bid.id as bidId, " +
+  @Query("select t.id as id,  t.status as status, t.bid.winningBidder.email as winningBidderEmail, t.bid.id as bidId, t.bid.lastPrice as lastPrice, " +
           "t.bid.auctioneer.email as auctioneerEmail, t.createdAt as createdAt, t.lastModifiedDate as lastModifiedDate " +
           "from Transaction t " +
           "where t.id = :id")
