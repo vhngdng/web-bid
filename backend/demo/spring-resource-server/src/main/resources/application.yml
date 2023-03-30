@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           google:
-            client-id: 60674483096-p014e3eca264vr8vn6sq14gs12g0qc9g.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             redirect-uri: "{baseUrl}/oauth2/callback/{registrationId}"
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_basic

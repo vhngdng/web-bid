@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+/config/*
+!/config/README.md
+!/config/*.example
+
+.env
+src/main/resources/.env
