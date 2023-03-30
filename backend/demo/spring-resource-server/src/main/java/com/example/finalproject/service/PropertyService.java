@@ -31,11 +31,11 @@ public class PropertyService {
   private ImageRepository imageRepository;
 
   public List<PropertyDTO> findAll() {
-    return mapper.toListPropertyDTO(propertyRepository.findAll());
+    return mapper.toListPropertyDTO(propertyRepository.findAll(), imageRepository);
   }
 
   public List<PropertyDTO> findPropertyByUserLogin(String email) {
-    List<PropertyDTO> propertieDTOs = mapper.toListPropertyDTO(propertyRepository.findByOwnerEmail(email));
+    List<PropertyDTO> propertieDTOs = mapper.toListPropertyDTO(propertyRepository.findByOwnerEmail(email), imageRepository);
     propertieDTOs.forEach(propertyDTO -> {
       Optional<Image> imageOptional = imageRepository.findByPropertyId(propertyDTO.getId());
       imageOptional.ifPresent(image -> propertyDTO.setImageId(image.getId()));
@@ -44,7 +44,7 @@ public class PropertyService {
   }
 
   public List<PropertyDTO> findAllPropertyNotBid() {
-    return mapper.toListPropertyDTO(propertyRepository.findAllPropertyNotBid());
+    return mapper.toListPropertyDTO(propertyRepository.findAllPropertyNotBid(), imageRepository);
   }
 
   public PropertyDTO saveProperty(UpSertProperty upSertProperty) {
@@ -58,6 +58,6 @@ public class PropertyService {
       image.get().setType(TYPE_IMAGE.PROPERTY.name());
       imageRepository.save(image.get());
     }
-    return mapper.toDTO(savedProperty);
+    return mapper.toDTO(savedProperty, imageRepository);
   }
 }

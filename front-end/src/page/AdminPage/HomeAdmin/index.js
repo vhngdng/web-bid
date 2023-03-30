@@ -70,6 +70,8 @@ function AdminHomePage() {
                         <img
                             src={notification.logo.default}
                             alt="notification"
+                            width="25"
+                            height="25"
                         />
                         <div className={cx('noti-number')}>
                             {data && data.length > 0 && !isOpenNotification
@@ -147,10 +149,10 @@ function AdminHomePage() {
                     <div className="flex flex-row w-full">
                         <aside
                             id="default-sidebar"
-                            className="z-40 w-2/5 min-h-full transition-transform -translate-x-full sm:translate-x-0"
+                            className="z-40 w-1/6 min-h-full transition-transform -translate-x-full sm:translate-x-0 mr-3"
                             aria-label="Sidebar"
                         >
-                            <div className="h-full w-2/3 px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
+                            <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
                                 <ul>
                                     <li>
                                         <button
@@ -211,7 +213,7 @@ function AdminHomePage() {
                                 </ul>
                             </div>
                         </aside>
-                        <section className="flex flex-col w-3/5">
+                        <section className="flex flex-col w-3/4 ml-3">
                             <Outlet />
                         </section>
                     </div>

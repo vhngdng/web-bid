@@ -11,8 +11,11 @@ import com.example.finalproject.response.FinishResponse;
 import com.example.finalproject.response.ImageResponse;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -49,22 +52,21 @@ public interface Mapper {
 
   Property toEntiTy(PropertyDTO propertyDTO);
 
+  @Mapping(target = "imageId", expression = "java(findImageIdProperty(property.getId(), imageRepository))")
+  PropertyDTO toDTO(Property property, @Context ImageRepository imageRepository);
 
-  PropertyDTO toDTO(Property property);
 
-
-  List<PropertyDTO> toListPropertyDTO(List<Property> properties);
+  List<PropertyDTO> toListPropertyDTO(List<Property> properties, @Context ImageRepository imageRepository);
 
   List<Property> toListProperty(List<PropertyDTO> propertyDTOS);
 
   Bid toEntiTy(BidDTO bidDTO);
   @Mapping(target = "attendees", expression = "java(getAttendees(bid.getId(), userRepository))")
-  BidDTO toDTO(Bid bid, @Context UserRepository userRepository);
+  BidDTO toDTO(Bid bid, @Context UserRepository userRepository, @Context ImageRepository imageRepository);
   default List<Attendee> getAttendees(Long bidId, @Context UserRepository userRepository) {
     return userRepository.findAllAttendeeByBidId(bidId);
   }
-  List<BidDTO> toListBidDTO(List<Bid> bidList, @Context UserRepository userRepository);
-
+  List<BidDTO> toListBidDTO(List<Bid> bidList, @Context UserRepository userRepository, @Context ImageRepository imageRepository);
   @Mapping(target = "username", source = "user", qualifiedByName = "mapUserToUsername")
   @Mapping(target = "bidId", expression = "java(bidParticipant.getBid().getId())")
   @Mapping(target = "imageId", expression = "java(findImageId(bidParticipant.getUser().getId(), imageRepository))")
@@ -81,6 +83,11 @@ public interface Mapper {
 
   default String findImageId(Long bidParticipantId, @Context ImageRepository imageRepository) {
     Optional<Image> optionalImage = imageRepository.findByUserIdAndType(bidParticipantId, "AVATAR");
+    return optionalImage.map(Image::getId).orElse(null);
+  }
+
+  default String findImageIdProperty(Integer propertyId, @Context ImageRepository imageRepository) {
+    Optional<Image> optionalImage = imageRepository.findByPropertyId(propertyId);
     return optionalImage.map(Image::getId).orElse(null);
   }
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

@@ -6,15 +6,10 @@ import com.example.finalproject.dto.BidDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Transaction;
-import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
-import com.example.finalproject.repository.BidRepository;
-import com.example.finalproject.repository.PropertyRepository;
-import com.example.finalproject.repository.TransactionRepository;
-import com.example.finalproject.repository.UserRepository;
+import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertBid;
-import com.example.finalproject.response.CreateBidResponse;
 import com.example.finalproject.utils.QuartUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,39 +17,36 @@ import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
 public class BidService {
+  private final ImageRepository imageRepository;
   private final TransactionRepository transactionRepository;
   private final PropertyRepository propertyRepository;
   private final UserRepository userRepository;
   private final BidRepository bidRepository;
   private final Mapper mapper;
-
   private final Scheduler scheduler;
   private final QuartUtil quartUtil;
 
   public List<BidDTO> findAllBid() {
-    return mapper.toListBidDTO(bidRepository.findAll(), userRepository);
+    return mapper.toListBidDTO(bidRepository.findAll(), userRepository, imageRepository);
   }
 
+
+
   public BidDTO findBidRoomByid(Long id) {
-    return mapper.toDTO(bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with: " + id + " is not found")), userRepository);
+    return mapper.toDTO(bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with: " + id + " is not found")), userRepository, imageRepository);
   }
   public BidDTO createBidRoom(UpSertBid upSertBid) {
     Bid bid = new Bid();
@@ -62,7 +54,7 @@ public class BidService {
     mapper.createBid(upSertBid, bid, propertyRepository, userRepository);
     bidRepository.save(bid);
 //    schedulerChangeBidStatus(bidRepository.save(bid));
-    return mapper.toDTO(bid, userRepository);
+    return mapper.toDTO(bid, userRepository, imageRepository);
   }
 
   public BidDTO closeBidRoom(UpSertBid upSertBid, Long id) {
@@ -91,7 +83,7 @@ public class BidService {
               .status("ACTIVE")
               .build();
     }
-    return mapper.toDTO(oldBid, userRepository);
+    return mapper.toDTO(oldBid, userRepository, imageRepository);
   }
   public BidDTO updateBidRoom(UpSertBid upSertBid, Long id) {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id " + id + " was not found"));
@@ -106,7 +98,7 @@ public class BidService {
     }
     mapper.updateBid(upSertBid, bid);
     schedulerChangeBidStatus(bid);
-    return mapper.toDTO(bid, userRepository);
+    return mapper.toDTO(bid, userRepository, imageRepository);
   }
 
   public void schedulerChangeBidStatus(Bid bid) {
@@ -154,7 +146,7 @@ public class BidService {
 //      throw new BadRequestException("The email of auctioneer is not valid");
 //    }
     List<Bid> listBidFinish = bidRepository.findListBidRoomBeforeFinish(auctioneerEmail, STATUS_TRANSACTION.SUCCESS.name());
-    return mapper.toListBidDTO(listBidFinish, userRepository);
+    return mapper.toListBidDTO(listBidFinish, userRepository, imageRepository);
   }
 
   public BidDTO upDateBidRoomSuccess(String auctioneerEmail, Long id) {
@@ -163,14 +155,33 @@ public class BidService {
     Property property = bid.getProperty();
     property.setOwner(bid.getWinningBidder());
     propertyRepository.save(property);
-    return mapper.toDTO(bidRepository.save(bid), userRepository);
+    return mapper.toDTO(bidRepository.save(bid), userRepository, imageRepository);
   }
 
   public List<BidDTO> getAllBidPreparingToRun() {
-    return mapper.toListBidDTO(bidRepository.findAllBidPreparingToRun(), userRepository);
+    return mapper.toListBidDTO(bidRepository.findAllBidPreparingToRun(), userRepository, imageRepository);
   }
 
   public List<BidDTO> findBidRoomBeforeStartDate(Long id) {
     return null;
   }
+
+  public Page<BidDTO> findAllBidRoomPaging(int page, int size, String[] sort) {
+    List<Sort.Order> orders = new ArrayList<>();
+      if (sort[0].contains(",")) {
+        for(String sortOrder : sort) {
+          String[] _sort = sortOrder.split(",");
+          orders.add(new Sort.Order(_sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, _sort[0]));
+        }
+      } else {
+        orders.add(new Sort.Order(sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sort[0]));
+      }
+    Pageable pageable = PageRequest.of(page, size, Sort.by(orders));
+    Page<Bid> bidPage = bidRepository.findAll(pageable);
+    List<BidDTO> bidDTOList = mapper.toListBidDTO(bidPage.getContent(), userRepository, imageRepository);
+    return new PageImpl<>(bidDTOList, pageable, bidPage.getTotalElements());
+  }
+
+
+
 }

@@ -8,6 +8,17 @@ module.exports = withMT({
         fontFamily: {
             sans: ['Open Sans', 'sans-serif'],
         },
+        colors: {
+            'lime-rgb': 'rgb(190, 215, 176)',
+            'green-rgb': 'rgb(110, 141, 133)',
+            'blue-rgb': 'rgb(126, 155, 188)',
+            'pink-rgb': 'rgb(226, 181, 244)',
+        },
+        maxHeight: {
+            '75vh': '75vh',
+            '60vh': '60vh',
+            '65vh': '65vh',
+        },
     },
     plugins: [require('tailwindcss-animation')],
 });

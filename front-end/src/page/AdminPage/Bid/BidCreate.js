@@ -64,7 +64,7 @@ function BidCreate() {
     if (loadImage) return <Loader />;
     console.log(imageId);
     return (
-        <div className="flex justify-center">
+        <div className="flex justify-center mx-6">
             <div className="transparent">
                 <Typography
                     variant="h4"

@@ -15,25 +15,24 @@ function BidRoom() {
     };
     return (
         <>
-            <div className="flex justify-end">
-                <button
-                    type="button"
-                    className="rounded-full textWhite bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br  focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium  text-sm px-5 py-2.5 text-center active:animate-bounce transition-all duration-750 ease-in-out "
-                    onClick={() => refetch()}
-                >
-                    Refresh
-                </button>
-            </div>
-
             <div className="overflow-x-auto">
                 <div className="minW-screen min-h-screen flex items-center justify-center font-sans overflow-hidden">
                     <div className="w-full lg:w-5/6">
-                        <div className="bgWhite shadow-md rounded my-6">
-                            <table className="minW-max w-full table-auto">
+                        <div className="  rounded my-6">
+                            <div className="flex justify-end">
+                                <button
+                                    type="button"
+                                    className="rounded-full textWhite bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br  focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium  text-sm px-5 py-2.5 text-center active:animate-bounce transition-all duration-750 ease-in-out "
+                                    onClick={() => refetch()}
+                                >
+                                    Refresh
+                                </button>
+                            </div>
+                            <table className="w-full table-auto shadow-md ">
                                 <thead>
-                                    <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                                    <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal ">
                                         <th className="py-3 px-6 textLeft">
-                                            Id
+                                            Property
                                         </th>
                                         <th className="py-3 px-6 textLeft">
                                             Auctioneer
@@ -58,15 +57,15 @@ function BidRoom() {
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="text-gray-600 text-sm fontLight">
+                                <tbody className="text-gray-700 text-sm fontLight ">
                                     {data &&
                                         data.map((bid, index) => (
                                             <tr
                                                 key={index}
-                                                className={` border-b border-gray-300 hover:bg-gray-100
+                                                className={` border-gray-300 hover:bg-gray-100 
                                                 ${
                                                     (index + 1) % 2 &&
-                                                    'bg-gray-100'
+                                                    'bg-gray-100/25'
                                                 }
                                                 ${
                                                     [
@@ -142,7 +141,7 @@ function BidRoom() {
                                                     </div>
                                                 </td>
                                                 <td className="py-3 px-6 text-center">
-                                                    <div className="flex item-center justify-center text-blue-800 hover:animate-spin ">
+                                                    <div className="flex item-center justify-center text-blue-800 ">
                                                         {!!bid.lastPrice &&
                                                             bid.lastPrice}
                                                     </div>
@@ -170,7 +169,7 @@ function BidRoom() {
                                                                 ? 'bg-purple-200 text-purple-600'
                                                                 : bid.status ===
                                                                   'PROCESSING'
-                                                                ? 'bg-yellow-200 text-yellow-600'
+                                                                ? 'bg-yellow-200 text-yellow-800'
                                                                 : ''
                                                         }
                                                         `}

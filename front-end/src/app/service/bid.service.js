@@ -90,6 +90,15 @@ export const bidApi = createApi({
         getAllBidPreparingToRun: builder.query({
             query: () => `admin/bid-room/prepare`,
         }),
+        getAllBidRoomPaging: builder.query({
+            query: (page) => {
+                if (!page) {
+                    return `admin/bid-room/paging`;
+                } else {
+                    return `admin/bid-room/paging${page}`;
+                }
+            },
+        }),
     }),
 });
 
@@ -101,4 +110,5 @@ export const {
     useCreateBidMutation,
     useGetAllBidPreparingToRunQuery,
     useRunBidRoomMutation,
+    useGetAllBidRoomPagingQuery,
 } = bidApi;

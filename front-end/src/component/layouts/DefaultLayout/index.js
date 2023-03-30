@@ -4,7 +4,7 @@ import HeaderDefault from './HeaderDefault';
 
 function DefaultLayout() {
     return (
-        <div>
+        <div className="w-2/3">
             <HeaderDefault />
             <section>
                 <Outlet />

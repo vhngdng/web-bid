@@ -33,7 +33,6 @@ public class Bid implements Serializable {
   @Column
   private String type;
   @Column
-  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
   private LocalDateTime dayOfSale;
   @Column(name = "conditionReport", columnDefinition = "TEXT")
   private String conditionReport;

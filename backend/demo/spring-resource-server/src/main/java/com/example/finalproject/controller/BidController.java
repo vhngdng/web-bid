@@ -25,6 +25,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("")
@@ -37,6 +39,14 @@ public class BidController {
   @GetMapping("bid-room")
   public ResponseEntity<?> findAllBidRoom() {
     return ResponseEntity.ok(bidService.findAllBid());
+  }
+
+  @GetMapping("admin/bid-room/paging")
+  public ResponseEntity<?> findAllBidRoomPaging(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                @RequestParam(name = "size", defaultValue = "10") int size,
+                                                @RequestParam(name ="sort", defaultValue = "dayOfSale,desc") String[] sort
+                                                ) {
+    return ResponseEntity.ok(bidService.findAllBidRoomPaging(page, size, sort));
   }
 
   @GetMapping("bid-room/{id}")

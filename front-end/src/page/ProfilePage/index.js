@@ -24,10 +24,10 @@ function ProfilePage() {
             <div className="flex flex-row w-full">
                 <aside
                     id="default-sidebar"
-                    className="z-40 w-2/5 min-h-full transition-transform -translate-x-full sm:translate-x-0"
+                    className="z-40 w-1/5 mx-6 min-h-full transition-transform -translate-x-full sm:translate-x-0"
                     aria-label="Sidebar"
                 >
-                    <div className="h-full w-2/3 px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
+                    <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
                         <ul>
                             <li>
                                 <button
@@ -84,7 +84,8 @@ function ProfilePage() {
                         </ul>
                     </div>
                 </aside>
-                <section className="flex flex-col w-3/5">
+
+                <section className="flex flex-col w-4/5 mx-6 max-w-3xl">
                     <Outlet />
                 </section>
             </div>
