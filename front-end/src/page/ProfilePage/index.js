@@ -21,10 +21,10 @@ function ProfilePage() {
     console.log(selectSidebar);
     return (
         <div>
-            <div className="flex flex-row w-full">
+            <div className="static flex flex-row w-full">
                 <aside
                     id="default-sidebar"
-                    className="z-40 w-1/5 mx-6 min-h-full transition-transform -translate-x-full sm:translate-x-0"
+                    className="fixed top-30 left-0 z-40 min-w-fit w-[13vw] mx-6 h-full transition-transform -translate-x-full sm:translate-x-0"
                     aria-label="Sidebar"
                 >
                     <div className="h-full rounded-lg px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">

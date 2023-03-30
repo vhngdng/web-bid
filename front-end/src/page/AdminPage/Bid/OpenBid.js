@@ -49,9 +49,9 @@ function OpenBid() {
     };
     return (
         <>
-            <table className="table-fixed border-collapse border-spacing-2 border border-slate-400 bg-white-700 box-sizing: border-box shadow-xl">
+            <table className="rounded-lg table-fixed border-collapse border-spacing-2 border border-slate-400 bg-white-700 box-sizing: border-box shadow-xl">
                 <thead>
-                    <tr>
+                    <tr className="">
                         <th className="border border-slate-300 ">Bid id</th>
                         <th className="border border-slate-300">Auctioneer</th>
                         <th className="border border-slate-300">Day of Sale</th>
@@ -65,6 +65,7 @@ function OpenBid() {
                             Property Name
                         </th>
                         <th className="border border-slate-300">Owner Name</th>
+                        <th className="border border-slate-300">Active</th>
                     </tr>
                 </thead>
                 <tbody>

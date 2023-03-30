@@ -77,10 +77,10 @@ function AdminHomePage() {
     return (
         <>
             <div>
-                <div className="flex flex-row w-full">
+                <div className="static flex flex-row w-full">
                     <aside
                         id="default-sidebar"
-                        className="z-40 w-1/5 mx-6 min-h-full transition-transform -translate-x-full sm:translate-x-0"
+                        className="fixed top-30 left-0 z-40 min-w-fit w-[13vw] mx-6 h-full transition-transform -translate-x-full sm:translate-x-0"
                         aria-label="Sidebar"
                     >
                         <div className="h-full rounded-lg px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
@@ -166,7 +166,7 @@ function AdminHomePage() {
                         <Outlet />
                     </section>
                     <div
-                        className={`top-0 left-0 w-[17vw] bg-my-pattern shadow-lg p-10 text-white fixed h-full z-40  ease-in-out duration-300 ${
+                        className={`fixed bottom-0 right-0 w-[16vw] bg-my-pattern shadow-lg p-10 text-white fixed h-full z-40  ease-in-out duration-300 ${
                             showSidebar
                                 ? 'translate-x-0 '
                                 : 'translate-x-full hidden'

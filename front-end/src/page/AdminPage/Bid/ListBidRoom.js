@@ -548,12 +548,12 @@ function ListBidRoom() {
                                                         'transition-all duration-150 ease-in-out animate-bounce '
                                                     }`}
                                                 >
-                                                    {bid.status ===
-                                                        'PROCESSING' && (
-                                                        <>
+                                                    <div className="flex items-center">
+                                                        {bid.status ===
+                                                            'PROCESSING' && (
                                                             <svg
                                                                 aria-hidden="true"
-                                                                className="absolute z-50 bottom-9 left-0 w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                                                                className="z-50 w-4 h-4 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
                                                                 viewBox="0 0 100 101"
                                                                 fill="none"
                                                                 xmlns="http://www.w3.org/2000/svg"
@@ -567,10 +567,9 @@ function ListBidRoom() {
                                                                     fill="currentFill"
                                                                 />
                                                             </svg>
-                                                        </>
-                                                    )}
-                                                    <span
-                                                        className={`py-1 px-3 rounded-full text-xs 
+                                                        )}
+                                                        <span
+                                                            className={`py-1 px-3 rounded-full text-xs 
                                                             ${
                                                                 bid.status ===
                                                                 'ACTIVE'
@@ -590,9 +589,10 @@ function ListBidRoom() {
                                                                     : ''
                                                             }
                                                             `}
-                                                    >
-                                                        {bid.status}
-                                                    </span>
+                                                        >
+                                                            {bid.status}
+                                                        </span>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))}

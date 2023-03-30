@@ -6,7 +6,7 @@ function DefaultLayout() {
     return (
         <div className="">
             <HeaderDefault />
-            <section>
+            <section className="min-w-4/5 max-w-screen">
                 <Outlet />
             </section>
         </div>
