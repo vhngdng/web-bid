@@ -2,9 +2,9 @@ import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
 function AdminProtectedPage({ isAllowed, children }) {
-    if (isAllowed) {
+    if (!isAllowed) {
         console.log('admin');
-        return <Navigate to={'/'} />;
+        return <Navigate to={'/error'} />;
     }
     return children ? children : <Outlet />;
 }

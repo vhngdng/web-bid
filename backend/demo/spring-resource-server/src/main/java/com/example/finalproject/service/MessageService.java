@@ -139,15 +139,14 @@ public class MessageService {
 
   public void finishBid(FinishResponse request) {
     Bid bid = bidRepository.findById(request.getId()).orElseThrow(() -> new NotFoundException("Bid with Id: " + request.getId() + " is not found"));
-    log.error("no roi vao day");
     mapper.updateFromFinishRequest(request, bid, userRepository);
 
   }
 
   public List<MessageDTO> getAllMessageBySuccessBidId(Integer transactionId) {
     Bid bid = bidRepository.findByTransactionId(transactionId).orElseThrow(() -> new NotFoundException("Bid with transaction id: " + transactionId + " is not found"));
-    LocalDateTime lastModified = bid.getLastModifiedDate();
+    LocalDateTime finishTime = bid.getFinishTime();
     LocalDateTime dayOfSale = bid.getDayOfSale();
-    return mapper.toListDTO(messageRepository.findAllMessageBySuccessBidId(bid.getId(), STATUS_MESSAGE.MESSAGE.name(), dayOfSale, lastModified));
+    return mapper.toListDTO(messageRepository.findAllMessageBySuccessBidId(bid.getId(), STATUS_MESSAGE.MESSAGE.name(), dayOfSale, finishTime));
   }
 }

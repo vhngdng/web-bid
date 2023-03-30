@@ -23,6 +23,7 @@ import TransactionDetail from './page/ProfilePage/Transaction/TransactionDetail'
 import PropertyList from './page/ProfilePage/PropertyList';
 import DetailBidRoom from './page/AdminPage/Bid/DetailBidRoom';
 import ListBidRoom from './page/AdminPage/Bid/ListBidRoom';
+import ErrorPage404 from './page/ErrorPage';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -31,6 +32,7 @@ function App() {
         <>
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/error" element={<ErrorPage404 />} />
                 <Route element={<Private />}>
                     <Route element={<DefaultLayout />}>
                         <Route path="/" element={<Home />} />
@@ -66,7 +68,11 @@ function App() {
                                 <AdminProtectedPage
                                     isAllowed={
                                         !!auth &&
-                                        auth.authorities.includes('ROLE_ADMIN')
+                                        auth.authorities.some(
+                                            (autho) =>
+                                                autho.authority ===
+                                                'ROLE_ADMIN',
+                                        )
                                     }
                                 />
                             }

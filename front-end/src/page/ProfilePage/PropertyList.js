@@ -70,14 +70,12 @@ function PropertyList() {
                                                 <div className="flex items-center">
                                                     <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
                                                         <img
-                                                            className="object-fill "
+                                                            className="object-fit h-10 w-10"
                                                             src={
                                                                 !!property.imageId
                                                                     ? `http://localhost:8080/api/v1/images/read/${property.imageId}`
                                                                     : `${imageDefault.logo.default}`
                                                             }
-                                                            width="40"
-                                                            height="40"
                                                             alt="IMG"
                                                         />
                                                     </div>

@@ -14,6 +14,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @Slf4j
 public class BidListener {
@@ -48,8 +50,9 @@ public class BidListener {
           simpMessagingTemplate.convertAndSendToUser(bid.getWinningBidder().getEmail(), "private", mapper.toDTO(bid.getTransaction()));  //  /user/${name}/private
           break;
         }
-        case "DEACTIVE":
+        case "DEACTIVE": break;
         case "SUCCESS": {
+
           break;
         }
         default: {
@@ -72,6 +75,8 @@ public class BidListener {
     if(bid.getStatus().equalsIgnoreCase("ACTIVE") &&
             !bid.getDayOfSale().equals(bid.getLastModifiedDate())) {
       bid.setDayOfSale(bid.getLastModifiedDate());
+    }else if(bid.getStatus().equalsIgnoreCase("SUCCESS")) {
+      bid.setFinishTime(bid.getLastModifiedDate());
     }
   }
 }

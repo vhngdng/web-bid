@@ -145,13 +145,16 @@ public class BidService {
 //    if (!auctioneerEmail.equalsIgnoreCase(bid.getAuctioneer().getEmail())) {
 //      throw new BadRequestException("The email of auctioneer is not valid");
 //    }
-    List<Bid> listBidFinish = bidRepository.findListBidRoomBeforeFinish(auctioneerEmail, STATUS_TRANSACTION.SUCCESS.name());
+    List<Bid> listBidFinish = bidRepository.findListBidRoomBeforeFinish(auctioneerEmail, STATUS_TRANSACTION.FINISH.name());
     return mapper.toListBidDTO(listBidFinish, userRepository, imageRepository);
   }
 
   public BidDTO upDateBidRoomSuccess(String auctioneerEmail, Long id) {
     Bid bid = bidRepository.findByIdAndAuctioneerEmail(id, auctioneerEmail);
     bid.setStatus(STATUS_BID.SUCCESS.name());
+    Transaction transaction = bid.getTransaction();
+    transaction.setStatus(STATUS_TRANSACTION.SUCCESS.name());
+    transactionRepository.save(transaction);
     Property property = bid.getProperty();
     property.setOwner(bid.getWinningBidder());
     propertyRepository.save(property);

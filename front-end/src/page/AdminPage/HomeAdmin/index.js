@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
     useGetRequestToChangeBidSuccessQuery,
@@ -8,7 +8,6 @@ import NotificationTimer from '~/notificationTimer';
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
 import Loader from '~/Loader';
-import { notification } from '~/assets/images';
 import { toast, ToastContainer } from 'react-toastify';
 const cx = classNames.bind(styles);
 
@@ -16,10 +15,10 @@ const customSelectStyle = 'bg-blue-200 text-lime-900 shadow-inner scale-y-90';
 function AdminHomePage() {
     const { data, isLoading, refetch } = useGetRequestToChangeBidSuccessQuery();
     const [updateSuccessBid] = useUpdateSuccessBidMutation();
-    const [isOpenNotification, setIsOpenNotification] = useState(false);
-    const handleShowRequest = () => {
-        setIsOpenNotification(!isOpenNotification);
-    };
+    const [showSidebar, setShowSideBar] = useState(false);
+    const refNoti = useRef(null);
+    const buttonRef = useRef(null);
+
     const [selectSidebar, setSelectSidebar] = useState(1);
     const navigate = useNavigate();
     const location = useLocation();
@@ -35,6 +34,21 @@ function AdminHomePage() {
             setSelectSidebar(1);
         }
     }, [location]);
+    useEffect(() => {
+        let handler = (e) => {
+            if (
+                !buttonRef.current.contains(e.target) &&
+                !refNoti.current.contains(e.target)
+            ) {
+                console.log(e.target);
+                setShowSideBar(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => {
+            document.removeEventListener('mousedown', handler);
+        };
+    }, []);
     if (isLoading) return <Loader />;
     console.log(data);
 
@@ -59,27 +73,110 @@ function AdminHomePage() {
             })
             .catch((err) => toast.error(err));
     };
+
     return (
         <>
             <div>
-                <button
-                    className="w-max relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800"
-                    onClick={handleShowRequest}
-                >
-                    <div className={cx('notify')}>
-                        <img
-                            src={notification.logo.default}
-                            alt="notification"
-                            width="25"
-                            height="25"
-                        />
-                        <div className={cx('noti-number')}>
-                            {data && data.length > 0 && !isOpenNotification
-                                ? data.length
-                                : ''}
+                <div className="flex flex-row w-full">
+                    <aside
+                        id="default-sidebar"
+                        className="z-40 w-1/5 mx-6 min-h-full transition-transform -translate-x-full sm:translate-x-0"
+                        aria-label="Sidebar"
+                    >
+                        <div className="h-full rounded-lg px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
+                            <ul
+                                className="relative m-0 list-none px-[0.2rem]"
+                                data-te-sidenav-menu-ref
+                            >
+                                <li className="relative">
+                                    <button
+                                        className={`flex flex-col truncate items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
+                                    ${
+                                        selectSidebar === 1
+                                            ? customSelectStyle
+                                            : 'bg-gray-200'
+                                    }`}
+                                        onClick={() => navigate('')}
+                                    >
+                                        List Bid Room
+                                    </button>
+                                </li>
+                                <li>
+                                    <button
+                                        className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
+                                    ${
+                                        selectSidebar === 2
+                                            ? customSelectStyle
+                                            : 'bg-gray-200'
+                                    }`}
+                                        onClick={() => navigate('details-bid')}
+                                    >
+                                        Detail Bid Room
+                                    </button>
+                                </li>
+                                <li className="relative">
+                                    <button
+                                        className={`flex flex-col truncate items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    ${
+                                        selectSidebar === 3
+                                            ? customSelectStyle
+                                            : 'bg-gray-200'
+                                    }`}
+                                        onClick={() => navigate('create-bid')}
+                                    >
+                                        Create Bid Room
+                                    </button>
+                                </li>
+                                <li className="relative">
+                                    <button
+                                        className={`flex flex-col truncate items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    ${
+                                        selectSidebar === 4
+                                            ? customSelectStyle
+                                            : 'bg-gray-200'
+                                    }`}
+                                        onClick={() => navigate('open-bid')}
+                                    >
+                                        Open Bid Room
+                                    </button>
+                                </li>
+                                <li className="relative">
+                                    <button
+                                        className={`flex flex-col truncate items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out bg-gray-200
+                                    `}
+                                        onClick={() =>
+                                            setShowSideBar((prev) => !prev)
+                                        }
+                                        ref={buttonRef}
+                                    >
+                                        Bid Success
+                                    </button>
+                                    {data &&
+                                        data.length > 0 &&
+                                        !showSidebar && (
+                                            <div className="flex justify-center items-center absolute top-0 right-0 bottom-auto left-auto z-10 inline-block w-6 h-6 shrink-0 grow-0 bg-red-500 rounded-full">
+                                                {data.length}
+                                            </div>
+                                        )}
+                                </li>
+                            </ul>
                         </div>
-
-                        {isOpenNotification && (
+                    </aside>
+                    <section className=" mr-5  flex flex-col text-start ">
+                        <Outlet />
+                    </section>
+                    <div
+                        className={`top-0 left-0 w-[17vw] bg-my-pattern shadow-lg p-10 text-white fixed h-full z-40  ease-in-out duration-300 ${
+                            showSidebar
+                                ? 'translate-x-0 '
+                                : 'translate-x-full hidden'
+                        }`}
+                        ref={refNoti}
+                    >
+                        <h3 className="mt-20 text-4xl font-semibold text-graay-200">
+                            Finish
+                        </h3>
+                        {showSidebar && (
                             <div className={cx('noti-table')}>
                                 <div
                                     id="toast-message-cta"
@@ -143,82 +240,9 @@ function AdminHomePage() {
                             </div>
                         )}
                     </div>
-                </button>
-
-                <div>
-                    <div className="flex flex-row w-full">
-                        <aside
-                            id="default-sidebar"
-                            className="z-40 w-1/6 min-h-full transition-transform -translate-x-full sm:translate-x-0 mr-3"
-                            aria-label="Sidebar"
-                        >
-                            <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
-                                <ul>
-                                    <li>
-                                        <button
-                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
-                                    ${
-                                        selectSidebar === 1
-                                            ? customSelectStyle
-                                            : 'bg-gray-200'
-                                    }`}
-                                            onClick={() => navigate('')}
-                                        >
-                                            List Bid Room
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
-                                    ${
-                                        selectSidebar === 2
-                                            ? customSelectStyle
-                                            : 'bg-gray-200'
-                                    }`}
-                                            onClick={() =>
-                                                navigate('details-bid')
-                                            }
-                                        >
-                                            Detail Bid Room
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
-                                    ${
-                                        selectSidebar === 3
-                                            ? customSelectStyle
-                                            : 'bg-gray-200'
-                                    }`}
-                                            onClick={() =>
-                                                navigate('create-bid')
-                                            }
-                                        >
-                                            Create Bid Room
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
-                                    ${
-                                        selectSidebar === 4
-                                            ? customSelectStyle
-                                            : 'bg-gray-200'
-                                    }`}
-                                            onClick={() => navigate('open-bid')}
-                                        >
-                                            Open Bid Room
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                        </aside>
-                        <section className="flex flex-col w-3/4 ml-3">
-                            <Outlet />
-                        </section>
-                    </div>
                 </div>
             </div>
+
             <ToastContainer />
         </>
     );

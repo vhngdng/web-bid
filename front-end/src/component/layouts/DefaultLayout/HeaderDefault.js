@@ -16,12 +16,11 @@ import { Button } from '@material-tailwind/react';
 import { notification } from '~/assets/images';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
-import {
-    useGetAllTransactionNotSuccessQuery,
-    useGetAllTransactionQuery,
-} from '~/app/service/transaction.service';
+import { useGetAllTransactionBidFinishQuery } from '~/app/service/transaction.service';
 import Loader from '~/Loader';
 import { toast, ToastContainer } from 'react-toastify';
+import { green } from '@mui/material/colors';
+import NotificationTimer from '~/notificationTimer';
 const cx = classNames.bind(styles);
 
 var stompClient = null;
@@ -32,7 +31,8 @@ function HeaderDefault() {
         data: transactions,
         isLoading,
         isSuccess,
-    } = useGetAllTransactionNotSuccessQuery();
+        refetch,
+    } = useGetAllTransactionBidFinishQuery();
     const [isOpenNotification, setIsOpenNotification] = useState(false);
     const [Sock, setSock] = useState(null);
     const [noti, setNoti] = useState([]);
@@ -125,24 +125,56 @@ function HeaderDefault() {
                 }
                 break;
             }
-            case 'SUCCESS': {
+            case 'FINISH': {
+                console.log('payload Data', payloadData);
+
+                console.log(payloadData.bidId);
                 setNoti((prev) =>
-                    prev.filter((notify) => notify.bidId !== payloadData.bidId),
+                    prev.map((notifi) => {
+                        if (notifi.bidId === payloadData.bidId) {
+                            return { ...notifi, status: payloadData.status };
+                        }
+                    }),
                 );
+                toast.success('The payment is completed successfully', {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                });
+
+                setTimeout(() => {}, 1000);
+
+                break;
+            }
+            case 'SUCCESS': {
+                console.log('payload Data', payloadData);
+                setNoti((prev) => {
+                    let newNoti = prev.filter(
+                        (notify) => notify.bidId !== payloadData.bidId,
+                    );
+                    setNoti(newNoti);
+                });
+                toast.success(<NotificationTimer timer={Date.now()} />, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: undefined,
+                });
+                setTimeout(() => {
+                    refetch();
+                }, 1000);
+                break;
             }
         }
-    };
-
-    const sendPrivateMessage = () => {
-        console.log(stompClient);
-        stompClient.send(
-            `/app/private-message`,
-            {},
-            JSON.stringify({
-                senderName: auth.email,
-                message: 'test',
-            }),
-        );
     };
 
     const handleLogout = () => {
@@ -157,6 +189,7 @@ function HeaderDefault() {
         navigate(`/profile-detail/transaction/bidId/${id}`);
     };
     if (isLoading) return <Loader />;
+
     return (
         <nav className=" border-gray-200 px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900 ">
             <div className="container flex flex-wrap items-center justify-around mx-auto w-max ">
@@ -200,14 +233,18 @@ function HeaderDefault() {
                                     Services
                                 </a>
                             </div>
-                            <div className="flex justify-center items-center m-6 ">
-                                <a
-                                    href="#"
-                                    className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                                >
-                                    Pricing
-                                </a>
-                            </div>
+                            {auth.authorities.some(
+                                (autho) => autho.authority === 'ROLE_ADMIN',
+                            ) && (
+                                <div className="flex justify-center items-center m-6 ">
+                                    <Link
+                                        to="/admin"
+                                        className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+                                    >
+                                        Go To Admin Page
+                                    </Link>
+                                </div>
+                            )}
                         </li>
                         <li className="m-6 ">
                             <div className="flex justify-center items-center relative m-6 inline-flex w-fit">
@@ -263,10 +300,23 @@ function HeaderDefault() {
                                                                 </div>
                                                                 <div
                                                                     className={`flex justify-center mb-2 text-sm font-normal
+                                                                    
                                                                     `}
                                                                 >
-                                                                    Status :{' '}
-                                                                    {n.status}
+                                                                    Status :
+                                                                    {'  '}
+                                                                    <span
+                                                                        className={
+                                                                            n.status ===
+                                                                            'FINISH'
+                                                                                ? 'text-green-500'
+                                                                                : ''
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            n.status
+                                                                        }
+                                                                    </span>
                                                                 </div>
                                                                 {n.lastModifiedDate && (
                                                                     <div className="mb-2 text-sm font-normal italic hover:not-italic">
@@ -332,29 +382,6 @@ function HeaderDefault() {
                                 </button>
                             </div>
                         </li>
-                        {/* <div className="flex justify-center items-center">
-                            <Button onClick={sendPrivateMessage}>
-                                Send private message
-                            </Button>
-                        </div> */}
-                        {/* <div className="flex justify-center items-center">
-                            <div className="flex justify-center items-center">
-                                <div
-                                    className="cursor-pointer box-border w-32 md:hover:bg-transparent md:border-0 md:hover:text-red-700 md:p-0  md:hover:bg-transparent dark:hover:text-white text-ellipsis overflow-hidden"
-                                    onClick={handleRedirectToProfilePage}
-                                >
-                                    {auth.email}
-                                </div>
-                            </div>
-                        </div> */}
-                        {/* <div className="flex justify-center items-center">
-                            <button
-                                className="md:hover:text-red-700 bg-transparent hover:bg-white-500 text-purple-700 font-semibold hover:text-white py-2 px-4 border-1 hover:border-transparent rounded"
-                                onClick={() => handleLogout()}
-                            >
-                                Log Out
-                            </button>
-                        </div> */}
                     </ul>
                 </div>
             </div>

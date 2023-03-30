@@ -77,6 +77,9 @@ export const transactionApi = createApi({
                 body,
             }),
         }),
+        getAllTransactionBidFinish: builder.query({
+            query: () => `user/transaction/bid-finish`,
+        }),
     }),
 });
 
@@ -85,4 +88,5 @@ export const {
     useGetAllTransactionNotSuccessQuery,
     useGetTransactionByIdQuery,
     useUpdateTransactionStatusMutation,
+    useGetAllTransactionBidFinishQuery,
 } = transactionApi;

@@ -27,7 +27,7 @@ function ProfilePage() {
                     className="z-40 w-1/5 mx-6 min-h-full transition-transform -translate-x-full sm:translate-x-0"
                     aria-label="Sidebar"
                 >
-                    <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
+                    <div className="h-full rounded-lg px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
                         <ul>
                             <li>
                                 <button

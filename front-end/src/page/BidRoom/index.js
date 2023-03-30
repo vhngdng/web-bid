@@ -15,22 +15,22 @@ function BidRoom() {
     };
     return (
         <>
-            <div className="overflow-x-auto">
-                <div className="minW-screen min-h-screen flex items-center justify-center font-sans overflow-hidden">
-                    <div className="w-full lg:w-5/6">
-                        <div className="  rounded my-6">
-                            <div className="flex justify-end">
-                                <button
-                                    type="button"
-                                    className="rounded-full textWhite bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br  focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium  text-sm px-5 py-2.5 text-center active:animate-bounce transition-all duration-750 ease-in-out "
-                                    onClick={() => refetch()}
-                                >
-                                    Refresh
-                                </button>
-                            </div>
-                            <table className="w-full table-auto shadow-md ">
-                                <thead>
-                                    <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal ">
+            <div className="w-fit rounded-lg mx-auto font-mono mb-8  ">
+                <div className="w-fit max-h-screen ">
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            className="rounded-full text-black bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 active:animate-bounce transition-all duration-750 ease-in-out "
+                            onClick={() => refetch()}
+                        >
+                            Refresh
+                        </button>
+                    </div>
+                    <div className="w-fit rounded-lg shadow-lg bg-gray-50/10 ">
+                        <section className=" rounded-lg">
+                            <table className="  table-auto shadow-md ">
+                                <thead className="max-h-65vh rounded-sm">
+                                    <tr className="bg-green-rgb text-black-500 uppercase text-sm leading-normal">
                                         <th className="py-3 px-6 textLeft">
                                             Property
                                         </th>
@@ -57,25 +57,25 @@ function BidRoom() {
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="text-gray-700 text-sm fontLight ">
+                                <tbody className="overflow-y-scroll text-gray-700 text-sm fontLight">
                                     {data &&
                                         data.map((bid, index) => (
                                             <tr
                                                 key={index}
                                                 className={` border-gray-300 hover:bg-gray-100 
-                                                ${
-                                                    (index + 1) % 2 &&
-                                                    'bg-gray-100/25'
-                                                }
-                                                ${
-                                                    [
-                                                        'ACTIVE',
-                                                        'PROCESSING',
-                                                    ].includes(bid.status)
-                                                        ? 'cursor-pointer'
-                                                        : 'pointer-events-none'
-                                                }
-                                                `}
+                                                    ${
+                                                        (index + 1) % 2 &&
+                                                        'bg-gray-100/25'
+                                                    }
+                                                    ${
+                                                        [
+                                                            'ACTIVE',
+                                                            'PROCESSING',
+                                                        ].includes(bid.status)
+                                                            ? 'cursor-pointer'
+                                                            : 'pointer-events-none'
+                                                    }
+                                                    `}
                                                 title={bid.conditionReport}
                                                 onClick={() =>
                                                     handleEnterRoom(bid.id)
@@ -155,24 +155,24 @@ function BidRoom() {
                                                 >
                                                     <span
                                                         className={`py-1 px-3 rounded-full text-xs 
-                                                        ${
-                                                            bid.status ===
-                                                            'ACTIVE'
-                                                                ? 'bg-green-300 text-green-700  transition-all duration-150 ease-in-out animate-pulse'
-                                                                : bid.status ===
-                                                                  'DEACTIVE'
-                                                                ? 'bg-red-200 text-red-600'
-                                                                : bid.status ===
-                                                                      'FINISH' ||
-                                                                  bid.status ===
-                                                                      'SUCCESS'
-                                                                ? 'bg-purple-200 text-purple-600'
-                                                                : bid.status ===
-                                                                  'PROCESSING'
-                                                                ? 'bg-yellow-200 text-yellow-800'
-                                                                : ''
-                                                        }
-                                                        `}
+                                                            ${
+                                                                bid.status ===
+                                                                'ACTIVE'
+                                                                    ? 'bg-green-300 text-green-700  transition-all duration-150 ease-in-out animate-pulse'
+                                                                    : bid.status ===
+                                                                      'DEACTIVE'
+                                                                    ? 'bg-red-200 text-red-600'
+                                                                    : bid.status ===
+                                                                          'FINISH' ||
+                                                                      bid.status ===
+                                                                          'SUCCESS'
+                                                                    ? 'bg-purple-200 text-purple-600'
+                                                                    : bid.status ===
+                                                                      'PROCESSING'
+                                                                    ? 'bg-yellow-200 text-yellow-800'
+                                                                    : ''
+                                                            }
+                                                            `}
                                                     >
                                                         {bid.status}
                                                     </span>
@@ -181,7 +181,7 @@ function BidRoom() {
                                         ))}
                                 </tbody>
                             </table>
-                        </div>
+                        </section>
                     </div>
                 </div>
             </div>

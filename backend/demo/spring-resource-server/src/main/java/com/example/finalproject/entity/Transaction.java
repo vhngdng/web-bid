@@ -30,7 +30,7 @@ public class Transaction {
   @Column(name = "status", unique = false)
   private String status;
   @OneToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-  @JoinColumn(name = "bid_id")
+  @JoinColumn(name = "bid_id", nullable = false)
   @JsonBackReference
   private Bid bid;
 

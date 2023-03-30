@@ -34,6 +34,8 @@ public class Bid implements Serializable {
   private String type;
   @Column
   private LocalDateTime dayOfSale;
+  @Column
+  private LocalDateTime finishTime;
   @Column(name = "conditionReport", columnDefinition = "TEXT")
   private String conditionReport;
   @Column

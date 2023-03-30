@@ -81,4 +81,10 @@ public class TransactionService {
   }
 
 
+  public List<TransactionDTO> getAllTransactionBidFinish() {
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found with email " + email));
+    String status = "FINISH";
+    return mapper.toListTransactionDTO(transactionRepository.findAllByBidStatus(status, user.getId()));
+  }
 }

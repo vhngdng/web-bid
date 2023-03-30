@@ -198,16 +198,17 @@ public interface Mapper {
   @Mapping(target = "owner", ignore = true)
   void createProperty(UpSertProperty upSertProperty, @MappingTarget Property property, @Context UserRepository userRepository);
 
+  @Mapping(target = "bidId", expression = "java(transaction.getBid().getId())")
+  @Mapping(target = "auctioneerEmail", expression = "java(transaction.getBid().getAuctioneer().getEmail())")
+  @Mapping(target = "winningBidderEmail", expression = "java(transaction.getBid().getWinningBidder().getEmail())")
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  TransactionDTO toDTO(Transaction transaction);
+
   @AfterMapping
   default void setOwnerForProperty(UpSertProperty upSertProperty, @MappingTarget Property property, @Context UserRepository userRepository) {
     User user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
     property.setOwner(user);
   }
-
-  @Mapping(target = "bidId", expression = "java(transaction.getBid().getId())")
-
-  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  TransactionDTO toDTO(Transaction transaction);
 
 
 

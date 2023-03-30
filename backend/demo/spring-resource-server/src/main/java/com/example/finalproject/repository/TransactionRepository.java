@@ -28,4 +28,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
   Optional<Transaction> findByBid_Id (long bidId);
 
   Optional<Transaction> findByBid (Bid bid);
+
+  @Query("select t from Transaction t where t.bid.status = :status and (t.bid.auctioneer.id = :userId or t.bid.winningBidder.id =: userId)")
+  List<Transaction> findAllByBidStatus(@Param("status") String status, @Param("userId") Long id);
 }

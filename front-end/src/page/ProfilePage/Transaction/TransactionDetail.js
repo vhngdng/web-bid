@@ -16,7 +16,6 @@ function TransactionDetail() {
     const [updateTransactionStatus] = useUpdateTransactionStatusMutation();
     const { data: message, isLoading: messageLoading } =
         useGetAllMessageFromSuccessBidQuery(bidId);
-    const navigate = useNavigate();
     const {
         data: transaction,
         isLoading,
@@ -49,10 +48,10 @@ function TransactionDetail() {
     console.log(message);
     const handlePayment = (bidId) => {
         updateTransactionStatus({
-            status: 'SUCCESS',
+            status: 'FINISH',
             bidId,
         });
-        setStatus('SUCCESS');
+        setStatus('FINISH');
     };
     return (
         <>
@@ -97,11 +96,11 @@ function TransactionDetail() {
                 <h2 className="flex justify-center my-2 col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl ">
                     History
                 </h2>
-                <div className="flex justify-center bg-white col-span-5 border-slate-50 rounded-lg overflow-y-scroll max-h-80">
+                <div className="flex justify-center bg-white col-span-5 border-slate-50 rounded-lg max-h-60vh">
                     <div className="overflow-x-auto sm:mx-0.5 lg:mx-0.5">
                         <div className="py-2 inline-block min-w-full sm:px-6 lg:px-8">
-                            <div className="overflow-hidden">
-                                <table className="min-w-full">
+                            <div className="max-h-60vh">
+                                <table className="min-w-full  ">
                                     <thead className="bg-white border-b">
                                         <tr>
                                             <th
@@ -130,7 +129,7 @@ function TransactionDetail() {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody className="">
                                         {message.map((m, index) => (
                                             <tr
                                                 key={index}
@@ -161,7 +160,7 @@ function TransactionDetail() {
                     </div>
                 </div>
                 <div className="flex justify-center  col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl my-8">
-                    {status !== 'SUCCESS'
+                    {status !== 'SUCCESS' && status !== 'FINISH'
                         ? auth.email === transaction.winningBidderEmail && (
                               <Button
                                   onClick={() =>

@@ -55,7 +55,7 @@ function ProfileDetail() {
                 <div className="container max-w-lg bg-white rounded dark:bg-gray-800 shadow-lg transform duration-200 easy-in-out m-12">
                     <div className="h-2/4 sm:h-64 overflow-hidden">
                         <img
-                            className="w-full rounded-t"
+                            className="rounded-t object-cover h-64 w-full"
                             src={
                                 backgroundImg
                                     ? `http://localhost:8080/api/v1/images/read/${backgroundImg}`
