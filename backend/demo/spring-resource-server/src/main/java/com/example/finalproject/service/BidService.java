@@ -3,11 +3,13 @@ package com.example.finalproject.service;
 import com.example.finalproject.ENUM.STATUS_BID;
 import com.example.finalproject.ENUM.STATUS_TRANSACTION;
 import com.example.finalproject.dto.BidDTO;
+import com.example.finalproject.dto.BidDetailsDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Transaction;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
+import com.example.finalproject.projection.BidDetails;
 import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.utils.QuartUtil;
@@ -30,6 +32,7 @@ import java.util.*;
 @Transactional
 @Slf4j
 public class BidService {
+  private final MessageRepository messageRepository;
   private final ImageRepository imageRepository;
   private final TransactionRepository transactionRepository;
   private final PropertyRepository propertyRepository;
@@ -39,6 +42,7 @@ public class BidService {
   private final Scheduler scheduler;
   private final QuartUtil quartUtil;
 
+  private final MessageService messageService;
   public List<BidDTO> findAllBid() {
     return mapper.toListBidDTO(bidRepository.findAll(), userRepository, imageRepository);
   }
@@ -186,5 +190,12 @@ public class BidService {
   }
 
 
-
+  public BidDetailsDTO findDetailBidRoomById(Long id) {
+    Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid id " + id + " is not found"));
+    return BidDetailsDTO
+            .builder()
+            .bidDTO(mapper.toDTO(bid, userRepository, imageRepository))
+            .messageDTOs(messageService.getAllBidMessage(bid.getId()))
+            .build();
+  }
 }

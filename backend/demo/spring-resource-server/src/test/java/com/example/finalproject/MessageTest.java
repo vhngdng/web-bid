@@ -37,14 +37,7 @@ public class MessageTest {
 
 
 
-  @Test
-  public void findAllMessageInBidRoomActiveTest() {
-    System.out.println(messageRepository
-            .findAllMessageInBidRoomActive(1L, LocalDateTime.now().plusDays(1L))
-            .stream()
-            .map(Message::getMessage)
-            .collect(Collectors.toList()));
-  }
+
 
   @Test
   public void messageTest() {

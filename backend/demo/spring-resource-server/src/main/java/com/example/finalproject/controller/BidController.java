@@ -90,4 +90,9 @@ public class BidController {
   public ResponseEntity<?> findBidRoomBeforeStartDate(@PathVariable("id") Long id) {
     return ResponseEntity.ok(bidService.findBidRoomBeforeStartDate(id));
   }
+
+  @GetMapping("/admin/bid-room/{id}")
+  public ResponseEntity<?> findDetailBidRoomById(@PathVariable("id") Long id) {
+    return ResponseEntity.ok(bidService.findDetailBidRoomById(id));
+  }
 }

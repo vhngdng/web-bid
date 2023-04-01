@@ -18,5 +18,20 @@ const downSolid = {
 const downBlank = {
     logo: require('~/assets/images/caret-bottom-outline-icon.svg'),
 };
+const arrowIcon = {
+    logo: require('~/assets/images/arrow-icon.svg'),
+};
+const dollar = {
+    logo: require('~/assets/images/dollar-bills.svg'),
+};
 
-export { notification, imageDefault, upSolid, upBlank, downSolid, downBlank };
+export {
+    notification,
+    imageDefault,
+    upSolid,
+    upBlank,
+    downSolid,
+    downBlank,
+    arrowIcon,
+    dollar,
+};

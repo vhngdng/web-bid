@@ -32,8 +32,6 @@ function Login() {
 
     const handleLogin = (e) => {
         e.preventDefault();
-        console.log(email);
-
         login({ email, password })
             .unwrap()
             .then(() => {

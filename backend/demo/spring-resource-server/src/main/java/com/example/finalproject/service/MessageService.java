@@ -6,6 +6,7 @@ import com.example.finalproject.dto.MessageDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.BidParticipant;
 import com.example.finalproject.entity.Message;
+import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.repository.*;
@@ -93,8 +94,8 @@ public class MessageService {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id: " + id + " is not found"));
     LocalDateTime time = bid.getDayOfSale();
     // test api
-    LocalDateTime timeTest = time.plusDays(1);
-    List<Message> messages = messageRepository.findAllMessageInBidRoomActive(id, timeTest);
+    LocalDateTime finish = bid.getFinishTime();
+    List<Message> messages = messageRepository.findAllMessageInBidRoom(id, time, finish);
     return mapper.toListDTO(messages);
   }
 
@@ -139,6 +140,10 @@ public class MessageService {
 
   public void finishBid(FinishResponse request) {
     Bid bid = bidRepository.findById(request.getId()).orElseThrow(() -> new NotFoundException("Bid with Id: " + request.getId() + " is not found"));
+    if(request.getWinningBidderUsername() == null) {
+      bid.setStatus(null);
+      throw new BadRequestException("The bid is not finish because it has no winner");
+    }
     mapper.updateFromFinishRequest(request, bid, userRepository);
 
   }

@@ -67,6 +67,9 @@ export const bidApi = createApi({
         getBidRoomWithId: builder.query({
             query: (id) => `bid-room/${id}`,
         }),
+        getDetailBidWithId: builder.query({
+            query: (id) => `/admin/bid-room/${id}`,
+        }),
         getRequestToChangeBidSuccess: builder.query({
             query: () => `admin/bid-room/before-finish`,
         }),
@@ -111,4 +114,5 @@ export const {
     useGetAllBidPreparingToRunQuery,
     useRunBidRoomMutation,
     useGetAllBidRoomPagingQuery,
+    useGetDetailBidWithIdQuery,
 } = bidApi;

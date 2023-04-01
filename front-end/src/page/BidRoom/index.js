@@ -112,8 +112,8 @@ function BidRoom() {
                                                                     key={index}
                                                                     className="w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125"
                                                                     src={
-                                                                        attendee.imageId
-                                                                            ? `http://localhost:8080/api/v1/images/read/${attendee.imageId}`
+                                                                        attendee.avatar
+                                                                            ? attendee.avatar
                                                                             : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                                                                     }
                                                                 />

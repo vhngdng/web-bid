@@ -57,6 +57,7 @@ public class Bid implements Serializable {
 //  @OneToMany(mappedBy = "bid", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //  private List<BidParticipant> bidParticipants;
   @ManyToMany(fetch = FetchType.EAGER, mappedBy = "bids")
+  @JsonIgnore
   private List<Message> messages;
   @OneToOne(mappedBy = "bid", fetch = FetchType.EAGER)
   private Transaction transaction;

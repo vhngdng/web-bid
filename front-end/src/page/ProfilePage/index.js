@@ -21,7 +21,7 @@ function ProfilePage() {
     console.log(selectSidebar);
     return (
         <div>
-            <div className="static flex flex-row w-full">
+            <div className="flex flex-row w-full">
                 <aside
                     id="default-sidebar"
                     className="fixed top-30 left-0 z-40 min-w-fit w-[13vw] mx-6 h-full transition-transform -translate-x-full sm:translate-x-0"
@@ -85,7 +85,7 @@ function ProfilePage() {
                     </div>
                 </aside>
 
-                <section className="flex flex-col w-4/5 mx-6 max-w-3xl">
+                <section className="flex flex-col mx-6 max-w-3xl">
                     <Outlet />
                 </section>
             </div>

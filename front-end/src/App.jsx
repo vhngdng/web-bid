@@ -85,7 +85,7 @@ function App() {
                                 />
                                 <Route path="open-bid" element={<OpenBid />} />
                                 <Route
-                                    path="details-bid"
+                                    path="details-bid/:bidId"
                                     element={<DetailBidRoom />}
                                 />
                             </Route>
@@ -93,6 +93,7 @@ function App() {
                         <Route path="forbidden" element={<ForbiddenPage />} />
                     </Route>
                 </Route>
+                <Route path="*" element={<ErrorPage404 />} />
             </Routes>
         </>
     );

@@ -6,7 +6,7 @@ function DefaultLayout() {
     return (
         <div className="">
             <HeaderDefault />
-            <section className="min-w-4/5 max-w-screen">
+            <section className="flex justify-center items-center">
                 <Outlet />
             </section>
         </div>

@@ -52,8 +52,11 @@ public class BidJob extends QuartzJobBean {
       bid.setStatus(STATUS_BID.PROCESSING.name());
       bidRepository.save(bid);
     } else if (bid.getStatus().equalsIgnoreCase(STATUS_BID.PROCESSING.name())) {
-//      log.error("========================================================================");
-//
+      if(bid.getWinningBidder() == null) {
+        bid.setStatus(null);
+        bidRepository.save(bid);
+        return;
+      }
 
 //      log.error("before save transaction");
 //      Transaction transaction = transactionRepository.save(Transaction.builder().bid(bid).status("PENDING").build());

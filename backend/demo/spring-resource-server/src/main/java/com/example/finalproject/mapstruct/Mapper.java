@@ -25,9 +25,19 @@ import java.util.stream.Collectors;
         componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface Mapper {
-
-  UserDTO toDTO(User user);
-
+  @Mapping(target = "avatar", expression = "java(setAvatar(user, imageRepository))")
+  UserDTO toDTO(User user, @Context ImageRepository imageRepository);
+  @AfterMapping
+  default String setAvatar(User user, @Context ImageRepository imageRepository) {
+    if(imageRepository.findByUserIdAndType(user.getId(), "AVATAR").isPresent()) {
+      String idImage = imageRepository.findByUserIdAndType(user.getId(), "AVATAR").get().getId();
+      return "http://localhost:8080/api/v1/images/read/" + idImage;
+    }
+    if(user.getAvatar() != null) {
+      return user.getAvatar();
+    }
+    return null;
+  }
   User toEntity(UserDTO userDTO);
 
   @Mapping(target = "bid", ignore = true)
@@ -77,8 +87,7 @@ public interface Mapper {
   default String mapUserToUsername(User user) {
     return user != null ? user.getEmail() : null;
   }
-  //  @Mapping(target = "user", source = "bidParticipant.user")
-//   BidParticipantDto toDto(BidParticipant bidParticipant);
+
 
 
   default String findImageId(Long bidParticipantId, @Context ImageRepository imageRepository) {
@@ -131,8 +140,9 @@ public interface Mapper {
   default void mapWinningBidder(FinishResponse finishRequest, @MappingTarget Bid bid,
                                               @Context UserRepository userRepository
   ) {
-    bid.setWinningBidder(userRepository.findByEmail(finishRequest.getWinningBidderUsername()).get());
-
+    if(finishRequest.getWinningBidderUsername() != null) {
+      bid.setWinningBidder(userRepository.findByEmail(finishRequest.getWinningBidderUsername()).get());
+    }
   }
 
 

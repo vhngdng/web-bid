@@ -76,8 +76,6 @@ public class User {
   @JsonBackReference
   private List<Property> properties;
 
-//  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-//  private List<BidParticipant> bidParticipants;
   public void addRole(Role role) {
     this.roles.add(role);
   }
@@ -103,58 +101,5 @@ public class User {
   @Column(name = "lastModifiedDate")
   @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
   private LocalDateTime lastModifiedDate;
-//  @CreatedDate
-//  @Column(name = "creationDate", updatable = false)
-//  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-//  protected LocalDateTime createdAt;
-//
-//  @LastModifiedBy
-//  @Column(name = "lastModifiedBy")
-//  protected String lastModifiedBy;
-//
-//  @LastModifiedDate
-//  @Column(name = "lastModifiedDate")
-//  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
-//  protected LocalDateTime lastModifiedDate;
 
-//  @Override
-//  public Collection<? extends GrantedAuthority> getAuthorities() {
-//    return convertRoleToAuthorities(this.roles);
-//  }
-//
-//  @JsonIgnore
-//  @Override
-//  public String getPassword() {
-//    return new BCryptPasswordEncoder().encode(this.password);
-//  }
-//  @JsonIgnore
-//  @Override
-//  public String getUsername() {
-//    return this.email;
-//  }
-//  @JsonIgnore
-//  @Override
-//  public boolean isAccountNonExpired() {
-//    return true;
-//  }
-//  @JsonIgnore
-//  @Override
-//  public boolean isAccountNonLocked() {
-//    return true;
-//  }
-//  @JsonIgnore
-//  @Override
-//  public boolean isCredentialsNonExpired() {
-//    return true;
-//  }
-//  @JsonIgnore
-//  @Override
-//  public boolean isEnabled() {
-//    return true;
-//  }
-//
-//
-//  private Collection<? extends GrantedAuthority> convertRoleToAuthorities(Set<Role> roles) {
-//    return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName().toString())).collect(Collectors.toSet());
-//  }
 }

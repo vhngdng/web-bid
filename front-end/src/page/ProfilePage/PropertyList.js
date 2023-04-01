@@ -30,13 +30,13 @@ function PropertyList() {
     };
     return (
         <>
-            <div className="w-full max-w-2xl mx-auto bg-gray-200 shadow-lg rounded-sm border border-gray-200">
+            <div className="w-full max-w-2xl mx-auto bg-gray-200 shadow-lg rounded-sm border border-gray-200 rounded-lg">
                 <header className="px-5 py-4 border-b border-gray-100">
                     <h2 className="font-semibold text-gray-800">Properties</h2>
                 </header>
                 <div className="p-3">
-                    <div className="overflow-x-auto">
-                        <table ref={ref} className="table-auto w-full">
+                    <div className="overflow-x-auto ">
+                        <table ref={ref} className="table-auto w-full ">
                             <thead className="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
                                 <tr>
                                     <th className="p-2 whitespace-nowrap">

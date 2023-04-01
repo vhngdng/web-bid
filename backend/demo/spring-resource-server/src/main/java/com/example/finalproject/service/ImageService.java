@@ -87,17 +87,17 @@ public class ImageService {
   public ImageResponse updateType(String id, TypeImageRequest request) {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Username with email: " + email + " is not found"));
-    Image newImageAva = imageRepository
+    Image newImage = imageRepository
             .findById(id)
             .orElseThrow(() -> new NotFoundException("Image with id: " + id + " is not found"));
     Image duplicateImage = null;
-    if (newImageAva.getType() != null && !newImageAva.getType().equalsIgnoreCase(request.getType())) {
+    if (newImage.getType() != null && !newImage.getType().equalsIgnoreCase(request.getType())) {
       duplicateImage = Image.builder()
-              .contentType(newImageAva.getContentType())
-              .name(newImageAva.getName())
-              .size(newImageAva.getSize())
-              .data(newImageAva.getData())
-              .user(newImageAva.getUser())
+              .contentType(newImage.getContentType())
+              .name(newImage.getName())
+              .size(newImage.getSize())
+              .data(newImage.getData())
+              .user(newImage.getUser())
               .build();
     }
     Optional<Image> imageOptional = imageRepository.findByUserIdAndType(user.getId(), request.getType());
@@ -106,7 +106,7 @@ public class ImageService {
       case "AVATAR":
       case "BACKGROUND": {
         if (duplicateImage == null) {
-          newImageAva.setType(request.getType());
+          newImage.setType(request.getType());
         } else {
           duplicateImage.setType(request.getType());
           return mapper.toImageResponse(imageRepository.save(duplicateImage));
@@ -119,8 +119,8 @@ public class ImageService {
           image.setType(null);
           image.setProperty(null);
         });
-        newImageAva.setType(TYPE_IMAGE.PROPERTY.name());
-        newImageAva.setProperty(
+        newImage.setType(TYPE_IMAGE.PROPERTY.name());
+        newImage.setProperty(
                 propertyRepository.findById(
                         request.getPropertyId())
                         .orElseThrow( () ->
@@ -130,7 +130,7 @@ public class ImageService {
       default:
         throw new BadRequestException("The type of image is not valid");
     }
-    return mapper.toImageResponse(newImageAva);
+    return mapper.toImageResponse(newImage);
   }
 
   public ImageResponse getAvatar() {

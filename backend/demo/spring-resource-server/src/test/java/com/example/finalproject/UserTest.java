@@ -22,12 +22,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class UserTest {
-  @Autowired
-  private BidRepository bidRepository;
+
   @Autowired
   private UserRepository userRepository;
-  @Autowired
-  BidService bidService;
+
   @Test
   public void findAllAttendeeByBidIdTest() {
     System.out.println(userRepository
@@ -35,6 +33,19 @@ public class UserTest {
             .stream()
             .map(Attendee::getImageId).collect(Collectors.toList()));
 
+  }
+
+  @Test
+  public void findUserInfoByIdTest() {
+    System.out.println(userRepository
+            .findUserInfoById(12L)
+            .getNumberOfParticipating()
+    );
+
+    System.out.println(userRepository
+            .findUserInfoById(12L)
+            .getNumberOfWinning()
+    );
   }
 
 

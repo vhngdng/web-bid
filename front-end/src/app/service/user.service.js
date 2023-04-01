@@ -5,7 +5,7 @@ import { logout, tokenReceived } from '../slice/auth.slice';
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/v1/user',
+    baseUrl: 'http://localhost:8080/api/v1',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token;
         if (token) {
@@ -62,9 +62,12 @@ export const userApi = createApi({
     baseQuery: baseQueryWithReauth,
     endpoints: (builder) => ({
         getUserByEmail: builder.query({
-            query: () => '',
+            query: () => 'user',
+        }),
+        getUserById: builder.query({
+            query: (id) => `admin/user/${id}`,
         }),
     }),
 });
 
-export const { useGetUserByEmailQuery } = userApi;
+export const { useGetUserByEmailQuery, useLazyGetUserByIdQuery } = userApi;

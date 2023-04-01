@@ -40,7 +40,6 @@ function AdminHomePage() {
                 !buttonRef.current.contains(e.target) &&
                 !refNoti.current.contains(e.target)
             ) {
-                console.log(e.target);
                 setShowSideBar(false);
             }
         };
@@ -50,13 +49,11 @@ function AdminHomePage() {
         };
     }, []);
     if (isLoading) return <Loader />;
-    console.log(data);
 
     const handleAccept = async (id) => {
         await updateSuccessBid(id)
             .unwrap()
-            .then((data) => {
-                console.log(data);
+            .then(() => {
                 toast.success(<NotificationTimer timer={Date.now()} />, {
                     position: 'top-center',
                     autoClose: 5000,
@@ -77,10 +74,10 @@ function AdminHomePage() {
     return (
         <>
             <div>
-                <div className="static flex flex-row w-full">
+                <div className="flex flex-row w-full">
                     <aside
                         id="default-sidebar"
-                        className="fixed top-30 left-0 z-40 min-w-fit w-[13vw] mx-6 h-full transition-transform -translate-x-full sm:translate-x-0"
+                        className="fixed top-30 left-0 z-40 min-w-fit w-[13vw] mr-6 h-full transition-transform -translate-x-full sm:translate-x-0"
                         aria-label="Sidebar"
                     >
                         <div className="h-full rounded-lg px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
@@ -109,7 +106,6 @@ function AdminHomePage() {
                                             ? customSelectStyle
                                             : 'bg-gray-200'
                                     }`}
-                                        onClick={() => navigate('details-bid')}
                                     >
                                         Detail Bid Room
                                     </button>
@@ -162,7 +158,7 @@ function AdminHomePage() {
                             </ul>
                         </div>
                     </aside>
-                    <section className=" mr-5  flex flex-col text-start ">
+                    <section className=" mr-5 flex flex-col text-start ">
                         <Outlet />
                     </section>
                     <div

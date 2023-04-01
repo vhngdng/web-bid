@@ -6,7 +6,7 @@ function ErrorPage404() {
     const navigate = useNavigate();
     useEffect(() => {
         toast.success('You will be redirect to home page', {
-            position: 'top-center',
+            position: 'bottom-right',
             autoClose: 3000,
             hideProgressBar: false,
             closeOnClick: true,

@@ -14,8 +14,8 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
 
   @Query("select m from Message m inner join m.bids b " +
-          "where b.id = ?1 and b.dayOfSale < ?2")
-  List<Message> findAllMessageInBidRoomActive(Long id, LocalDateTime time);
+          "where b.id = :id and (m.createdAt between :start and :finish)")
+  List<Message> findAllMessageInBidRoom(@Param("id") Long id, @Param("start") LocalDateTime start, @Param("finish") LocalDateTime finish);
 
   @Query("select m from Message m inner join m.bids b where m.senderName = b.winningBidder.email and b.id = :id and m.status = :message_status and m.createdAt between :begin and :last_modified_date")
   List<Message> findAllMessageBySuccessBidId(@Param("id") Long id,

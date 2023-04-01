@@ -2,8 +2,13 @@ package com.example.finalproject.projection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public interface Attendee {
-  public Long getId();
+public interface UserInfo {
+  Long getId();
+  String getName();
+  String getEmail();
+  Integer getNumberOfParticipating();
+  Integer getNumberOfWinning();
+
   @JsonIgnore
   public String getImageId();
   @JsonIgnore

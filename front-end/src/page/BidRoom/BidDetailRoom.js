@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 // eslint-disable-next-line no-unused-vars
@@ -10,12 +11,16 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './moduleScss/BidDetailRoom.module.scss';
 import Modal from 'react-modal';
+import { motion, useAnimate } from 'framer-motion';
 
 import { useGetParticipantWithBidIdQuery } from '~/app/service/participant.service';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NotificationTimer from '~/notificationTimer';
 import { Button } from '@material-tailwind/react';
+import UserWinningInBidRoom from './UserWinningInBidRoom';
+import { dollar, imageDefault } from '~/assets/images';
+import AdminSettingInBidRoom from './AdminSettingInBidRoom';
 
 var stompClient = null;
 // var Sock = null;
@@ -40,13 +45,15 @@ function BidDetailRoom() {
     const [userWinning, setUserWinning] = useState({});
     const [isBidClose, setIsBidClose] = useState(false);
     const [bidRoomStatus, setBidRoomStatus] = useState('');
+    const [isOpenAdminSetting, setIsOpenAdminSetting] = useState(false);
+    const [scope, animate] = useAnimate();
     const { id } = useParams();
     const {
         data: member,
         isLoading: participantLoading,
         isSuccess: participantSuccess,
     } = useGetParticipantWithBidIdQuery(id);
-    const { data, isLoading, isSuccess } = useGetBidRoomWithIdQuery(id);
+    const { data, isLoading, isSuccess, error } = useGetBidRoomWithIdQuery(id);
     const [price, setPrice] = useState(0);
     const [priceStep, setPriceStep] = useState();
     const [userData, setUserData] = useState({
@@ -57,6 +64,18 @@ function BidDetailRoom() {
         message: '',
     });
     const ref = useRef();
+    const animationRefs = useRef([]);
+    const moneyRef = useRef(null);
+
+    useEffect(() => {
+        console.log('userWining', userWinning);
+    }, [userWinning]);
+    useEffect(() => {
+        animationRefs.current = animationRefs.current.slice(
+            0,
+            participants.length,
+        );
+    }, [participants]);
     useEffect(() => {
         if (isBidClose) {
             navigate('/forbidden');
@@ -142,6 +161,9 @@ function BidDetailRoom() {
     }, [Sock]);
     const navigate = useNavigate();
     if (isLoading || participantLoading) return <Loader />;
+    if (error && error.status === 404) {
+        navigate('/error');
+    }
     // if (participantSuccess && isSuccess) fetParticipant();
 
     const closeModal = () => {
@@ -163,8 +185,6 @@ function BidDetailRoom() {
     };
     // eslint-disable-next-line no-unused-vars
     const sendFinishBidMessage = () => {
-        console.log(userWinning);
-        console.log(price);
         let bidFinishDetail = {
             id: id,
             status: 'FINISH',
@@ -184,7 +204,6 @@ function BidDetailRoom() {
         switch (payloadData.status) {
             case 'JOIN':
                 if (!(payloadData in participants)) {
-                    console.log('payload Data', payloadData);
                     setParticipants((prev) => [...prev, payloadData]);
                 }
                 break;
@@ -257,66 +276,125 @@ function BidDetailRoom() {
         closeModal();
     };
 
-    console.log(data);
-    console.log(userWinning);
     if (!!data && !['ACTIVE', 'PROCESSING'].includes(data.status)) {
         return <Navigate to="/forbidden" replace="true" />;
     }
+    console.log(data);
+    const handleClick = (index) => {
+        const x = animationRefs.current[index].getBoundingClientRect().left;
+        const y = animationRefs.current[index].getBoundingClientRect().bottom;
+        const target = moneyRef.current.getBoundingClientRect();
+        let xRef = target.left - x;
+        let yRef = target.bottom - y;
+        animate(
+            animationRefs.current[index],
+            {
+                x: [0, xRef, 0],
+                y: [0, yRef, 0],
+                opacity: [0, 1, 0],
+            },
+            {
+                duration: 1,
+                repeatType: 'loop',
+                ease: [0.17, 0.37, 0.63, 0.77],
+            },
+        );
+    };
+
+    const handleSendValue = () => {
+        let index = participants.findIndex(
+            (participant) => participant.username === userData.username,
+        );
+        handleClick(index);
+        sendValue();
+    };
+    console.log('participants', participants);
+    console.log('moneyref current', moneyRef.current);
     return (
         <>
             {userData.connected ? (
                 <section className="bg-gray-200/25 dark:bg-gray-900">
                     <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
-                        <div className="relative">
-                            <div className="flex justify-center">
-                                <div className=" absolute w-7/12 h-3/4 bg-center animate-ping transition ease-in-out bg-gradient-to-r from-cyan-500 to-blue-500 opacity-75 rounded-full">
-                                    &nbsp;
-                                </div>
-                                <div className="absolute w-7/12 h-3/4 bg-center animate-ping animation-delay-500 transition ease-in-out bg-gradient-to-r from-yellow-500 to-sky-500 after:transition-all opacity-75 rounded-full">
-                                    &nbsp;
-                                </div>
-                                <div className="absolute w-7/12 h-3/4 bg-center animate-ping animation-delay-700 transition ease-in-out bg-gradient-to-r from-red-500 to-orange-500  after:transition-all opacity-75 rounded-full">
-                                    &nbsp;
-                                </div>
-                                <div className="absolute w-7/12 h-3/4 bg-center animate-ping animation-delay-1000 transition ease-in-out bg-gradient-to-r from-pink-500 to-green-500 after:transition-all opacity-75 rounded-full">
-                                    &nbsp;
-                                </div>
-                            </div>
-                            {!!userWinning && (
-                                <div className="relative  mx-auto mb-8 max-w-screen-sm lg:mb-16 animate-pulse">
-                                    <h2 className="mb-4 text-3xl tracking-tight font-extrabold text-gray-900 dark:text-white">
-                                        <span>
-                                            {!!data && data.property.name}
-                                        </span>
-                                        <span> </span>
-                                        {`(${
-                                            !!data && data.property.category
-                                        })`}
+                        <div>
+                            <div className="grid gap-8 lg:gap-16 grid-cols-8 ">
+                                <div className="flex-1 justify-center items-center col-span-2 border-slate-50 rounded-lg">
+                                    <h2 className="text-3xl font-sans">
+                                        Auctioneer
                                     </h2>
-                                    <h3 className="mb-4 text-2xl tracking-tight font-extrabold text-gray-600/50 dark:text-white">
-                                        <span>
-                                            Highest price of this winner
-                                        </span>
-                                    </h3>
-                                    <h1 className="mb-4 text-6xl tracking-tight font-extrabold text-red-500 dark:text-white">
-                                        <div className="mb-3">
-                                            {userWinning.nickName ||
-                                                userWinning.username}
-                                        </div>
-                                        <div className="text-red-900 ">{`${price}`}</div>
-                                    </h1>
-                                    <p className="font-light text-gray-500 sm:text-xl dark:text-gray-400">
-                                        {}
-                                    </p>
+                                    <div className="my-4 flex justify-center items-center">
+                                        <img
+                                            className=" object-fit h-40 w-40"
+                                            src={
+                                                !!data.auctioneer.avatar
+                                                    ? data.auctioneer.avatar
+                                                    : `https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png`
+                                            }
+                                            alt="IMG"
+                                        />
+                                    </div>
+                                    <div className="text-2xl font-serif text-green-rgb">
+                                        {data.auctioneer.username}
+                                    </div>
+                                    <div className="cursor-pointer text-sm truncate text-purple-500 hover:text-blue-600">
+                                        {data.auctioneer.email}
+                                    </div>
                                 </div>
-                            )}
+                                <div className="relative col-span-4 mx-auto mb-8 max-w-screen-sm lg:mb-16 font-sans">
+                                    <h2 className="mb-4  tracking-tight  text-gray-900 dark:text-white">
+                                        <h3 className="font-extrabold text-3xl">
+                                            {!!data && data.property.name}
+                                        </h3>
+                                        <span className="font-serif text-2xl">
+                                            {' '}
+                                            {`(Category: ${
+                                                !!data && data.property.category
+                                            })`}
+                                        </span>
+                                    </h2>
+                                    <div className="flex justify-center items-center">
+                                        <img
+                                            className=" object-fit h-40 w-40"
+                                            src={
+                                                !!data.property.imageId
+                                                    ? `http://localhost:8080/api/v1/images/read/${data.property.imageId}`
+                                                    : `${imageDefault.logo.default}`
+                                            }
+                                            alt="IMG"
+                                        />
+                                    </div>
+                                    <div className="">
+                                        <h2 className="mt-4 text-red-900 text-2xl">
+                                            Price
+                                        </h2>
+                                        <span
+                                            ref={moneyRef}
+                                            className="mt-4 text-red-900 text-3xl"
+                                        >{`${price}`}</span>
+                                    </div>
+                                </div>
+                                {!!userWinning.username && (
+                                    <UserWinningInBidRoom
+                                        winner={userWinning}
+                                    />
+                                )}
+                            </div>
                         </div>
                         <div className="mx-auto mb-8 max-w-screen-sm lg:mb-16">
-                            {bidRoomStatus === 'PROCESSING' && (
-                                <Button onClick={() => sendValue()}>
-                                    send
+                            {auth.email === data.auctioneer.email && (
+                                <Button
+                                    onClick={() =>
+                                        setIsOpenAdminSetting((prev) => !prev)
+                                    }
+                                >
+                                    Setting
                                 </Button>
                             )}
+                            {bidRoomStatus === 'PROCESSING' &&
+                                auth.email !== data.auctioneer.email && (
+                                    <Button onClick={() => handleSendValue()}>
+                                        Send
+                                    </Button>
+                                )}
                             <Button onClick={() => sendCloseSocket()}>
                                 Quit
                             </Button>
@@ -325,9 +403,22 @@ function BidDetailRoom() {
                             {participants.map((participant, index) => (
                                 <div
                                     key={index}
-                                    className="text-center text-gray-500 dark:text-gray-400"
+                                    className="relative text-center text-gray-500 dark:text-gray-400"
                                 >
-                                    <img
+                                    <div
+                                        className={`absolute top-0 left-1/2 transform -translate-x-1/2  text-green-600 text-4xl animate-waving-hand
+                                        ${
+                                            !!userWinning &&
+                                            userWinning.username ===
+                                                participant.username
+                                                ? ''
+                                                : 'hidden'
+                                        }`}
+                                    >
+                                        &#128081;
+                                    </div>
+
+                                    <motion.img
                                         className="mx-auto mb-4 w-36 h-36 rounded-full"
                                         src={
                                             participant.imageId
@@ -335,6 +426,10 @@ function BidDetailRoom() {
                                                 : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                                         }
                                         alt="Avatar"
+                                        animate={{
+                                            opacity: 1,
+                                            y: [0, -150, 0],
+                                        }}
                                     />
                                     <h3 className="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                                         <div
@@ -350,12 +445,30 @@ function BidDetailRoom() {
                                                 participant.username}
                                         </div>
                                     </h3>
-                                    {userWinning.email ===
-                                        participant.username && (
-                                        <p className="text-green-600 text-xl">
-                                            Winner
+
+                                    {participant.username ===
+                                        data.auctioneer.email && (
+                                        <p className="text-red-600 text-xl animate-ping">
+                                            Admin
                                         </p>
                                     )}
+                                    <div
+                                        className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit h-fit"
+                                        // onClick={() => handleClick(index)}
+                                    >
+                                        <motion.div
+                                            ref={(element) =>
+                                                (animationRefs.current[index] =
+                                                    element)
+                                            }
+                                            initial={{ opacity: 0 }}
+                                        >
+                                            <img
+                                                src={dollar.logo.default}
+                                                className="h-20 w-20 object-cover"
+                                            />
+                                        </motion.div>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -402,6 +515,10 @@ function BidDetailRoom() {
                     </Modal>
                 </>
             )}
+            <AdminSettingInBidRoom
+                isOpen={isOpenAdminSetting}
+                auctioneer={data.auctioneer}
+            />
             <ToastContainer />
         </>
     );

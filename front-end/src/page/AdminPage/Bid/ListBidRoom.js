@@ -8,6 +8,7 @@ import { downBlank, upBlank, upSolid, downSolid } from '~/assets/images';
 import Loader from '~/Loader';
 import formatDateTime from '~/utils/formatDateTime';
 import { imageDefault } from '~/assets/images';
+import { useNavigate } from 'react-router-dom';
 function ListBidRoom() {
     const [properties, setProperties] = useState([]);
     // eslint-disable-next-line no-unused-vars
@@ -28,7 +29,7 @@ function ListBidRoom() {
     const [isStatusASC, setIsStatusASC] = useState(false);
     const [isStatusDESC, setIsStatusDESC] = useState(false);
     // eslint-disable-next-line no-unused-vars
-
+    const navigate = useNavigate();
     const [orderList, setOrdetList] = useState(new Map());
     const [order, setOrder] = useState({
         field: '',
@@ -78,7 +79,7 @@ function ListBidRoom() {
                 <div>
                     <div className="w-fit rounded-lg shadow-lg bg-gray-50/10 ">
                         <section className="max-h-65vh overflow-y-scroll rounded-lg">
-                            <table className="w-full table-auto shadow-md ">
+                            <table className="w-full table-auto shadow-md">
                                 <thead>
                                     <tr className="bg-green-rgb text-black uppercase text-sm leading-normal ">
                                         <th className="py-3 px-6 textLeft">
@@ -451,16 +452,25 @@ function ListBidRoom() {
                                         data.content.map((bid, index) => (
                                             <tr
                                                 key={index}
-                                                className={` border-gray-300 hover:bg-gray-100 
+                                                className={`cursor-pointer border-gray-300 hover:bg-gray-100 
                                                     ${
                                                         (index + 1) % 2 &&
                                                         'bg-gray-100/25'
                                                     }
                                                     `}
-                                                title={bid.conditionReport}
+                                                onClick={() =>
+                                                    navigate(
+                                                        `details-bid/${bid.id}`,
+                                                    )
+                                                }
                                             >
                                                 <td className="py-3 px-6 textLeft whitespace-nowrap">
-                                                    <div className="flex items-center cursor-pointer">
+                                                    <div
+                                                        className="flex items-center cursor-pointer"
+                                                        title={
+                                                            bid.conditionReport
+                                                        }
+                                                    >
                                                         <div className="mr-2 ">
                                                             {bid.id}
                                                         </div>
@@ -507,9 +517,12 @@ function ListBidRoom() {
                                                                         }
                                                                         className="w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125"
                                                                         src={
-                                                                            !!attendee.imageId
-                                                                                ? `http://localhost:8080/api/v1/images/read/${attendee.imageId}`
+                                                                            !!attendee.avatar
+                                                                                ? attendee.avatar
                                                                                 : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
+                                                                        }
+                                                                        title={
+                                                                            attendee.id
                                                                         }
                                                                     />
                                                                 ),
