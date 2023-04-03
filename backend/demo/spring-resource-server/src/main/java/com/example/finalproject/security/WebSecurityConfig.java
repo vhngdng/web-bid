@@ -85,11 +85,7 @@ public class WebSecurityConfig {
             .and()
             .authorizeHttpRequests()
             .requestMatchers("/auth/**", "/oauth2/**", "/ws/**", "/bid/**", "/images/**", "/create/**",
-                    "/swagger-ui/**", "/javainuse-openapi/**",
-                    "/configuration/ui/**",
-                    "/swagger-resources/**",
-                    "/configuration/security/**",
-                    "/webjars/**"
+                    "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
             ).permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/user/**", "/participant/").hasAnyRole("USER", "GUEST", "ADMIN")
