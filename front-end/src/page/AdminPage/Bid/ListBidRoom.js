@@ -612,11 +612,13 @@ function ListBidRoom() {
                                 </tbody>
                             </table>
                         </section>
-                        <Pagination
-                            className="flex justify-center w-full mt-4 pb-4"
-                            count={data.totalPages}
-                            onChange={(event, value) => setPage(value)}
-                        />
+                        {data && !!data.totalPages && (
+                            <Pagination
+                                className="flex justify-center w-full mt-4 pb-4"
+                                count={data.totalPages}
+                                onChange={(event, value) => setPage(value)}
+                            />
+                        )}
                     </div>
                 </div>
             </section>

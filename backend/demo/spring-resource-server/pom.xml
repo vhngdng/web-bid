@@ -129,22 +129,7 @@
 			<artifactId>spring-dotenv</artifactId>
 			<version>3.0.0</version>
 		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger2</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-swagger-ui</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>io.springfox</groupId>
-			<artifactId>springfox-bean-validators</artifactId>
-			<version>2.9.2</version>
-		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-security -->
 
 		<!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client -->
 		<dependency>

@@ -1,6 +1,5 @@
 package com.example.finalproject.controller;
 
-import com.example.finalproject.dto.BidParticipantDTO;
 import com.example.finalproject.service.BidParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

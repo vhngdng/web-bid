@@ -18,9 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -84,7 +82,7 @@ public class AuthController {
   }
 
   @CrossOrigin(value = "*", maxAge = 3600)
-  @GetMapping("google")
+  @PostMapping("google")
   public ResponseEntity<?> googleLogin(@RequestParam(value = "idToken") String idTokenString, HttpServletRequest request) throws GeneralSecurityException, IOException {
     CustomUserDetails userDetails = (CustomUserDetails) googleUtils.handleOAuth2Login(idTokenString);
     String jwtToken = jwtUtils.generateTokenFromEmail(userDetails.getUsername());

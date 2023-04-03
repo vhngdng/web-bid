@@ -8,6 +8,7 @@ services:
     depends_on:
       - postgre
     env_file: backend/demo/spring-resource-server/src/main/resources/.env
+    restart: unless-stopped
     volumes:
       - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
     ports:

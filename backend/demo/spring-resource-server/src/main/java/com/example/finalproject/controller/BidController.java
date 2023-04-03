@@ -1,32 +1,15 @@
 package com.example.finalproject.controller;
 
-import com.example.finalproject.dto.BidDTO;
 import com.example.finalproject.request.UpSertBid;
-import com.example.finalproject.response.CreateBidResponse;
 import com.example.finalproject.service.BidService;
-import com.example.finalproject.utils.QuartUtil;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.SchedulingException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("")
