@@ -1,10 +1,12 @@
 package com.example.finalproject;
 
+import com.example.finalproject.ENUM.EROLE;
 import com.example.finalproject.ENUM.STATUS_MESSAGE;
 import com.example.finalproject.entity.Message;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.projection.Attendee;
 import com.example.finalproject.repository.BidRepository;
+import com.example.finalproject.repository.RoleRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.service.BidService;
 import com.example.finalproject.service.UserService;
@@ -22,6 +24,8 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class UserTest {
+  @Autowired
+  private RoleRepository roleRepository;
 
   @Autowired
   private UserRepository userRepository;
@@ -48,5 +52,11 @@ public class UserTest {
     );
   }
 
-
+//  @Test
+//  public void findRoleTest() {
+//    System.out.println(roleRepository
+//            .findByName(EROLE.ROLE_USER).getName().name()
+//    );
+//
+//  }
 }

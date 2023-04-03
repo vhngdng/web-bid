@@ -34,9 +34,9 @@ public class InitUserTest {
   @Test
   @Rollback(value = false)
   void save_role() {
-    roleRepository.save(new Role(EROLE.ROLE_USER));
-    roleRepository.save(new Role(EROLE.ROLE_ADMIN));
-    roleRepository.save(new Role(EROLE.ROLE_GUEST));
+    roleRepository.save(new Role("ROLE_USER"));
+    roleRepository.save(new Role("ROLE_ADMIN"));
+    roleRepository.save(new Role("ROLE_GUEST"));
   }
 
   @Test

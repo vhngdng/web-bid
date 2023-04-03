@@ -21,7 +21,9 @@ public class Role {
 //    @ManyToMany(mappedBy = "roles")
 //    private Collection<Employee> employees = new ArrayList<>();
 
-  public Role(EROLE name) {
-    this.name = name;
+  public Role(String name) {
+    this.name = EROLE.valueOf(name.toUpperCase());
   }
+
+
 }

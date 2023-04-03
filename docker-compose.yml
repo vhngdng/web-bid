@@ -1,0 +1,64 @@
+version: '3.9'
+services:
+  backend:
+    container_name: bid-backend-server
+    build:
+      context: backend/demo/spring-resource-server
+      dockerfile: Dockerfile
+    depends_on:
+      - postgre
+    env_file: backend/demo/spring-resource-server/src/main/resources/.env
+    volumes:
+      - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
+    ports:
+      - 8080:8080
+      - 5432
+    networks:
+      - web-bid-network
+
+  frontend:
+    container_name: bid-frontend-server
+    build: 
+      context: front-end
+      dockerfile: Dockerfile
+    env_file: front-end/.env.development.local
+    volumes:
+      - ./front-end:/app
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    networks:
+      - web-bid-network
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8081:80
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - web-bid-network
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+
+  postgre:
+    image: postgres:15.2
+    container_name: db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRE_PASSWORD}
+      - POSTGRES_DB=web-project
+    volumes:
+      - ./dbdata:/var/lib/postgres
+      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    networks:
+      - web-bid-network
+networks:
+  web-bid-network:
+    driver: bridge
+

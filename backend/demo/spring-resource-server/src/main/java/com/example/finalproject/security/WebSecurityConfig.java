@@ -84,7 +84,7 @@ public class WebSecurityConfig {
             .cors()
             .and()
             .authorizeHttpRequests()
-            .requestMatchers("/auth/**", "/oauth2/**", "/ws/**", "/bid/**", "/images/**").permitAll()
+            .requestMatchers("/auth/**", "/oauth2/**", "/ws/**", "/bid/**", "/images/**", "/create/**").permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/user/**", "/participant/").hasAnyRole("USER", "GUEST", "ADMIN")
             .anyRequest()

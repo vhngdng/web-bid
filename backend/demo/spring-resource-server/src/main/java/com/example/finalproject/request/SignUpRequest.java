@@ -1,6 +1,8 @@
 package com.example.finalproject.request;
 
 import com.example.finalproject.ENUM.Provider;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -12,13 +14,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class SignUpRequest {
-  private Long userId;
-  private String providerUserId;
+  private String secret;
   @NotEmpty
-  private String displayName;
+  @Size(min = 5, message = "The length of username is not valid")
+  private String username;
   @NotEmpty
+  @Email
   private String email;
+  @NotEmpty
   @Size(min = 6, message = "password length is not valid")
   private String password;
 

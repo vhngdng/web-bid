@@ -8,12 +8,8 @@ import {
 } from '~/app/service/auth.service';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { GoogleLoginButton } from 'react-social-login-buttons';
-import MyGoogleLoginButton from './Button/GoogleButton';
-import { GOOGLE_AUTH_URL } from '~/CONST/const';
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
-import jwt_decode from 'jwt-decode';
+import { GoogleLogin } from '@react-oauth/google';
+
 const cx = classNames.bind(styles);
 function Login() {
     const { isAuthenticated } = useSelector((state) => state.auth);
@@ -23,12 +19,6 @@ function Login() {
     const [password, setPassword] = useState('');
     const [login] = useLoginMutation();
     const navigate = useNavigate();
-    const actionGoogleLogin = useGoogleLogin({
-        onSuccess: (codeResponse) => {
-            console.log(codeResponse);
-            loginGoogle(codeResponse.access_token);
-        },
-    });
 
     const handleLogin = (e) => {
         e.preventDefault();
@@ -58,6 +48,7 @@ function Login() {
             navigate('/login');
         }
     };
+
     return (
         <center className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
             <div className={cx('login-page')}>
@@ -99,7 +90,8 @@ function Login() {
                         />
                         <input type="submit" value="Login" />
                         <p className={cx('message')}>
-                            Not registered? <a href="#">Create an account</a>
+                            Not registered?{' '}
+                            <Link to="/sign-up">Create an account</Link>
                         </p>
                     </form>
                     <div className="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">

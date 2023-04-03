@@ -46,6 +46,17 @@ const AuthSlice = createSlice({
                 },
             )
             .addMatcher(
+                authApi.endpoints.createUser.matchFulfilled,
+                (state, { payload }) => {
+                    state.auth = payload.auth;
+                    state.token = payload.token;
+                    state.isAuthenticated = payload.isAuthenticated;
+                    state.refreshToken = payload.refreshToken;
+                    //TODO :Cần lưu vào localStorage
+                    setDataToLocalStorage(AUTHPUBLIC, state);
+                },
+            )
+            .addMatcher(
                 authApi.endpoints.loginGoogle.matchFulfilled,
                 (state, { payload }) => {
                     state.auth = payload.auth;

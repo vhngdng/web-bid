@@ -9,12 +9,17 @@ import App from './App';
 import GlobalStyles from './component/GlobalStyles';
 import { ThemeProvider } from '@material-tailwind/react';
 const root = ReactDOM.createRoot(document.getElementById('root'));
+// eslint-disable-next-line no-undef
+const GOOGLE_OAUTH_CLIENT_ID = process.env.REACT_APP_GOOGLE_OAUTH_CLIENT_ID;
 root.render(
     <Provider store={store}>
         <GlobalStyles>
             <ThemeProvider>
                 <Router>
-                    <GoogleOAuthProvider clientId="60674483096-p014e3eca264vr8vn6sq14gs12g0qc9g.apps.googleusercontent.com">
+                    <GoogleOAuthProvider
+                        // eslint-disable-next-line no-undef
+                        clientId={GOOGLE_OAUTH_CLIENT_ID}
+                    >
                         <App />
                     </GoogleOAuthProvider>
                 </Router>

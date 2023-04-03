@@ -24,6 +24,7 @@ import PropertyList from './page/ProfilePage/PropertyList';
 import DetailBidRoom from './page/AdminPage/Bid/DetailBidRoom';
 import ListBidRoom from './page/AdminPage/Bid/ListBidRoom';
 import ErrorPage404 from './page/ErrorPage';
+import SignUp from './page/SignUp';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -32,6 +33,7 @@ function App() {
         <>
             <Routes>
                 <Route path="/login" element={<LoginPage />} />
+                <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/error" element={<ErrorPage404 />} />
                 <Route element={<Private />}>
                     <Route element={<DefaultLayout />}>
