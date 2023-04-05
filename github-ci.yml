@@ -68,5 +68,5 @@ jobs:
 
       - name: Copy docker-compose.yml, .env and nginx.conf
         run: |
-          chmod + x./deploy.sh
+          chmod +x ./deploy.sh
           ./deploy.sh
