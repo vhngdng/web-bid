@@ -41,14 +41,14 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: |
+            backend/demo/spring-resource-server
+            front-end
           push: true
           tags: |
-            vuhoangdung/bid-backend-server:${{secrets.TAG_NAME}}
-            vuhoangdung/bid-frontend-server:${{secrets.TAG_NAME}}
-          file: |
-            ./backend/demo/spring-resource-server/Dockerfile
-            ./front-end/Dockerfile
+            vuhoangdung/web-bid:bid-backend-server
+            vuhoangdung/web-bid:bid-frontend-server
+          dockerfile: Dockerfile
 
   # deploy:
   #   needs: build
