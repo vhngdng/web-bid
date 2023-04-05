@@ -30,7 +30,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - 8081:80
+      - 206.189.42.113:8081:80
     volumes:
       - ./config/nginx.conf:/etc/nginx/nginx.conf
     networks:
