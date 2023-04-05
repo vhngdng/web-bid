@@ -57,19 +57,16 @@ jobs:
             vuhoangdung/web-bid:bid-frontend-server
           dockerfile: Dockerfile
 
-  # deploy:
-  #   needs: build
+  deploy:
+    needs: build
 
-  #   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout files
-  #       uses: actions/checkout@v3
+    steps:
+      - name: Checkout files
+        uses: actions/checkout@v3
 
-  #     - name: Get Tag name
-  #       uses: vuhoangdung/
-
-  #     - name: Install doctl
-  #       uses: digitalocean/action-doctl@v2
-  #       with:
-  #       token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Copy docker-compose.yml, .env and nginx.conf
+        run: |
+          chmod + x./deploy.sh
+          ./deploy.sh

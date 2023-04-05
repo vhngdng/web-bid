@@ -2,9 +2,7 @@ version: '3.9'
 services:
   backend:
     container_name: bid-backend-server
-    build:
-      context: backend/demo/spring-resource-server
-      dockerfile: Dockerfile
+    image: vuhoangdung/web-bid:bid-backend-server
     depends_on:
       - postgre
     env_file: backend/demo/spring-resource-server/src/main/resources/.env
@@ -19,9 +17,7 @@ services:
 
   frontend:
     container_name: bid-frontend-server
-    build: 
-      context: front-end
-      dockerfile: Dockerfile
+    image: vuhoangdung/web-bid:bid-frontend-server
     env_file: front-end/.env.development.local
     volumes:
       - ./front-end:/app
