@@ -83,5 +83,5 @@ jobs:
           chmod +x ./deploy.sh
           ./deploy.sh
 
-      - name: cleanup
-        run: rm -rf ~/.ssh
+      # - name: cleanup
+      #   run: rm -rf ~/.ssh
