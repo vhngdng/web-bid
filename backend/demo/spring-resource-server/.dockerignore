@@ -1,0 +1,18 @@
+# Ignore IDE and build files
+.git
+.gradle
+*.iml
+*.ipr
+*.iws
+build
+out
+.idea
+
+# Ignore Docker-related files
+Dockerfile
+
+# Ignore application properties
+/application*.yml
+/src/main/resources/application-dev.properties
+# Ignore test files
+src/test
