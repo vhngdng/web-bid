@@ -4,16 +4,17 @@ cd web-bid
 
 if [ ! -d config ] 
 then
-  scp -r ./config dung@${{vars.DIGITALOCEAN_DROPLET_IP}}:./config
+  scp -r ./config dung@$DIGITALOCEAN_DROPLET_IP:./config
 fi
 
+dockerCompose="./docker-compose.yml"
 if [ -e "$dockerCompose" ] 
 then 
   rm "$dockerCompose"
-  scp ./docker-compose.yml dung@${{vars.DIGITALOCEAN_DROPLET_IP}}:./docker-compose.yml
+  scp ./docker-compose.yml dung@$DIGITALOCEAN_DROPLET_IP:./docker-compose.yml
 fi
 
-[ ! -e .env ] && scp ./.env dung@${{vars.DIGITALOCEAN_DROPLET_IP}}:./.env
+[ ! -e .env ] && scp ./.env dung@$DIGITALOCEAN_DROPLET_IP:./.env
 
 docker compose up -d --build
 

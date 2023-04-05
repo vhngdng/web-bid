@@ -60,6 +60,9 @@ jobs:
   deploy:
     needs: build
 
+    env:
+      DIGITALOCEAN_DROPLET_IP: ${{vars.DIGITALOCEAN_DROPLET_IP}}
+
     runs-on: ubuntu-latest
 
     steps:
