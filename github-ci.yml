@@ -74,7 +74,7 @@ jobs:
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }} > ~/.ssh/known_hosts
+          echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" > ~/.ssh/known_hosts
 
       - name: Deploy to server
         run: |
