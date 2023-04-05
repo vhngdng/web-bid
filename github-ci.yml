@@ -43,7 +43,12 @@ jobs:
         with:
           context: .
           push: true
-          tags: vuhoangdung/web-bid:${{secrets.TAG_NAME}}
+          tags: |
+            vuhoangdung/bid-backend-server:${{secrets.TAG_NAME}}
+            vuhoangdung/bid-frontend-server:${{secrets.TAG_NAME}}
+          dockerfile: |
+            ./backend/demo/spring-resource-server
+            ./front-end
 
   # deploy:
   #   needs: build
