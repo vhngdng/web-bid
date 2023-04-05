@@ -32,6 +32,8 @@ jobs:
         with:
           username: ${ secrets.DOCKERHUB_USERNAME }
           password: ${ secrets.DOCKERHUB_PASSWORD }
+
+      - name: Test docker username and password
         run: |
           echo ${ secrets.DOCKERHUB_USERNAME }
           echo ${ secrets.DOCKERHUB_PASSWORD }
