@@ -65,14 +65,19 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v3
 
-      - name: Start SSH agent
-        uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # - name: Start SSH agent
+      #   uses: webfactory/ssh-agent@v0.7.0
+      #   with:
+      #     ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: install ssh keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
 
       - name: Deploy to server
         run: |
-          ssh ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}
-          scp -i ${{ secrets.SSH_PRIVATE_KEY }} $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh
+          ssh ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "scp -i ${{ secrets.SSH_PRIVATE_KEY }} $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh"
           chmod +x ./deploy.sh
           ./deploy.sh
