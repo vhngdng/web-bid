@@ -46,9 +46,9 @@ jobs:
           tags: |
             vuhoangdung/bid-backend-server:${{secrets.TAG_NAME}}
             vuhoangdung/bid-frontend-server:${{secrets.TAG_NAME}}
-          dockerfile: |
-            web-bid/backend/demo/spring-resource-server/Dockerfile
-            web-bid/front-end/Dockerfile
+          file: |
+            ./backend/demo/spring-resource-server/Dockerfile
+            ./front-end/Dockerfile
 
   # deploy:
   #   needs: build
