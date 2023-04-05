@@ -23,8 +23,8 @@ jobs:
 
       - name: Create env file for backend
         run: |
-          echo "${{SPRINGBOOTENV}}" > ./backend/demo/spring-resource-server/src/main/resources/.env
-          echo "${{FRONTEND_ENV}}" > ./front-end/.env.development.local
+          echo "${SPRINGBOOTENV}" > ./backend/demo/spring-resource-server/src/main/resources/.env
+          echo "${FRONTEND_ENV}" > ./front-end/.env.development.local
           echo "${DOCKERCOMPOSE_ENV}" > ./.env
 
       - name: Login to Docker Hub
