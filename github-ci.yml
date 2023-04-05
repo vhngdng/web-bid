@@ -82,7 +82,6 @@ jobs:
           scp deploy.sh $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh
           rsync -ravh config $USER@$DIGITALOCEAN_DROPLET_IP:./config
           rsync -ravh docker-compose.yml $USER@$DIGITALOCEAN_DROPLET_IP:./docker-compose.yml
-          rsync -ravh ./.env $USER@$DIGITALOCEAN_DROPLET_IP:./.env
           docker compose up -d --build
 
       - name: cleanup
