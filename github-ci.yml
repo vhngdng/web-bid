@@ -7,7 +7,14 @@ on:
       - "backend/demo/spring-resource-server/**"
       - "front-end/**"
       - ".github/workflows/**"
-
+  workflow_dispatch:
+    inputs:
+      input1:
+        description: "Input 1 description"
+        required: true
+      input2:
+        description: "Input 2 description"
+        required: false
 jobs:
   build:
     runs-on: ubuntu-latest
