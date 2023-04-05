@@ -68,14 +68,14 @@ jobs:
     steps:
       - name: Checkout files
         uses: actions/checkout@v3
-      
+
       - name: Install doctl
-      uses: digitalocean/action-doctl@v2
-      with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-        
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
       - name: Copy docker-compose.yml, .env and nginx.conf
         run: |
-
+          .ss
           chmod +x ./deploy.sh
           ./deploy.sh
