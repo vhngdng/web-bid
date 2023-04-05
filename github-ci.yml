@@ -72,5 +72,7 @@ jobs:
 
       - name: Deploy to server
         run: |
+          ssh $USER@$DIGITALOCEAN_DROPLET_IP
+          scp -i ${{ secrets.SSH_PRIVATE_KEY }} $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh
           chmod +x ./deploy.sh
           ./deploy.sh
