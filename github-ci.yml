@@ -78,7 +78,7 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "scp ~/Documents/web/deploy.sh $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "scp ${{USER_SERVER}}@116.96.47.50:~/Documents/web/deploy.sh $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh"
           chmod +x ./deploy.sh
           ./deploy.sh
 
