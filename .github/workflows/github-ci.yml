@@ -81,3 +81,6 @@ jobs:
           ssh ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "scp -i ${{ secrets.SSH_PRIVATE_KEY }} $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh"
           chmod +x ./deploy.sh
           ./deploy.sh
+
+      - name: cleanup
+        run: rm -rf ~/.ssh
