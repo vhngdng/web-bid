@@ -80,8 +80,10 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} 
           scp deploy.sh $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh
-          chmod +x ./deploy.sh
-          ./deploy.sh
+          rsync -ravh config $USER@$DIGITALOCEAN_DROPLET_IP:./config
+          rsync -ravh docker-compose.yml $USER@$DIGITALOCEAN_DROPLET_IP:./docker-compose.yml
+          rsync -ravh .env $USER@$DIGITALOCEAN_DROPLET_IP:./.env
+          docker compose up -d --build
 
       - name: cleanup
         run: rm -rf ~/.ssh

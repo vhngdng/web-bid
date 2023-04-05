@@ -1,12 +1,8 @@
 #!/bin/bash
 
-mkdir -p web-bid
-cd web-bid
 
-if [ ! -d config ] 
-then
-  rsync -ravh config $USER@$DIGITALOCEAN_DROPLET_IP:./config
-fi
+
+
 
 dockerCompose="./docker-compose.yml"
 if [ -e "$dockerCompose" ] 
