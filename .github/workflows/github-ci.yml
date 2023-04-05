@@ -65,7 +65,12 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v3
 
-      - name: Copy docker-compose.yml, .env and nginx.conf
+      - name: Start SSH agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to server
         run: |
           chmod +x ./deploy.sh
           ./deploy.sh

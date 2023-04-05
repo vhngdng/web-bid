@@ -1,4 +1,5 @@
 #!/bin/bash
+ssh $USER@$DIGITALOCEAN_DROPLET_IP
 mkdir -p web-bid
 cd web-bid
 
