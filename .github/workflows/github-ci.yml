@@ -67,7 +67,7 @@ jobs:
 
       - name: Create env file
         run: |
-          echo "${{ secrets.SPRINGBOOTENV }} ${{ secrets.FRONTEND_ENV }} ${{ secrets.DOCKERCOMPOSE_ENV }}" | sed 's/ /\n/g' > .env
+          echo "${{ secrets.DOCKERCOMPOSE_ENV }}" | sed 's/ /\n/g' > .env
       - name: Deploy
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}
