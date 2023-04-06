@@ -45,11 +45,10 @@ services:
     volumes:
       - ./certbot/www:/tmp/letsencrypt:rw
       - ./certbot/letsencrypt:/etc/letsencrypt:rw
-    command: 
-      certonly --webroot --agree-tos --renew-by-default \
+    command: certonly --webroot --agree-tos --renew-by-default \
       --preferred-challenges http-01 --server https://acme-v02.api.letsencrypt.org/directory \
       --text --email vhngdng@gmail.com \
-      -w /tmp/letsencrypt -d auctionforfun.site 
+      -w /tmp/letsencrypt -d auctionforfun.site
     
       # certonly
       # --cert-name auctionforfun.site
