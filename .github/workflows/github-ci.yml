@@ -74,13 +74,15 @@ jobs:
         run: |
           echo "${{ secrets.SPRINGBOOTENV }} ${{ secrets.FRONTEND_ENV }}.${{ secrets.DOCKERCOMPOSE_ENV }}" | sed 's/ /\n/g' > .env
 
-      - name: Deploy to server
+      - name: Copy file to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
           mkdir -p web-bit
           cd web-bit
-          rsync -avz ./config .env docker-compose.yml ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./ &&
-          docker compose up -d --build"
+          rsync -avz ./config .env docker-compose.yml ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./"
+
+      - name: Deploy
+        run: docker compose up -d --build
 
       - name: cleanup
         run: rm -rf ~/.ssh
