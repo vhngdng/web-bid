@@ -77,6 +77,8 @@ jobs:
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
+          mkdir -p web-bit
+          cd web-bit
           rsync -avz ./config .env docker-compose.yml ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./ &&
           docker compose up -d --build"
 
