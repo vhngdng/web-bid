@@ -30,8 +30,7 @@ jobs:
       - name: Backend Build and push Docker
         uses: docker/build-push-action@v4
         with:
-          context: |
-            backend/demo/spring-resource-server
+          context: backend/demo/spring-resource-server
           push: true
           tags: vuhoangdung/web-bid-backend:latest
           dockerfile: Dockerfile
