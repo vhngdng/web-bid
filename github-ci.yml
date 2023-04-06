@@ -78,6 +78,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
           rsync -avz ./config .env docker-compose.yml ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./ &&
+          chmod +x ./deploy.sh
           ./deploy.sh
           "
 
