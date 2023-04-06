@@ -49,6 +49,15 @@ services:
       --preferred-challenges http-01 --server https://acme-v02.api.letsencrypt.org/directory \
       --text --email vhngdng@gmail.com \
       -w /tmp/letsencrypt -d auctionforfun.site
+    
+    # certbot certonly reconfigure
+    #   --webroot --agree-tos --renew-by-default \
+    #   --cert-name auctionforfun.site
+    #   --nginx \
+    #   --dns-digitalocean \
+    #   --dns-digitalocean-credentials ~/.secrets/certbot/digitalocean.ini \
+    #   -d auctionforfun.site \
+    #   -d www.auctionforfun.site
     networks:
       - web-bid-network
 
