@@ -7,7 +7,7 @@ on:
       - "backend/demo/spring-resource-server/**"
       - "front-end/**"
       - ".github/workflows/**"
-#
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,7 +34,7 @@ jobs:
           push: true
           tags: vuhoangdung/web-bid-backend:latest
           dockerfile: Dockerfile
-
+a6b612a22017
       - name: Frontend Build and push Docker
         uses: docker/build-push-action@v4
         with:
