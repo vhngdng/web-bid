@@ -21,12 +21,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      - name: Create env file for backend
-        run: |
-          echo ".env=${{ secrets.SPRINGBOOTENV }}" > ./backend/demo/spring-resource-server/src/main/resources/.env
-          echo ".env.development.local=${{ secrets.FRONTEND_ENV }}" > ./front-end/.env.development.local
-          echo ".env=${{ secrets.DOCKERCOMPOSE_ENV }}" > ./.env
-
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -76,14 +70,19 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" > ~/.ssh/known_hosts
 
+      - name: Create env file for backend
+        run: |
+          echo ".env=${{ secrets.SPRINGBOOTENV }}" > .env.backend
+          echo ".env.development.local=${{ secrets.FRONTEND_ENV }}" > .env.development.local
+          echo ".env=${{ secrets.DOCKERCOMPOSE_ENV }}" > ./.env
+
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} 
-          scp deploy.sh $USER@$DIGITALOCEAN_DROPLET_IP:./deploy.sh
-          rsync -ravh config $USER@$DIGITALOCEAN_DROPLET_IP:./config
-          rsync -ravh docker-compose.yml $USER@$DIGITALOCEAN_DROPLET_IP:./docker-compose.yml
-          echo "${{ secrets.DOCKERCOMPOSE_ENV }}" > .env
-          rsync -ravh ./.env $USER@$DIGITALOCEAN_DROPLET_IP:./.env
+          rsync config .env docker-compose.yml $USER@$DIGITALOCEAN_DROPLET_IP:./
+          rsync .env.development.local $USER@$DIGITALOCEAN_DROPLET_IP:./front-end/.env.development.local
+          rsync .env.backend $USER@$DIGITALOCEAN_DROPLET_IP:./backend/demo/spring-resource-server/src/main/resources/.env
+
           docker compose up -d --build
 
       - name: cleanup
