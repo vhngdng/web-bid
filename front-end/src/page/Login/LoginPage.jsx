@@ -9,6 +9,7 @@ import {
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { GoogleLogin } from '@react-oauth/google';
+import { ToastContainer, toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 function Login() {
@@ -27,7 +28,19 @@ function Login() {
             .then(() => {
                 alert('Login thành công');
             })
-            .catch((err) => console.log(err));
+            .catch((err) => {
+                console.log(err);
+                toast.error(err.message, {
+                    position: 'top-center',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'colored',
+                });
+            });
     };
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -104,6 +117,7 @@ function Login() {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </center>
     );
 }
