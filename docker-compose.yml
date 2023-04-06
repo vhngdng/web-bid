@@ -27,22 +27,17 @@ services:
     image: nginx:latest
     ports:
       - 8081:80
-      - 443:443
     volumes:
       - ./config/nginx.conf:/etc/nginx/nginx.conf
-      - ./certbot/www:/var/www/certbot/:ro
     networks:
       - web-bid-network
+    tty: true
     depends_on:
       - frontend
       - backend
     restart: always
 
-  certbot:
-    image: certbot/certbot:latest
-    volumes:
-      - ./certbot/www/:/var/www/certbot/:rw
-      - ./certbot/conf/:/etc/letsencrypt/:rw
+
 
   postgre:
     image: postgres:15.2
@@ -60,6 +55,7 @@ services:
     restart: unless-stopped
     networks:
       - web-bid-network
+
 networks:
   web-bid-network:
     driver: bridge
