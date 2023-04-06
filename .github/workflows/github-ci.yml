@@ -71,9 +71,10 @@ jobs:
           pwd
       - name: Deploy
         run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}
+          rsync -avz ${GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./web-bit
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
           mkdir -p web-bit &&
-          rsync -avz ${GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./web-bit &&
           cd web-bit &&
           chmod +x ./deploy.sh &&
           ./deploy.sh"
