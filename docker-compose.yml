@@ -7,8 +7,7 @@ services:
       - postgre
     env_file: .env
     restart: unless-stopped
-    volumes:
-      - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
+
     ports:
       - 8080:8080
       - 5432
@@ -19,8 +18,7 @@ services:
     container_name: bid-frontend-server
     image: vuhoangdung/web-bid:bid-frontend-server
     env_file: .env
-    volumes:
-      - ./front-end:/app
+
     restart: unless-stopped
     ports:
       - 3000:3000
