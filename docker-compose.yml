@@ -6,12 +6,6 @@ services:
     depends_on:
       - postgre
     env_file: .env
-    environment:
-      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
-      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
-      - POSTGRE_PASSWORD=${POSTGRE_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-      - DIGITALOCEAN_DROPLET_IP=${DIGITALOCEAN_DROPLET_IP}
     restart: unless-stopped
     volumes:
       - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
@@ -25,7 +19,6 @@ services:
     container_name: bid-frontend-server
     image: vuhoangdung/web-bid-frontend:latest
     env_file: .env
-
     restart: unless-stopped
     ports:
       - 3000:3000
