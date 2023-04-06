@@ -6,8 +6,14 @@ services:
     depends_on:
       - postgre
     env_file: .env
+    environment:
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - POSTGRE_PASSWORD=${POSTGRE_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
     restart: unless-stopped
-
+    volumes:
+      - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
     ports:
       - 8080:8080
       - 5432
