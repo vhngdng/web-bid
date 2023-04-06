@@ -4,8 +4,6 @@ COPY .mvn .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline
 COPY src ./src
-# RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
-# COPY ./target/final-project-0.0.1-SNAPSHOT.jar app.jar
 ENV SPRING_PROFILES_ACTIVE=local
 
 EXPOSE 8080
