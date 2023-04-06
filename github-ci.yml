@@ -34,7 +34,7 @@ jobs:
             backend/demo/spring-resource-server
           push: true
           tags: |
-            vuhoangdung/web-bid:bid-backend-server
+            vuhoangdung/web-bid-backend:latest
           dockerfile: Dockerfile
 
       - name: Frontend Build and push Docker
@@ -43,7 +43,7 @@ jobs:
           context: front-end
           push: true
           tags: |
-            vuhoangdung/web-bid:bid-frontend-server
+            vuhoangdung/web-bid-frontend:latest
           dockerfile: Dockerfile
 
   deploy:

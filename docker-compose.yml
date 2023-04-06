@@ -2,7 +2,7 @@ version: '3.9'
 services:
   backend:
     container_name: bid-backend-server
-    image: vuhoangdung/web-bid:bid-backend-server
+    image: vuhoangdung/web-bid-backend:latest
     depends_on:
       - postgre
     env_file: .env
@@ -23,7 +23,7 @@ services:
 
   frontend:
     container_name: bid-frontend-server
-    image: vuhoangdung/web-bid:bid-frontend-server
+    image: vuhoangdung/web-bid-frontend:latest
     env_file: .env
 
     restart: unless-stopped
