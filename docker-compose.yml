@@ -5,7 +5,7 @@ services:
     image: vuhoangdung/web-bid:bid-backend-server
     depends_on:
       - postgre
-    env_file: backend/demo/spring-resource-server/src/main/resources/.env
+    env_file: .env
     restart: unless-stopped
     volumes:
       - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
@@ -18,7 +18,7 @@ services:
   frontend:
     container_name: bid-frontend-server
     image: vuhoangdung/web-bid:bid-frontend-server
-    env_file: front-end/.env.development.local
+    env_file: .env
     volumes:
       - ./front-end:/app
     restart: unless-stopped

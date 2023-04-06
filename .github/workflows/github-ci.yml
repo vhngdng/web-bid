@@ -70,19 +70,16 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" > ~/.ssh/known_hosts
 
-      - name: Create env file for backend
+      - name: Create env file
         run: |
-          echo ".env=${{ secrets.SPRINGBOOTENV }}" > .env.backend
-          echo ".env.development.local=${{ secrets.FRONTEND_ENV }}" > .env.development.local
-          echo ".env=${{ secrets.DOCKERCOMPOSE_ENV }}" > ./.env
+          echo "${{ secrets.SPRINGBOOTENV }} ${{ secrets.FRONTEND_ENV }} .${{ secrets.DOCKERCOMPOSE_ENV }}" | sed 's/ /\n/g' > .env
 
       - name: Deploy to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} 
-          rsync config .env docker-compose.yml $USER@$DIGITALOCEAN_DROPLET_IP:./
-          rsync .env.development.local $USER@$DIGITALOCEAN_DROPLET_IP:./front-end/.env.development.local
-          rsync .env.backend $USER@$DIGITALOCEAN_DROPLET_IP:./backend/demo/spring-resource-server/src/main/resources/.env
-
+          mkdir -p ./web-bit
+          cd web-bit
+          rsync ./config .env docker-compose.yml $USER@$DIGITALOCEAN_DROPLET_IP:./
           docker compose up -d --build
 
       - name: cleanup
