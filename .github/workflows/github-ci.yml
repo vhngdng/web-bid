@@ -77,8 +77,8 @@ jobs:
       - name: Copy file to server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
-          mkdir -p web-bit
-          cd web-bit
+          mkdir -p web-bit &&
+          cd web-bit &&
           rsync -avz ./config .env docker-compose.yml ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./"
 
       - name: Deploy
