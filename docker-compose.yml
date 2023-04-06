@@ -43,7 +43,7 @@ services:
   postgre:
     image: postgres:15.2
     container_name: db
-    env_file: backend/demo/spring-resource-server/src/main/resources/.env
+    env_file: .env
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRE_PASSWORD}

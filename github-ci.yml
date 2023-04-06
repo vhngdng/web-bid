@@ -76,8 +76,7 @@ jobs:
 
       - name: Deploy to server
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} 
           rsync -avz ./config .env docker-compose.yml $USER@$DIGITALOCEAN_DROPLET_IP:./
-
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "docker compose up -d --build"
       - name: cleanup
         run: rm -rf ~/.ssh
