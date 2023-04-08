@@ -35,6 +35,7 @@ services:
       - ./certbot/privkeys/key.pem:/etc/letsencrypt/live/auctionforfun.site/privkey.pem:ro
       - ./certbot/dhparam/dhparam.pem:/etc/ssl/certs/dhparam-2048.pem
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certbot/webpath:/var/www/html
     tty: true
     depends_on:
       - frontend
@@ -50,6 +51,7 @@ services:
       - ./certbot/privkeys/key.pem:/etc/letsencrypt/live/auctionforfun.site/privkey.pem:ro
       - ./certbot/dhparam/dhparam.pem:/etc/ssl/certs/dhparam-2048.pem
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certbot/webpath:/var/www/html
     depends_on:
       - nginx
     command: >-
