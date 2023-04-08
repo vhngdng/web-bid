@@ -28,7 +28,7 @@ import SignUp from './page/SignUp';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
-
+    console.log('test');
     return (
         <>
             <Routes>
