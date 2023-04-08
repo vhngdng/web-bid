@@ -28,6 +28,7 @@ public class UserController {
   private JwtUtils jwtUtils;
   @Autowired
   private RefreshTokenService refreshTokenService;
+
   @GetMapping("user/me")
   @PreAuthorize("hasRole('USER')")
   public User getCurrentUser() {
@@ -47,17 +48,18 @@ public class UserController {
     return ResponseEntity.ok(userService.findUserInfoById(id));
   }
 
+  @CrossOrigin(value = "*", maxAge = 3600)
   @PostMapping("create/user")
   public ResponseEntity<?> createUser(@RequestBody SignUpRequest request) {
     CustomUserDetails userDetails = (CustomUserDetails) userService.createUser(request);
     String jwtToken = jwtUtils.generateTokenFromEmail(userDetails.getUsername());
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
     return ResponseEntity.ok(AuthResponse
-            .builder()
-            .token(jwtToken)
-            .auth(userDetails)
-            .refreshToken(refreshToken.getToken())
-            .isAuthenticated(true)
-            .build());
+        .builder()
+        .token(jwtToken)
+        .auth(userDetails)
+        .refreshToken(refreshToken.getToken())
+        .isAuthenticated(true)
+        .build());
   }
 }
