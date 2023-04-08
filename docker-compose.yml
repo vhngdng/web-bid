@@ -30,6 +30,7 @@ services:
       - 443:443
     volumes:
       - ./config/nginx.conf:/etc/nginx/nginx.conf
+      - ./config/log:/var/log/nginx
       - ./certbot/certs/cert.pem:/etc/letsencrypt/live/auctionforfun.site/fullchain.pem:ro
       - ./certbot/privkeys/key.pem:/etc/letsencrypt/live/auctionforfun.site/privkey.pem:ro
       - ./certbot/dhparam/dhparam.pem:/etc/ssl/certs/dhparam-2048.pem
@@ -51,14 +52,14 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - nginx
-    command: 
-      #  certonly --webroot -w /etc/letsencrypt --cert-name auctionforfun.site --nginx -d auctionforfun.site,www.auctionforfun.site
-      - certbot --webroot -w /var/www/certbot renew --email vhngdng@gmail.com \
-        --agree-tos --no-eff-email --staging \
-        run --force-renewal --cert-name auctionforfun.site --nginx -d www.auctionforfun.site,auctionforfun.site
-      - certbot certonly reconfigure --pre-hook 'service nginx stop' --post-hook 'service nginx start' \
-        --deploy-hook "docker kill -s HUP nginx" -n --cert-name auctionforfun.site \
-        -d www.auctionforfun.site,auctionforfun.site
+    command: >-
+        certonly --email vhngdng@gmail.com --agree-tos --no-eff-email --webroot -w /var/www/html --cert-name auctionforfun.site -d auctionforfun.site,www.auctionforfun.site
+      # - certbot --webroot -w /var/www/html renew --email vhngdng@gmail.com \
+      #   --agree-tos --no-eff-email --staging \
+      #   run --force-renewal --cert-name auctionforfun.site --nginx -d www.auctionforfun.site,auctionforfun.site
+      # - certbot certonly reconfigure --pre-hook 'service nginx stop' --post-hook 'service nginx start' \
+      #   --deploy-hook "docker kill -s HUP nginx" -n --cert-name auctionforfun.site \
+      #   -d www.auctionforfun.site,auctionforfun.site
     networks:
       - web-bid-network
     
