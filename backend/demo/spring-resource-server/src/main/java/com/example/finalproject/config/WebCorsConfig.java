@@ -14,7 +14,8 @@ public class WebCorsConfig implements WebMvcConfigurer {
   public void addCorsMappings(CorsRegistry registry) {
     registry
             .addMapping("/**")
-            .allowedOriginPatterns(allowedOrigins)
+//            .allowedOriginPatterns(allowedOrigins)
+            .allowedOrigins("https://auctionforfun.site")
             .allowedMethods("GET", "POST", "PUT", "DELETE");
 //
 //    registry.addMapping("/login")
