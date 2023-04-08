@@ -31,9 +31,10 @@ spring:
 app:
   cors:
     allowedOrigins:
-      - http://localhost:8081
-      - http://localhost:3000
-      - http://${DIGITALOCEAN_DROPLET_IP}:8081
+#      - http://localhost:8081
+#      - http://localhost:3000
+#      - http://${DIGITALOCEAN_DROPLET_IP}:8081
+      - https:auctionforfun.site
   oauth2:
     # After successfully authenticating with the OAuth2 Provider,
     # we'll be generating an auth token for the user and sending the token to the
