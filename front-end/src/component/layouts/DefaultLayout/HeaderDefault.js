@@ -12,15 +12,14 @@ import classNames from 'classnames/bind';
 import { logout } from '~/app/slice/auth.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '@material-tailwind/react';
 import { notification } from '~/assets/images';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 import { useGetAllTransactionBidFinishQuery } from '~/app/service/transaction.service';
 import Loader from '~/Loader';
 import { toast, ToastContainer } from 'react-toastify';
-import { green } from '@mui/material/colors';
 import NotificationTimer from '~/notificationTimer';
+import { DOMAIN_URL } from '~/CONST/const';
 const cx = classNames.bind(styles);
 
 var stompClient = null;
@@ -40,7 +39,7 @@ function HeaderDefault() {
     const refNoti = useRef(null);
     useEffect(() => {
         const handleSock = () => {
-            let newSock = new SockJS('http://localhost:8080/api/v1/ws');
+            let newSock = new SockJS(DOMAIN_URL + 'api/v1/ws');
             setSock(newSock);
         };
         window.addEventListener('beforeunload', setSock(handleSock));

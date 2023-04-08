@@ -57,7 +57,6 @@ function UpdatePropertyDetailModal({
         formData.append('file', file);
         try {
             const data = await uploadImage(formData).unwrap();
-            console.log(data.id);
             setImageId(data.id);
             if (!!data.error) {
                 console.log(data.error);

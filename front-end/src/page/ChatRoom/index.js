@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import classNames from 'classnames/bind';
 import styles from './ChatRoom.module.scss';
 import { useNavigate } from 'react-router-dom';
+import { DOMAIN_URL } from '~/CONST/const';
 var stompClient = null;
 const cx = classNames.bind(styles);
 function ChatRoom() {
@@ -35,7 +36,7 @@ function ChatRoom() {
     if (isLoading) return <Loader />;
 
     const connect = () => {
-        let Sock = new SockJS('http://localhost:8080/api/v1/ws');
+        let Sock = new SockJS(DOMAIN_URL + 'api/v1/ws');
         stompClient = over(Sock);
         // eslint-disable-next-line no-undef
         stompClient.connect({}, onConnected, onError);

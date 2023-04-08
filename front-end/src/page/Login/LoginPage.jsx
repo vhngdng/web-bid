@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import styles from './Login.module.scss';
@@ -25,21 +26,34 @@ function Login() {
         e.preventDefault();
         login({ email, password })
             .unwrap()
-            .then(() => {
-                alert('Login thành công');
+            .then((res) => {
+                if (!!res.error) {
+                    toast.error(res.error.message, {
+                        position: 'top-center',
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'colored',
+                    });
+                } else {
+                    // alert('Login thành công');
+                    toast.success('Login thành công', {
+                        position: 'top-center',
+                        autoClose: 3000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'colored',
+                    });
+                }
             })
             .catch((err) => {
                 console.log(err);
-                toast.error(err.message, {
-                    position: 'top-center',
-                    autoClose: 3000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'colored',
-                });
             });
     };
     const handleKeyDown = (e) => {

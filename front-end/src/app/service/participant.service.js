@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
 import { logout, tokenReceived } from '../slice/auth.slice';
+import { DOMAIN_URL } from '~/CONST/const';
 
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:8080/api/v1/participant/bid',
+    baseUrl: DOMAIN_URL + 'api/v1/participant/bid',
     prepareHeaders: (headers, { getState }) => {
         const token = getState().auth.token;
         if (token) {
@@ -25,7 +26,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
             try {
                 const { refreshToken } = api.getState().auth;
                 const refreshResult = await fetch(
-                    'http://localhost:8080/api/v1/auth/refresh-token',
+                    DOMAIN_URL + 'api/v1/auth/refresh-token',
                     {
                         method: 'POST',
                         headers: {

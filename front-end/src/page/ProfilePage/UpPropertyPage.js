@@ -23,7 +23,6 @@ function UpPropertyPage() {
         formData.append('file', file);
         try {
             const { data } = await uploadImage(formData);
-            console.log(data);
             const imageId = data.id;
             createProperty({
                 name,

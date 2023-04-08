@@ -16,3 +16,5 @@ export const GITHUB_AUTH_URL =
     '/oauth2/authorize/github?redirect_uri=' +
     OAUTH2_REDIRECT_URI;
 export const AUTHPUBLIC = 'authBlog';
+
+export const DOMAIN_URL = 'https://auctionforfun.site/';

@@ -43,9 +43,7 @@ function ProfileDetail() {
         setIsAvatar(true);
         setOpenModal(true);
     };
-    console.log(imageStore);
-    console.log(backgroundImg);
-    console.log(avatar);
+
     return (
         <>
             <div
