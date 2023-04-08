@@ -1,6 +1,7 @@
 package com.example.finalproject.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -26,7 +28,6 @@ import java.util.Map;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Value("${app.cors.allowedOrigins}")
   private String[] allowedOrigins;
-
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/ws", "/bid")
@@ -35,7 +36,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             .setAllowedOrigins(allowedOrigins)
             .withSockJS();
   }
-
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
     registry.setApplicationDestinationPrefixes("/app");
@@ -43,21 +43,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     registry.setUserDestinationPrefix("/user");
   }
 
-//  @Override
-//  public void configureClientInboundChannel(ChannelRegistration registration) {
-//    registration.interceptors(new ChannelInterceptor() {
-//      @Override
-//      public Message<?> preSend(Message<?> message, MessageChannel channel) {
-//        StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-//        if(StompCommand.CONNECTED.equals(accessor.getCommand())){
-//          Authentication user = SecurityContextHolder.getContext().getAuthentication();
-//          accessor.setUser(user);
-//        }
-//        return message;
-//      }
-//    });
-//
-//
-//  }
+  @Bean
+  public HttpSessionHandshakeInterceptor httpSessionHandshakeInterceptor() {
+    return new HttpSessionHandshakeInterceptor();
+  }
 
 }
