@@ -15,7 +15,6 @@ module.exports = {
                 '/etc/letsencrypt/live/auctionforfun.site/certificate.crt',
             ),
         },
-        port: 9000,
         onListening: function (devServer) {
             if (!devServer) {
                 throw new Error('webpack-dev-server is not defined');
@@ -24,17 +23,12 @@ module.exports = {
             const port = devServer.server.address().port;
             console.log('Listening on port:', port);
         },
-        proxy: {
-            '/api': {
-                target: 'https://auctionforfun.site',
-            },
-        },
     },
     allowedHost: ['auctionforfun.site'],
     client: {
         reconnect: 5,
         webSocketTransport: 'ws',
-        webSocketURL: 'wsss://auctionforfun.site/ws',
+        webSocketURL: { hostname: undefined, pathname: undefined, port: '0' },
     },
     webSocketServer: 'ws',
 };
