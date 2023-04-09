@@ -2,7 +2,7 @@
 
 
 echo "Hello World"
-docker compose up -d --build
+docker compose up -d --no-cache --force-recreate --build
 
 exit
 
