@@ -73,7 +73,8 @@
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "lint": "eslint --fix",
-    "pretty": "prettier --write ."
+    "pretty": "prettier --write .",
+    "serve": "webpack serve"
   },
   "eslintConfig": {
     "extends": [

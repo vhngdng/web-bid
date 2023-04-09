@@ -22,7 +22,7 @@ services:
       - 3000:3000
     networks:
       - web-bid-network
- #
+ 
   nginx:
     image: nginx:latest
     ports:
