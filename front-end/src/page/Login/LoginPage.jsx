@@ -27,7 +27,7 @@ function Login() {
         login({ email, password })
             .unwrap()
             .then((res) => {
-                if (!!res.error) {
+                if (!!res.data.status === 401) {
                     toast.error(res.error.message, {
                         position: 'top-center',
                         autoClose: 3000,
