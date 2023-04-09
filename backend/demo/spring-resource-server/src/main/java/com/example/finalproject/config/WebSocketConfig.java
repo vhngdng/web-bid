@@ -28,14 +28,16 @@ import java.util.Map;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   @Value("${app.cors.allowedOrigins}")
   private String[] allowedOrigins;
+
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/ws", "/bid")
-            .setAllowedOriginPatterns(allowedOrigins)
-            .setAllowedOrigins("https://auctionforfun.site")
-            .setAllowedOrigins(allowedOrigins)
-            .withSockJS();
+        .setAllowedOriginPatterns(allowedOrigins)
+        .setAllowedOrigins("https://auctionforfun.site")
+        .setAllowedOrigins(allowedOrigins)
+        .withSockJS();
   }
+
   @Override
   public void configureMessageBroker(MessageBrokerRegistry registry) {
     registry.setApplicationDestinationPrefixes("/app");
