@@ -31,7 +31,7 @@ public interface Mapper {
   default String setAvatar(User user, @Context ImageRepository imageRepository) {
     if(imageRepository.findByUserIdAndType(user.getId(), "AVATAR").isPresent()) {
       String idImage = imageRepository.findByUserIdAndType(user.getId(), "AVATAR").get().getId();
-      return "http://localhost:8080/api/v1/images/read/" + idImage;
+      return "https://auctionforfun.site/api/v1/images/read/" + idImage;
     }
     if(user.getAvatar() != null) {
       return user.getAvatar();

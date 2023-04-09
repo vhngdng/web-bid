@@ -11,6 +11,7 @@ import { useGetUserByEmailQuery } from '~/app/service/user.service';
 import Loader from '~/Loader';
 import ImageModal from './ImageModal';
 import { DOMAIN_URL } from '~/CONST/const';
+import { fix } from '~/assets/images';
 
 function ProfileDetail() {
     const { data: user, isLoading } = useGetUserByEmailQuery();
@@ -86,11 +87,12 @@ function ProfileDetail() {
                             <h2 className="text-3xl font-bold text-green-800 dark:text-gray-300">
                                 {user && (user.username || user.email)}
                             </h2>
-                            <p className="text-gray-400 mt-2 dark:text-gray-400">
+                            <p className="cursor-pointer text-gray-400 mt-2 dark:text-gray-400">
                                 Illustrator
+                                <img src={`${fix.logo.default}`} />
                             </p>
                             <p className="mt-2 text-gray-600 dark:text-gray-300">
-                                Introduce yourself
+                                Write something to introduce yourself
                             </p>
                             <div className="justify-center px-4 py-2 cursor-pointer bg-green-900 max-w-min mx-auto mt-8 rounded-lg text-gray-300 hover:bg-green-800 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-gray-200">
                                 {user && user.email}

@@ -24,8 +24,12 @@ const arrowIcon = {
 const dollar = {
     logo: require('~/assets/images/dollar-bills.svg'),
 };
+const fix = {
+    logo: require('~/assets/images/fix-icon.svg'),
+};
 
 export {
+    fix,
     notification,
     imageDefault,
     upSolid,

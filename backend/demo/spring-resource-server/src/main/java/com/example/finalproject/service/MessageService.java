@@ -37,19 +37,7 @@ public class MessageService {
   private final BidRepository bidRepository;
 
   private final TransactionService transactionService;
-//  @Transactional
-//  public Object save(MessageDTO messageDTO) {
-//    Message message = mapper.toEntity(messageDTO);
-//    message.setStatus(statusMessageRepository.findByName(STATUS_MESSAGE.valueOf(messageDTO.getStatus())));
-//    messageRepository.save(message);
-//    log.info("status", messageDTO.getStatus());
-//    if (messageDTO.getStatus().equals("JOIN")) {
-//      log.info("save");
-//      return saveJoinMessage(messageDTO);
-//    }
-//    log.info("save without join");
-//    return mapper.toDTO(message);
-//  }
+
 
   public Optional<BidParticipant> findParticipant(MessageDTO messageDTO) {
     return bidParticipantRepository.findByBidAndUser(

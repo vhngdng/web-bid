@@ -16,7 +16,7 @@ public interface UserInfo {
 
   default String getAvatar() {
     if(getImageId() != null) {
-      return "http://localhost:8080/api/v1/images/read/" + getImageId();
+      return "https://auctionforfun.site/api/v1/images/read/" + getImageId();
     }else {
       return getAvatarDefault();
     }
