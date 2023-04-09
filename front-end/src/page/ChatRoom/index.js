@@ -36,7 +36,7 @@ function ChatRoom() {
     if (isLoading) return <Loader />;
 
     const connect = () => {
-        let Sock = new SockJS(DOMAIN_URL + 'api/v1/ws');
+        let Sock = new SockJS('ws://auctionforfun.site/ws');
         stompClient = over(Sock);
         // eslint-disable-next-line no-undef
         stompClient.connect({}, onConnected, onError);

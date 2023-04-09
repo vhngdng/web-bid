@@ -39,7 +39,7 @@ function HeaderDefault() {
     const refNoti = useRef(null);
     useEffect(() => {
         const handleSock = () => {
-            let newSock = new SockJS('ws://auctionforfun.site:3000/ws');
+            let newSock = new SockJS('https://auctionforfun.site/api/v1/ws');
             setSock(newSock);
         };
         window.addEventListener('beforeunload', setSock(handleSock));
