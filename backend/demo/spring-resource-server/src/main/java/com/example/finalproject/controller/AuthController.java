@@ -27,6 +27,7 @@ import java.security.GeneralSecurityException;
 @RestController
 @RequestMapping("auth")
 @Slf4j
+@CrossOrigin(value = "*", maxAge = 3600)
 public class AuthController {
   @Autowired
   private AuthenticationConfiguration authenticationConfiguration;
@@ -39,17 +40,14 @@ public class AuthController {
   @Autowired
   private SocialUtils googleUtils;
 
-
-//  @Value("${spring.security.oauth2.client.registration.google.client-secret}")
-//  private String CLIENT_SECRET;
-  @CrossOrigin(value = "*", maxAge = 3600)
+  // @Value("${spring.security.oauth2.client.registration.google.client-secret}")
+  // private String CLIENT_SECRET;
   @PostMapping("login")
   public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws Exception {
     // Tao doi tuong
     UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-            loginRequest.getEmail(),
-            loginRequest.getPassword()
-    );
+        loginRequest.getEmail(),
+        loginRequest.getPassword());
     // Xác thực từ username và password.
 
     Authentication authentication = authenticationConfiguration.getAuthenticationManager().authenticate(token);
@@ -57,54 +55,56 @@ public class AuthController {
     String jwtToken = jwtUtils.generateToken(authentication);
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
     return ResponseEntity.ok(AuthResponse
-            .builder()
-            .token(jwtToken)
-            .auth(userDetails)
-            .refreshToken(refreshToken.getToken())
-            .isAuthenticated(true)
-            .build());
+        .builder()
+        .token(jwtToken)
+        .auth(userDetails)
+        .refreshToken(refreshToken.getToken())
+        .isAuthenticated(true)
+        .build());
 
   }
+
   @PostMapping("refresh-token")
   public ResponseEntity<?> refreshtoken(@Valid @RequestBody TokenRefreshRequest request) {
     String requestRefreshToken = request.getRefreshToken();
     return refreshTokenService.findByToken(requestRefreshToken)
-            .map(refreshTokenService::verifyExpiration)
-            .map(RefreshToken::getUser)
-            .map(user -> {
-              String token = jwtUtils.generateTokenFromEmail(user.getEmail());
-              log.info(token);
+        .map(refreshTokenService::verifyExpiration)
+        .map(RefreshToken::getUser)
+        .map(user -> {
+          String token = jwtUtils.generateTokenFromEmail(user.getEmail());
+          log.info(token);
 
-              return ResponseEntity.ok(TokenRefreshResponse.builder().accessToken(token).refreshToken(requestRefreshToken).build());
-            })
-            .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-                    "Refresh token is not in database!"));
+          return ResponseEntity
+              .ok(TokenRefreshResponse.builder().accessToken(token).refreshToken(requestRefreshToken).build());
+        })
+        .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+            "Refresh token is not in database!"));
   }
 
-  @CrossOrigin(value = "*", maxAge = 3600)
   @PostMapping("google")
-  public ResponseEntity<?> googleLogin(@RequestParam(value = "idToken") String idTokenString, HttpServletRequest request) throws GeneralSecurityException, IOException {
+  public ResponseEntity<?> googleLogin(@RequestParam(value = "idToken") String idTokenString,
+      HttpServletRequest request) throws GeneralSecurityException, IOException {
     CustomUserDetails userDetails = (CustomUserDetails) googleUtils.handleOAuth2Login(idTokenString);
     String jwtToken = jwtUtils.generateTokenFromEmail(userDetails.getUsername());
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
     return ResponseEntity.ok(AuthResponse
-            .builder()
-            .token(jwtToken)
-            .auth(userDetails)
-            .refreshToken(refreshToken.getToken())
-            .isAuthenticated(true)
-            .build());
-    }
+        .builder()
+        .token(jwtToken)
+        .auth(userDetails)
+        .refreshToken(refreshToken.getToken())
+        .isAuthenticated(true)
+        .build());
   }
+}
 
-
-//  @CrossOrigin(value = "*", maxAge = 3600)
-//  @PostMapping("/google")
-//  public ResponseEntity<?> googleLogin(@RegisteredOAuth2AuthorizedClient("google") OAuth2AuthorizedClient authorizedClient) {
-//    OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
+// @CrossOrigin(value = "*", maxAge = 3600)
+// @PostMapping("/google")
+// public ResponseEntity<?>
+// googleLogin(@RegisteredOAuth2AuthorizedClient("google")
+// OAuth2AuthorizedClient authorizedClient) {
+// OAuth2AccessToken accessToken = authorizedClient.getAccessToken();
 //
 //
 //
-//    return "index";
-//  }
-
+// return "index";
+// }
