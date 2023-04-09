@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("images")
 @Slf4j
-@CrossOrigin(origins = "http://localhost:3000", allowCredentials = "true")
+@CrossOrigin(origins = "https://auctionforfun.site", allowCredentials = "true")
 public class ImageController {
   @Autowired
   private ImageService imageService;
