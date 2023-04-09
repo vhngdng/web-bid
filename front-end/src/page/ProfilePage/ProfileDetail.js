@@ -16,8 +16,8 @@ function ProfileDetail() {
     const imageStore = useSelector((state) => state.image);
 
     const ref = useRef(null);
-    const [avatar, setAvatar] = useState('');
-    const [backgroundImg, setBackgroundImg] = useState('');
+    const [avatar, setAvatar] = useState(null);
+    const [backgroundImg, setBackgroundImg] = useState(null);
     const [isAvatar, setIsAvatar] = useState(false);
     const [openModal, setOpenModal] = useState(false);
     useEffect(() => {
@@ -89,10 +89,7 @@ function ProfileDetail() {
                                 Illustrator
                             </p>
                             <p className="mt-2 text-gray-600 dark:text-gray-300">
-                                Lorem ipsum dolor sit amet consectetur,
-                                adipisicing elit. Asperiores molestiae vitae
-                                odio non commodi itaque quisquam incidunt
-                                doloribus fugit nesciunt.
+                                Introduce yourself
                             </p>
                             <div className="justify-center px-4 py-2 cursor-pointer bg-green-900 max-w-min mx-auto mt-8 rounded-lg text-gray-300 hover:bg-green-800 hover:text-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-gray-200">
                                 {user && user.email}
