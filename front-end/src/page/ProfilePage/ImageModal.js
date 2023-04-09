@@ -7,6 +7,7 @@ import {
     useUpdateTypeImageMutation,
     useUploadImageMutation,
 } from '~/app/service/image.service';
+import { DOMAIN_URL } from '~/CONST/const';
 import Loader from '~/Loader';
 const customStyles = {
     content: {
@@ -102,7 +103,7 @@ function ImageModal({
                                         <p className="text-2xl text-gray-400 dark:text-gray-500">
                                             <img
                                                 alt="Photo avatar"
-                                                src={`http://localhost:8080/api/v1/images/read/${image.id}`}
+                                                src={`${DOMAIN_URL}api/v1/images/read/${image.id}`}
                                                 className="mx-auto object-cover rounded-full h-24 w-24 bg-white p-1"
                                             />
                                         </p>

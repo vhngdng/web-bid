@@ -10,6 +10,7 @@ import {
 import { useGetUserByEmailQuery } from '~/app/service/user.service';
 import Loader from '~/Loader';
 import ImageModal from './ImageModal';
+import { DOMAIN_URL } from '~/CONST/const';
 
 function ProfileDetail() {
     const { data: user, isLoading } = useGetUserByEmailQuery();
@@ -57,7 +58,7 @@ function ProfileDetail() {
                             className="rounded-t object-cover h-64 w-full"
                             src={
                                 !!backgroundImg
-                                    ? `http://localhost:8080/api/v1/images/read/${backgroundImg}`
+                                    ? `${DOMAIN_URL}api/v1/images/read/${backgroundImg}`
                                     : `https://images.unsplash.com/photo-1631631480669-535cc43f2327?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fA%3D%3D&w=1000&q=80`
                             }
                             alt="Photo by aldi sigun on Unsplash"
@@ -70,7 +71,7 @@ function ProfileDetail() {
                                 alt="Photo"
                                 src={
                                     !!avatar
-                                        ? `http://localhost:8080/api/v1/images/read/${avatar}`
+                                        ? `${DOMAIN_URL}api/v1/images/read/${avatar}`
                                         : user.avatar
                                         ? user.avatar
                                         : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
@@ -80,7 +81,7 @@ function ProfileDetail() {
                             />
                         </span>
                     </div>
-                    <div className="">
+                    <div className="min-w-full">
                         <div className="px-7 mb-8">
                             <h2 className="text-3xl font-bold text-green-800 dark:text-gray-300">
                                 {user && (user.username || user.email)}

@@ -8,6 +8,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useLazyGetImageByPropertyIdQuery } from '~/app/service/image.service';
 import Loader from '~/Loader';
+import { DOMAIN_URL } from '~/CONST/const';
 // import styles from './BidCreate.module.scss';
 // const cx = classNames.bind(styles);
 function BidCreate() {
@@ -154,7 +155,7 @@ function BidCreate() {
                                 {data && (
                                     <img
                                         alt="Photo avatar"
-                                        src={`http://localhost:8080/api/v1/images/read/${imageId}`}
+                                        src={`${DOMAIN_URL}api/v1/images/read/${imageId}`}
                                         className="mx-auto object-cover rounded-full h-24 w-24 bg-white p-1"
                                     />
                                 )}

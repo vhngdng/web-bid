@@ -9,6 +9,7 @@ import Loader from '~/Loader';
 import formatDateTime from '~/utils/formatDateTime';
 import { imageDefault } from '~/assets/images';
 import { useNavigate } from 'react-router-dom';
+import { DOMAIN_URL } from '~/CONST/const';
 function ListBidRoom() {
     const [properties, setProperties] = useState([]);
     // eslint-disable-next-line no-unused-vars
@@ -479,7 +480,7 @@ function ListBidRoom() {
                                                             src={
                                                                 !!bid.property
                                                                     .imageId
-                                                                    ? `http://localhost:8080/api/v1/images/read/${bid.property.imageId}`
+                                                                    ? `${DOMAIN_URL}api/v1/images/read/${bid.property.imageId}`
                                                                     : imageDefault
                                                                           .logo
                                                                           .default

@@ -357,7 +357,7 @@ function BidDetailRoom() {
                                             className=" object-fit h-40 w-40"
                                             src={
                                                 !!data.property.imageId
-                                                    ? `http://localhost:8080/api/v1/images/read/${data.property.imageId}`
+                                                    ? `${DOMAIN_URL}api/v1/images/read/${data.property.imageId}`
                                                     : `${imageDefault.logo.default}`
                                             }
                                             alt="IMG"

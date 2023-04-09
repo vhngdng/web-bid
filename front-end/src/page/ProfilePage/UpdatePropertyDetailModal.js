@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { toast, ToastContainer } from 'react-toastify';
+import { DOMAIN_URL } from '~/CONST/const';
 import {
     useDeleteImageMutation,
     useUpdateTypeImageMutation,
@@ -150,7 +151,7 @@ function UpdatePropertyDetailModal({
                                 src={
                                     // eslint-disable-next-line no-extra-boolean-cast
                                     !!imageId
-                                        ? `http://localhost:8080/api/v1/images/read/${imageId}`
+                                        ? `${DOMAIN_URL}api/v1/images/read/${imageId}`
                                         : `${imageDefault.logo.default}`
                                 }
                                 alt="IMG"

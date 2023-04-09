@@ -7,6 +7,7 @@ import { useUpdateTypeImageMutation } from '~/app/service/image.service';
 import { useState } from 'react';
 import UpdatePropertyDetailModal from './UpdatePropertyDetailModal';
 import { useRef } from 'react';
+import { DOMAIN_URL } from '~/CONST/const';
 function PropertyList() {
     const { data, isLoading, refetch } = useGetAllPropertyByUserLoginQuery();
     const [properties, setProperties] = useState();
@@ -73,7 +74,7 @@ function PropertyList() {
                                                             className="object-fit h-10 w-10"
                                                             src={
                                                                 !!property.imageId
-                                                                    ? `http://localhost:8080/api/v1/images/read/${property.imageId}`
+                                                                    ? `${DOMAIN_URL}api/v1/images/read/${property.imageId}`
                                                                     : `${imageDefault.logo.default}`
                                                             }
                                                             alt="IMG"

@@ -129,7 +129,7 @@ function DetailBidRoom() {
                                         className="object-fit h-10 w-10"
                                         src={
                                             !!bid.property.imageId
-                                                ? `http://localhost:8080/api/v1/images/read/${bid.property.imageId}`
+                                                ? `${DOMAIN_URL}api/v1/images/read/${bid.property.imageId}`
                                                 : `${imageDefault.logo.default}`
                                         }
                                         alt="IMG"
