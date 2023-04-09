@@ -30,18 +30,16 @@ jobs:
       - name: Backend Build and push Docker
         uses: docker/build-push-action@v4
         with:
-          context: backend/demo/spring-resource-server
+          context: ./backend/demo/spring-resource-server
           push: true
-          args: --no-cache
           tags: vuhoangdung/web-bid-backend:latest
           dockerfile: Dockerfile
 
       - name: Frontend Build and push Docker
         uses: docker/build-push-action@v4
         with:
-          context: front-end
+          context: ./front-end
           push: true
-          args: --no-cache
           tags: vuhoangdung/web-bid-frontend:latest
           dockerfile: Dockerfile
 
