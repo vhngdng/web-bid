@@ -34,7 +34,7 @@ jobs:
           push: true
           args: --no-cache
           tags: vuhoangdung/web-bid-backend:latest
-          dockerfile: Dockerfile
+          dockerfile: ./backend/demo/spring-resource-server/Dockerfile
 
       - name: Frontend Build and push Docker
         uses: docker/build-push-action@v4
@@ -43,7 +43,7 @@ jobs:
           push: true
           args: --no-cache
           tags: vuhoangdung/web-bid-frontend:latest
-          dockerfile: Dockerfile
+          dockerfile: ./front-end/Dockerfile
 
   deploy:
     needs: build
