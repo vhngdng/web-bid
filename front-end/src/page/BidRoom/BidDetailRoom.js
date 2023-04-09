@@ -177,7 +177,7 @@ function BidDetailRoom() {
 
     const connect = () => {
         // eslint-disable-next-line no-unused-vars
-        let newSock = new SockJS('https://auctionforfun.site/api/v1/ws');
+        let newSock = new SockJS(DOMAIN_URL + 'api/v1/ws');
         // eslint-disable-next-line no-unused-vars
         setSock(newSock);
     };
