@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -55,7 +56,7 @@ function ProfileDetail() {
                         <img
                             className="rounded-t object-cover h-64 w-full"
                             src={
-                                backgroundImg
+                                !!backgroundImg
                                     ? `http://localhost:8080/api/v1/images/read/${backgroundImg}`
                                     : `https://images.unsplash.com/photo-1631631480669-535cc43f2327?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YmFja2dyb3VuZCUyMGltYWdlfGVufDB8fDB8fA%3D%3D&w=1000&q=80`
                             }
@@ -68,7 +69,7 @@ function ProfileDetail() {
                             <img
                                 alt="Photo"
                                 src={
-                                    avatar
+                                    !!avatar
                                         ? `http://localhost:8080/api/v1/images/read/${avatar}`
                                         : user.avatar
                                         ? user.avatar
