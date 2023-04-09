@@ -31,19 +31,21 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: ./backend/demo/spring-resource-server
+          dockerfile: Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: true
-          args: --no-cache
           tags: vuhoangdung/web-bid-backend:latest
-          dockerfile: ./backend/demo/spring-resource-server/Dockerfile
 
       - name: Frontend Build and push Docker
         uses: docker/build-push-action@v4
         with:
           context: ./front-end
+          dockerfile: Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: true
-          args: --no-cache
           tags: vuhoangdung/web-bid-frontend:latest
-          dockerfile: ./front-end/Dockerfile
 
   deploy:
     needs: build
