@@ -2,8 +2,8 @@
 
 
 echo "Hello World"
-
-docker compose up -d --force-recreate --build
-docker system prune
+docker pull vuhoangdung/web-bid-frontend:latest && docker pull vuhoangdung/web-bid-backend:latest
+docker compose up -d --build
+docker rmi $(docker images -qf "dangling=true")
 exit
 

@@ -72,7 +72,6 @@ jobs:
 
       - name: Deploy
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}  "docker pull vuhoangdung/web-bid-frontend:latest && docker pull vuhoangdung/web-bid-backend:latest"
           rsync -avz --chmod=ugo=rwX ${GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./web-bit
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
           cd web-bit &&
@@ -81,3 +80,5 @@ jobs:
 
       - name: cleanup
         run: rm -rf ~/.ssh
+
+        #
