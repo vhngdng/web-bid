@@ -9,9 +9,9 @@ import { DOMAIN_URL } from '~/CONST/const';
 import { fix } from '~/assets/images';
 
 function ProfileDetail() {
-    const { data: user, isLoading } = useGetUserByEmailQuery();
+    const { data: user, isLoading, refetch } = useGetUserByEmailQuery();
     const imageStore = useSelector((state) => state.image);
-
+    const { auth } = useSelector((state) => state.auth);
     const ref = useRef(null);
     const [avatar, setAvatar] = useState(null);
     const [backgroundImg, setBackgroundImg] = useState(null);
@@ -30,7 +30,9 @@ function ProfileDetail() {
             setBackgroundImg(backgr.id);
         }
     }, [imageStore, user]);
-
+    useEffect(() => {
+        refetch();
+    }, [auth]);
     if (isLoading) return <Loader />;
     const handleChangeBackground = () => {
         setIsAvatar(false);
