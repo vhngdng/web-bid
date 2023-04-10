@@ -13,12 +13,14 @@ module.exports = {
             'text/css': ['css'],
         },
         contentBase: './dist',
-        https: true,
-        key: fs.readFileSync(
-            '/etc/letsencrypt/live/auctionforfun.site/private.key',
-        ),
-        cert: fs.readFileSync(
-            '/etc/letsencrypt/live/auctionforfun.site/certificate.crt',
-        ),
+        historyApiFallback: true,
+        http2: true,
+        https: {
+            key: '/etc/letsencrypt/live/auctionforfun.site/private.key',
+            cert: '/etc/letsencrypt/live/auctionforfun.site/certificate.crt',
+        },
+        client: {
+            webSocketURL: 'wss://auctionforfun.site:443/ws',
+        },
     },
 };
