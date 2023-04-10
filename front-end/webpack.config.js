@@ -9,11 +9,15 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         publicPath: '/dist/',
     },
+    module: {
+        rules: [
+            {
+                mimetype: 'application/json',
+                type: 'json',
+            },
+        ],
+    },
     devServer: {
-        mime: {
-            'application/javascript': ['js'],
-            'text/css': ['css'],
-        },
         contentBase: './dist',
         historyApiFallback: true,
         http2: true,
