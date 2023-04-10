@@ -19,7 +19,10 @@ public class WebCorsConfig implements WebMvcConfigurer {
             .addMapping("/**")
             .allowedOriginPatterns(allowedOrigins)
 //            .allowedOrigins("https://auctionforfun.site")
-            .allowedMethods("GET", "POST", "PUT", "DELETE");
+            .allowedMethods("GET", "POST", "PUT", "DELETE")
+            .allowedHeaders("*")
+            .allowCredentials(true)
+            .maxAge(3600);
 //
 //    registry.addMapping("/login")
 //            .allowedOrigins("*")
