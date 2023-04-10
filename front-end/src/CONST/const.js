@@ -17,4 +17,5 @@ export const GITHUB_AUTH_URL =
     OAUTH2_REDIRECT_URI;
 export const AUTHPUBLIC = 'authBlog';
 
-export const DOMAIN_URL = 'https://auctionforfun.site:443/';
+export const DOMAIN_URL = 'http://auctionforfun.site:443/';
+export const DOMAIN_BACKEND_WWS = 'http://auctionforfun.site:8080/';

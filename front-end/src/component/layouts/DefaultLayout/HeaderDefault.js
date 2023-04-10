@@ -19,7 +19,7 @@ import { useGetAllTransactionBidFinishQuery } from '~/app/service/transaction.se
 import Loader from '~/Loader';
 import { toast, ToastContainer } from 'react-toastify';
 import NotificationTimer from '~/notificationTimer';
-import { DOMAIN_URL } from '~/CONST/const';
+import { DOMAIN_BACKEND_WWS } from '~/CONST/const';
 const cx = classNames.bind(styles);
 
 var stompClient = null;
@@ -39,7 +39,7 @@ function HeaderDefault() {
     const refNoti = useRef(null);
     useEffect(() => {
         const handleSock = () => {
-            let newSock = new SockJS(DOMAIN_URL + 'api/v1/ws');
+            let newSock = new SockJS(DOMAIN_BACKEND_WWS + 'api/v1/ws');
             setSock(newSock);
         };
         window.addEventListener('beforeunload', setSock(handleSock));
