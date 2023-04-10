@@ -18,6 +18,8 @@ services:
     image: vuhoangdung/web-bid-frontend:latest
     env_file: .env
     restart: unless-stopped
+    volumes:
+    - ./certbot/etc:/etc/letsencrypt
     ports:
       - 3000:3000
     networks:
