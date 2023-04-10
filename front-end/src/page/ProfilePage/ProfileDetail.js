@@ -2,11 +2,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import {
-    useGetAvatarQuery,
-    useGetBackgroundQuery,
-} from '~/app/service/image.service';
 import { useGetUserByEmailQuery } from '~/app/service/user.service';
 import Loader from '~/Loader';
 import ImageModal from './ImageModal';
@@ -32,10 +27,9 @@ function ProfileDetail() {
             (image) => image.type === 'BACKGROUND',
         )[0];
         if (backgr) {
-            console.log('backgr', backgr);
             setBackgroundImg(backgr.id);
         }
-    }, [imageStore]);
+    }, [imageStore, user]);
 
     if (isLoading) return <Loader />;
     const handleChangeBackground = () => {

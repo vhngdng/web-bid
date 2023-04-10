@@ -31,6 +31,7 @@ export const authApi = createApi({
             }),
         }),
     }),
+    overrideExisting: false,
 });
 
 export const {
