@@ -177,7 +177,10 @@ function BidDetailRoom() {
 
     const connect = () => {
         // eslint-disable-next-line no-unused-vars
-        let newSock = new SockJS(DOMAIN_BACKEND_WWS + 'api/v1/ws');
+        let newSock = new SockJS(DOMAIN_BACKEND_WWS + 'api/v1/ws', undefined, {
+            // eslint-disable-next-line no-undef
+            protocols_whitelist: [transport],
+        });
         // eslint-disable-next-line no-unused-vars
         setSock(newSock);
     };
@@ -423,7 +426,7 @@ function BidDetailRoom() {
                                         className="mx-auto mb-4 w-36 h-36 rounded-full"
                                         src={
                                             participant.imageId
-                                                ? `http://localhost:8080/api/v1/images/read/${participant.imageId}`
+                                                ? `${DOMAIN_URL}api/v1/images/read/${participant.imageId}`
                                                 : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                                         }
                                         alt="Avatar"

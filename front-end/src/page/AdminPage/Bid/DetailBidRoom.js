@@ -15,6 +15,7 @@ import { imageDefault } from '~/assets/images';
 import Loader from '~/Loader';
 import ErrorPage404 from '~/page/ErrorPage';
 import UserModal from './UserModal';
+import { DOMAIN_URL } from '~/CONST/const';
 
 function DetailBidRoom() {
     const { bidId } = useParams();

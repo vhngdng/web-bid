@@ -1,12 +1,25 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useUpdateStatusBidMutation } from '~/app/service/bid.service';
 import { arrowIcon } from '~/assets/images';
 
 function AdminSettingInBidRoom({ isOpen, auctioneer }) {
+    const { id } = useParams();
+    const [updateStatusBid] = useUpdateStatusBidMutation();
     const [isRotate, setIsRotate] = useState(false);
     const [isAdminRotate, setIsAdminRotate] = useState(false);
     const navigate = useNavigate();
+
+    const handleCloseBid = () => {
+        updateStatusBid(id, {
+            status: 'DEACTIVE',
+            dayOfSale: new Date(),
+        })
+            .unwrap()
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+    };
     return (
         <aside
             className={`fixed top-0 right-0 z-40 min-w-fit w-[13vw] ml-6 h-full roundedL bg-gray-900/50 flex-col justify-between py-6 items-center
@@ -62,6 +75,16 @@ function AdminSettingInBidRoom({ isOpen, auctioneer }) {
                             <button className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto">
                                 <div className="pl-2 leading-none uppercase">
                                     Finish
+                                </div>
+                            </button>
+                        </div>
+                        <div className="flex justify-center items-center  px-3 py-4 ">
+                            <button
+                                onClick={handleCloseBid}
+                                className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
+                            >
+                                <div className="pl-2 leading-none uppercase">
+                                    Close
                                 </div>
                             </button>
                         </div>

@@ -155,7 +155,7 @@ function BidCreate() {
                                 {data && (
                                     <img
                                         alt="Photo avatar"
-                                        src={`${DOMAIN_URL}api/v1/images/read/${imageId}`}
+                                        src={`${DOMAIN_URL}api/v1/images/read/${property.imageId}`}
                                         className="mx-auto object-cover rounded-full h-24 w-24 bg-white p-1"
                                     />
                                 )}

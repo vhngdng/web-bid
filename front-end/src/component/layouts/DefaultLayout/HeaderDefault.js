@@ -39,7 +39,12 @@ function HeaderDefault() {
     const refNoti = useRef(null);
     useEffect(() => {
         const handleSock = () => {
-            let newSock = new SockJS(DOMAIN_BACKEND_WWS + 'api/v1/ws');
+            let newSock = new SockJS(
+                DOMAIN_BACKEND_WWS + 'api/v1/ws',
+                undefined,
+                // eslint-disable-next-line no-undef
+                { protocols_whitelist: [transport] },
+            );
             setSock(newSock);
         };
         window.addEventListener('beforeunload', setSock(handleSock));

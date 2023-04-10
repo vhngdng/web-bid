@@ -85,6 +85,13 @@ export const bidApi = createApi({
                 body: { status: 'DEACTIVE' },
             }),
         }),
+        updateStatusBid: builder.mutation({
+            query: ({ id, ...body }) => ({
+                url: `admin/update/${id}`,
+                method: 'POST',
+                body,
+            }),
+        }),
         createBid: builder.mutation({
             query: (body) => ({
                 url: `admin/bid-room`,
@@ -117,4 +124,5 @@ export const {
     useRunBidRoomMutation,
     useGetAllBidRoomPagingQuery,
     useGetDetailBidWithIdQuery,
+    useUpdateStatusBidMutation,
 } = bidApi;

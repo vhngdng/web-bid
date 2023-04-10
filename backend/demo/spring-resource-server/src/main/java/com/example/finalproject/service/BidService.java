@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
 
 @Service
@@ -93,11 +94,7 @@ public class BidService {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id " + id + " was not found"));
     if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.FINISH.name())) {
       Optional<Transaction> transactionOptional = transactionRepository.findByBid(bid);
-      log.error("==========================");
-      if(transactionOptional.isPresent()) {
-        log.error(transactionOptional.get().getId().toString());
-        transactionRepository.deleteById(transactionOptional.get().getId());
-      }
+      transactionOptional.ifPresent(transaction -> transactionRepository.deleteById(transaction.getId()));
       transactionRepository.save(Transaction.builder().bid(bid).status("PENDING").build());
     }
     mapper.updateBid(upSertBid, bid);
@@ -106,6 +103,7 @@ public class BidService {
   }
 
   public void schedulerChangeBidStatus(Bid bid) {
+    if(bid.getDayOfSale().minusMinutes(2L).isBefore(ChronoLocalDateTime.from(LocalDateTime.now()))) return;
     try {
       Date startAt = Date.from(bid.getDayOfSale().atZone(ZoneId.systemDefault()).toInstant());
 //      if(dayOfSale.before(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))){
@@ -116,10 +114,10 @@ public class BidService {
       if (bid.getStatus().equalsIgnoreCase(STATUS_BID.DEACTIVE.name())) {
         log.info("check status before create job and trigger", bid.getStatus());
         JobDetail jobDetailActive = quartUtil.buildJobDetail(bid);
-//        Date timeToClose = Date.from(bid.getDayOfSale().plusMinutes(15L).atZone(ZoneId.systemDefault()).toInstant());
-//        Date timeToProcess = Date.from(bid.getDayOfSale().plusMinutes(5L).atZone(ZoneId.systemDefault()).toInstant());
-        Date timeToClose = Date.from(LocalDateTime.now().plusMinutes(3L).atZone(ZoneId.systemDefault()).toInstant());
-        Date timeToProcess = Date.from(LocalDateTime.now().plusMinutes(2L).atZone(ZoneId.systemDefault()).toInstant());
+        Date timeToClose = Date.from(bid.getDayOfSale().plusMinutes(15L).atZone(ZoneId.systemDefault()).toInstant());
+        Date timeToProcess = Date.from(bid.getDayOfSale().plusMinutes(5L).atZone(ZoneId.systemDefault()).toInstant());
+//        Date timeToClose = Date.from(LocalDateTime.now().plusMinutes(10L).atZone(ZoneId.systemDefault()).toInstant());
+//        Date timeToProcess = Date.from(LocalDateTime.now().plusMinutes(20L).atZone(ZoneId.systemDefault()).toInstant());
         // trigger process
         JobDetail jobDetailProcess = quartUtil.buildJobDetail(bid);
         Trigger triggerProcess = quartUtil.buildJobTrigger(jobDetailProcess, timeToProcess);
@@ -133,8 +131,8 @@ public class BidService {
 //        startAt = Date.from(bid.getDayOfSale().plusMinutes(5L).atZone(ZoneId.systemDefault()).toInstant());
 //      }
         // trigger active
-        Date start = Date.from(LocalDateTime.now().plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
-        Trigger triggerActive = quartUtil.buildJobTrigger(jobDetailActive, start);
+//        Date start = Date.from(LocalDateTime.now().plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
+        Trigger triggerActive = quartUtil.buildJobTrigger(jobDetailActive, startAt);
         scheduler.scheduleJob(jobDetailActive, triggerActive);
         scheduler.scheduleJob(jobDetailProcess, triggerProcess);
         scheduler.scheduleJob(jobDetailClose, triggerClose);
