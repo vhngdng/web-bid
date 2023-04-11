@@ -12,11 +12,13 @@ then
   echo 'NGINX_CONFIG_PART=./config/nginx.conf' >> .env
   echo 'WDS_SOCKET_PORT=443' >> .env
   echo 'WDS_SOCKET_PATH=/api/v1/ws' >> .env
+  echo 'HTTPS=true' >> .env
+
 else
-  ( ! cat .env | grep "PROPERTY" ) && echo "PROPERTY=local" >> .env
-  ( ! cat .env | grep "NGINX_PORT" ) && echo 'NGINX_PORT=8081' >> .env
-  ( ! cat .env | grep "REACT_APP_DOMAIN_URL" ) && echo 'REACT_APP_DOMAIN_URL=http://localhost:8080/' >> .env
-  ( ! cat .env | grep "NGINX_CONFIG_PART" ) && echo 'NGINX_CONFIG_PART=./config/nginx.local.conf' >> .env
+  echo "PROPERTY=local" >> .env
+  echo 'NGINX_PORT=8081' >> .env
+  echo 'REACT_APP_DOMAIN_URL=http://localhost:8080/' >> .env
+  echo 'NGINX_CONFIG_PART=./config/nginx.local.conf' >> .env
 fi
 
 docker pull vuhoangdung/web-bid-frontend:latest && docker pull vuhoangdung/web-bid-backend:latest
