@@ -43,7 +43,13 @@ function HeaderDefault() {
                 DOMAIN_URL + 'api/v1/ws',
                 undefined,
                 // eslint-disable-next-line no-undef
-                { protocols_whitelist: [transport] },
+                {
+                    protocols_whitelist: [
+                        'xhr-polling',
+                        'xdr-polling',
+                        'jsonp-polling',
+                    ],
+                },
             );
             setSock(newSock);
         };
