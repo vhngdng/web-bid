@@ -1,0 +1,72 @@
+version: '3.9'
+services:
+  backend:
+    container_name: bid-backend-server
+    image: vuhoangdung/web-bid-backend:latest
+    depends_on:
+      - postgre
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+      - 5432
+    volumes:
+      - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
+    networks:
+      - web-bid-network
+
+  frontend:
+    container_name: bid-frontend-server
+    image: vuhoangdung/web-bid-frontend:latest
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+    - ./certbot/etc:/etc/letsencrypt
+    - ./front-end:/app
+    ports:
+      - 3000:3000
+    networks:
+      - web-bid-network
+ 
+  nginx:
+    image: nginx:latest
+    ports:
+      - ${NGINX_PORT}:80
+      - 443:443
+    volumes:
+      - ${NGINX_CONFIG_PART}:/etc/nginx/nginx.conf
+      - ./certbot/etc:/etc/letsencrypt
+      - ./certbot/dhparam:/etc/letsencrypt/dhparams
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./certbot/webpath:/var/www/html
+      - ./certbot/var:/var/lib/letsencrypt
+      - ./log/nginx/:/var/log/nginx/
+    tty: true
+    depends_on:
+      - frontend
+      - backend
+    restart: unless-stopped
+    networks:
+      - web-bid-network
+
+    
+  postgre:
+    image: postgres:15.2
+    container_name: db
+    env_file: .env
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${POSTGRE_PASSWORD}
+      - POSTGRES_DB=web-project
+    volumes:
+      - ./dbdata:/var/lib/postgres
+    ports:
+      - "5433:5432"
+    restart: unless-stopped
+    networks:
+      - web-bid-network
+
+networks:
+  web-bid-network:
+    driver: bridge
+

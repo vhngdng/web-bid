@@ -25,6 +25,7 @@ const AuthSlice = createSlice({
     reducers: {
         logout: (state, { payload }) => {
             setDataToLocalStorage(AUTHPUBLIC, defaultState);
+            return defaultState;
         },
         tokenReceived: (state, { payload }) => {
             setDataToLocalStorage(AUTHPUBLIC, { ...state, token: payload });
