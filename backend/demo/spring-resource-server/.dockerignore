@@ -13,6 +13,5 @@ Dockerfile
 
 # Ignore application properties
 /application*.yml
-/src/main/resources/application-dev.properties
 # Ignore test files
 src/test
