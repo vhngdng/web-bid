@@ -22,8 +22,7 @@ function Login() {
     const [login] = useLoginMutation();
     const navigate = useNavigate();
 
-    const handleLogin = (e) => {
-        e.preventDefault();
+    const handleLogin = () => {
         login({ email, password })
             .unwrap()
             .then((res) => {
