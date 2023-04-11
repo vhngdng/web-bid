@@ -4,8 +4,9 @@ COPY .mvn .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline
 COPY src ./src
-# ENV SPRING_PROFILES_ACTIVE=${PROPERTY}
+ARG SPRING_PROFILES_ACTIVE=${PROPERTY}
+ENV SPRING_PROFILES_ACTIVE=${SPRING_PROFILES_ACTIVE}
 
 EXPOSE 8080
 # ENTRYPOINT [ "java", "-Dspring.profiles.active=$SPRING_PROFILES_ACTIVE", "-jar", "/app.jar" ]
-CMD ["./mvnw", "spring-boot:run", "-Dspring.profiles.active=$PROPERTY"]
+CMD ["./mvnw", "spring-boot:run", "-Dspring.profiles.active=$SPRING_PROFILES_ACTIVE"]
