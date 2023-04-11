@@ -74,7 +74,7 @@ public class BidListener {
   private void setDayOfSaleBasingOnStatus(Bid bid) {
     if(bid.getStatus().equalsIgnoreCase("ACTIVE") &&
             !bid.getDayOfSale().equals(bid.getLastModifiedDate())) {
-      bid.setDayOfSale(bid.getLastModifiedDate());
+      bid.setDayOfSale(LocalDateTime.now());
     }else if(bid.getStatus().equalsIgnoreCase("SUCCESS")) {
       bid.setFinishTime(bid.getLastModifiedDate());
     }

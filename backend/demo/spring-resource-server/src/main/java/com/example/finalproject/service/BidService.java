@@ -103,9 +103,10 @@ public class BidService {
   }
 
   public void schedulerChangeBidStatus(Bid bid) {
-    if(bid.getDayOfSale().minusMinutes(2L).isBefore(ChronoLocalDateTime.from(LocalDateTime.now()))) return;
+    if(bid.getDayOfSale().minusMinutes(2L).isBefore(LocalDateTime.now())) return;
+
     try {
-      Date startAt = Date.from(bid.getDayOfSale().atZone(ZoneId.systemDefault()).toInstant());
+      Date startAt = Date.from(bid.getDayOfSale().minusMinutes(2L).atZone(ZoneId.systemDefault()).toInstant());
 //      if(dayOfSale.before(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))){
 //        throw new BadRequestException("Day of sale is not valid");
 //      }
@@ -115,7 +116,7 @@ public class BidService {
         log.info("check status before create job and trigger", bid.getStatus());
         JobDetail jobDetailActive = quartUtil.buildJobDetail(bid);
         Date timeToClose = Date.from(bid.getDayOfSale().plusMinutes(15L).atZone(ZoneId.systemDefault()).toInstant());
-        Date timeToProcess = Date.from(bid.getDayOfSale().plusMinutes(5L).atZone(ZoneId.systemDefault()).toInstant());
+        Date timeToProcess = Date.from(bid.getDayOfSale().atZone(ZoneId.systemDefault()).toInstant());
 //        Date timeToClose = Date.from(LocalDateTime.now().plusMinutes(10L).atZone(ZoneId.systemDefault()).toInstant());
 //        Date timeToProcess = Date.from(LocalDateTime.now().plusMinutes(20L).atZone(ZoneId.systemDefault()).toInstant());
         // trigger process

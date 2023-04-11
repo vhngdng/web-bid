@@ -11,16 +11,19 @@ import {
     useGetRequestToChangeBidSuccessQuery,
     useUpdateSuccessBidMutation,
 } from '~/app/service/bid.service';
-import { imageDefault } from '~/assets/images';
+import { arrowDropdown, imageDefault } from '~/assets/images';
 import Loader from '~/Loader';
 import ErrorPage404 from '~/page/ErrorPage';
 import UserModal from './UserModal';
 import { DOMAIN_URL } from '~/CONST/const';
 import { useUpdateStatusBidMutation } from '~/app/service/bid.service';
+import { motion, useAnimate } from 'framer-motion';
 
+const statusBid = ['DEACTIVE', 'ACTIVE', 'FINISH', 'PROCESSING'];
 function DetailBidRoom() {
     const { bidId } = useParams();
     const [updateStatusBid] = useUpdateStatusBidMutation();
+    const [listStatus, setListStatus] = useState(statusBid);
     const { data, isLoading, isSuccess, error } = useGetDetailBidWithIdQuery(
         bidId,
         {
@@ -35,6 +38,8 @@ function DetailBidRoom() {
     const [bid, setBid] = useState();
     const [messages, setMessages] = useState();
     const [userId, setUserId] = useState(null);
+    const [scope, animate] = useAnimate();
+    const [isShowStatus, setIsShowStatus] = useState(false);
     let tableRef = useRef(null);
     const navigate = useNavigate();
     useEffect(() => {
@@ -45,8 +50,22 @@ function DetailBidRoom() {
             if (!!data.messages) {
                 setMessages(data.messages);
             }
+            setListStatus(statusBid.filter((s) => s !== data.bid.status));
         }
     }, [data]);
+    // useEffect(() => {
+    //     const animation = async () => {
+    //         await animate(scope.current, {
+    //             duration: 0.5,
+    //             opacity: 1,
+    //             scale: 1,
+    //         });
+    //         animate();
+    //     };
+    //     if (isShowStatus) {
+    //         animation();
+    //     }
+    // }, [isShowStatus]);
     if (isLoading) return <Loader />;
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -56,17 +75,26 @@ function DetailBidRoom() {
         setIsOpen((prev) => !prev);
     };
 
-    const handleChangeStatus = () => {
+    const handleChangeStatus = (status) => {
+        console.log(status);
         updateStatusBid({
             id: data.bid.id,
-            status: 'ACTIVE',
-            dayOfSale: new Date(),
+            status,
+            dayOfSale: status === 'ACTIVE' ? new Date() : null,
         })
             .unwrap()
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
     };
     console.log(data);
+    const showVariants = {
+        close: { opacity: 0, scale: 0.3 },
+        open: {
+            opacity: 1,
+            scale: 1,
+            transition: { type: 'spring', duration: 1 },
+        },
+    };
     return (
         <div ref={tableRef}>
             <div className="max-h-full overflow-y-hidden">
@@ -233,13 +261,63 @@ function DetailBidRoom() {
                             <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
                                 Status
                             </div>
-                            <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                                <button
+                            <div className=" flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
+                                {/* <button
                                     className="rounded-full text-black bg-blue-500 hover:bg-blue-700 focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 active:animate-bounce transition-all duration-750 ease-in-out"
                                     onClick={handleChangeStatus}
                                 >
                                     {!!bid.status && bid.status}
-                                </button>
+                                </button> */}
+                                <div className="relative">
+                                    <button
+                                        className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "
+                                        type="button"
+                                        onClick={() =>
+                                            setIsShowStatus((prev) => !prev)
+                                        }
+                                    >
+                                        {bid.status}
+                                        <img
+                                            className={`h-4 w-4 ml-2  ${
+                                                isShowStatus
+                                                    ? ''
+                                                    : 'transform rotate-180'
+                                            }`}
+                                            src={arrowDropdown.logo.default}
+                                        />
+                                    </button>
+                                    <div className="absolute top-0 left-full translate-x-full sm:right-0 sm:translate-x-0  mt-1 rounded absolute z-10 w-fit">
+                                        <motion.ul
+                                            variants={showVariants}
+                                            animate={
+                                                isShowStatus ? 'open' : 'close'
+                                            }
+                                            className={` list-none overflow-x-visible rounded ${
+                                                isShowStatus ? '' : 'hidden'
+                                            }`}
+                                        >
+                                            {listStatus.map((status, index) => (
+                                                <motion.li
+                                                    whileHover={{ scale: 1.2 }}
+                                                    className=" rounded shadow-lg"
+                                                    key={index}
+                                                    onClick={() =>
+                                                        handleChangeStatus(
+                                                            status,
+                                                        )
+                                                    }
+                                                >
+                                                    <a
+                                                        href=""
+                                                        className="flex py-2 px-2 transition duration-300 bg-gray-100/20 text-red-700"
+                                                    >
+                                                        {status}
+                                                    </a>
+                                                </motion.li>
+                                            ))}
+                                        </motion.ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}

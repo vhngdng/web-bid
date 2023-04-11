@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import styles from './NotificationTimer.module.scss';
 
 const cx = classNames.bind(styles);
-function NotificationTimer({ timer }) {
+function NotificationTimer({ timer, message }) {
     const targetDate = timer + 5 * 1000;
     const onComplete = () => {
         console.log('Countdown completed!');
@@ -17,15 +17,13 @@ function NotificationTimer({ timer }) {
                 if (completed) {
                     // Render whatever you want when the countdown is completed
                     return (
-                        <h2 className={cx('noti-success-timer')}>
-                            The bid is successfully closed
-                        </h2>
+                        <h2 className={cx('noti-success-timer')}>{message}</h2>
                     );
                 } else {
                     // Render the countdown timer with minutes and seconds
                     return (
                         <span className={cx('noti-timer')}>
-                            This bid will be closed in {seconds}
+                            {message} in {seconds}
                         </span>
                     );
                 }

@@ -104,16 +104,22 @@ function BidDetailRoom() {
     }, [stompClient]);
 
     const addEventNotiClose = useCallback(() => {
-        toast.success(<NotificationTimer timer={Date.now()} />, {
-            position: 'top-center',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: undefined,
-        });
+        toast.success(
+            <NotificationTimer
+                timer={Date.now()}
+                message="The bid is successfully closed"
+            />,
+            {
+                position: 'top-center',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: undefined,
+            },
+        );
     }, []);
     useEffect(() => {
         window.addEventListener('beforeunload', sendCloseSocket);
@@ -193,18 +199,21 @@ function BidDetailRoom() {
     };
     // eslint-disable-next-line no-unused-vars
     const sendFinishBidMessage = () => {
-        let bidFinishDetail = {
-            id: id,
-            status: 'FINISH',
-            lastPrice: price,
-            winningBidderUsername: userWinning.email || userWinning.username,
-        };
-        stompClient.send(
-            `/app/finish/room/${id}`,
-            {},
-            JSON.stringify(bidFinishDetail),
-        );
-        setIsBidClose(true);
+        if (!!userWinning) {
+            let bidFinishDetail = {
+                id: id,
+                status: 'FINISH',
+                lastPrice: price,
+                winningBidderUsername:
+                    userWinning.email || userWinning.username,
+            };
+            stompClient.send(
+                `/app/finish/room/${id}`,
+                {},
+                JSON.stringify(bidFinishDetail),
+            );
+            setIsBidClose(true);
+        }
     };
     const onMessagePublicReceived = (payload) => {
         let payloadData = JSON.parse(payload.body);
@@ -321,7 +330,7 @@ function BidDetailRoom() {
     return (
         <>
             {userData.connected ? (
-                <section className="bg-gray-200/25 dark:bg-gray-900">
+                <section className="bg-gray-200/25 dark:bg-gray-900 rounded">
                     <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
                         <div>
                             <div className="grid gap-8 lg:gap-16 grid-cols-8 ">
@@ -526,6 +535,7 @@ function BidDetailRoom() {
             <AdminSettingInBidRoom
                 isOpen={isOpenAdminSetting}
                 auctioneer={data.auctioneer}
+                sendFinishBidMessage={sendFinishBidMessage}
             />
             <ToastContainer />
         </>

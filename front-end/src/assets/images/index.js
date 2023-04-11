@@ -27,8 +27,11 @@ const dollar = {
 const fix = {
     logo: require('~/assets/images/fix-icon.svg'),
 };
-
+const arrowDropdown = {
+    logo: require('~/assets/images/arrow-dropdown.svg'),
+};
 export {
+    arrowDropdown,
     fix,
     notification,
     imageDefault,

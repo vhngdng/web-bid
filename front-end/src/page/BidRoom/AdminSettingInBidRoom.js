@@ -1,10 +1,12 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 import { useUpdateStatusBidMutation } from '~/app/service/bid.service';
 import { arrowIcon } from '~/assets/images';
+import NotificationTimer from '~/notificationTimer';
 
-function AdminSettingInBidRoom({ isOpen, auctioneer }) {
+function AdminSettingInBidRoom({ isOpen, auctioneer, sendFinishBidMessage }) {
     const { id } = useParams();
     const [updateStatusBid] = useUpdateStatusBidMutation();
     const [isRotate, setIsRotate] = useState(false);
@@ -12,13 +14,42 @@ function AdminSettingInBidRoom({ isOpen, auctioneer }) {
     const navigate = useNavigate();
 
     const handleCloseBid = () => {
-        updateStatusBid(id, {
+        updateStatusBid({
+            id,
             status: 'DEACTIVE',
             dayOfSale: new Date(),
         })
             .unwrap()
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
+    };
+    const handleChangeStatus = (newStatus) => {
+        toast.success(
+            <NotificationTimer
+                timer={Date.now()}
+                message={`Bid will be change to ${newStatus}`}
+            />,
+            {
+                position: 'top-center',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: undefined,
+            },
+        );
+        setTimeout(() => {
+            console.log(newStatus);
+            updateStatusBid({
+                id,
+                status: newStatus,
+            })
+                .unwrap()
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+        }, 5500);
     };
     return (
         <aside
@@ -65,14 +96,20 @@ function AdminSettingInBidRoom({ isOpen, auctioneer }) {
                 {isRotate && (
                     <>
                         <div className="flex justify-center items-center  px-3 py-4 ">
-                            <button className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto">
+                            <button
+                                onClick={() => handleChangeStatus('PROCESSING')}
+                                className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
+                            >
                                 <div className="pl-2 leading-none uppercase">
-                                    Active
+                                    Run
                                 </div>
                             </button>
                         </div>
                         <div className="flex justify-center items-center  px-3 py-4 ">
-                            <button className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto">
+                            <button
+                                onClick={() => sendFinishBidMessage()}
+                                className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
+                            >
                                 <div className="pl-2 leading-none uppercase">
                                     Finish
                                 </div>
@@ -80,7 +117,7 @@ function AdminSettingInBidRoom({ isOpen, auctioneer }) {
                         </div>
                         <div className="flex justify-center items-center  px-3 py-4 ">
                             <button
-                                onClick={handleCloseBid}
+                                onClick={() => handleCloseBid()}
                                 className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
                             >
                                 <div className="pl-2 leading-none uppercase">
@@ -159,6 +196,7 @@ function AdminSettingInBidRoom({ isOpen, auctioneer }) {
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </aside>
     );
 }

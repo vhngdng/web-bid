@@ -1,5 +1,5 @@
 import { Button, Card, Option, Select } from '@material-tailwind/react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { useGetAllPropertyNotBidQuery } from '~/app/service/property.service';
 import Loader from '~/Loader';
@@ -16,9 +16,13 @@ const customStyles = {
 };
 
 function PropertyModal({ appElement, open, setOpen, setProperty }) {
-    const { data, isLoading, isSuccess } = useGetAllPropertyNotBidQuery();
+    const { data, isLoading, isSuccess, refetch } =
+        useGetAllPropertyNotBidQuery();
     const [selectProperty, setSelectProperty] = useState('');
 
+    useEffect(() => {
+        refetch();
+    }, [data]);
     if (isLoading) return <Loader />;
 
     const handleClose = () => {

@@ -11,6 +11,7 @@ import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { GoogleLogin } from '@react-oauth/google';
 import { ToastContainer, toast } from 'react-toastify';
+import { eachDayOfInterval } from 'date-fns/esm';
 
 const cx = classNames.bind(styles);
 function Login() {
@@ -58,7 +59,7 @@ function Login() {
     };
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            handleLogin();
+            handleLogin(e);
         }
     };
     if (isAuthenticated) {
