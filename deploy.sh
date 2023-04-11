@@ -4,7 +4,7 @@
 echo "Hello World"
 
 export PROPERTY=${PROPERTY:-dev}
-if [ ! "${PROPERTY}" = 'dev' ] 
+if [ "${PROPERTY}" = 'dev' ] 
 then 
   echo 'NGINX_PORT=80' >> .env
   echo 'REACT_APP_DOMAIN_URL=https://auctionforfun.site/' >> .env
