@@ -10,6 +10,8 @@ then
   echo 'NGINX_PORT=80' >> .env
   echo 'REACT_APP_DOMAIN_URL=https://auctionforfun.site/' >> .env
   echo 'NGINX_CONFIG_PART=./config/nginx.conf' >> .env
+  echo 'WDS_SOCKET_PORT=443' >> .env
+
 else
   ( ! cat .env | grep "PROPERTY" ) && echo "PROPERTY=local" >> .env
   ( ! cat .env | grep "NGINX_PORT" ) && echo 'NGINX_PORT=8081' >> .env
