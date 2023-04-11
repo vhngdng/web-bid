@@ -5,12 +5,13 @@ echo "Hello World"
 
 export PROPERTY=${PROPERTY:-dev}
 if [ "${PROPERTY}" = 'dev' ] 
-echo '\n' >> .env
 then 
+  echo 'PROPERTY=dev' >> .env
   echo 'NGINX_PORT=80' >> .env
   echo 'REACT_APP_DOMAIN_URL=https://auctionforfun.site/' >> .env
   echo 'NGINX_CONFIG_PART=./config/nginx.conf' >> .env
 else
+  echo 'PROPERTY=local' >> .env
   echo 'NGINX_PORT=8081' >> .env
   echo 'REACT_APP_DOMAIN_URL=http://localhost:8081/' >> .env
   echo 'NGINX_CONFIG_PART=./config/nginx.local.conf' >> .env
