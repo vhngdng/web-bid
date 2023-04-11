@@ -75,3 +75,8 @@
 172.29.0.1 - - [11/Apr/2023:08:36:32 +0000] "GET /manifest.json HTTP/1.1" 304 0 "http://localhost:8081/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 172.29.0.1 - - [11/Apr/2023:08:36:33 +0000] "GET /static/js/bundle.js.map HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 172.30.0.1 - - [11/Apr/2023:08:43:22 +0000] "GET /main.0a9f46fc70c141f941b7.hot-update.json HTTP/1.1" 200 867 "http://localhost:8081/sign-up" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+172.30.0.1 - - [11/Apr/2023:09:18:35 +0000] "GET / HTTP/1.1" 304 0 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+172.30.0.1 - - [11/Apr/2023:09:18:39 +0000] "GET /static/js/bundle.js HTTP/1.1" 200 1356728 "http://localhost:8081/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+172.30.0.1 - - [11/Apr/2023:09:18:41 +0000] "GET /manifest.json HTTP/1.1" 200 492 "http://localhost:8081/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+172.30.0.1 - - [11/Apr/2023:09:18:41 +0000] "GET /static/js/bundle.js.map HTTP/1.1" 200 1461495 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+172.30.0.1 - - [11/Apr/2023:09:18:41 +0000] "GET /logo192.png HTTP/1.1" 200 5347 "http://localhost:8081/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
