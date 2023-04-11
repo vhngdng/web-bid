@@ -113,3 +113,4 @@
 172.30.0.1 - - [11/Apr/2023:10:12:51 +0000] "GET /favicon.ico HTTP/1.1" 304 0 "http://localhost:8081/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 172.30.0.1 - - [11/Apr/2023:10:12:51 +0000] "GET /manifest.json HTTP/1.1" 304 0 "http://localhost:8081/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
 172.30.0.1 - - [11/Apr/2023:10:12:51 +0000] "GET /logo192.png HTTP/1.1" 304 0 "http://localhost:8081/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"
+172.30.0.1 - - [11/Apr/2023:10:34:56 +0000] "GET /main.e544dba83c3cb4411fe0.hot-update.json HTTP/1.1" 304 0 "http://localhost:8081/login" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36"

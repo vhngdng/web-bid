@@ -12,7 +12,6 @@ then
   echo 'NGINX_CONFIG_PART=./config/nginx.conf' >> .env
   echo 'WDS_SOCKET_PORT=443' >> .env
   echo 'WDS_SOCKET_PATH=/api/v1/ws' >> .env
-  echo 'HTTPS=true' >> .env
 
 else
   echo "PROPERTY=local" >> .env
