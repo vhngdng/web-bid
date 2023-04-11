@@ -19,7 +19,7 @@ import { useGetAllTransactionBidFinishQuery } from '~/app/service/transaction.se
 import Loader from '~/Loader';
 import { toast, ToastContainer } from 'react-toastify';
 import NotificationTimer from '~/notificationTimer';
-import { DOMAIN_BACKEND_WWS } from '~/CONST/const';
+import { DOMAIN_URL } from '~/CONST/const';
 const cx = classNames.bind(styles);
 
 var stompClient = null;
@@ -40,7 +40,7 @@ function HeaderDefault() {
     useEffect(() => {
         const handleSock = () => {
             let newSock = new SockJS(
-                DOMAIN_BACKEND_WWS + 'api/v1/ws',
+                DOMAIN_URL + 'api/v1/ws',
                 undefined,
                 // eslint-disable-next-line no-undef
                 { protocols_whitelist: [transport] },

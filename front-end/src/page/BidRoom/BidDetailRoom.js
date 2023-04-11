@@ -21,7 +21,7 @@ import { Button } from '@material-tailwind/react';
 import UserWinningInBidRoom from './UserWinningInBidRoom';
 import { dollar, imageDefault } from '~/assets/images';
 import AdminSettingInBidRoom from './AdminSettingInBidRoom';
-import { DOMAIN_BACKEND_WWS, DOMAIN_URL } from '~/CONST/const';
+import { DOMAIN_URL } from '~/CONST/const';
 
 var stompClient = null;
 // var Sock = null;
@@ -177,7 +177,7 @@ function BidDetailRoom() {
 
     const connect = () => {
         // eslint-disable-next-line no-unused-vars
-        let newSock = new SockJS(DOMAIN_BACKEND_WWS + 'api/v1/ws', undefined, {
+        let newSock = new SockJS(DOMAIN_URL + 'api/v1/ws', undefined, {
             // eslint-disable-next-line no-undef
             protocols_whitelist: [transport],
         });
