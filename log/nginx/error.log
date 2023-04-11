@@ -31,3 +31,29 @@
 2023/04/11 14:54:37 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
 2023/04/11 14:57:41 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
 2023/04/11 15:05:25 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:53:54 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:53:54 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:53:55 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:53:55 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:53:56 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:53:56 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:53:57 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:53:57 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:53:58 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:53:58 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:54:00 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:54:00 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:54:04 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:54:04 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:54:10 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:54:10 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:54:24 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:54:24 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:54:50 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:54:50 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:55:41 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:55:41 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:56:42 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:56:42 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
+2023/04/11 16:56:45 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/11 16:57:24 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11

@@ -3,3 +3,5 @@ client_secret_60674483096-p014e3eca264vr8vn6sq14gs12g0qc9g.apps.googleuserconten
 .env
 
 certbot
+docker-compose.local.yml
+config/nginx.local.conf
