@@ -22,11 +22,13 @@ function Login() {
     const [login] = useLoginMutation();
     const navigate = useNavigate();
 
-    const handleLogin = () => {
+    const handleLogin = (e) => {
+        e.preventDefault();
         login({ email, password })
             .unwrap()
             .then((res) => {
                 // alert('Login thành công');
+                console.log(res);
                 toast.success('Login thành công', {
                     position: 'top-center',
                     autoClose: 3000,

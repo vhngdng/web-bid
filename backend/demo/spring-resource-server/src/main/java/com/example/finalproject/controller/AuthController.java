@@ -54,6 +54,7 @@ public class AuthController {
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     String jwtToken = jwtUtils.generateToken(authentication);
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
+    log.error(jwtToken);
     return ResponseEntity.ok(AuthResponse
         .builder()
         .token(jwtToken)
