@@ -27,20 +27,22 @@ function Login() {
         login({ email, password })
             .unwrap()
             .then((res) => {
-                if (!!res.data.status === 401) {
-                    toast.error(res.error.message, {
-                        position: 'top-center',
-                        autoClose: 3000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: false,
-                        draggable: true,
-                        progress: undefined,
-                        theme: 'colored',
-                    });
-                } else {
-                    // alert('Login thành công');
-                    toast.success('Login thành công', {
+                // alert('Login thành công');
+                toast.success('Login thành công', {
+                    position: 'top-center',
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'colored',
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+                if (err.status === 401) {
+                    toast.error('The email or password is not correct', {
                         position: 'top-center',
                         autoClose: 3000,
                         hideProgressBar: false,
@@ -51,9 +53,6 @@ function Login() {
                         theme: 'colored',
                     });
                 }
-            })
-            .catch((err) => {
-                console.log(err);
             });
     };
     const handleKeyDown = (e) => {
