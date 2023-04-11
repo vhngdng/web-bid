@@ -3,6 +3,7 @@ package com.example.finalproject.security;
 import com.example.finalproject.entity.Role;
 import com.example.finalproject.entity.User;
 
+import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,10 @@ public class CustomUserDetailsService implements UserDetailsService {
   @Override
   @Transactional
   public CustomUserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-
+    log.error(email);
     User user = userRepository
             .findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found with : " + email));
+            .orElseThrow(() -> new NotFoundException("User not found with : " + email));
     return CustomUserDetails.builder()
             .email(user.getEmail())
             .password(user.getPassword())

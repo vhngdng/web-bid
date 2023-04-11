@@ -38,11 +38,7 @@ public class WebSecurityConfig {
   private final CustomAuthenticationEntryPoint authEntryPoint;
   private final CustomAccessDenied accessDenied;
   private final AuthenticationProvider authenticationProvider;
-  private final CustomUserDetailsService customUserDetailsService;
-  private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-  private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
   private final CustomOAuth2UserService customOAuth2UserService;
-  private final ClientRegistrationRepository clientRegistrationRepository;
 
   @Bean
   public AuthorizationRequestRepository<OAuth2AuthorizationRequest>
@@ -69,11 +65,6 @@ public class WebSecurityConfig {
 
     return authorizedClientManager;
   }
-
-//  @Bean
-//  public RestOperations restOperations() {
-//    return new RestTemplate();
-//  }
 
 
   @Bean
@@ -102,26 +93,11 @@ public class WebSecurityConfig {
             .and()
             .authenticationProvider(authenticationProvider)
             .addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class)
-//            .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-//            .oauth2Login()
-//            .successHandler(oAuth2AuthenticationSuccessHandler)
-//            .oauth2ResourceServer().jwt();
             .oauth2Login(oauth2 -> {
               try {
                 oauth2
-//                        .authorizationEndpoint(e -> e
-//                                        .baseUri("/oauth2/authorize")
-//                                                .authorizationRequestRepository(authorizationRequestRepository())
-//                        )
-//                        .redirectionEndpoint(r ->
-//                                r.baseUri("/oauth2/callback/*")
-//                        )
-//                        .tokenEndpoint().accessTokenResponseClient(new RestOAuth2AccessTokenResponseClient(restOperations()))
                         .userInfoEndpoint().userService(customOAuth2UserService)
                         .and()
-//                        .successHandler(oAuth2AuthenticationSuccessHandler)
-//                                .failureHandler(oAuth2AuthenticationFailureHandler)
-//                                .defaultSuccessUrl("/success", true)
                         .and()
                         .logout(l -> l
                                 .logoutSuccessUrl("/")
@@ -132,7 +108,6 @@ public class WebSecurityConfig {
                 throw new RuntimeException(e);
               }
             });
-//            .oauth2Client(client -> client);
     return http.build();
 
   }

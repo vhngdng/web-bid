@@ -49,11 +49,15 @@ public class AuthController {
         loginRequest.getEmail(),
         loginRequest.getPassword());
     // Xác thực từ username và password.
+    log.error(loginRequest.getEmail());
+    log.error(loginRequest.getPassword());
 
     Authentication authentication = authenticationConfiguration.getAuthenticationManager().authenticate(token);
+    log.error("====================================================");
     UserDetails userDetails = (UserDetails) authentication.getPrincipal();
     String jwtToken = jwtUtils.generateToken(authentication);
     RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUsername());
+    log.error(jwtToken);
     return ResponseEntity.ok(AuthResponse
         .builder()
         .token(jwtToken)

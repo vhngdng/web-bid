@@ -73,7 +73,7 @@ function ListBidRoom() {
     if (isLoading) return <Loader />;
 
     console.log('data', data);
-    const handleOpenModal = () => {};
+
     return (
         <>
             <section className="container mx-auto font-mono">
@@ -484,9 +484,6 @@ function ListBidRoom() {
                                                                     : imageDefault
                                                                           .logo
                                                                           .default
-                                                            }
-                                                            onClick={
-                                                                handleOpenModal
                                                             }
                                                         />
                                                         <span className="font-medium">

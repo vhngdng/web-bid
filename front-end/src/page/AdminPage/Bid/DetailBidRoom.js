@@ -16,9 +16,11 @@ import Loader from '~/Loader';
 import ErrorPage404 from '~/page/ErrorPage';
 import UserModal from './UserModal';
 import { DOMAIN_URL } from '~/CONST/const';
+import { useUpdateStatusBidMutation } from '~/app/service/bid.service';
 
 function DetailBidRoom() {
     const { bidId } = useParams();
+    const [updateStatusBid] = useUpdateStatusBidMutation();
     const { data, isLoading, isSuccess, error } = useGetDetailBidWithIdQuery(
         bidId,
         {
@@ -53,6 +55,18 @@ function DetailBidRoom() {
         setUserId(id);
         setIsOpen((prev) => !prev);
     };
+
+    const handleChangeStatus = () => {
+        updateStatusBid({
+            id: data.bid.id,
+            status: 'ACTIVE',
+            dayOfSale: new Date(),
+        })
+            .unwrap()
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+    };
+    console.log(data);
     return (
         <div ref={tableRef}>
             <div className="max-h-full overflow-y-hidden">
@@ -215,6 +229,17 @@ function DetailBidRoom() {
                             </div>
                             <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
                                 {!!bid.lastPrice && bid.lastPrice}
+                            </div>
+                            <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
+                                Status
+                            </div>
+                            <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
+                                <button
+                                    className="rounded-full text-black bg-blue-500 hover:bg-blue-700 focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 active:animate-bounce transition-all duration-750 ease-in-out"
+                                    onClick={handleChangeStatus}
+                                >
+                                    {!!bid.status && bid.status}
+                                </button>
                             </div>
                         </div>
                     )}

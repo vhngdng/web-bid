@@ -9,7 +9,6 @@ services:
     restart: unless-stopped
     ports:
       - 8080:8080
-      - 5432
     volumes:
       - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
     networks:
