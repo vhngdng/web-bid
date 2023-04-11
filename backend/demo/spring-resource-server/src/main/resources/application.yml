@@ -30,7 +30,7 @@ spring:
 # Configuration Properties
 app:
   cors:
-    allowedOrigins: http://localhost:8081, http://localhost:3000, https://auctionforfun.site:443, https://auctionforfun.site:3000, https://auctionforfun.site, https://auctionforfun.site:8080
+    allowedOrigins: http://localhost:8081, http://localhost:3000, https://auctionforfun.site
   oauth2:
     # After successfully authenticating with the OAuth2 Provider,
     # we'll be generating an auth token for the user and sending the token to the

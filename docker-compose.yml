@@ -28,7 +28,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - 80:80
+      - ${NGINX_PORT}:80
       - 443:443
     volumes:
       - ./config/nginx.conf:/etc/nginx/nginx.conf
@@ -37,6 +37,7 @@ services:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./certbot/webpath:/var/www/html
       - ./certbot/var:/var/lib/letsencrypt
+      - ./log/nginx/error.log:/var/log/nginx/error.log
     tty: true
     depends_on:
       - frontend
