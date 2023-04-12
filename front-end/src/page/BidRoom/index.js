@@ -125,11 +125,10 @@ function BidRoom() {
                                                 </td>
                                                 <td className="py-3 px-6 text-center">
                                                     <div className="flex item-center justify-center">
-                                                        {
+                                                        {!!bid.dayOfSale &&
                                                             formatDateTime(
                                                                 bid.dayOfSale,
-                                                            ).date
-                                                        }
+                                                            ).date}
                                                     </div>
                                                 </td>
                                                 <td className="py-3 px-6 text-center">

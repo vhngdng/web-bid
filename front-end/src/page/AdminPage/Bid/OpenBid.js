@@ -1,10 +1,10 @@
-import { Button } from '@material-tailwind/react';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import {
     useGetAllBidPreparingToRunQuery,
     useRunBidRoomMutation,
+    useUpdateStatusBidMutation,
 } from '~/app/service/bid.service';
 import Loader from '~/Loader';
 
@@ -12,13 +12,15 @@ function OpenBid() {
     const { data, isLoading, isSuccess, refetch } =
         useGetAllBidPreparingToRunQuery();
     const [runBidRoom] = useRunBidRoomMutation();
+    const [updateStatusBid] = useUpdateStatusBidMutation();
     useEffect(() => {
         refetch();
     }, [useLocation()]);
-    console.log(data);
     if (isLoading) return <Loader />;
+    console.log(data);
 
     const handleRunBid = async (id) => {
+        console.log(data);
         await runBidRoom(id)
             .unwrap()
             .then(() => {
@@ -46,6 +48,13 @@ function OpenBid() {
                 progress: undefined,
                 theme: undefined,
             });
+    };
+    const handleUpdate = (id) => {
+        updateStatusBid({
+            id,
+            status: 'ACTIVE',
+            dayOfSale: new Date(),
+        });
     };
     return (
         <>
@@ -118,12 +127,28 @@ function OpenBid() {
                                         {bid.property.owner.username ||
                                             bid.property.owner.email}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
-                                        <Button
-                                            onClick={() => handleRunBid(bid.id)}
-                                        >
-                                            Run
-                                        </Button>
+                                    <td className="border border-slate-300 text-center px-1 ">
+                                        {!bid.status ? (
+                                            <button
+                                                type="button"
+                                                className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                                                onClick={() =>
+                                                    handleRunBid(bid.id)
+                                                }
+                                            >
+                                                Auto run
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="button"
+                                                className="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                                                onClick={() =>
+                                                    handleUpdate(bid.id)
+                                                }
+                                            >
+                                                Run manually
+                                            </button>
+                                        )}
                                     </td>
                                 </tr>
                             ))}

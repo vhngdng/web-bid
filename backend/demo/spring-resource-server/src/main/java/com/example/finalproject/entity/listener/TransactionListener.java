@@ -24,9 +24,6 @@ public class TransactionListener {
     log.error("=============================================================================");
     if(transaction.getStatus() != null && !transaction.getOriginalStatus().equalsIgnoreCase(transaction.getStatus())) {
       Bid bid = transaction.getBid();
-      if(transaction.getStatus().equalsIgnoreCase(STATUS_TRANSACTION.FINISH.name()) ||
-              transaction.getStatus().equalsIgnoreCase(STATUS_TRANSACTION.SUCCESS.name())
-      ) {
         // send noti to auctioneer
         log.error(bid.getAuctioneer().getEmail());
         TransactionDTO transactionDTO = mapper.toDTO(transaction);
@@ -38,7 +35,6 @@ public class TransactionListener {
         // send noti to winner
         log.error(bid.getWinningBidder().getEmail());
         simpMessagingTemplate.convertAndSendToUser(bid.getWinningBidder().getEmail(), "private", transactionDTO);  //  /user/${name}/private
-      }
     }
   }
 }

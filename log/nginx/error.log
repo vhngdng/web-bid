@@ -72,3 +72,11 @@
 2023/04/12 04:38:23 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
 2023/04/12 04:39:24 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
 2023/04/12 04:40:24 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 12:08:03 [warn] 22#22: *47 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 192.168.32.1, server: , request: "GET /static/media/giphy.2440028d2fa1f451f821.gif HTTP/1.1", upstream: "http://192.168.32.2:3000/static/media/giphy.2440028d2fa1f451f821.gif", host: "localhost:8081", referrer: "http://localhost:8081/"
+2023/04/12 13:35:57 [info] 25#25: *215 client 192.168.32.1 closed keepalive connection
+2023/04/12 13:35:57 [info] 23#23: *203 client 192.168.32.1 closed keepalive connection
+2023/04/12 13:37:24 [info] 25#25: *248 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 13:50:58 [info] 24#24: *274 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 14:23:31 [info] 25#25: *458 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 14:25:55 [info] 23#23: *496 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 14:27:02 [info] 23#23: *509 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80

@@ -27,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -165,7 +166,8 @@ public class BidService {
   }
 
   public List<BidDTO> getAllBidPreparingToRun() {
-    return mapper.toListBidDTO(bidRepository.findAllBidPreparingToRun(), userRepository, imageRepository);
+    log.error(bidRepository.findAllBidPreparingToRun(LocalDateTime.now()).stream().map(Bid::getStatus).collect(Collectors.toList()).toString());
+    return mapper.toListBidDTO(bidRepository.findAllBidPreparingToRun(LocalDateTime.now()), userRepository, imageRepository);
   }
 
   public List<BidDTO> findBidRoomBeforeStartDate(Long id) {

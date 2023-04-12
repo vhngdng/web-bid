@@ -28,30 +28,8 @@ public class BidListener {
   public void onBidUpdateAndSendNoti(Bid bid) {
     log.error("Count count count count");
     if(bid.getStatus() != null && !bid.getStatus().equalsIgnoreCase(bid.getOriginalStatus())){
-
       switch(bid.getStatus()) {
-        case "FINISH": {
-          log.error(bid.getStatus());
-          log.error(bid.getOriginalStatus());
-
-          ChangeBidStatusRequest request = ChangeBidStatusRequest
-                  .builder()
-                  .status(bid.getStatus())
-                  .build();
-          String destination = "/room/" + bid.getId().toString();
-          // send message to finish bid
-          simpMessagingTemplate.convertAndSend(destination, request);
-          // send noti to auctioneer
-          log.error(bid.getAuctioneer().getEmail());
-          simpMessagingTemplate.convertAndSendToUser(bid.getAuctioneer().getEmail(), "private", mapper.toDTO(bid.getTransaction()));  //  /user/${name}/private
-
-          // send noti to winner
-          log.error(bid.getWinningBidder().getEmail());
-          simpMessagingTemplate.convertAndSendToUser(bid.getWinningBidder().getEmail(), "private", mapper.toDTO(bid.getTransaction()));  //  /user/${name}/private
-          break;
-        }
         case "SUCCESS": {
-
           break;
         }
         default: {

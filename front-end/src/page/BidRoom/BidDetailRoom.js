@@ -199,21 +199,18 @@ function BidDetailRoom() {
     };
     // eslint-disable-next-line no-unused-vars
     const sendFinishBidMessage = () => {
-        if (!!userWinning.username) {
-            let bidFinishDetail = {
-                id: id,
-                status: 'FINISH',
-                lastPrice: price,
-                winningBidderUsername:
-                    userWinning.email || userWinning.username,
-            };
-            stompClient.send(
-                `/app/finish/room/${id}`,
-                {},
-                JSON.stringify(bidFinishDetail),
-            );
-            setIsBidClose(true);
-        }
+        let bidFinishDetail = {
+            id: id,
+            status: 'FINISH',
+            lastPrice: price,
+            winningBidderUsername: userWinning.email || userWinning.username,
+        };
+        stompClient.send(
+            `/app/finish/room/${id}`,
+            {},
+            JSON.stringify(bidFinishDetail),
+        );
+        setIsBidClose(true);
     };
     const onMessagePublicReceived = (payload) => {
         let payloadData = JSON.parse(payload.body);
