@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 import { GoogleLogin } from '@react-oauth/google';
 import { ToastContainer, toast } from 'react-toastify';
 import { eachDayOfInterval } from 'date-fns/esm';
+import { Helmet } from 'react-helmet';
 
 const cx = classNames.bind(styles);
 function Login() {
@@ -79,6 +80,11 @@ function Login() {
 
     return (
         <center className="g-6 flex h-full flex-wrap items-center justify-center lg:justify-between">
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Login Auctionforfun</title>
+                <meta name="description" content="Login Auctionforfun" />
+            </Helmet>
             <div className={cx('login-page')}>
                 <div className={cx('form')}>
                     <form className={cx('register-form')}>

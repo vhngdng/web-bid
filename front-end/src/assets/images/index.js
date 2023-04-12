@@ -30,6 +30,7 @@ const fix = {
 const arrowDropdown = {
     logo: require('~/assets/images/arrow-dropdown.svg'),
 };
+
 export {
     arrowDropdown,
     fix,

@@ -57,3 +57,18 @@
 2023/04/11 16:56:42 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:14
 2023/04/11 16:56:45 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
 2023/04/11 16:57:24 [warn] 1#1: the "ssl" directive is deprecated, use the "listen ... ssl" directive instead in /etc/nginx/nginx.conf:11
+2023/04/12 04:34:34 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:34:35 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:34:36 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:34:37 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:34:38 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:34:40 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:34:44 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:34:51 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:35:04 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:35:31 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:36:22 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:37:23 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:38:23 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:39:24 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13
+2023/04/12 04:40:24 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:13

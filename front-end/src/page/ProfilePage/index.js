@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const customSelectStyle = 'bg-blue-200 text-lime-900 shadow-inner scale-y-90';
@@ -21,6 +22,11 @@ function ProfilePage() {
     console.log(selectSidebar);
     return (
         <div>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>User Profile</title>
+                <meta name="description" content="User" />
+            </Helmet>
             <div className="flex flex-row w-full">
                 <aside
                     id="default-sidebar"

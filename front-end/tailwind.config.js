@@ -31,6 +31,7 @@ module.exports = withMT({
             'green-rgb': 'rgb(110, 141, 133)',
             'blue-rgb': 'rgb(126, 155, 188)',
             'pink-rgb': 'rgb(226, 181, 244)',
+            'red-rgb': 'rgb(212, 131, 93)',
         },
         maxHeight: {
             '75vh': '75vh',
@@ -40,6 +41,8 @@ module.exports = withMT({
         backgroundImage: {
             'my-pattern':
                 'linear-gradient(180deg, rgb(190, 215, 176) 0%, rgb(110, 141, 133)30%, rgb(126, 155, 188)60%, rgb(226, 181, 244)90%)',
+            'wooden-hammer-image':
+                'url(src/assets/images/wooden_hammer_auction.png)',
         },
     },
 

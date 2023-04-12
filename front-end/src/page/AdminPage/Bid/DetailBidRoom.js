@@ -53,19 +53,6 @@ function DetailBidRoom() {
             setListStatus(statusBid.filter((s) => s !== data.bid.status));
         }
     }, [data]);
-    // useEffect(() => {
-    //     const animation = async () => {
-    //         await animate(scope.current, {
-    //             duration: 0.5,
-    //             opacity: 1,
-    //             scale: 1,
-    //         });
-    //         animate();
-    //     };
-    //     if (isShowStatus) {
-    //         animation();
-    //     }
-    // }, [isShowStatus]);
     if (isLoading) return <Loader />;
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -96,14 +83,14 @@ function DetailBidRoom() {
         },
     };
     return (
-        <div ref={tableRef}>
-            <div className="max-h-full overflow-y-hidden">
+        <div className="static" ref={tableRef}>
+            <div className=" max-h-full ">
                 <div className="flex-1 justify-center items-center">
                     <h2 className="flex justify-center my-2 col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl">
                         Bid
                     </h2>
                     {bid && (
-                        <div className="grid grid-cols-5 border-1 gap-1">
+                        <div className=" grid grid-cols-5 border-1 gap-1">
                             <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
                                 Bid ID
                             </div>
@@ -262,12 +249,6 @@ function DetailBidRoom() {
                                 Status
                             </div>
                             <div className=" flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                                {/* <button
-                                    className="rounded-full text-black bg-blue-500 hover:bg-blue-700 focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 active:animate-bounce transition-all duration-750 ease-in-out"
-                                    onClick={handleChangeStatus}
-                                >
-                                    {!!bid.status && bid.status}
-                                </button> */}
                                 <div className="relative">
                                     <button
                                         className=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center "

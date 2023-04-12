@@ -9,6 +9,7 @@ import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
 import Loader from '~/Loader';
 import { toast, ToastContainer } from 'react-toastify';
+import { Helmet } from 'react-helmet';
 const cx = classNames.bind(styles);
 
 const customSelectStyle = 'bg-blue-200 text-lime-900 shadow-inner scale-y-90';
@@ -73,6 +74,11 @@ function AdminHomePage() {
 
     return (
         <>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>Auction Admin</title>
+                <meta name="description" content="Admin" />
+            </Helmet>
             <div>
                 <div className="flex flex-row w-full">
                     <aside

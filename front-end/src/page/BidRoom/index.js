@@ -63,19 +63,21 @@ function BidRoom() {
                                             <tr
                                                 key={index}
                                                 className={` border-gray-300 hover:bg-gray-100 
-                                                    ${
-                                                        (index + 1) % 2 &&
-                                                        'bg-gray-100/25'
-                                                    }
-                                                    ${
-                                                        [
-                                                            'ACTIVE',
-                                                            'PROCESSING',
-                                                        ].includes(bid.status)
-                                                            ? 'cursor-pointer'
-                                                            : 'pointer-events-none'
-                                                    }
-                                                    `}
+                                                        ${
+                                                            (index + 1) % 2 &&
+                                                            'bg-gray-100/25'
+                                                        }
+                                                        ${
+                                                            [
+                                                                'ACTIVE',
+                                                                'PROCESSING',
+                                                            ].includes(
+                                                                bid.status,
+                                                            )
+                                                                ? 'cursor-pointer'
+                                                                : 'pointer-events-none'
+                                                        }
+                                                        `}
                                                 title={bid.conditionReport}
                                                 onClick={() =>
                                                     handleEnterRoom(bid.id)
@@ -155,24 +157,24 @@ function BidRoom() {
                                                 >
                                                     <span
                                                         className={`py-1 px-3 rounded-full text-xs 
-                                                            ${
-                                                                bid.status ===
-                                                                'ACTIVE'
-                                                                    ? 'bg-green-300 text-green-700  transition-all duration-150 ease-in-out animate-pulse'
-                                                                    : bid.status ===
-                                                                      'DEACTIVE'
-                                                                    ? 'bg-red-200 text-red-600'
-                                                                    : bid.status ===
-                                                                          'FINISH' ||
-                                                                      bid.status ===
-                                                                          'SUCCESS'
-                                                                    ? 'bg-purple-200 text-purple-600'
-                                                                    : bid.status ===
-                                                                      'PROCESSING'
-                                                                    ? 'bg-yellow-200 text-yellow-800'
-                                                                    : ''
-                                                            }
-                                                            `}
+                                                                ${
+                                                                    bid.status ===
+                                                                    'ACTIVE'
+                                                                        ? 'bg-green-300 text-green-700  transition-all duration-150 ease-in-out animate-pulse'
+                                                                        : bid.status ===
+                                                                          'DEACTIVE'
+                                                                        ? 'bg-red-200 text-red-600'
+                                                                        : bid.status ===
+                                                                              'FINISH' ||
+                                                                          bid.status ===
+                                                                              'SUCCESS'
+                                                                        ? 'bg-purple-200 text-purple-600'
+                                                                        : bid.status ===
+                                                                          'PROCESSING'
+                                                                        ? 'bg-yellow-200 text-yellow-800'
+                                                                        : ''
+                                                                }
+                                                                `}
                                                     >
                                                         {bid.status}
                                                     </span>

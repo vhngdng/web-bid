@@ -2,13 +2,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './modules/HeaderDefault.module.scss';
 import classNames from 'classnames/bind';
-// import SockJS from 'sockjs-client';
-// import { over } from 'stompjs';
-// import { notification } from '~/assets/images';
-// import { Button } from '@material-tailwind/react';
-// import { useSelector } from 'react-redux';
-// import { useGetRequestToChangeBidSuccessQuery } from '~/app/service/bid.service';
-// import Loader from '~/Loader';
 import { logout } from '~/app/slice/auth.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
