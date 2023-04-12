@@ -199,7 +199,7 @@ function BidDetailRoom() {
     };
     // eslint-disable-next-line no-unused-vars
     const sendFinishBidMessage = () => {
-        if (!!userWinning) {
+        if (!!userWinning.username) {
             let bidFinishDetail = {
                 id: id,
                 status: 'FINISH',
@@ -536,6 +536,7 @@ function BidDetailRoom() {
                 isOpen={isOpenAdminSetting}
                 auctioneer={data.auctioneer}
                 sendFinishBidMessage={sendFinishBidMessage}
+                userWinning={userWinning}
             />
             <ToastContainer />
         </>

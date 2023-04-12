@@ -50,7 +50,6 @@ public class BidListener {
           simpMessagingTemplate.convertAndSendToUser(bid.getWinningBidder().getEmail(), "private", mapper.toDTO(bid.getTransaction()));  //  /user/${name}/private
           break;
         }
-        case "DEACTIVE": break;
         case "SUCCESS": {
 
           break;

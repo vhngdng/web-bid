@@ -6,7 +6,12 @@ import { useUpdateStatusBidMutation } from '~/app/service/bid.service';
 import { arrowIcon } from '~/assets/images';
 import NotificationTimer from '~/notificationTimer';
 
-function AdminSettingInBidRoom({ isOpen, auctioneer, sendFinishBidMessage }) {
+function AdminSettingInBidRoom({
+    isOpen,
+    auctioneer,
+    sendFinishBidMessage,
+    userWinning,
+}) {
     const { id } = useParams();
     const [updateStatusBid] = useUpdateStatusBidMutation();
     const [isRotate, setIsRotate] = useState(false);
@@ -51,6 +56,7 @@ function AdminSettingInBidRoom({ isOpen, auctioneer, sendFinishBidMessage }) {
                 .catch((err) => console.log(err));
         }, 5500);
     };
+    console.log(!userWinning);
     return (
         <aside
             className={`fixed top-0 right-0 z-40 min-w-fit w-[13vw] ml-6 h-full roundedL bg-gray-900/50 flex-col justify-between py-6 items-center
@@ -98,7 +104,7 @@ function AdminSettingInBidRoom({ isOpen, auctioneer, sendFinishBidMessage }) {
                         <div className="flex justify-center items-center  px-3 py-4 ">
                             <button
                                 onClick={() => handleChangeStatus('PROCESSING')}
-                                className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
+                                className="transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
                             >
                                 <div className="pl-2 leading-none uppercase">
                                     Run
@@ -108,7 +114,12 @@ function AdminSettingInBidRoom({ isOpen, auctioneer, sendFinishBidMessage }) {
                         <div className="flex justify-center items-center  px-3 py-4 ">
                             <button
                                 onClick={() => sendFinishBidMessage()}
-                                className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
+                                className={`transform active:scale-95 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto ${
+                                    !!userWinning.username
+                                        ? 'bg-blue-500 hover:bg-blue-400'
+                                        : 'bg-gray-300'
+                                }`}
+                                disabled={!userWinning.username}
                             >
                                 <div className="pl-2 leading-none uppercase">
                                     Finish
@@ -118,7 +129,7 @@ function AdminSettingInBidRoom({ isOpen, auctioneer, sendFinishBidMessage }) {
                         <div className="flex justify-center items-center  px-3 py-4 ">
                             <button
                                 onClick={() => handleCloseBid()}
-                                className="download-button transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
+                                className="transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
                             >
                                 <div className="pl-2 leading-none uppercase">
                                     Close
