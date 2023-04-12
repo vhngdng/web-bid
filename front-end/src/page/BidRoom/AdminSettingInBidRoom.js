@@ -22,7 +22,6 @@ function AdminSettingInBidRoom({
         updateStatusBid({
             id,
             status: 'DEACTIVE',
-            dayOfSale: new Date(),
         })
             .unwrap()
             .then((res) => console.log(res))

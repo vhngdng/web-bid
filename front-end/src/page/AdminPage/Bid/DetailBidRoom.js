@@ -67,7 +67,6 @@ function DetailBidRoom() {
         updateStatusBid({
             id: data.bid.id,
             status,
-            dayOfSale: status === 'ACTIVE' ? new Date() : null,
         })
             .unwrap()
             .then((res) => console.log(res))

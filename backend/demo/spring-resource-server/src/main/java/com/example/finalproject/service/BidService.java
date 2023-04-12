@@ -97,6 +97,8 @@ public class BidService {
       Optional<Transaction> transactionOptional = transactionRepository.findByBid(bid);
       transactionOptional.ifPresent(transaction -> transactionRepository.deleteById(transaction.getId()));
       transactionRepository.save(Transaction.builder().bid(bid).status("PENDING").build());
+    }else if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.ACTIVE.name())) {
+      bid.setDayOfSale(LocalDateTime.now());
     }
     mapper.updateBid(upSertBid, bid);
     schedulerChangeBidStatus(bid);
