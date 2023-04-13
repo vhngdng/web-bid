@@ -29,14 +29,14 @@ import java.util.Optional;
 @Slf4j
 public class MessageService {
   private final ImageRepository imageRepository;
-  private final TransactionRepository transactionRepository;
+  private final PaymentRepository PaymentRepository;
   private final UserRepository userRepository;
   private final BidParticipantRepository bidParticipantRepository;
   private final MessageRepository messageRepository;
   private final Mapper mapper;
   private final BidRepository bidRepository;
 
-  private final TransactionService transactionService;
+  private final PaymentService PaymentService;
 
 
   public Optional<BidParticipant> findParticipant(MessageDTO messageDTO) {
@@ -136,8 +136,8 @@ public class MessageService {
 
   }
 
-  public List<MessageDTO> getAllMessageBySuccessBidId(Integer transactionId) {
-    Bid bid = bidRepository.findByTransactionId(transactionId).orElseThrow(() -> new NotFoundException("Bid with transaction id: " + transactionId + " is not found"));
+  public List<MessageDTO> getAllMessageBySuccessBidId(Integer PaymentId) {
+    Bid bid = bidRepository.findByPaymentId(PaymentId).orElseThrow(() -> new NotFoundException("Bid with Payment id: " + PaymentId + " is not found"));
     LocalDateTime finishTime = bid.getFinishTime();
     LocalDateTime dayOfSale = bid.getDayOfSale();
     return mapper.toListDTO(messageRepository.findAllMessageBySuccessBidId(bid.getId(), STATUS_MESSAGE.MESSAGE.name(), dayOfSale, finishTime));

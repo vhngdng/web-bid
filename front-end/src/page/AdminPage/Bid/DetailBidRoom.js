@@ -181,21 +181,21 @@ function DetailBidRoom() {
                                 </div>
                             </div>
                             <div className="flex justify-center items-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
-                                Transaction
+                                Payment
                             </div>
 
                             <div className=" bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                                {!!bid && bid.transaction && (
+                                {!!bid && bid.Payment && (
                                     <>
                                         <div className="flex justify-center">
-                                            ID: {bid.transaction.id} &nbsp;
+                                            ID: {bid.Payment.id} &nbsp;
                                         </div>
                                         <div>
                                             <div className="flex justify-center">
                                                 Created At:
                                             </div>{' '}
                                             <div className="flex justify-center">
-                                                {bid.transaction.createdAt}
+                                                {bid.Payment.createdAt}
                                             </div>
                                         </div>
                                         <div className="flex justify-center">
@@ -203,12 +203,12 @@ function DetailBidRoom() {
                                             <div
                                                 className={`flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg
                         ${
-                            bid.transaction.status === 'SUCCESS' &&
+                            bid.Payment.status === 'SUCCESS' &&
                             'text-green-500'
                         }
                         `}
                                             >
-                                                {bid.transaction.status}
+                                                {bid.Payment.status}
                                             </div>
                                         </div>
                                     </>

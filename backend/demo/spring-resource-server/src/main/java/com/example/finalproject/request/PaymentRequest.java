@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TransactionRequest {
+public class PaymentRequest {
   private String status;
   private Long bidId;
 }

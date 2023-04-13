@@ -18,13 +18,14 @@ import OpenBid from './page/AdminPage/Bid/OpenBid';
 import UpPropertyPage from './page/ProfilePage/UpPropertyPage';
 import ProfileDetail from './page/ProfilePage/ProfileDetail';
 import ProfilePage from './page/ProfilePage';
-import TransactionPage from './page/ProfilePage/Transaction/TransactionPage';
-import TransactionDetail from './page/ProfilePage/Transaction/TransactionDetail';
-import PropertyList from './page/ProfilePage/PropertyList';
+import PaymentPage from './page/ProfilePage/Payment/PaymentPage';
+import PaymentDetail from './page/ProfilePage/Payment/PaymentDetail';
+import PropertyList from './page/ProfilePage/Properties/PropertyList';
 import DetailBidRoom from './page/AdminPage/Bid/DetailBidRoom';
 import ListBidRoom from './page/AdminPage/Bid/ListBidRoom';
 import ErrorPage404 from './page/ErrorPage';
 import SignUp from './page/SignUp';
+import PropertyDetails from './page/ProfilePage/Properties/PropertyDetails';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -52,16 +53,20 @@ function App() {
                                 path="upload-property"
                                 element={<UpPropertyPage />}
                             />
-                            <Route path="transaction">
-                                <Route index element={<TransactionPage />} />
+                            <Route path="Payment">
+                                <Route index element={<PaymentPage />} />
                                 <Route
                                     path="bidId/:bidId"
-                                    element={<TransactionDetail />}
+                                    element={<PaymentDetail />}
                                 />
                             </Route>
                             <Route
                                 path="property-list"
                                 element={<PropertyList />}
+                            />
+                            <Route
+                                path="property/:propertyId"
+                                element={<PropertyDetails />}
                             />
                         </Route>
 

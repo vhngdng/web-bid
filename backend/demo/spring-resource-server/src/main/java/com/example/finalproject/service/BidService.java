@@ -1,15 +1,14 @@
 package com.example.finalproject.service;
 
 import com.example.finalproject.ENUM.STATUS_BID;
-import com.example.finalproject.ENUM.STATUS_TRANSACTION;
+import com.example.finalproject.ENUM.STATUS_PAYMENT;
 import com.example.finalproject.dto.BidDTO;
 import com.example.finalproject.dto.BidDetailsDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Property;
-import com.example.finalproject.entity.Transaction;
+import com.example.finalproject.entity.Payment;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
-import com.example.finalproject.projection.BidDetails;
 import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.utils.QuartUtil;
@@ -25,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,7 +34,7 @@ import java.util.stream.Collectors;
 public class BidService {
   private final MessageRepository messageRepository;
   private final ImageRepository imageRepository;
-  private final TransactionRepository transactionRepository;
+  private final PaymentRepository PaymentRepository;
   private final PropertyRepository propertyRepository;
   private final UserRepository userRepository;
   private final BidRepository bidRepository;
@@ -94,9 +92,9 @@ public class BidService {
   public BidDTO updateBidRoom(UpSertBid upSertBid, Long id) {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id " + id + " was not found"));
     if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.FINISH.name())) {
-      Optional<Transaction> transactionOptional = transactionRepository.findByBid(bid);
-      transactionOptional.ifPresent(transaction -> transactionRepository.deleteById(transaction.getId()));
-      transactionRepository.save(Transaction.builder().bid(bid).status("PENDING").build());
+      Optional<Payment> PaymentOptional = PaymentRepository.findByBid(bid);
+      PaymentOptional.ifPresent(Payment -> PaymentRepository.deleteById(Payment.getId()));
+      PaymentRepository.save(Payment.builder().bid(bid).status("PENDING").build());
     }else if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.ACTIVE.name())) {
       bid.setDayOfSale(LocalDateTime.now());
     }
@@ -151,16 +149,16 @@ public class BidService {
 //    if (!auctioneerEmail.equalsIgnoreCase(bid.getAuctioneer().getEmail())) {
 //      throw new BadRequestException("The email of auctioneer is not valid");
 //    }
-    List<Bid> listBidFinish = bidRepository.findListBidRoomBeforeFinish(auctioneerEmail, STATUS_TRANSACTION.FINISH.name());
+    List<Bid> listBidFinish = bidRepository.findListBidRoomBeforeFinish(auctioneerEmail, STATUS_PAYMENT.FINISH.name());
     return mapper.toListBidDTO(listBidFinish, userRepository, imageRepository);
   }
 
   public BidDTO upDateBidRoomSuccess(String auctioneerEmail, Long id) {
     Bid bid = bidRepository.findByIdAndAuctioneerEmail(id, auctioneerEmail);
     bid.setStatus(STATUS_BID.SUCCESS.name());
-    Transaction transaction = bid.getTransaction();
-    transaction.setStatus(STATUS_TRANSACTION.SUCCESS.name());
-    transactionRepository.save(transaction);
+    Payment payment = bid.getPayment();
+    payment.setStatus(STATUS_PAYMENT.SUCCESS.name());
+    PaymentRepository.save(payment);
     Property property = bid.getProperty();
     property.setOwner(bid.getWinningBidder());
     propertyRepository.save(property);

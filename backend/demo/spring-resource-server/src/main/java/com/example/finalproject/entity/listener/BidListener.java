@@ -1,17 +1,12 @@
 package com.example.finalproject.entity.listener;
-import com.example.finalproject.dto.TransactionDTO;
 import com.example.finalproject.entity.Bid;
-import com.example.finalproject.entity.Transaction;
-import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
-import com.example.finalproject.repository.TransactionRepository;
 import com.example.finalproject.request.ChangeBidStatusRequest;
 import jakarta.persistence.PostUpdate;
 import jakarta.persistence.PreUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

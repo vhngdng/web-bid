@@ -1,22 +1,11 @@
 package com.example.finalproject.utils;
 
-import com.example.finalproject.dto.BidDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.quartz.BidJob;
-import com.example.finalproject.repository.PropertyRepository;
-import com.example.finalproject.repository.TransactionRepository;
-import com.example.finalproject.repository.UserRepository;
-import com.example.finalproject.request.UpSertBid;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -58,7 +47,7 @@ public class QuartUtil {
 //    String conditionRepost = String.valueOf(jobDataMap.get("conditionReport"));
 //    Long auctioneerId = jobDataMap.getLongFromString("auctioneerId");
 //    Long lastPrice = jobDataMap.getLongFromString("lastPrice");
-//    Integer transactionId = jobDataMap.getIntegerFromString("transactionId");
+//    Integer PaymentId = jobDataMap.getIntegerFromString("PaymentId");
 //    LocalDateTime dayOfSale = LocalDateTime.parse(jobDataMap.get("dayOfSale").toString(), DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss"));
 //    Long reservePrice = jobDataMap.getLongFromString("reservePrice");
 //    Long priceStep = jobDataMap.getLongFromString("priceStep");
@@ -69,7 +58,7 @@ public class QuartUtil {
 //            .id(id)
 //            .status(status)
 //            .property(propertyRepository.findById(propertyId).orElse(null))
-//            .transaction(transactionRepository.findById(transactionId).orElse(null))
+//            .Payment(PaymentRepository.findById(PaymentId).orElse(null))
 //            .priceStep(priceStep)
 //            .type(type)
 //            .reservePrice(reservePrice)

@@ -82,7 +82,7 @@ public class ControllerHandleException {
         return ErrorMessage.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
                 .timestamp(LocalDateTime.now())
-                .message(String.format("Unable to upload. File is too large: %s!", ex.getMessage()))
+                .message(String.format("One or more files are too large %s!", ex.getMessage()))
                 .build();
 
     }

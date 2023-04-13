@@ -184,10 +184,10 @@ function AdminSettingInBidRoom({
             </div>
 
             <div className="absolute bottom-0 flex justify-between items-center w-full">
-                <div className="flex justify-center items-center  space-x-2">
-                    <div className="flex justify-center items-center">
+                <div className="flex justify-center items-center mb-4 space-x-2">
+                    <div className="flex justify-center items-center px-4">
                         <img
-                            className="mx-auto mb-4 w-10 h-10 rounded-full"
+                            className="mx-auto  w-10 h-10 rounded-full"
                             src={
                                 auctioneer.avatar
                                     ? auctioneer.avatar
@@ -196,7 +196,7 @@ function AdminSettingInBidRoom({
                             alt="Avatar"
                         />
                     </div>
-                    <div className="flex justify-start flex-col items-start">
+                    <div className="flex justify-start flex-col inset-0">
                         <p className=" cursor-pointer text-sm leading-5 text-white">
                             {auctioneer.username}
                         </p>

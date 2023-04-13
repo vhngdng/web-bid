@@ -1,15 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useGetAllTransactionQuery } from '~/app/service/transaction.service';
+import { useGetAllPaymentQuery } from '~/app/service/Payment.service';
 import Loader from '~/Loader';
 
-function TransactionPage() {
+function PaymentPage() {
     const { auth } = useSelector((state) => state.auth);
-    const { data: transaction, isLoading } = useGetAllTransactionQuery();
+    const { data: Payment, isLoading } = useGetAllPaymentQuery();
     const navigate = useNavigate();
     if (isLoading) return <Loader />;
-    console.log(transaction);
+    console.log(Payment);
     console.log(auth);
 
     const handleNavigateDetail = (id) => {
@@ -18,7 +18,7 @@ function TransactionPage() {
     };
     return (
         <>
-            <h1 className="flex justify-center">Transaction</h1>
+            <h1 className="flex justify-center">Payment</h1>
             <div className="flex flex-col">
                 <div className=" overflow-x-auto sm:mx-6 lg:mx-8">
                     <div className="inline-block min-w-full py-2 sm:px-6 lg:px-8">
@@ -30,7 +30,7 @@ function TransactionPage() {
                                             #
                                         </th>
                                         <th scope="col" className="px-6 py-4">
-                                            Transaction Id
+                                            Payment Id
                                         </th>
                                         <th scope="col" className="px-6 py-4">
                                             Bid Id
@@ -50,8 +50,8 @@ function TransactionPage() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {transaction &&
-                                        transaction.map((t, index) => (
+                                    {Payment &&
+                                        Payment.map((t, index) => (
                                             <tr
                                                 key={index}
                                                 className="flex-1 border-b transition duration-300 ease-in-out hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer"
@@ -111,4 +111,4 @@ function TransactionPage() {
     );
 }
 
-export default TransactionPage;
+export default PaymentPage;

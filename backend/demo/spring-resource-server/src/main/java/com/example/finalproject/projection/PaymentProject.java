@@ -2,7 +2,7 @@ package com.example.finalproject.projection;
 
 import java.time.LocalDateTime;
 
-public interface TransactionProject {
+public interface PaymentProject {
   public Integer getId();
   public String getStatus();
 

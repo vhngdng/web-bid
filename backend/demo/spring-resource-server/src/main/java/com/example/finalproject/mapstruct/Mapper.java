@@ -10,12 +10,9 @@ import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.response.FinishResponse;
 import com.example.finalproject.response.ImageResponse;
 import org.mapstruct.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -108,7 +105,7 @@ public interface Mapper {
 //  @Mapping(target = "winningBidder", source = "winningBidderId", qualifiedByName = {"mapUserIdToUser"})
   @Mapping(target = "auctioneer", ignore = true)
   @Mapping(target = "winningBidder", ignore = true)
-  @Mapping(target = "transaction", ignore = true)
+  @Mapping(target = "payment", ignore = true)
   @Mapping(target = "property", ignore = true)
   void updateBid(UpSertBid upSertBid, @MappingTarget Bid bid);
 
@@ -121,17 +118,17 @@ public interface Mapper {
             : null;
   }
 
-  default Transaction mapIdToTransaction(Integer transactionId, @Context TransactionRepository transactionRepository) {
-    return transactionId != null
-            ? transactionRepository
-            .findById(transactionId)
+  default Payment mapIdToPayment(Integer PaymentId, @Context PaymentRepository PaymentRepository) {
+    return PaymentId != null
+            ? PaymentRepository
+            .findById(PaymentId)
             .get()
             : null;
   }
 
 
   @Mapping(target = "winningBidder", ignore = true)
-  @Mapping(target = "transaction", ignore = true)
+  @Mapping(target = "payment", ignore = true)
   void updateFromFinishRequest(FinishResponse finishRequest,
                                @MappingTarget Bid bid,
                                @Context UserRepository userRepository);
@@ -152,7 +149,7 @@ public interface Mapper {
   @Mapping(target = "status", ignore = true)
   @Mapping(target = "auctioneer", ignore = true)
   @Mapping(target = "winningBidder", ignore = true)
-  @Mapping(target = "transaction", ignore = true)
+  @Mapping(target = "payment", ignore = true)
   @Mapping(target = "property", ignore = true)
   void createBid(UpSertBid upSertBid, @MappingTarget Bid bid, @Context PropertyRepository propertyRepository, @Context UserRepository userRepository);
 
@@ -208,11 +205,11 @@ public interface Mapper {
   @Mapping(target = "owner", ignore = true)
   void createProperty(UpSertProperty upSertProperty, @MappingTarget Property property, @Context UserRepository userRepository);
 
-  @Mapping(target = "bidId", expression = "java(transaction.getBid().getId())")
-  @Mapping(target = "auctioneerEmail", expression = "java(transaction.getBid().getAuctioneer().getEmail())")
-  @Mapping(target = "winningBidderEmail", expression = "java(transaction.getBid().getWinningBidder().getEmail())")
+  @Mapping(target = "bidId", expression = "java(payment.getBid().getId())")
+  @Mapping(target = "auctioneerEmail", expression = "java(payment.getBid().getAuctioneer().getEmail())")
+  @Mapping(target = "winningBidderEmail", expression = "java(payment.getBid().getWinningBidder().getEmail())")
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  TransactionDTO toDTO(Transaction transaction);
+  PaymentDTO toDTO(Payment payment);
 
   @AfterMapping
   default void setOwnerForProperty(UpSertProperty upSertProperty, @MappingTarget Property property, @Context UserRepository userRepository) {
@@ -223,15 +220,15 @@ public interface Mapper {
 
 
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  List<TransactionDTO> toListTransactionDTO(List<Transaction> transactions);
+  List<PaymentDTO> toListPaymentDTO(List<Payment> payments);
 
   @Mapping(target = "bid", ignore = true)
-  void updateTransaction(TransactionDTO transactionDTO,
-                         @MappingTarget Transaction transaction, @Context BidRepository bidRepository);
+  void updatePayment(PaymentDTO paymentDTO,
+                  @MappingTarget Payment payment, @Context BidRepository bidRepository);
 
   @AfterMapping()
-  default Bid mapBidToBidId(TransactionDTO transactionDTO,
-                            @MappingTarget Transaction transaction, @Context BidRepository bidRepository) {
-    return bidRepository.findById(transactionDTO.getBidId()).orElse(null);
+  default Bid mapBidToBidId(PaymentDTO paymentDTO,
+                            @MappingTarget Payment payment, @Context BidRepository bidRepository) {
+    return bidRepository.findById(paymentDTO.getBidId()).orElse(null);
   }
 }

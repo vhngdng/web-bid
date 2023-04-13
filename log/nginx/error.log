@@ -80,3 +80,76 @@
 2023/04/12 14:23:31 [info] 25#25: *458 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
 2023/04/12 14:25:55 [info] 23#23: *496 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
 2023/04/12 14:27:02 [info] 23#23: *509 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 17:05:51 [info] 24#24: *682 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 17:19:31 [info] 22#22: *751 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 17:22:13 [warn] 24#24: *786 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/2/00/0000000002 while reading upstream, client: 192.168.32.1, server: , request: "GET /static/media/giphy.2440028d2fa1f451f821.gif HTTP/1.1", upstream: "http://192.168.32.2:3000/static/media/giphy.2440028d2fa1f451f821.gif", host: "localhost:8081", referrer: "http://localhost:8081/"
+2023/04/12 17:30:41 [info] 22#22: *853 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 17:36:18 [info] 22#22: *891 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 17:37:32 [info] 22#22: *906 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 17:55:47 [info] 25#25: *1102 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 17:57:28 [info] 23#23: *1113 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 18:01:52 [info] 25#25: *1122 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 18:02:58 [info] 25#25: *1142 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 18:19:07 [info] 25#25: *1299 epoll_wait() reported that client prematurely closed connection, so upstream connection is closed too while sending request to upstream, client: 192.168.32.1, server: , request: "GET /favicon.ico HTTP/1.1", upstream: "http://192.168.32.2:3000/favicon.ico", host: "localhost:8081", referrer: "http://localhost:8081/"
+2023/04/12 18:24:31 [info] 24#24: *1403 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 19:37:23 [info] 24#24: *1494 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 19:39:14 [info] 24#24: *1531 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 19:40:22 [info] 22#22: *1543 client timed out (110: Connection timed out) while waiting for request, client: 192.168.32.1, server: 0.0.0.0:80
+2023/04/12 19:45:07 [warn] 23#23: *1577 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/3/00/0000000003 while reading upstream, client: 192.168.32.1, server: , request: "GET /static/media/giphy.2440028d2fa1f451f821.gif HTTP/1.1", upstream: "http://192.168.32.2:3000/static/media/giphy.2440028d2fa1f451f821.gif", host: "localhost:8081", referrer: "http://localhost:8081/"
+2023/04/12 20:09:46 [info] 23#23: *1924 client 192.168.32.1 closed keepalive connection
+2023/04/13 05:11:25 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:11:25 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:11:26 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:11:27 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:11:28 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:11:30 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:11:34 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:11:41 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:11:53 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:12:19 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:13:11 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:14:11 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:15:12 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:16:12 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:17:12 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:18:13 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:19:13 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:20:13 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:21:14 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:22:14 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:23:14 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:24:15 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:25:15 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:26:16 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:27:34 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:28:35 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:29:35 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:30:36 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:31:36 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:32:36 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:33:37 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:34:37 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:35:38 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:36:38 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:37:38 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:38:39 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:39:39 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:40:40 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:41:40 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:42:41 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:43:41 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:44:42 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:45:42 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:46:42 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:47:43 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:48:43 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:49:43 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:50:44 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:51:44 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:52:45 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:53:45 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:54:46 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:55:46 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:56:47 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:57:48 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/13 05:58:49 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18

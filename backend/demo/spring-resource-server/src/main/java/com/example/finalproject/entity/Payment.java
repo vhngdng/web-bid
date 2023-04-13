@@ -1,6 +1,6 @@
 package com.example.finalproject.entity;
 
-import com.example.finalproject.entity.listener.TransactionListener;
+import com.example.finalproject.entity.listener.PaymentListener;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,9 +20,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@EntityListeners({AuditingEntityListener.class, TransactionListener.class})
+@EntityListeners({AuditingEntityListener.class, PaymentListener.class})
 @DynamicUpdate
-public class Transaction {
+@Table(name = "payment")
+public class Payment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column

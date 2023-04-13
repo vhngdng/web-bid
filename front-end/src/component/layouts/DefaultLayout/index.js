@@ -5,7 +5,7 @@ import FooterDefault from './FooterDefault';
 
 function DefaultLayout() {
     return (
-        <div className="">
+        <div className="relative">
             <HeaderDefault />
             <section className="flex justify-center items-center">
                 <Outlet />

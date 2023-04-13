@@ -42,8 +42,8 @@ public class MessageController {
     simpMessagingTemplate.convertAndSendToUser(email, "private", "test");  //  app/user/${name}/private
   }
 
-  @GetMapping("user/message/success-bid/{transaction-id}")
-  public ResponseEntity<?> getAllMessageBySuccessBidId(@PathVariable("transaction-id") Integer transactionId) {
-    return ResponseEntity.ok(messageService.getAllMessageBySuccessBidId(transactionId));
+  @GetMapping("user/message/success-bid/{Payment-id}")
+  public ResponseEntity<?> getAllMessageBySuccessBidId(@PathVariable("Payment-id") Integer PaymentId) {
+    return ResponseEntity.ok(messageService.getAllMessageBySuccessBidId(PaymentId));
   }
 }

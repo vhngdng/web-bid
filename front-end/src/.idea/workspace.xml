@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="2f54b558-32e8-41ef-b885-a9442c47c102" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/dto/PaymentDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/repository/PaymentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/service/PaymentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/ENUM/STATUS_TRANSACTION.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/ENUM/STATUS_PAYMENT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/config/EnvirontmentConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/config/JpaAuditingConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/config/JpaAuditingConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/controller/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/controller/ImageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/controller/MessageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/controller/MessageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/controller/TransactionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/controller/PaymentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/dto/BidDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/dto/BidDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/dto/TransactionDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/Bid.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/Bid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/Image.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/Image.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/Payment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/listener/BidListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/listener/BidListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/listener/TransactionListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/entity/listener/PaymentListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/exception/ControllerHandleException.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/exception/ControllerHandleException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/mapstruct/Mapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/mapstruct/Mapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/projection/TransactionProject.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/projection/PaymentProject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/quartz/BidJob.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/quartz/BidJob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/repository/BidRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/repository/BidRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/repository/TransactionRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/request/TransactionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/request/PaymentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/request/UpSertBid.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/request/UpSertBid.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/security/OAuth2/CustomOAuth2UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/security/OAuth2/CustomOAuth2UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/service/BidService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/service/BidService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/service/ImageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/service/ImageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/service/MessageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/service/MessageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/service/TransactionService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/utils/QuartUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/utils/QuartUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/utils/SocialUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/main/java/com/example/finalproject/utils/SocialUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/test/java/com/example/finalproject/TransactionTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../backend/demo/spring-resource-server/src/test/java/com/example/finalproject/PaymentTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/images/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/GlobalStyles/GlobalStyles.scss" beforeDir="false" afterPath="$PROJECT_DIR$/component/GlobalStyles/GlobalStyles.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/layouts/DefaultLayout/FooterDefault.js" beforeDir="false" afterPath="$PROJECT_DIR$/component/layouts/DefaultLayout/FooterDefault.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/component/layouts/DefaultLayout/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/component/layouts/DefaultLayout/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/AdminPage/HomeAdmin/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/page/AdminPage/HomeAdmin/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/BidRoom/AdminSettingInBidRoom.js" beforeDir="false" afterPath="$PROJECT_DIR$/page/BidRoom/AdminSettingInBidRoom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/HomePage/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/page/HomePage/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/ProfilePage/PropertyList.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/page/ProfilePage/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/page/ProfilePage/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../log/nginx/access.log" beforeDir="false" afterPath="$PROJECT_DIR$/../../log/nginx/access.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../log/nginx/error.log" beforeDir="false" afterPath="$PROJECT_DIR$/../../log/nginx/error.log" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="2OML1sbPMAf2Ug5KfLuvE6JGbat" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/dung/Documents/web/front-end"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2f54b558-32e8-41ef-b885-a9442c47c102" name="Changes" comment="" />
+      <created>1681365291885</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1681365291885</updated>
+      <workItem from="1681365293279" duration="16000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

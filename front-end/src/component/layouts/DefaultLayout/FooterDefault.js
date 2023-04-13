@@ -26,7 +26,7 @@ function FooterDefault() {
     // };
     return (
         <>
-            <footer className="bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200">
+            <footer className="absolute bottom-0 bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200 w-full">
                 {/* <motion.div
                     ref={container}
                     className="cursor-grabbing flex overflow-hidden container p-6"
@@ -53,9 +53,9 @@ function FooterDefault() {
                     </motion.div>
                 </motion.div> */}
 
-                <div className="bg-neutral-300 p-4 text-center text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
+                <div className="bg-neutral-300 p-4 text-center text-black text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
                     © 2023 Copyright:&nbsp;
-                    <a className="dark:text-neutral-400" href="#">
+                    <a className="dark:text-neutral-400 " href="#">
                         vhngdng@gmail.com
                     </a>
                 </div>

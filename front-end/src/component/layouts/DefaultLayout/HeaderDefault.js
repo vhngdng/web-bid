@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { notification } from '~/assets/images';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
-import { useGetAllTransactionBidFinishQuery } from '~/app/service/transaction.service';
+import { useGetAllPaymentBidFinishQuery } from '~/app/service/Payment.service';
 import Loader from '~/Loader';
 import { toast, ToastContainer } from 'react-toastify';
 import NotificationTimer from '~/notificationTimer';
@@ -20,11 +20,11 @@ function HeaderDefault() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const {
-        data: transactions,
+        data: payments,
         isLoading,
         isSuccess,
         refetch,
-    } = useGetAllTransactionBidFinishQuery();
+    } = useGetAllPaymentBidFinishQuery();
     const [isOpenNotification, setIsOpenNotification] = useState(false);
     const [Sock, setSock] = useState(null);
     const [noti, setNoti] = useState([]);
@@ -71,7 +71,7 @@ function HeaderDefault() {
         };
     }, []);
     useEffect(() => {
-        setNoti(transactions);
+        setNoti(payments);
     }, [isSuccess]);
     const onError = (err) => {
         console.log(err);
@@ -188,8 +188,8 @@ function HeaderDefault() {
         navigate('/profile-detail');
     };
 
-    const handleNavigateToTransactionDetail = (id) => {
-        navigate(`/profile-detail/transaction/bidId/${id}`);
+    const handleNavigateToPaymentDetail = (id) => {
+        navigate(`/profile-detail/Payment/bidId/${id}`);
     };
     if (isLoading) return <Loader />;
 
@@ -281,7 +281,7 @@ function HeaderDefault() {
                                                 className=' w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert"'
                                             >
                                                 <h2 className="flex justify-center mb-1 text-sm font-semibold text-gray-900 dark:text-white">
-                                                    Transaction
+                                                    Payment
                                                 </h2>
                                                 {noti && noti.length > 0 ? (
                                                     noti.map((n, index) => (
@@ -291,7 +291,7 @@ function HeaderDefault() {
                                                         >
                                                             <div
                                                                 onClick={() =>
-                                                                    handleNavigateToTransactionDetail(
+                                                                    handleNavigateToPaymentDetail(
                                                                         n.id,
                                                                     )
                                                                 }

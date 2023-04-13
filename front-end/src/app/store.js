@@ -5,7 +5,7 @@ import { imagesApi } from './service/image.service';
 import { messageApi } from './service/message.service';
 import { participantApi } from './service/participant.service';
 import { propeprtyApi } from './service/property.service';
-import { transactionApi } from './service/transaction.service';
+import { PaymentApi } from './service/Payment.service';
 import { userApi } from './service/user.service';
 import authReducer from './slice/auth.slice';
 import imageReducer from './slice/image.slice';
@@ -19,7 +19,7 @@ const store = configureStore({
         [propeprtyApi.reducerPath]: propeprtyApi.reducer,
         [imagesApi.reducerPath]: imagesApi.reducer,
         [userApi.reducerPath]: userApi.reducer,
-        [transactionApi.reducerPath]: transactionApi.reducer,
+        [PaymentApi.reducerPath]: PaymentApi.reducer,
         auth: authReducer,
         participant: participantReducer,
         image: imageReducer,
@@ -33,7 +33,7 @@ const store = configureStore({
             propeprtyApi.middleware,
             imagesApi.middleware,
             userApi.middleware,
-            transactionApi.middleware,
+            PaymentApi.middleware,
         ),
 });
 

@@ -27,6 +27,6 @@ public class UpSertBid {
   private String status;
   private Long auctioneerId;
   private Long winningBidderId;
-  private Integer transactionId;
+  private Integer PaymentId;
   private Integer propertyId;
 }

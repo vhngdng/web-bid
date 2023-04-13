@@ -58,36 +58,36 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     }
     return result;
 };
-export const transactionApi = createApi({
-    reducerPath: 'transactionApi',
+export const PaymentApi = createApi({
+    reducerPath: 'PaymentApi',
     baseQuery: baseQueryWithReauth,
     endpoints: (builder) => ({
-        getAllTransaction: builder.query({
-            query: () => `user/transaction`,
+        getAllPayment: builder.query({
+            query: () => `user/Payment`,
         }),
-        getAllTransactionNotSuccess: builder.query({
-            query: () => `user/transaction/not-success`,
+        getAllPaymentNotSuccess: builder.query({
+            query: () => `user/Payment/not-success`,
         }),
-        getTransactionById: builder.query({
-            query: (id) => `user/transaction/${id}`,
+        getPaymentById: builder.query({
+            query: (id) => `user/Payment/${id}`,
         }),
-        updateTransactionStatus: builder.mutation({
+        updatePaymentStatus: builder.mutation({
             query: (body) => ({
-                url: `user/transaction/update-status`,
+                url: `user/Payment/update-status`,
                 method: 'PUT',
                 body,
             }),
         }),
-        getAllTransactionBidFinish: builder.query({
-            query: () => `user/transaction/bid-finish`,
+        getAllPaymentBidFinish: builder.query({
+            query: () => `user/Payment/bid-finish`,
         }),
     }),
 });
 
 export const {
-    useGetAllTransactionQuery,
-    useGetAllTransactionNotSuccessQuery,
-    useGetTransactionByIdQuery,
-    useUpdateTransactionStatusMutation,
-    useGetAllTransactionBidFinishQuery,
-} = transactionApi;
+    useGetAllPaymentQuery,
+    useGetAllPaymentNotSuccessQuery,
+    useGetPaymentByIdQuery,
+    useUpdatePaymentStatusMutation,
+    useGetAllPaymentBidFinishQuery,
+} = PaymentApi;

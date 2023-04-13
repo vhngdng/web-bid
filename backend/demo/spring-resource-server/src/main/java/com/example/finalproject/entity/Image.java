@@ -47,7 +47,7 @@ public class Image {
   @JsonIgnore
   private User user;
 
-  @OneToOne()
+  @ManyToOne()
   @JoinColumn(name = "property_id")
   private Property property;
 

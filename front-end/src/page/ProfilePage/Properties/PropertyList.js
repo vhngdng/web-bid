@@ -5,7 +5,7 @@ import Loader from '~/Loader';
 import { imageDefault } from '~/assets/images';
 import { useUpdateTypeImageMutation } from '~/app/service/image.service';
 import { useState } from 'react';
-import UpdatePropertyDetailModal from './UpdatePropertyDetailModal';
+import UpdatePropertyDetailModal from '../UpdatePropertyDetailModal';
 import { useRef } from 'react';
 import { DOMAIN_URL } from '~/CONST/const';
 function PropertyList() {

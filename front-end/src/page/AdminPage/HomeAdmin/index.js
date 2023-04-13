@@ -10,6 +10,7 @@ import styles from './Home.module.scss';
 import Loader from '~/Loader';
 import { toast, ToastContainer } from 'react-toastify';
 import { Helmet } from 'react-helmet';
+import ProfileUserSidebar from '~/component/layouts/DefaultSidebarUser/ProfileUserSidebar';
 const cx = classNames.bind(styles);
 
 const customSelectStyle = 'bg-blue-200 text-lime-900 shadow-inner scale-y-90';
@@ -83,22 +84,22 @@ function AdminHomePage() {
                 <div className="flex flex-row w-full">
                     <aside
                         id="default-sidebar"
-                        className="fixed top-30 left-0 z-40 min-w-fit w-[13vw] mr-6 h-full transition-transform -translate-x-full sm:translate-x-0"
+                        className="fixed top-0 left-0 z-40 min-w-fit w-[13vw] mr-6 h-full transition-transform -translate-x-full sm:translate-x-0"
                         aria-label="Sidebar"
                     >
-                        <div className="h-full rounded-lg px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
-                            <ul
-                                className="relative m-0 list-none px-[0.2rem]"
-                                data-te-sidenav-menu-ref
-                            >
+                        <div className="h-full overflow-y-auto bg-gray-500/25 dark:bg-gray-800 w-56 rounded-tr-3xl">
+                            <ProfileUserSidebar />
+
+                            <ul>
                                 <li className="relative">
                                     <button
-                                        className={`flex flex-col truncate items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
-                                    ${
-                                        selectSidebar === 1
-                                            ? customSelectStyle
-                                            : 'bg-gray-200'
-                                    }`}
+                                        className={`flex flex-col  items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 
+                                        transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
+                                        ${
+                                            selectSidebar === 1
+                                                ? customSelectStyle
+                                                : 'bg-transparent'
+                                        }`}
                                         onClick={() => navigate('')}
                                     >
                                         List Bid Room
@@ -106,24 +107,26 @@ function AdminHomePage() {
                                 </li>
                                 <li>
                                     <button
-                                        className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
-                                    ${
-                                        selectSidebar === 2
-                                            ? customSelectStyle
-                                            : 'bg-gray-200'
-                                    }`}
+                                        className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                        transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent 
+                                        ${
+                                            selectSidebar === 2
+                                                ? customSelectStyle
+                                                : 'bg-transparent'
+                                        }`}
                                     >
                                         Detail Bid Room
                                     </button>
                                 </li>
                                 <li className="relative">
                                     <button
-                                        className={`flex flex-col truncate items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
-                                    ${
-                                        selectSidebar === 3
-                                            ? customSelectStyle
-                                            : 'bg-gray-200'
-                                    }`}
+                                        className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                       transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent 
+                                       ${
+                                           selectSidebar === 3
+                                               ? customSelectStyle
+                                               : 'bg-transparent'
+                                       }`}
                                         onClick={() => navigate('create-bid')}
                                     >
                                         Create Bid Room
@@ -131,12 +134,13 @@ function AdminHomePage() {
                                 </li>
                                 <li className="relative">
                                     <button
-                                        className={`flex flex-col truncate items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
-                                    ${
-                                        selectSidebar === 4
-                                            ? customSelectStyle
-                                            : 'bg-gray-200'
-                                    }`}
+                                        className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                        transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
+                                        ${
+                                            selectSidebar === 4
+                                                ? customSelectStyle
+                                                : 'bg-transparent'
+                                        }`}
                                         onClick={() => navigate('open-bid')}
                                     >
                                         Open Bid Room
@@ -144,8 +148,10 @@ function AdminHomePage() {
                                 </li>
                                 <li className="relative">
                                     <button
-                                        className={`flex flex-col truncate items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out bg-gray-200
-                                    `}
+                                        className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                        transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent bg-transparent
+                                        ${showSidebar ? 'text-red-300' : ''}
+                                        `}
                                         onClick={() =>
                                             setShowSideBar((prev) => !prev)
                                         }

@@ -2,6 +2,7 @@ package com.example.finalproject.controller;
 
 import com.example.finalproject.entity.Image;
 import com.example.finalproject.request.TypeImageRequest;
+import com.example.finalproject.response.ImageResponse;
 import com.example.finalproject.service.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 @RestController
@@ -39,6 +45,20 @@ public class ImageController {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body(String.format("Could not upload the file: %s!", file.getOriginalFilename()));
     }
+  }
+  @PostMapping("multi-file")
+  public ResponseEntity<?> uploadMultiImage(@RequestParam("files") MultipartFile [] files) {
+    List<String> fileNames = new ArrayList<>();
+    Arrays.stream(files).forEach(file -> {
+      try {
+        imageService.save(file);
+        fileNames.add("Uploaded the file successfully: " + file.getOriginalFilename());
+      } catch (IOException e) {
+        fileNames.add(String.format("Could not upload the file: %s!", file.getOriginalFilename()));
+      }
+    });
+    return ResponseEntity.ok().body(fileNames);
+
   }
 
   @GetMapping("{id}")

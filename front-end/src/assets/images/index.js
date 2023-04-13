@@ -30,8 +30,12 @@ const fix = {
 const arrowDropdown = {
     logo: require('~/assets/images/arrow-dropdown.svg'),
 };
+const attachFiles = {
+    logo: require('~/assets/images/attach-files.svg'),
+};
 
 export {
+    attachFiles,
     arrowDropdown,
     fix,
     notification,

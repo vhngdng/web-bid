@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Table(name = "Bid")
+@Table(name = "bid")
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -60,7 +60,7 @@ public class Bid implements Serializable {
   @JsonIgnore
   private List<Message> messages;
   @OneToOne(mappedBy = "bid", fetch = FetchType.EAGER)
-  private Transaction transaction;
+  private Payment payment;
 
   @OneToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
   @JoinColumn(name = "property_id", nullable = false, updatable = false)

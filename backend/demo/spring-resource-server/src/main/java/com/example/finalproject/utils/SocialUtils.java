@@ -3,37 +3,25 @@ package com.example.finalproject.utils;
 import com.example.finalproject.ENUM.Provider;
 import com.example.finalproject.ENUM.TYPE_IMAGE;
 import com.example.finalproject.entity.User;
-import com.example.finalproject.exception.OAuth2AuthenticationProcessingException;
 import com.example.finalproject.repository.ImageRepository;
 import com.example.finalproject.repository.RoleRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.security.CustomUserDetails;
 import com.example.finalproject.security.CustomUserDetailsService;
-import com.example.finalproject.security.OAuth2.CustomOAuth2User;
-import com.example.finalproject.security.OAuth2.userInfo.OAuth2UserInfo;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -101,7 +89,7 @@ public class SocialUtils {
   }
 
   @Transactional
-  private User registerNewUser(GoogleIdToken.Payload payload) {
+  public User registerNewUser(GoogleIdToken.Payload payload) {
     User user = User
             .builder()
             .provider(Provider.GOOGLE)
@@ -115,7 +103,7 @@ public class SocialUtils {
   }
 
   @Transactional
-  private User updateExistingUser(User existingUser, GoogleIdToken.Payload payload) {
+  public User updateExistingUser(User existingUser, GoogleIdToken.Payload payload) {
     existingUser.setUsername((String) payload.get("name"));
     if (existingUser.getAvatar() == null &&
             !imageRepository.findByUserIdAndType(existingUser.getId(), TYPE_IMAGE.AVATAR.name()).isPresent() &&

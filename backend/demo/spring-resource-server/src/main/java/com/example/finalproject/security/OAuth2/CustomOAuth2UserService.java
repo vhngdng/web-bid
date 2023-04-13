@@ -8,7 +8,6 @@ import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.security.CustomUserDetails;
 import com.example.finalproject.security.OAuth2.userInfo.OAuth2UserInfo;
 import com.example.finalproject.security.OAuth2.userInfo.OAuth2UserInfoFactory;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
@@ -17,6 +16,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;
@@ -66,7 +66,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     return CustomOAuth2User.create(user);
   }
   @Transactional
-  private User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
+  public User registerNewUser(OAuth2UserRequest oAuth2UserRequest, OAuth2UserInfo oAuth2UserInfo) {
     User user = User
             .builder()
             .provider(Provider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()))
@@ -78,7 +78,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     return userRepository.save(user);
   }
   @Transactional
-  private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
+  public User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
     existingUser.setUsername(oAuth2UserInfo.getName());
     return userRepository.save(existingUser);
   }

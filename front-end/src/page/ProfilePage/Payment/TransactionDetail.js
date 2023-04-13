@@ -5,49 +5,49 @@ import { useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetAllMessageFromSuccessBidQuery } from '~/app/service/message.service';
 import {
-    useGetTransactionByIdQuery,
-    useUpdateTransactionStatusMutation,
-} from '~/app/service/transaction.service';
+    useGetPaymentByIdQuery,
+    useUpdatePaymentStatusMutation,
+} from '~/app/service/Payment.service';
 import Loader from '~/Loader';
 
-function TransactionDetail() {
+function PaymentDetail() {
     const { bidId } = useParams();
     const { auth } = useSelector((state) => state.auth);
-    const [updateTransactionStatus] = useUpdateTransactionStatusMutation();
+    const [updatePaymentStatus] = useUpdatePaymentStatusMutation();
     const { data: message, isLoading: messageLoading } =
         useGetAllMessageFromSuccessBidQuery(bidId);
     const {
-        data: transaction,
+        data: Payment,
         isLoading,
         isSuccess,
-    } = useGetTransactionByIdQuery(bidId);
+    } = useGetPaymentByIdQuery(bidId);
     const [isAdmin, setIsAdmin] = useState();
     const [status, setStatus] = useState();
 
     useEffect(() => {
         if (isSuccess) {
-            setStatus(transaction.status);
+            setStatus(Payment.status);
         }
-    }, [transaction]);
+    }, [Payment]);
 
     useEffect(() => {
         if (isSuccess) {
             console.log(isSuccess);
-            transaction.auctioneerEmail === auth.email
+            Payment.auctioneerEmail === auth.email
                 ? setIsAdmin(true)
                 : setIsAdmin(false);
         }
         // else {
-        //     navigate('/profile-detail/transaction');
+        //     navigate('/profile-detail/Payment');
         // }
     }, [isSuccess]);
     console.log('bidId', bidId);
     if (isLoading || messageLoading) return <Loader />;
-    console.log(transaction);
+    console.log(Payment);
     console.log('is admin', isAdmin);
     console.log(message);
     const handlePayment = (bidId) => {
-        updateTransactionStatus({
+        updatePaymentStatus({
             status: 'FINISH',
             bidId,
         });
@@ -57,25 +57,25 @@ function TransactionDetail() {
         <>
             <div className="grid grid-cols-5 border-1 gap-1">
                 <div className="flex justify-center my-2 col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl">
-                    Transaction
+                    Payment
                 </div>
                 <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
-                    Transaction ID
+                    Payment ID
                 </div>
                 <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                    {transaction.id}
+                    {Payment.id}
                 </div>
                 <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
                     Bid ID
                 </div>
                 <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                    {transaction.bidId}
+                    {Payment.bidId}
                 </div>
                 <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
                     Created At
                 </div>
                 <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                    {transaction.createdAt}
+                    {Payment.createdAt}
                 </div>
                 <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
                     Status
@@ -91,7 +91,7 @@ function TransactionDetail() {
                     Winner
                 </div>
                 <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                    {transaction.winningBidderEmail}
+                    {Payment.winningBidderEmail}
                 </div>
                 <h2 className="flex justify-center my-2 col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl ">
                     History
@@ -161,22 +161,22 @@ function TransactionDetail() {
                 </div>
                 <div className="flex justify-center  col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl my-8">
                     {status !== 'SUCCESS' && status !== 'FINISH'
-                        ? auth.email === transaction.winningBidderEmail && (
+                        ? auth.email === Payment.winningBidderEmail && (
                               <Button
                                   onClick={() =>
-                                      handlePayment(transaction.bidId)
+                                      handlePayment(Payment.bidId)
                                   }
                               >
                                   Click to pay
                               </Button>
                           )
-                        : auth.email === transaction.winningBidderEmail && (
+                        : auth.email === Payment.winningBidderEmail && (
                               <div className="flex-1 justify-center ">
                                   <h2 className="flex justify-center text-green-500 my-2">
                                       Payment successfully completed{' '}
                                   </h2>
                                   <h3 className="flex justify-center text-orange-600 font-bold my-2">
-                                      ${transaction.lastPrice}
+                                      ${Payment.lastPrice}
                                   </h3>
                               </div>
                           )}
@@ -186,4 +186,4 @@ function TransactionDetail() {
     );
 }
 
-export default TransactionDetail;
+export default PaymentDetail;

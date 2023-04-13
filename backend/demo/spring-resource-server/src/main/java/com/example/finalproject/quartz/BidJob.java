@@ -2,25 +2,21 @@ package com.example.finalproject.quartz;
 
 import com.example.finalproject.ENUM.STATUS_BID;
 import com.example.finalproject.entity.Bid;
-import com.example.finalproject.entity.Transaction;
+import com.example.finalproject.entity.Payment;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.repository.BidRepository;
-import com.example.finalproject.repository.TransactionRepository;
-import com.example.finalproject.request.TransactionRequest;
+import com.example.finalproject.request.PaymentRequest;
 import com.example.finalproject.service.BidService;
-import com.example.finalproject.service.TransactionService;
+import com.example.finalproject.service.PaymentService;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 
 @Component
@@ -34,7 +30,7 @@ public class BidJob extends QuartzJobBean {
   private BidService bidService;
 
   @Autowired
-  private TransactionService transactionService;
+  private PaymentService paymentService;
   @Override
   protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
     log.info("Executing Job with key {}", context.getJobDetail().getKey());
@@ -58,13 +54,13 @@ public class BidJob extends QuartzJobBean {
         return;
       }
 
-//      log.error("before save transaction");
-//      Transaction transaction = transactionRepository.save(Transaction.builder().bid(bid).status("PENDING").build());
-//      log.error(transaction.getStatus());
-      Transaction transaction = transactionService.createTransaction(new TransactionRequest("PENDING", bid.getId()));
+//      log.error("before save Payment");
+//      Payment Payment = PaymentRepository.save(Payment.builder().bid(bid).status("PENDING").build());
+//      log.error(Payment.getStatus());
+      Payment payment = paymentService.createPayment(new PaymentRequest("PENDING", bid.getId()));
       bid.setStatus(STATUS_BID.FINISH.name());
-      bid.setTransaction(transaction);
-      log.info(bid.getTransaction().getStatus());
+      bid.setPayment(payment);
+      log.info(bid.getPayment().getStatus());
 
       bidRepository.save(bid);
     }

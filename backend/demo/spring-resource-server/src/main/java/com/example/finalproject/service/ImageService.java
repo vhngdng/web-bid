@@ -117,7 +117,6 @@ public class ImageService {
         Optional<Image> imageProperty = imageRepository.findByPropertyId(request.getPropertyId());
         imageProperty.ifPresent(image -> {
           image.setType(null);
-          image.setProperty(null);
         });
         newImage.setType(TYPE_IMAGE.PROPERTY.name());
         newImage.setProperty(

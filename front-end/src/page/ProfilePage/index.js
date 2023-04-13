@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import ProfileUserSidebar from '../../component/layouts/DefaultSidebarUser/ProfileUserSidebar';
 
 const customSelectStyle = 'bg-blue-200 text-lime-900 shadow-inner scale-y-90';
 function ProfilePage() {
@@ -9,7 +10,7 @@ function ProfilePage() {
     const location = useLocation();
     useEffect(() => {
         console.log(location.pathname);
-        if (location.pathname.includes('transaction')) {
+        if (location.pathname.includes('Payment')) {
             setSelectSidebar(3);
         } else if (location.pathname.includes('upload-property')) {
             setSelectSidebar(2);
@@ -20,6 +21,7 @@ function ProfilePage() {
         }
     }, [location]);
     console.log(selectSidebar);
+
     return (
         <div>
             <Helmet>
@@ -30,18 +32,20 @@ function ProfilePage() {
             <div className="flex flex-row w-full">
                 <aside
                     id="default-sidebar"
-                    className="fixed top-30 left-0 z-40 min-w-fit w-[13vw] mx-6 h-full transition-transform -translate-x-full sm:translate-x-0"
+                    className="fixed top-0 left-0 z-40 min-w-fit w-[13vw] mr-6 h-full transition-transform -translate-x-full sm:translate-x-0"
                     aria-label="Sidebar"
                 >
-                    <div className="h-full rounded-lg px-3 py-4 overflow-y-auto bg-gray-50/25 dark:bg-gray-800">
+                    <div className="h-full overflow-y-auto bg-gray-500/25 dark:bg-gray-800 w-56 rounded-tr-3xl">
+                        <ProfileUserSidebar />
                         <ul>
                             <li>
                                 <button
-                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 
+                                    className={`flex flex-col  items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 
+                                    transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
                                     ${
                                         selectSidebar === 1
                                             ? customSelectStyle
-                                            : 'bg-gray-200'
+                                            : 'bg-transparent'
                                     }`}
                                     onClick={() => navigate('/profile-detail')}
                                 >
@@ -50,11 +54,12 @@ function ProfilePage() {
                             </li>
                             <li>
                                 <button
-                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent 
                                     ${
                                         selectSidebar === 2
                                             ? customSelectStyle
-                                            : 'bg-gray-200'
+                                            : 'bg-transparent'
                                     }`}
                                     onClick={() => navigate('upload-property')}
                                 >
@@ -63,24 +68,26 @@ function ProfilePage() {
                             </li>
                             <li>
                                 <button
-                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
                                     ${
                                         selectSidebar === 3
                                             ? customSelectStyle
-                                            : 'bg-gray-200'
+                                            : 'bg-transparent'
                                     }`}
-                                    onClick={() => navigate('transaction')}
+                                    onClick={() => navigate('Payment')}
                                 >
-                                    Transaction
+                                    Payment
                                 </button>
                             </li>
                             <li>
                                 <button
-                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black rounded-lg dark:text-white hover:bg-blue-300 dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
                                     ${
                                         selectSidebar === 4
                                             ? customSelectStyle
-                                            : 'bg-gray-200'
+                                            : 'bg-transparent'
                                     }`}
                                     onClick={() => navigate('property-list')}
                                 >
@@ -91,7 +98,7 @@ function ProfilePage() {
                     </div>
                 </aside>
 
-                <section className="flex flex-col mx-6 max-w-3xl">
+                <section className="flex flex-col mx-6">
                     <Outlet />
                 </section>
             </div>
