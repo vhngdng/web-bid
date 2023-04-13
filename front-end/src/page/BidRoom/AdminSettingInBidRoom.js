@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { useUpdateStatusBidMutation } from '~/app/service/bid.service';
-import { arrowIcon } from '~/assets/images';
+import { arrowIcon } from '~/assets';
 import NotificationTimer from '~/notificationTimer';
 
 function AdminSettingInBidRoom({

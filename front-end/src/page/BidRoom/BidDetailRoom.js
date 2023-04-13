@@ -19,7 +19,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import NotificationTimer from '~/notificationTimer';
 import { Button } from '@material-tailwind/react';
 import UserWinningInBidRoom from './UserWinningInBidRoom';
-import { dollar, imageDefault } from '~/assets/images';
+import { dollar, imageDefault } from '~/assets';
 import AdminSettingInBidRoom from './AdminSettingInBidRoom';
 import { DOMAIN_URL } from '~/CONST/const';
 

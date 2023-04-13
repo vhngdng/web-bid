@@ -78,6 +78,9 @@ export const propeprtyApi = createApi({
                 body,
             }),
         }),
+        getAllDetailsProperty: builder.query({
+            query: (id) => `user/property/${id}`,
+        }),
     }),
 });
 
@@ -86,4 +89,5 @@ export const {
     useGetAllPropertyByUserLoginQuery,
     useGetAllPropertyNotBidQuery,
     useCreatePropertyMutation,
+    useGetAllDetailsPropertyQuery,
 } = propeprtyApi;

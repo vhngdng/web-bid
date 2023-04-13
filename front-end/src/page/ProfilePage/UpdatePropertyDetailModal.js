@@ -9,7 +9,7 @@ import {
     useUpdateTypeImageMutation,
     useUploadImageMutation,
 } from '~/app/service/image.service';
-import { imageDefault } from '~/assets/images';
+import { imageDefault } from '~/assets';
 
 const customStyles = {
     content: {

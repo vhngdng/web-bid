@@ -40,7 +40,7 @@ public class ImageService {
   private Mapper mapper;
 
   @Transactional
-  public ImageResponse save(MultipartFile file) throws IOException {
+  public Image save(MultipartFile file) throws IOException {
     Image img = new Image();
     img.setName(StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
     img.setContentType(file.getContentType());
@@ -53,8 +53,8 @@ public class ImageService {
     img.setUser(user);
 
     // check img of property
-    Image image = imageRepository.save(img);
-    return mapper.toImageResponse(image);
+    return imageRepository.save(img);
+
   }
 
   public List<ImageResponse> findAllImage() {
@@ -114,7 +114,7 @@ public class ImageService {
         break;
       }
       case "PROPERTY": {
-        Optional<Image> imageProperty = imageRepository.findByPropertyId(request.getPropertyId());
+        Optional<Image> imageProperty = imageRepository.findByPropertyIdAndType(request.getPropertyId(), "PROPERTY");
         imageProperty.ifPresent(image -> {
           image.setType(null);
         });
@@ -151,10 +151,16 @@ public class ImageService {
   }
 
   public ImageResponse getImageWithPropertyId(Integer id) {
-    return mapper.toImageResponse(imageRepository.findByPropertyId(id).orElseThrow(() -> new NotFoundException("Property with Id : " + id + " is not found")));
+    return mapper.toImageResponse(imageRepository.findByPropertyIdAndType(id, "PROPERTY").orElseThrow(() -> new NotFoundException("Property with Id : " + id + " is not found")));
   }
 
   public void delete(String id) {
     imageRepository.deleteById(id);
+  }
+
+  public void saveImageProperty(MultipartFile file, Integer propertyId) throws IOException {
+    Image image = save(file);
+    image.setProperty(propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property is not found " + propertyId)));
+    imageRepository.save(image);
   }
 }

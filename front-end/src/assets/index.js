@@ -33,8 +33,16 @@ const arrowDropdown = {
 const attachFiles = {
     logo: require('~/assets/images/attach-files.svg'),
 };
+const arrowUpImage = {
+    logo: require('~/assets/images/arrow-up-image.svg'),
+};
+const arrowDownImage = {
+    logo: require('~/assets/images/arrow-down-image.svg'),
+};
 
 export {
+    arrowDownImage,
+    arrowUpImage,
     attachFiles,
     arrowDropdown,
     fix,

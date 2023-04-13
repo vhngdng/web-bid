@@ -3,11 +3,11 @@ import { Pagination } from '@mui/material';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useGetAllBidRoomPagingQuery } from '~/app/service/bid.service';
 // eslint-disable-next-line no-unused-vars
-import { downBlank, upBlank, upSolid, downSolid } from '~/assets/images';
+import { downBlank, upBlank, upSolid, downSolid } from '~/assets';
 // import { upSolid } from '~/assets/images';
 import Loader from '~/Loader';
 import formatDateTime from '~/utils/formatDateTime';
-import { imageDefault } from '~/assets/images';
+import { imageDefault } from '~/assets';
 import { useNavigate } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
 function ListBidRoom() {

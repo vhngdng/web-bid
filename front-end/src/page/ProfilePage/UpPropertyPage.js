@@ -11,7 +11,7 @@ function UpPropertyPage() {
     const [file, setFile] = useState(null);
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
-
+    const [showModal, setShowModal] = useState(true);
     // console.log(file);
     const handleFileInputChange = (e) => {
         setFile(e.target.files[0]);

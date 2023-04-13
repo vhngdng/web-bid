@@ -32,6 +32,9 @@ public class FinalProjectApplication {
 			if (!roleRepository.findByName(EROLE.ROLE_ADMIN).isPresent()) {
 				roleRepository.save(new Role("ROLE_ADMIN"));
 			};
+			if (!roleRepository.findByName(EROLE.ROLE_GUEST).isPresent()) {
+				roleRepository.save(new Role("ROLE_GUEST"));
+			};
 		});
 
 	}

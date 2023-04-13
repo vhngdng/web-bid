@@ -1,16 +1,20 @@
 package com.example.finalproject.service;
 
+import com.example.finalproject.ENUM.PERMISSION;
 import com.example.finalproject.ENUM.TYPE_IMAGE;
 import com.example.finalproject.dto.PropertyDTO;
 import com.example.finalproject.entity.Image;
 import com.example.finalproject.entity.Property;
+import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.repository.ImageRepository;
 import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.UpSertProperty;
+import com.example.finalproject.response.PropertyResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +41,7 @@ public class PropertyService {
   public List<PropertyDTO> findPropertyByUserLogin(String email) {
     List<PropertyDTO> propertieDTOs = mapper.toListPropertyDTO(propertyRepository.findByOwnerEmail(email), imageRepository);
     propertieDTOs.forEach(propertyDTO -> {
-      Optional<Image> imageOptional = imageRepository.findByPropertyId(propertyDTO.getId());
+      Optional<Image> imageOptional = imageRepository.findByPropertyIdAndType(propertyDTO.getId(), "PROPERTY");
       imageOptional.ifPresent(image -> propertyDTO.setImageId(image.getId()));
     });
     return propertieDTOs;
@@ -50,6 +54,7 @@ public class PropertyService {
   public PropertyDTO saveProperty(UpSertProperty upSertProperty) {
     log.info(upSertProperty.getImageId());
     Property property = new Property();
+    property.setPermission(PERMISSION.NOTCHECK.name());
     mapper.createProperty(upSertProperty, property, userRepository);
     Property savedProperty = propertyRepository.save(property);
     Optional<Image> image = imageRepository.findById(upSertProperty.getImageId());
@@ -59,5 +64,14 @@ public class PropertyService {
       imageRepository.save(image.get());
     }
     return mapper.toDTO(savedProperty, imageRepository);
+  }
+
+  public PropertyResponse findDetailProperty(Integer propertyId) {
+    Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id " + propertyId + " is nout found"));
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    return PropertyResponse.builder()
+            .propertyDTO(mapper.toDTO(property, imageRepository))
+            .images(imageRepository.findByPropertyIdAndUserEmail(propertyId, email))
+            .build();
   }
 }

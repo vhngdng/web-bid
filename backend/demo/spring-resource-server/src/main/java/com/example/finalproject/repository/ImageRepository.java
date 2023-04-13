@@ -1,6 +1,7 @@
 package com.example.finalproject.repository;
 
 import com.example.finalproject.entity.Image;
+import com.example.finalproject.projection.ImageProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 public interface ImageRepository extends JpaRepository<Image, String> {
 
-  Optional<Image> findByPropertyId (Integer propertyId);
+  Optional<Image> findByPropertyIdAndType (Integer propertyId, String type);
 
   List<Image> findAllByUserId(Long userId);
   @Query("select i from Image i where i.user.id = :userId and i.type in ('AVATAR', 'BACKGROUND')")
@@ -22,5 +23,5 @@ public interface ImageRepository extends JpaRepository<Image, String> {
 //  @Query("select i from Image i where i.user.id = :userId and i.type = 'BACKGROUND'")
 //  Optional<Image> findByUserIdAndTypeBackground(Long userId);
 
-
+  List<ImageProjection> findByPropertyIdAndUserEmail(Integer propertyId, String email);
 }

@@ -35,6 +35,18 @@ public class Property {
   @OneToOne(mappedBy = "property")
   private Bid bid;
 
+  @Column
+  private String bidType;
+  @Column
+  private String permission;
+  @Column
+  private Long reservePrice;
+
+  @Column
+  private String description;
+  @Column
+  private Long quantity;
+
   @LastModifiedBy
   @Column(name = "lastModifiedBy")
   protected String lastModifiedBy;
@@ -46,4 +58,6 @@ public class Property {
   @CreatedDate
   @Column(name = "creationDate", updatable = false)
   protected LocalDateTime createdAt;
+
+
 }

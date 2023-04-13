@@ -56,12 +56,12 @@ public interface Mapper {
 //    message.setBids(new HashSet<>());
 //    message.addBid(bid);
 //  }
-
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   Property toEntiTy(PropertyDTO propertyDTO);
 
   @Mapping(target = "imageId", expression = "java(findImageIdProperty(property.getId(), imageRepository))")
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   PropertyDTO toDTO(Property property, @Context ImageRepository imageRepository);
-
 
   List<PropertyDTO> toListPropertyDTO(List<Property> properties, @Context ImageRepository imageRepository);
 
@@ -73,6 +73,7 @@ public interface Mapper {
   default List<Attendee> getAttendees(Long bidId, @Context UserRepository userRepository) {
     return userRepository.findAllAttendeeByBidId(bidId);
   }
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   List<BidDTO> toListBidDTO(List<Bid> bidList, @Context UserRepository userRepository, @Context ImageRepository imageRepository);
   @Mapping(target = "username", source = "user", qualifiedByName = "mapUserToUsername")
   @Mapping(target = "bidId", expression = "java(bidParticipant.getBid().getId())")
@@ -93,7 +94,7 @@ public interface Mapper {
   }
 
   default String findImageIdProperty(Integer propertyId, @Context ImageRepository imageRepository) {
-    Optional<Image> optionalImage = imageRepository.findByPropertyId(propertyId);
+    Optional<Image> optionalImage = imageRepository.findByPropertyIdAndType(propertyId, "PROPERTY");
     return optionalImage.map(Image::getId).orElse(null);
   }
   @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

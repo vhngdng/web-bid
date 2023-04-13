@@ -46,5 +46,8 @@ module.exports = withMT({
         },
     },
 
-    plugins: [require('tailwindcss-animation')],
+    plugins: [
+        require('tailwindcss-animation'),
+        require('@tailwindcss/aspect-ratio'),
+    ],
 });

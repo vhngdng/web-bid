@@ -7,6 +7,7 @@ import com.example.finalproject.service.PropertyService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -40,5 +41,9 @@ public class PropertyController {
   public ResponseEntity<?> createProperty(@RequestBody @Valid UpSertProperty upSertProperty) {
     return new ResponseEntity<>(propertyService.saveProperty(upSertProperty)
             , HttpStatus.CREATED);
+  }
+  @GetMapping("user/property/{propertyId}")
+  public ResponseEntity<?> findDetailProperty(@PathVariable("propertyId") Integer propertyId) {
+    return ResponseEntity.ok(propertyService.findDetailProperty(propertyId));
   }
 }

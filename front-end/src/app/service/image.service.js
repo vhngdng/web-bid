@@ -72,6 +72,14 @@ export const imagesApi = createApi({
                 body,
             }),
         }),
+        uploadMultiImageProperty: builder.mutation({
+            query: ({ propertyId, body }) => ({
+                url: `images/multi-file/${propertyId}`,
+                method: 'POST',
+                credentials: 'include',
+                body,
+            }),
+        }),
         getAllImagesAfterLogin: builder.query({
             query: () => ({
                 url: `images/all`,
@@ -131,4 +139,5 @@ export const {
     useGetBackgroundQuery,
     useLazyGetImageByPropertyIdQuery,
     useDeleteImageMutation,
+    useUploadMultiImagePropertyMutation,
 } = imagesApi;

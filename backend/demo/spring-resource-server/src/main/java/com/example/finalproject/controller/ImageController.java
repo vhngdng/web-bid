@@ -1,6 +1,7 @@
 package com.example.finalproject.controller;
 
 import com.example.finalproject.entity.Image;
+import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.request.TypeImageRequest;
 import com.example.finalproject.response.ImageResponse;
 import com.example.finalproject.service.ImageService;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,11 +24,12 @@ import java.util.List;
 @RestController
 @RequestMapping("images")
 @Slf4j
-@CrossOrigin(origins = "https://auctionforfun.site", allowCredentials = "true")
+@CrossOrigin(origins = {"https://auctionforfun.site", "http://localhost:3000"}, allowCredentials = "true")
 public class ImageController {
   @Autowired
   private ImageService imageService;
-
+  @Autowired
+  private Mapper mapper;
   @GetMapping("")
   public ResponseEntity<?> getAllImages() {
     return ResponseEntity.ok(imageService.findAllImage());
@@ -40,22 +43,23 @@ public class ImageController {
                 .body("File cannot be null!");
       }
       log.info(file.getOriginalFilename());
-      return ResponseEntity.ok().body(imageService.save(file));
+      return ResponseEntity.ok().body(mapper.toImageResponse(imageService.save(file)));
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
               .body(String.format("Could not upload the file: %s!", file.getOriginalFilename()));
     }
   }
-  @PostMapping("multi-file")
-  public ResponseEntity<?> uploadMultiImage(@RequestParam("files") MultipartFile [] files) {
+  @PostMapping(value = "multi-file/{propertyId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+  public ResponseEntity<?> uploadMultiImageProperty(@RequestParam("files") MultipartFile [] files, @PathVariable("propertyId") Integer propertyId) {
     List<String> fileNames = new ArrayList<>();
     Arrays.stream(files).forEach(file -> {
       try {
-        imageService.save(file);
+        imageService.saveImageProperty(file, propertyId);
         fileNames.add("Uploaded the file successfully: " + file.getOriginalFilename());
       } catch (IOException e) {
         fileNames.add(String.format("Could not upload the file: %s!", file.getOriginalFilename()));
       }
+
     });
     return ResponseEntity.ok().body(fileNames);
 

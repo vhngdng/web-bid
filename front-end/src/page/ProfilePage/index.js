@@ -94,6 +94,19 @@ function ProfilePage() {
                                     Properties
                                 </button>
                             </li>
+                            {/* <li>
+                                <button
+                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
+                                    ${
+                                        selectSidebar === 5
+                                            ? customSelectStyle
+                                            : 'bg-transparent'
+                                    }`}
+                                >
+                                    Properties
+                                </button>
+                            </li> */}
                         </ul>
                     </div>
                 </aside>

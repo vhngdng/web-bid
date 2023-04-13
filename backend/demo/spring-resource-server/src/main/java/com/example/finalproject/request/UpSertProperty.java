@@ -16,5 +16,6 @@ public class UpSertProperty {
   private String name;
   private String category;
   private String imageId;
-
+  private String bidType;
+  private long reservePrice;
 }

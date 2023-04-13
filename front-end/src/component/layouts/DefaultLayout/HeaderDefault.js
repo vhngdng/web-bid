@@ -5,7 +5,7 @@ import classNames from 'classnames/bind';
 import { logout } from '~/app/slice/auth.slice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { notification } from '~/assets/images';
+import { notification } from '~/assets';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
 import { useGetAllPaymentBidFinishQuery } from '~/app/service/payment.service';

@@ -11,7 +11,7 @@ import {
     useGetRequestToChangeBidSuccessQuery,
     useUpdateSuccessBidMutation,
 } from '~/app/service/bid.service';
-import { arrowDropdown, imageDefault } from '~/assets/images';
+import { arrowDropdown, imageDefault } from '~/assets';
 import Loader from '~/Loader';
 import ErrorPage404 from '~/page/ErrorPage';
 import UserModal from './UserModal';

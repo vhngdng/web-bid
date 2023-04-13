@@ -6,7 +6,7 @@ import { useGetUserByEmailQuery } from '~/app/service/user.service';
 import Loader from '~/Loader';
 import ImageModal from './ImageModal';
 import { DOMAIN_URL } from '~/CONST/const';
-import { fix } from '~/assets/images';
+import { fix } from '~/assets';
 
 function ProfileDetail() {
     const { data: user, isLoading, refetch } = useGetUserByEmailQuery();
