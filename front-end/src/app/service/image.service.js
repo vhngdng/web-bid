@@ -79,6 +79,7 @@ export const imagesApi = createApi({
                 credentials: 'include',
                 body,
             }),
+            headers: { 'Content-Type': 'application/json' },
         }),
         getAllImagesAfterLogin: builder.query({
             query: () => ({

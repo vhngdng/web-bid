@@ -3,9 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
 import Loader from '~/Loader';
-import { motion } from 'framer-motion';
 import { useGetAllDetailsPropertyQuery } from '~/app/service/property.service';
-import { arrowDownImage, arrowUpImage } from '~/assets';
+import { arrowDownImage, arrowUpImage, setting } from '~/assets';
 import CustomModal from './CustomModal';
 function PropertyDetails() {
     const { propertyId } = useParams();
@@ -14,11 +13,18 @@ function PropertyDetails() {
     const [files, setFiles] = useState([]);
     const [imageListShow, setImageListShow] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [type, setType] = useState();
+    const [isFixName, setIsFixName] = useState(false);
+    const [isFixDescription, setIsFixDescription] = useState(false);
+    // eslint-disable-next-line no-unused-vars
+    const [description, setDescription] = useState();
+    const [name, setName] = useState();
     // eslint-disable-next-line no-unused-vars
     const [indexImage, setIndexImage] = useState(0);
     useEffect(() => {
         if (!!data) {
             setImages([...data.images]);
+            setName(data.property.name);
         }
     }, [data]);
     useEffect(() => {
@@ -36,11 +42,14 @@ function PropertyDetails() {
     }, [images]);
     useEffect(() => {
         if (images.length > 5) {
-            let lastIndexShowImage =
-                indexImage + 5 > images.length - 1
-                    ? images.length - 5 - indexImage
-                    : indexImage + 4;
-            setImageListShow([...images.slice(indexImage, lastIndexShowImage)]);
+            indexImage + 4 > images.length
+                ? setImageListShow([
+                      ...images.slice(indexImage, images.length),
+                      ...images.slice(0, 4 - images.length + indexImage),
+                  ])
+                : setImageListShow([
+                      ...images.slice(indexImage, indexImage + 4),
+                  ]);
         } else {
             setImageListShow([...images]);
         }
@@ -48,13 +57,14 @@ function PropertyDetails() {
     useEffect(() => {
         if (files.length > 0) setIsOpen((prev) => !prev);
     }, [files]);
+
+    useEffect(() => {
+        console.log(name);
+    }, [name]);
     if (isLoading) return <Loader />;
-    console.log(data);
-    console.log(indexImage);
-    console.log('images length', images.length);
-    console.log('imageListShow', imageListShow);
+    console.log('data', data);
+
     const handleChangeIndex = (index) => {
-        console.log('index', index);
         if (index < 0) {
             setIndexImage(images.length - 1);
         } else if (index > images.length - 1) {
@@ -67,7 +77,16 @@ function PropertyDetails() {
         setFiles([...e.target.files]);
         console.log(e);
     };
-    console.log(files);
+
+    const handleCancelChangeName = () => {
+        setName(data.property.name);
+        setIsFixName(false);
+    };
+    const handleCancelChangeDescription = () => {
+        setDescription(data.property.description);
+        setIsFixDescription(false);
+    };
+    console.log('files', files);
     return (
         <>
             <section className="pt-12 pb-24 bg-blueGray-100 rounded-b-10xl overflow-hidden max-w-screen min-w-full">
@@ -96,7 +115,9 @@ function PropertyDetails() {
                                                             : ''
                                                     }`}
                                                 onClick={() =>
-                                                    handleChangeIndex(index)
+                                                    handleChangeIndex(
+                                                        images.indexOf(image),
+                                                    )
                                                 }
                                                 key={index}
                                             >
@@ -105,7 +126,6 @@ function PropertyDetails() {
                                                     src={`${DOMAIN_URL}api/v1/images/read/${image.id}`}
                                                     alt={data.property.name}
                                                 />
-                                                <div>{index}</div>
                                             </div>
                                         ))}
                                     </div>
@@ -134,19 +154,130 @@ function PropertyDetails() {
                                     </p>
                                 </div>
                             </div>
+                            <div className=" my-12 px-6 py-4">
+                                <div className="flex justify-center items-center px-6 py-6">
+                                    <span className="text-2xl px-4">
+                                        Description
+                                    </span>
+                                    <div
+                                        className="cursor-pointer"
+                                        onClick={() =>
+                                            setIsFixDescription((prev) => !prev)
+                                        }
+                                    >
+                                        <img
+                                            className="object-fit h-6 w-6"
+                                            src={setting.logo.default}
+                                        />
+                                    </div>
+                                </div>
+                                {isFixDescription ? (
+                                    <div
+                                        className="relative mb-3 xl:w-96"
+                                        data-te-input-wrapper-init
+                                    >
+                                        <textarea
+                                            className="peer block min-h-[auto] w-full rounded border-0 bg-gray-400/20 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                            id="exampleFormControlTextarea1"
+                                            rows="4"
+                                            placeholder={name}
+                                            defaultValue={
+                                                !!data &&
+                                                !!data.property.description
+                                                    ? data.property.description
+                                                    : 'Description'
+                                            }
+                                            onChange={(e) =>
+                                                setDescription(e.target.value)
+                                            }
+                                        ></textarea>
+                                        <div className="flex ">
+                                            <div className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-blue-600 active:shadow-none shadow-lg bg-gradient-to-tr from-blue-600 to-blue-500 border-blue-700 text-white">
+                                                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
+                                                <span className="relative">
+                                                    Confirm change
+                                                </span>
+                                            </div>
+                                            <div
+                                                onClick={
+                                                    handleCancelChangeDescription
+                                                }
+                                                className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-gray-600 active:shadow-none shadow-lg bg-gradient-to-tl from-gray-600 to-gray-500 border-gray-700 text-white"
+                                            >
+                                                <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
+                                                <span className="relative">
+                                                    Cancel
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <p className="text-lg text-center text-gray-500">
+                                        {!!data.property.description
+                                            ? data.property.description
+                                            : 'No description'}
+                                    </p>
+                                )}
+                            </div>
                         </div>
                         <div className="w-full lg:w-1/2 px-4">
                             <div className="max-w-4xl mb-6">
-                                <span className="text-s text-gray-400 tracking-wider">
+                                <span className="text-m text-gray-400 tracking-wider">
                                     {!!data && `# ${data.property.id}`}
                                 </span>
-                                <h2 className=" mt-6 mb-4 text-5xl md:text-7xl lg:text-8xl font-heading font-medium">
+                                <div className="cursor-pointer">
+                                    {isFixName ? (
+                                        <>
+                                            <div
+                                                className="relative mb-3 xl:w-96"
+                                                data-te-input-wrapper-init
+                                            >
+                                                <textarea
+                                                    className="peer block min-h-[auto] w-full rounded border-0 bg-gray-400/20 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    id="exampleFormControlTextarea1"
+                                                    rows="4"
+                                                    placeholder={name}
+                                                    defaultValue={name}
+                                                    onChange={(e) =>
+                                                        setName(e.target.value)
+                                                    }
+                                                ></textarea>
+                                            </div>
+                                            <div className="flex ">
+                                                <div className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-blue-600 active:shadow-none shadow-lg bg-gradient-to-tr from-blue-600 to-blue-500 border-blue-700 text-white">
+                                                    <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
+                                                    <span className="relative">
+                                                        Confirm change
+                                                    </span>
+                                                </div>
+                                                <div
+                                                    onClick={
+                                                        handleCancelChangeName
+                                                    }
+                                                    className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-gray-600 active:shadow-none shadow-lg bg-gradient-to-tl from-gray-600 to-gray-500 border-gray-700 text-white"
+                                                >
+                                                    <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
+                                                    <span className="relative">
+                                                        Cancel
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <h2
+                                            onClick={() =>
+                                                setIsFixName((prev) => !prev)
+                                            }
+                                            className=" mt-6 mb-4 text-5xl md:text-7xl lg:text-8xl font-heading font-medium hover:text-gray-600 hover:font-sans"
+                                        >
+                                            {!!data &&
+                                                `${name} (${data.property.category})`}
+                                        </h2>
+                                    )}
+                                </div>
+                                <h2 className=" mt-6 mb-4 text-3xl md:text-7xl lg:text-6xl font-sans text-blue-rgb font-heading font-medium">
                                     {!!data &&
-                                        `${data.property.name} (${data.property.category})`}
-                                </h2>
-                                <h2 className=" mt-6 mb-4 text-3xl md:text-7xl lg:text-6xl text-blue-rgb font-heading font-medium">
-                                    {!!data &&
-                                        `owner - ${data.property.owner.username}`}
+                                        `${data.property.owner.username}`}
                                 </h2>
                                 <p className="flex items-center mb-6">
                                     <span className="mr-2 text-m text-blue-500 font-medium">
@@ -155,11 +286,6 @@ function PropertyDetails() {
                                     <span className="text-3xl text-blue-500 font-medium">
                                         {!!data && data.property.reserveprice}
                                     </span>
-                                </p>
-                                <p className="text-lg text-gray-500">
-                                    {!!data.property.description
-                                        ? data.property.description
-                                        : 'No description yet'}
                                 </p>
                             </div>
 
@@ -177,6 +303,49 @@ function PropertyDetails() {
                                     }
                                 />
                             </div>
+                            <div className="mb-10">
+                                <h4 className="mb-3 font-heading font-medium">
+                                    Type:
+                                </h4>
+                                <div>
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            value="public"
+                                            checked={type === 'public'}
+                                            onChange={() => setType('public')}
+                                        />
+                                        <label
+                                            className="px-4 py-4 text-xl"
+                                            htmlFor="public"
+                                        >
+                                            Public
+                                        </label>
+                                        <p className="px-4 py-4 text-xl text-gray-400">
+                                            Properties are sold in the online
+                                            bid room
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="radio"
+                                            value="private"
+                                            checked={type === 'private'}
+                                            onChange={() => setType('private')}
+                                        />
+                                        <label
+                                            className="px-4 py-4 text-xl"
+                                            htmlFor="private"
+                                        >
+                                            Private
+                                        </label>
+                                        <p className="px-4 py-4 text-xl text-gray-400">
+                                            Properties are sold in home page and
+                                            automatically closed on fixed time
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                             <div className="flex flex-wrap -mx-2 mb-12">
                                 <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
                                     <div
@@ -186,13 +355,13 @@ function PropertyDetails() {
                                         Property Registration
                                     </div>
                                 </div>
-                                <motion.div className="w-full md:w-1/3 px-2">
+                                <div className="w-full md:w-1/3 px-2">
                                     <label
                                         className="cursor-pointer flex w-full py-4 px-2 items-center justify-center leading-8 font-heading font-medium tracking-tighter text-xl text-center bg-white focus:ring-2 focus:ring-gray-200 focus:ring-opacity-50 hover:bg-opacity-60 rounded-xl"
                                         form="file_input"
                                         htmlFor="image"
                                     >
-                                        Upload Multiple Image
+                                        Upload Image
                                         <input
                                             className="hidden"
                                             id="image"
@@ -203,50 +372,7 @@ function PropertyDetails() {
                                             }
                                         />
                                     </label>
-                                </motion.div>
-                            </div>
-                            <div>
-                                <h4 className="mb-6 font-heading font-medium">
-                                    More information
-                                </h4>
-                                <button className="flex w-full pl-6 lg:pl-12 pr-6 py-4 mb-4 justify-between items-center leading-7 rounded-2xl border-2 border-blueGray-200 hover:border-blueGray-300">
-                                    <h3 className="text-lg font-heading font-medium">
-                                        Shipping &amp; returns
-                                    </h3>
-                                    <span>
-                                        <svg
-                                            width="12"
-                                            height="8"
-                                            viewBox="0 0 12 8"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M10.4594 0.289848C10.8128 -0.096616 11.3841 -0.096616 11.7349 0.289848C12.0871 0.676312 12.0897 1.30071 11.7349 1.68718L6.63794 7.21015C6.28579 7.59662 5.71584 7.59662 5.36108 7.21015L0.264109 1.68718C-0.0880363 1.30215 -0.0880363 0.676312 0.264109 0.289848C0.617558 -0.096616 1.18882 -0.096616 1.53966 0.289848L6.00147 4.81927L10.4594 0.289848Z"
-                                                fill="black"
-                                            ></path>
-                                        </svg>
-                                    </span>
-                                </button>
-                                <button className="flex w-full pl-6 lg:pl-12 pr-6 py-4 justify-between items-center leading-7 rounded-2xl border-2 border-blueGray-200 hover:border-blueGray-300">
-                                    <h3 className="text-lg font-heading font-medium">
-                                        Product details
-                                    </h3>
-                                    <span>
-                                        <svg
-                                            width="12"
-                                            height="8"
-                                            viewBox="0 0 12 8"
-                                            fill="none"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                        >
-                                            <path
-                                                d="M10.4594 0.289848C10.8128 -0.096616 11.3841 -0.096616 11.7349 0.289848C12.0871 0.676312 12.0897 1.30071 11.7349 1.68718L6.63794 7.21015C6.28579 7.59662 5.71584 7.59662 5.36108 7.21015L0.264109 1.68718C-0.0880363 1.30215 -0.0880363 0.676312 0.264109 0.289848C0.617558 -0.096616 1.18882 -0.096616 1.53966 0.289848L6.00147 4.81927L10.4594 0.289848Z"
-                                                fill="black"
-                                            ></path>
-                                        </svg>
-                                    </span>
-                                </button>
+                                </div>
                             </div>
                         </div>
                     </div>

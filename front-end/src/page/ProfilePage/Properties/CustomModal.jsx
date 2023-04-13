@@ -11,13 +11,10 @@ function CustomModal({ isOpen, setIsOpen, isDelete, setFiles, files }) {
     const handleAccept = async () => {
         const formData = new FormData();
         console.log(files);
-        // files.forEach((file) => {
-        //     formData.append('files', file);
-        // });
-        for (let i = 0; i < files.length; i++) {
-            formData.append('files', files[0]);
-        }
-        console.log(formData);
+        files.forEach((file) => {
+            formData.append('files', file);
+        });
+
         try {
             const { data } = await uploadMultiImageProperty({
                 propertyId,

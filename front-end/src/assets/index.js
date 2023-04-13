@@ -39,8 +39,12 @@ const arrowUpImage = {
 const arrowDownImage = {
     logo: require('~/assets/images/arrow-down-image.svg'),
 };
+const setting = {
+    logo: require('~/assets/images/setting.svg'),
+};
 
 export {
+    setting,
     arrowDownImage,
     arrowUpImage,
     attachFiles,

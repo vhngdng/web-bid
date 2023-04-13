@@ -49,11 +49,16 @@ public class ImageController {
               .body(String.format("Could not upload the file: %s!", file.getOriginalFilename()));
     }
   }
-  @PostMapping(value = "multi-file/{propertyId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-  public ResponseEntity<?> uploadMultiImageProperty(@RequestParam("files") MultipartFile [] files, @PathVariable("propertyId") Integer propertyId) {
+  @PostMapping(value = "multi-file/{propertyId}")
+  public ResponseEntity<?> uploadMultiImageProperty(@RequestPart("files") MultipartFile [] files, @PathVariable("propertyId") Integer propertyId) {
+    if (files == null) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+              .body("File cannot be null!");
+    }
     List<String> fileNames = new ArrayList<>();
     Arrays.stream(files).forEach(file -> {
       try {
+
         imageService.saveImageProperty(file, propertyId);
         fileNames.add("Uploaded the file successfully: " + file.getOriginalFilename());
       } catch (IOException e) {
