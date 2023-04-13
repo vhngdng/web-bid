@@ -1,15 +1,15 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useGetAllPaymentQuery } from '~/app/service/Payment.service';
+import { useGetAllPaymentQuery } from '~/app/service/payment.service';
 import Loader from '~/Loader';
 
 function PaymentPage() {
     const { auth } = useSelector((state) => state.auth);
-    const { data: Payment, isLoading } = useGetAllPaymentQuery();
+    const { data: payment, isLoading } = useGetAllPaymentQuery();
     const navigate = useNavigate();
     if (isLoading) return <Loader />;
-    console.log(Payment);
+    console.log(payment);
     console.log(auth);
 
     const handleNavigateDetail = (id) => {
@@ -50,8 +50,8 @@ function PaymentPage() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Payment &&
-                                        Payment.map((t, index) => (
+                                    {payment &&
+                                        payment.map((t, index) => (
                                             <tr
                                                 key={index}
                                                 className="flex-1 border-b transition duration-300 ease-in-out hover:bg-gray-300 dark:hover:bg-gray-600 cursor-pointer"

@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { notification } from '~/assets/images';
 import SockJS from 'sockjs-client';
 import { over } from 'stompjs';
-import { useGetAllPaymentBidFinishQuery } from '~/app/service/Payment.service';
+import { useGetAllPaymentBidFinishQuery } from '~/app/service/payment.service';
 import Loader from '~/Loader';
 import { toast, ToastContainer } from 'react-toastify';
 import NotificationTimer from '~/notificationTimer';

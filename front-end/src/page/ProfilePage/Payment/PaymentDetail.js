@@ -7,7 +7,7 @@ import { useGetAllMessageFromSuccessBidQuery } from '~/app/service/message.servi
 import {
     useGetPaymentByIdQuery,
     useUpdatePaymentStatusMutation,
-} from '~/app/service/Payment.service';
+} from '~/app/service/payment.service';
 import Loader from '~/Loader';
 
 function PaymentDetail() {
@@ -17,7 +17,7 @@ function PaymentDetail() {
     const { data: message, isLoading: messageLoading } =
         useGetAllMessageFromSuccessBidQuery(bidId);
     const {
-        data: Payment,
+        data: payment,
         isLoading,
         isSuccess,
     } = useGetPaymentByIdQuery(bidId);
@@ -26,14 +26,14 @@ function PaymentDetail() {
 
     useEffect(() => {
         if (isSuccess) {
-            setStatus(Payment.status);
+            setStatus(payment.status);
         }
-    }, [Payment]);
+    }, [payment]);
 
     useEffect(() => {
         if (isSuccess) {
             console.log(isSuccess);
-            Payment.auctioneerEmail === auth.email
+            payment.auctioneerEmail === auth.email
                 ? setIsAdmin(true)
                 : setIsAdmin(false);
         }
@@ -43,7 +43,7 @@ function PaymentDetail() {
     }, [isSuccess]);
     console.log('bidId', bidId);
     if (isLoading || messageLoading) return <Loader />;
-    console.log(Payment);
+    console.log(payment);
     console.log('is admin', isAdmin);
     console.log(message);
     const handlePayment = (bidId) => {
@@ -63,19 +63,19 @@ function PaymentDetail() {
                     Payment ID
                 </div>
                 <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                    {Payment.id}
+                    {payment.id}
                 </div>
                 <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
                     Bid ID
                 </div>
                 <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                    {Payment.bidId}
+                    {payment.bidId}
                 </div>
                 <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
                     Created At
                 </div>
                 <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                    {Payment.createdAt}
+                    {payment.createdAt}
                 </div>
                 <div className="flex justify-center bg-blue-100 col-span-2 border-slate-50 rounded-l-lg">
                     Status
@@ -91,7 +91,7 @@ function PaymentDetail() {
                     Winner
                 </div>
                 <div className="flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg">
-                    {Payment.winningBidderEmail}
+                    {payment.winningBidderEmail}
                 </div>
                 <h2 className="flex justify-center my-2 col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl ">
                     History
@@ -161,22 +161,20 @@ function PaymentDetail() {
                 </div>
                 <div className="flex justify-center  col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl my-8">
                     {status !== 'SUCCESS' && status !== 'FINISH'
-                        ? auth.email === Payment.winningBidderEmail && (
+                        ? auth.email === payment.winningBidderEmail && (
                               <Button
-                                  onClick={() =>
-                                      handlePayment(Payment.bidId)
-                                  }
+                                  onClick={() => handlePayment(payment.bidId)}
                               >
                                   Click to pay
                               </Button>
                           )
-                        : auth.email === Payment.winningBidderEmail && (
+                        : auth.email === payment.winningBidderEmail && (
                               <div className="flex-1 justify-center ">
                                   <h2 className="flex justify-center text-green-500 my-2">
                                       Payment successfully completed{' '}
                                   </h2>
                                   <h3 className="flex justify-center text-orange-600 font-bold my-2">
-                                      ${Payment.lastPrice}
+                                      ${payment.lastPrice}
                                   </h3>
                               </div>
                           )}

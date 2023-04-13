@@ -202,10 +202,7 @@ function DetailBidRoom() {
                                             <div className="mr-2">Status:</div>
                                             <div
                                                 className={`flex justify-center bg-red-100 col-span-3 border-slate-50 rounded-r-lg
-                        ${
-                            bid.Payment.status === 'SUCCESS' &&
-                            'text-green-500'
-                        }
+                        ${bid.payment.status === 'SUCCESS' && 'text-green-500'}
                         `}
                                             >
                                                 {bid.Payment.status}

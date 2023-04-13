@@ -5,7 +5,7 @@ import { imagesApi } from './service/image.service';
 import { messageApi } from './service/message.service';
 import { participantApi } from './service/participant.service';
 import { propeprtyApi } from './service/property.service';
-import { PaymentApi } from './service/Payment.service';
+import { PaymentApi } from './service/payment.service';
 import { userApi } from './service/user.service';
 import authReducer from './slice/auth.slice';
 import imageReducer from './slice/image.slice';
