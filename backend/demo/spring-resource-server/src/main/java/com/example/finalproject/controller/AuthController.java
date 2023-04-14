@@ -7,6 +7,7 @@ import com.example.finalproject.request.TokenRefreshRequest;
 import com.example.finalproject.response.AuthResponse;
 import com.example.finalproject.response.TokenRefreshResponse;
 import com.example.finalproject.security.CustomUserDetails;
+import com.example.finalproject.service.ImageService;
 import com.example.finalproject.utils.SocialUtils;
 import com.example.finalproject.service.RefreshTokenService;
 import com.example.finalproject.utils.JwtUtils;
@@ -39,6 +40,8 @@ public class AuthController {
 
   @Autowired
   private SocialUtils googleUtils;
+  @Autowired
+  private ImageService imageService;
 
   // @Value("${spring.security.oauth2.client.registration.google.client-secret}")
   // private String CLIENT_SECRET;
@@ -59,6 +62,7 @@ public class AuthController {
         .builder()
         .token(jwtToken)
         .auth(userDetails)
+        .avatar(imageService.findImageAva(userDetails.getUsername()))
         .refreshToken(refreshToken.getToken())
         .isAuthenticated(true)
         .build());
@@ -92,6 +96,7 @@ public class AuthController {
         .builder()
         .token(jwtToken)
         .auth(userDetails)
+        .avatar(imageService.findImageAva(userDetails.getUsername()))
         .refreshToken(refreshToken.getToken())
         .isAuthenticated(true)
         .build());

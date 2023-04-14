@@ -37,10 +37,10 @@ function ProfilePage() {
                 >
                     <div className="h-full overflow-y-auto bg-gray-500/25 dark:bg-gray-800 w-56 rounded-tr-3xl">
                         <ProfileUserSidebar />
-                        <ul>
+                        <ul className="text-gray-600">
                             <li>
                                 <button
-                                    className={`flex flex-col  items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 
+                                    className={`flex flex-col  items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal hover:text-black dark:text-white dark:hover:bg-gray-700 
                                     transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
                                     ${
                                         selectSidebar === 1
@@ -54,7 +54,7 @@ function ProfilePage() {
                             </li>
                             <li>
                                 <button
-                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
                                     transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent 
                                     ${
                                         selectSidebar === 2
@@ -68,7 +68,7 @@ function ProfilePage() {
                             </li>
                             <li>
                                 <button
-                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
                                     transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
                                     ${
                                         selectSidebar === 3
@@ -82,7 +82,7 @@ function ProfilePage() {
                             </li>
                             <li>
                                 <button
-                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
+                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
                                     transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
                                     ${
                                         selectSidebar === 4
@@ -94,19 +94,6 @@ function ProfilePage() {
                                     Properties
                                 </button>
                             </li>
-                            {/* <li>
-                                <button
-                                    className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal text-teal-300 hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
-                                    transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent
-                                    ${
-                                        selectSidebar === 5
-                                            ? customSelectStyle
-                                            : 'bg-transparent'
-                                    }`}
-                                >
-                                    Properties
-                                </button>
-                            </li> */}
                         </ul>
                     </div>
                 </aside>

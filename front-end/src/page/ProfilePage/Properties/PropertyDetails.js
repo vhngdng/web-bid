@@ -322,8 +322,8 @@ function PropertyDetails() {
                                             Public
                                         </label>
                                         <p className="px-4 py-4 text-xl text-gray-400">
-                                            Properties are sold in the online
-                                            bid room
+                                            Properties are sold in home page and
+                                            automatically closed on fixed time
                                         </p>
                                     </div>
                                     <div>
@@ -340,8 +340,8 @@ function PropertyDetails() {
                                             Private
                                         </label>
                                         <p className="px-4 py-4 text-xl text-gray-400">
-                                            Properties are sold in home page and
-                                            automatically closed on fixed time
+                                            Properties are sold in the online
+                                            bid room
                                         </p>
                                     </div>
                                 </div>

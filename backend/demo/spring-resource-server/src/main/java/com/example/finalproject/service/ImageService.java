@@ -6,6 +6,7 @@ import com.example.finalproject.entity.User;
 import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
+import com.example.finalproject.projection.ImageProjection;
 import com.example.finalproject.repository.ImageRepository;
 import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
@@ -13,6 +14,7 @@ import com.example.finalproject.request.TypeImageRequest;
 import com.example.finalproject.response.ImageResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,8 @@ public class ImageService {
 
   @Autowired
   private Mapper mapper;
-
+  @Value("${IMAGE_URL}")
+  private String IMAGE_URL;
   @Transactional
   public Image save(MultipartFile file) throws IOException {
     Image img = new Image();
@@ -71,10 +74,9 @@ public class ImageService {
     return image.getData();
   }
 
-  public List<ImageResponse> getAllImagesByUserLogin() {
+  public List<ImageResponse> getAllImagesNotPropertyByUserLogin() {
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
-    User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Username with email: " + email + " is not found"));
-    return mapper.toListImageResponse(imageRepository.findAllByUserId(user.getId()));
+    return mapper.toListImageResponse(imageRepository.findAllImageByEmailNotProperty(email));
   }
 
   public List<ImageResponse> getAllImagesByUserLoginWithAvatarAndBackGround() {
@@ -162,5 +164,14 @@ public class ImageService {
     Image image = save(file);
     image.setProperty(propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property is not found " + propertyId)));
     imageRepository.save(image);
+  }
+
+  public String findImageAva(String email) {
+    User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found " + email));
+    return  imageRepository.findImageAva(email) != null
+            ?  IMAGE_URL + "api/v1/images/read/" + imageRepository.findImageAva(email)
+            :  user.getAvatar() != null
+              ? user.getAvatar()
+              : null;
   }
 }

@@ -1,7 +1,10 @@
 /* eslint-disable no-extra-boolean-cast */
 import { Pagination } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useGetAllBidRoomPagingQuery } from '~/app/service/bid.service';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+    useGetAllBidRoomPagingQuery,
+    useGetBidRoomPrivateQuery,
+} from '~/app/service/bid.service';
 // eslint-disable-next-line no-unused-vars
 import { downBlank, upBlank, upSolid, downSolid } from '~/assets';
 // import { upSolid } from '~/assets/images';
@@ -10,11 +13,13 @@ import formatDateTime from '~/utils/formatDateTime';
 import { imageDefault } from '~/assets';
 import { useNavigate } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
-function ListBidRoom() {
+import { useInView } from 'framer-motion';
+function ListBidRoom({ isAdmin }) {
     const [properties, setProperties] = useState([]);
     // eslint-disable-next-line no-unused-vars
-    const { data, isLoading, refetch } =
-        useGetAllBidRoomPagingQuery(properties);
+    const { data, isLoading, refetch } = isAdmin
+        ? useGetAllBidRoomPagingQuery(properties)
+        : useGetBidRoomPrivateQuery(properties);
     // eslint-disable-next-line no-unused-vars
     const [page, setPage] = useState(1);
     const [isPropertyASC, setIsPropertyASC] = useState(false);
@@ -36,6 +41,9 @@ function ListBidRoom() {
         field: '',
         direction: '',
     });
+    const ref = useRef([]);
+    const isInView = useInView(ref, { once: true });
+
     useEffect(() => {
         if (orderList.size > 1) {
             // let newProperties = properties.push(convertUriWithOrder());
@@ -53,7 +61,11 @@ function ListBidRoom() {
     useEffect(() => {
         refetch();
     }, [properties]);
-
+    useEffect(() => {
+        if (!!data && !!data.content) {
+            ref.current = ref.current.slice(0, data.content.length);
+        }
+    }, [data]);
     useEffect(() => {
         if (orderList && orderList.get(order.field) === order.direction) {
             console.log(orderList.get(order.field));
@@ -73,11 +85,23 @@ function ListBidRoom() {
     if (isLoading) return <Loader />;
 
     console.log('data', data);
-
+    const handleEnterRoom = (id) => {
+        // navigate(`${id}`);
+        isAdmin ? navigate(`details-bid/${id}`) : navigate(`${id}`);
+    };
     return (
         <>
-            <section className="container mx-auto font-mono">
+            <section className="container mx-auto font-mono my-12">
                 <div>
+                    <div className="flex justify-end">
+                        <button
+                            type="button"
+                            className="rounded-full text-black bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 active:animate-bounce transition-all duration-750 ease-in-out "
+                            onClick={() => refetch()}
+                        >
+                            Refresh
+                        </button>
+                    </div>
                     <div className="w-fit rounded-lg shadow-lg bg-gray-50/10 ">
                         <section className="max-h-65vh overflow-y-scroll rounded-lg">
                             <table className="w-full table-auto shadow-md">
@@ -452,22 +476,46 @@ function ListBidRoom() {
                                         data.content &&
                                         data.content.map((bid, index) => (
                                             <tr
+                                                ref={(el) =>
+                                                    (ref.current[index] = el)
+                                                }
                                                 key={index}
                                                 className={`cursor-pointer border-gray-300 hover:bg-gray-100 
                                                     ${
                                                         (index + 1) % 2 &&
                                                         'bg-gray-100/25'
                                                     }
-                                                    `}
+                                                    ${
+                                                        !!isAdmin
+                                                            ? 'cursor-pointer'
+                                                            : [
+                                                                  'ACTIVE',
+                                                                  'PROCESSING',
+                                                              ].includes(
+                                                                  bid.status,
+                                                              )
+                                                            ? 'cursor-pointer'
+                                                            : 'pointer-events-none'
+                                                    }`}
                                                 onClick={() =>
-                                                    navigate(
-                                                        `details-bid/${bid.id}`,
-                                                    )
+                                                    handleEnterRoom(bid.id)
                                                 }
+                                                style={{
+                                                    transform: isInView
+                                                        ? 'none'
+                                                        : 'translateX(-200px)',
+                                                    opacity: isInView ? 1 : 0,
+                                                    transition:
+                                                        'all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s',
+                                                }}
                                             >
-                                                <td className="py-3 px-6 textLeft whitespace-nowrap">
+                                                <td
+                                                    className={`py-3 px-6 textLeft whitespace-nowrap `}
+                                                >
                                                     <div
-                                                        className="flex items-center cursor-pointer"
+                                                        className={`flex items-center 
+                                                        
+                                                        `}
                                                         title={
                                                             bid.conditionReport
                                                         }
@@ -614,7 +662,9 @@ function ListBidRoom() {
                             <Pagination
                                 className="flex justify-center w-full mt-4 pb-4"
                                 count={data.totalPages}
-                                onChange={(event, value) => setPage(value)}
+                                onChange={(event, value) => {
+                                    setPage(value);
+                                }}
                             />
                         )}
                     </div>

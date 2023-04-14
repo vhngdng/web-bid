@@ -7,6 +7,7 @@ import com.example.finalproject.entity.Image;
 import com.example.finalproject.entity.Property;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
+import com.example.finalproject.projection.ImageProjection;
 import com.example.finalproject.repository.ImageRepository;
 import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
@@ -72,6 +73,15 @@ public class PropertyService {
     return PropertyResponse.builder()
             .propertyDTO(mapper.toDTO(property, imageRepository))
             .images(imageRepository.findByPropertyIdAndUserEmail(propertyId, email))
+            .build();
+  }
+
+  public PropertyResponse findAdminDetailProperty(Integer propertyId) {
+    Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id " + propertyId + " is nout found"));
+    List<ImageProjection> images = imageRepository.findByPropertyId(propertyId);
+    return PropertyResponse.builder()
+            .propertyDTO(mapper.toDTO(property, imageRepository))
+            .images(images)
             .build();
   }
 }

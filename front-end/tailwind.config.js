@@ -26,6 +26,12 @@ module.exports = withMT({
                 'my-pattern':
                     'linear-gradient(180deg, rgb(190, 215, 176) 0%, rgb(110, 141, 133)30%, rgb(126, 155, 188)60%, rgb(226, 181, 244)90%)',
             },
+            height: {
+                '75vh': '75vh',
+                '60vh': '60vh',
+                '65vh': '65vh',
+                '50vh': '50vh',
+            },
         },
         fontFamily: {
             sans: ['Open Sans', 'sans-serif'],

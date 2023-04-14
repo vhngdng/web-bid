@@ -8,11 +8,16 @@ const initialState = [];
 const ImageSlice = createSlice({
     name: 'image',
     initialState,
-    reducers: {},
+    reducers: {
+        removeImage: (state, { payload }) => {
+            state = initialState;
+            return state;
+        },
+    },
     extraReducers: (builder) => {
         builder
             .addMatcher(
-                imagesApi.endpoints.getAllImagesAfterLogin.matchFulfilled,
+                imagesApi.endpoints.getAllImagesNotProperty.matchFulfilled,
                 (state, { payload }) => {
                     state = payload;
                     return state;
@@ -45,6 +50,6 @@ const ImageSlice = createSlice({
     },
 });
 
-export const {} = ImageSlice.actions;
+export const { removeImage } = ImageSlice.actions;
 
 export default ImageSlice.reducer;

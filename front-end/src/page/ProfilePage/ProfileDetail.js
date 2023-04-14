@@ -1,12 +1,13 @@
 /* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetUserByEmailQuery } from '~/app/service/user.service';
 import Loader from '~/Loader';
 import ImageModal from './ImageModal';
 import { DOMAIN_URL } from '~/CONST/const';
 import { fix } from '~/assets';
+import { updateAvatar } from '~/app/slice/auth.slice';
 
 function ProfileDetail() {
     const { data: user, isLoading, refetch } = useGetUserByEmailQuery();
@@ -17,11 +18,13 @@ function ProfileDetail() {
     const [backgroundImg, setBackgroundImg] = useState(null);
     const [isAvatar, setIsAvatar] = useState(false);
     const [openModal, setOpenModal] = useState(false);
+    const dispatch = useDispatch();
     useEffect(() => {
         const ava = imageStore.filter((image) => image.type === 'AVATAR')[0];
         if (ava) {
             console.log('ava', ava);
             setAvatar(ava.id);
+            dispatch(updateAvatar(`${DOMAIN_URL}api/v1/images/read/${ava.id}`));
         }
         const backgr = imageStore.filter(
             (image) => image.type === 'BACKGROUND',
@@ -30,9 +33,7 @@ function ProfileDetail() {
             setBackgroundImg(backgr.id);
         }
     }, [imageStore, user]);
-    useEffect(() => {
-        refetch();
-    }, [auth]);
+
     if (isLoading) return <Loader />;
     const handleChangeBackground = () => {
         setIsAvatar(false);

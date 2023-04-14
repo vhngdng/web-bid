@@ -42,8 +42,16 @@ const arrowDownImage = {
 const setting = {
     logo: require('~/assets/images/setting.svg'),
 };
+const backgroundImage = {
+    logo: require('~/assets/images/background-auction.jpg'),
+};
+const logoutSvg = {
+    logo: require('~/assets/images/log-out.svg'),
+};
 
 export {
+    logoutSvg,
+    backgroundImage,
     setting,
     arrowDownImage,
     arrowUpImage,

@@ -2,6 +2,8 @@ package com.example.finalproject.repository;
 
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Property;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,7 +23,9 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
   List<Bid> findAllBidPreparingToRun(@Param("now") LocalDateTime now);
 
   Optional<Bid> findByPaymentId(Integer PaymentId);
-//  @Query("select b from Bid b where m.createdAt between b.dayOfSale and b.finishTime")
-//  Optional<Bid> findDetailBidById(Long id);
+
+  @Query("select b from Bid b where b.type = :type")
+  Page<Bid> findAllByType (@Param("type") String typ,
+                           Pageable pageable);
 
 }

@@ -81,9 +81,9 @@ export const imagesApi = createApi({
             }),
             headers: { 'Content-Type': 'application/json' },
         }),
-        getAllImagesAfterLogin: builder.query({
+        getAllImagesNotProperty: builder.query({
             query: () => ({
-                url: `images/all`,
+                url: `images/not-property/all`,
                 credentials: 'include',
             }),
         }),
@@ -133,7 +133,7 @@ export const imagesApi = createApi({
 // auto-generated based on the defined endpoints
 export const {
     useUploadImageMutation,
-    useGetAllImagesAfterLoginQuery,
+    useGetAllImagesNotPropertyQuery,
     useLazyReadImageQuery,
     useUpdateTypeImageMutation,
     useGetAvatarQuery,

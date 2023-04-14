@@ -66,6 +66,15 @@ export const bidApi = createApi({
         getBidRoom: builder.query({
             query: () => 'bid-room',
         }),
+        getBidRoomPrivate: builder.query({
+            query: (page) => {
+                if (!page) {
+                    return 'user/bid-room/private';
+                } else {
+                    return `user/bid-room/private${page}`;
+                }
+            },
+        }),
         getBidRoomWithId: builder.query({
             query: (id) => `bid-room/${id}`,
         }),
@@ -125,4 +134,5 @@ export const {
     useGetAllBidRoomPagingQuery,
     useGetDetailBidWithIdQuery,
     useUpdateStatusBidMutation,
+    useGetBidRoomPrivateQuery,
 } = bidApi;

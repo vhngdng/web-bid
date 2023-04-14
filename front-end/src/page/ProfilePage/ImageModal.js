@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useSelector } from 'react-redux';
 import {
-    useGetAllImagesAfterLoginQuery,
+    useGetAllImagesNotPropertyQuery,
     useUpdateTypeImageMutation,
     useUploadImageMutation,
 } from '~/app/service/image.service';
@@ -30,7 +30,7 @@ function ImageModal({
     selectImage,
 }) {
     // eslint-disable-next-line no-unused-vars
-    const { isLoading } = useGetAllImagesAfterLoginQuery();
+    const { isLoading } = useGetAllImagesNotPropertyQuery();
     const [updateTypeImage] = useUpdateTypeImageMutation();
     const images = useSelector((state) => {
         return state.image;

@@ -7,10 +7,13 @@ import {
 } from '~/utils/localStorageUtils';
 import { authApi } from '../service/auth.service';
 import { AUTHPUBLIC } from '~/CONST/const';
+import { imagesApi } from '../service/image.service';
+import { useDispatch } from 'react-redux';
 
 const defaultState = {
     auth: null,
     token: null,
+    avatar: null,
     isAuthenticated: false,
     refreshToken: null,
 };
@@ -25,11 +28,24 @@ const AuthSlice = createSlice({
     reducers: {
         logout: (state, { payload }) => {
             setDataToLocalStorage(AUTHPUBLIC, defaultState);
-            return defaultState;
+            state = defaultState;
+            return state;
         },
         tokenReceived: (state, { payload }) => {
             setDataToLocalStorage(AUTHPUBLIC, { ...state, token: payload });
             return { ...state, token: payload };
+        },
+        updateAvatar: (state, { payload }) => {
+            console.log('payload', payload);
+            console.log('state', state.auth);
+            setDataToLocalStorage(AUTHPUBLIC, {
+                ...state,
+                avatar: payload,
+            });
+            return {
+                ...state,
+                avatar: payload,
+            };
         },
     },
     extraReducers: (builder) => {
@@ -39,6 +55,7 @@ const AuthSlice = createSlice({
                 (state, { payload }) => {
                     state.auth = payload.auth;
                     state.token = payload.token;
+                    state.avatar = payload.avatar;
                     state.isAuthenticated = payload.isAuthenticated;
                     state.refreshToken = payload.refreshToken;
                     //TODO :Cần lưu vào localStorage
@@ -50,6 +67,7 @@ const AuthSlice = createSlice({
                 (state, { payload }) => {
                     state.auth = payload.auth;
                     state.token = payload.token;
+                    state.avatar = payload.avatar;
                     state.isAuthenticated = payload.isAuthenticated;
                     state.refreshToken = payload.refreshToken;
                     //TODO :Cần lưu vào localStorage
@@ -61,6 +79,7 @@ const AuthSlice = createSlice({
                 (state, { payload }) => {
                     state.auth = payload.auth;
                     state.token = payload.token;
+                    state.avatar = payload.avatar;
                     state.isAuthenticated = payload.isAuthenticated;
                     state.refreshToken = payload.refreshToken;
                     //TODO :Cần lưu vào localStorage
@@ -70,6 +89,6 @@ const AuthSlice = createSlice({
     },
 });
 
-export const { logout, tokenReceived } = AuthSlice.actions;
+export const { logout, tokenReceived, updateAvatar } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

@@ -76,10 +76,10 @@ public class WebSecurityConfig {
             .and()
             .authorizeHttpRequests()
             .requestMatchers("/auth/**", "/oauth2/**", "/ws/**", "/bid/**", "/images/**", "/create/**",
-                    "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html"
+                    "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/guest/**"
             ).permitAll()
             .requestMatchers("/admin/**").hasRole("ADMIN")
-            .requestMatchers("/user/**", "/participant/").hasAnyRole("USER", "GUEST", "ADMIN")
+            .requestMatchers("/user/**", "/participant/").hasAnyRole("USER", "ADMIN")
             .anyRequest()
             .authenticated()
             .and()

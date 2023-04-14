@@ -10,7 +10,13 @@ const initialState = [
 const participantSlice = createSlice({
     name: 'partitipantRoom',
     initialState,
-    reducers: {},
+    reducers: {
+        // eslint-disable-next-line no-unused-vars
+        removeParticipant: (state, { payload }) => {
+            state = initialState;
+            return state;
+        },
+    },
     extraReducers: (builder) => {
         builder.addMatcher(
             participantApi.endpoints.getParticipantWithBidId.matchFulfilled,
@@ -32,6 +38,7 @@ const participantSlice = createSlice({
 });
 
 // eslint-disable-next-line no-empty-pattern
-export const { joinParticipant, leaveParticipant } = participantSlice.actions;
+export const { joinParticipant, leaveParticipant, removeParticipant } =
+    participantSlice.actions;
 
 export default participantSlice.reducer;

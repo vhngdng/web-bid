@@ -19,6 +19,6 @@ public class AuthResponse {
   private boolean isAuthenticated;
   private UserDetails auth;
   private String refreshToken;
-
+  private String avatar;
 
 }

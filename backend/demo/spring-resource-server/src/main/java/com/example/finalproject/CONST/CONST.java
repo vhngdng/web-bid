@@ -2,6 +2,7 @@ package com.example.finalproject.CONST;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.crypto.SecretKey;
 
@@ -18,4 +19,6 @@ public interface CONST {
 
   // RefreshTokenDuration có hạn trong vòng 24 giờ kể từ thời điểm tạo, thời gian tính theo giây
   Integer refreshTokenDuration = 24 * 60 * 60;
+
+
 }

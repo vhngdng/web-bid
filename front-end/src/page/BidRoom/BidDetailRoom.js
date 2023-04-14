@@ -324,10 +324,11 @@ function BidDetailRoom() {
     };
     console.log('participants', participants);
     console.log('moneyref current', moneyRef.current);
+    console.log(data);
     return (
         <>
             {userData.connected ? (
-                <section className="bg-gray-200/25 dark:bg-gray-900 rounded">
+                <section className="dark:bg-gray-900 rounded">
                     <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
                         <div>
                             <div className="grid gap-8 lg:gap-16 grid-cols-8 ">

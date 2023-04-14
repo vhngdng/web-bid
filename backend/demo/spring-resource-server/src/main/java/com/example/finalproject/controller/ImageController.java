@@ -87,9 +87,9 @@ public class ImageController {
             .body(img.getData());
   }
 
-  @GetMapping("all")
-  public ResponseEntity<?> getAllImagesByUserLogin() {
-    return ResponseEntity.ok(imageService.getAllImagesByUserLogin());
+  @GetMapping("not-property/all")
+  public ResponseEntity<?> getAllImagesNotPropertyByUserLogin() {
+    return ResponseEntity.ok(imageService.getAllImagesNotPropertyByUserLogin());
   }
 
   @GetMapping("/avatar-background")

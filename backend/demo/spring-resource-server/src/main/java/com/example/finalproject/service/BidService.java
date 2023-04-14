@@ -174,7 +174,7 @@ public class BidService {
     return null;
   }
 
-  public Page<BidDTO> findAllBidRoomPaging(int page, int size, String[] sort) {
+  public Page<BidDTO> findAllBidRoomPaging(int page, int size, String[] sort, String type) {
     List<Sort.Order> orders = new ArrayList<>();
       if (sort[0].contains(",")) {
         for(String sortOrder : sort) {
@@ -185,7 +185,11 @@ public class BidService {
         orders.add(new Sort.Order(sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC, sort[0]));
       }
     Pageable pageable = PageRequest.of(page, size, Sort.by(orders));
-    Page<Bid> bidPage = bidRepository.findAll(pageable);
+    Page<Bid> bidPage = (type != null && type.equalsIgnoreCase("public"))
+            ? bidRepository.findAllByType("public", pageable)
+            : (type != null && type.equalsIgnoreCase("private"))
+            ? bidRepository.findAllByType("private", pageable)
+            : bidRepository.findAll(pageable);
     List<BidDTO> bidDTOList = mapper.toListBidDTO(bidPage.getContent(), userRepository, imageRepository);
     return new PageImpl<>(bidDTOList, pageable, bidPage.getTotalElements());
   }
@@ -198,5 +202,9 @@ public class BidService {
             .bidDTO(mapper.toDTO(bid, userRepository, imageRepository))
             .messageDTOs(messageService.getAllBidMessage(bid.getId()))
             .build();
+  }
+
+  public Page<BidDTO> findAllPrivateBid(int page, int size, String[] sort, String type) {
+    return findAllBidRoomPaging(page, size, sort, type);
   }
 }

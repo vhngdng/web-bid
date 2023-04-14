@@ -22,10 +22,12 @@ import PaymentPage from './page/ProfilePage/Payment/PaymentPage';
 import PaymentDetail from './page/ProfilePage/Payment/PaymentDetail';
 import PropertyList from './page/ProfilePage/Properties/PropertyList';
 import DetailBidRoom from './page/AdminPage/Bid/DetailBidRoom';
-import ListBidRoom from './page/AdminPage/Bid/ListBidRoom';
 import ErrorPage404 from './page/ErrorPage';
 import SignUp from './page/SignUp';
 import PropertyDetails from './page/ProfilePage/Properties/PropertyDetails';
+import ListBidRoomAdmin from './page/AdminPage/Bid/ListBidRoomAdmin';
+import AdminPropertyList from './page/AdminPage/Property/AdminPropertyList';
+import AdminPropertyDetails from './page/AdminPage/Property/AdminPropertyDetails';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -85,7 +87,7 @@ function App() {
                             }
                         >
                             <Route path="admin" element={<AdminHomePage />}>
-                                <Route index element={<ListBidRoom />} />
+                                <Route index element={<ListBidRoomAdmin />} />
                                 <Route
                                     path="create-bid"
                                     element={<BidCreate />}
@@ -94,6 +96,15 @@ function App() {
                                 <Route
                                     path="details-bid/:bidId"
                                     element={<DetailBidRoom />}
+                                />
+                                <Route
+                                    path="properties"
+                                    element={<AdminPropertyList />}
+                                />
+
+                                <Route
+                                    path="properties/:propertyId"
+                                    element={<AdminPropertyDetails />}
                                 />
                             </Route>
                         </Route>

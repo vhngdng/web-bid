@@ -46,4 +46,8 @@ public class PropertyController {
   public ResponseEntity<?> findDetailProperty(@PathVariable("propertyId") Integer propertyId) {
     return ResponseEntity.ok(propertyService.findDetailProperty(propertyId));
   }
+  @GetMapping("admin/properties/{propertyId}")
+  public ResponseEntity<?> findAdminDetailProperty(@PathVariable("propertyId") Integer propertyId) {
+    return ResponseEntity.ok(propertyService.findAdminDetailProperty(propertyId));
+  }
 }

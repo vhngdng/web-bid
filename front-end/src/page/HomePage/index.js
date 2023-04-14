@@ -1,20 +1,11 @@
-import { motion } from 'framer-motion';
-// import { motion } from 'framer-motion-3d';
 import React from 'react';
 import { Helmet } from 'react-helmet';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import bg from '~/assets/images/bg.jpeg';
+import { motion } from 'framer-motion';
+import woodenHammer from '~/assets/images/wooden_hammer_auction.png';
 import { RotatingText } from 'rotating-text';
+import { colVariant } from '~/animation';
 function Home() {
-    const { auth } = useSelector((state) => state.auth);
-    const navigate = useNavigate();
-
-    const handleRedirectToAdminPage = () => {
-        navigate('admin');
-    };
-    const handleRedirectToProfile = () => {
-        navigate('/profile-detail');
-    };
     return (
         <>
             <Helmet>
@@ -22,74 +13,54 @@ function Home() {
                 <title>Auctionforfun Home</title>
                 <meta name="description" content="Home" />
             </Helmet>
-            <div>
-                <h1 className="mb-12 mx-4 text-gray-400">
-                    <RotatingText
-                        text="Welcome&nbsp;to&nbsp;Auctionforfun"
-                        stagger={0.1}
-                        timing={0.3}
-                        className="rotating-text"
-                        styles={{ fontSize: '100px' }}
-                    />
-                </h1>
 
-                <div className="flex justify-center ">
-                    <div
-                        className="button w-40 h-16 bg-blue-500 rounded-lg cursor-pointer select-none
-                            active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
-                            active:border-b-[0px]
-                            transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
-                            border-b-[1px] border-blue-400 mx-auto"
-                        onClick={() => navigate('/bid-room')}
-                    >
-                        <span className="text-center flex justify-center items-center h-full text-white font-bold text-lg ">
-                            Join BidRoom
-                        </span>
-                    </div>
-                    {auth.authorities.find(
-                        (n) => n.authority === 'ROLE_ADMIN',
-                    ) ? (
-                        <div
-                            className="button w-40 h-16 bg-blue-500 rounded-lg cursor-pointer select-none
-                            active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
-                            active:border-b-[0px]
-                            transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
-                            border-b-[1px] border-blue-400 mx-auto "
-                            onClick={handleRedirectToAdminPage}
-                        >
-                            <span className="text-center flex justify-center items-center h-full text-white font-bold text-lg ">
-                                Go to Admin page
-                            </span>
-                        </div>
-                    ) : (
-                        <div
-                            onClick={handleRedirectToProfile}
-                            className="button w-40 h-16 bg-blue-500 rounded-lg cursor-pointer select-none
-                            active:translate-y-2  active:[box-shadow:0_0px_0_0_#1b6ff8,0_0px_0_0_#1b70f841]
-                            active:border-b-[0px]
-                            transition-all duration-150 [box-shadow:0_10px_0_0_#1b6ff8,0_15px_0_0_#1b70f841]
-                            border-b-[1px] border-blue-400 mx-auto"
-                        >
-                            <span className="text-center flex justify-center items-center h-full text-white font-bold text-lg ">
-                                Go to Your Profile page
-                            </span>
-                        </div>
-                    )}
-                </div>
-                <div className="my-4 flex justify-center align-center ">
+            <div className="w-screen">
+                <div className="relative flex justify-center items-center">
                     <motion.img
-                        className="w-96 h-96"
-                        initial={{ opacity: 0, scale: 0 }}
-                        animate={{
-                            opacity: 1,
-                            scale: 1,
-                            transition: { type: 'spring', duration: 1 },
-                        }}
-                        exit={{ opacity: 0 }}
-                        // eslint-disable-next-line no-undef
-                        src={require('~/assets/images/giphy.gif')}
-                        alt="loading..."
+                        src={woodenHammer}
+                        className="object-fill h-96 w-96"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1, transition: { delay: 1 } }}
+                        exit={{ opacity: 0, transition: { delay: 1 } }}
                     />
+                    <h1 className="absolute top-0 mb-12 mx-4 text-black-400">
+                        <RotatingText
+                            text="Welcome&nbsp;to&nbsp;Auctionforfun"
+                            stagger={0.1}
+                            timing={0.3}
+                            className="rotating-text"
+                            styles={{ fontSize: '100px' }}
+                        />
+                    </h1>
+                </div>
+                <div className="flex justify-center items-center">
+                    <motion.div
+                        initial={{
+                            x: -25,
+                            opacity: 0,
+                        }}
+                        animate={{
+                            transition: {
+                                ease: 'easeInOut',
+                                duration: 2,
+                            },
+                            x: 0,
+                            opacity: 1,
+                        }}
+                        className="px-4"
+                    >
+                        <img
+                            className="object-cover h-48 w-48 rounded-full"
+                            src={bg}
+                        />
+                    </motion.div>
+                    <motion.div
+                        className="font-sans text-2xl text-white px-4"
+                        initial={colVariant.hidden}
+                        animate={colVariant.show}
+                    >
+                        Unlocking the value of the secondary goods market
+                    </motion.div>
                 </div>
             </div>
         </>
