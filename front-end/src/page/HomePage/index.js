@@ -15,7 +15,7 @@ function Home() {
             </Helmet>
 
             <div className="w-screen">
-                <div className="relative flex justify-center items-center">
+                <div className="static flex justify-center items-center">
                     <motion.img
                         src={woodenHammer}
                         className="object-fill h-96 w-96"
@@ -23,7 +23,7 @@ function Home() {
                         animate={{ opacity: 1, transition: { delay: 1 } }}
                         exit={{ opacity: 0, transition: { delay: 1 } }}
                     />
-                    <h1 className="absolute top-0 mb-12 mx-4 text-black-400">
+                    <h1 className="absolute top-1/2 mb-12 mx-4 text-gray-900/20">
                         <RotatingText
                             text="Welcome&nbsp;to&nbsp;Auctionforfun"
                             stagger={0.1}

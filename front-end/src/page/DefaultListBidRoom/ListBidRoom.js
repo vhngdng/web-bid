@@ -1,6 +1,6 @@
 /* eslint-disable no-extra-boolean-cast */
 import { Pagination } from '@mui/material';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     useGetAllBidRoomPagingQuery,
     useGetBidRoomPrivateQuery,
@@ -13,7 +13,7 @@ import formatDateTime from '~/utils/formatDateTime';
 import { imageDefault } from '~/assets';
 import { useNavigate } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
-import { useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 function ListBidRoom({ isAdmin }) {
     const [properties, setProperties] = useState([]);
     // eslint-disable-next-line no-unused-vars
@@ -41,8 +41,7 @@ function ListBidRoom({ isAdmin }) {
         field: '',
         direction: '',
     });
-    const ref = useRef([]);
-    const isInView = useInView(ref, { once: true });
+    // const isInView = useInView(ref, { once: true });
 
     useEffect(() => {
         if (orderList.size > 1) {
@@ -61,11 +60,7 @@ function ListBidRoom({ isAdmin }) {
     useEffect(() => {
         refetch();
     }, [properties]);
-    useEffect(() => {
-        if (!!data && !!data.content) {
-            ref.current = ref.current.slice(0, data.content.length);
-        }
-    }, [data]);
+
     useEffect(() => {
         if (orderList && orderList.get(order.field) === order.direction) {
             console.log(orderList.get(order.field));
@@ -475,10 +470,7 @@ function ListBidRoom({ isAdmin }) {
                                     {data &&
                                         data.content &&
                                         data.content.map((bid, index) => (
-                                            <tr
-                                                ref={(el) =>
-                                                    (ref.current[index] = el)
-                                                }
+                                            <motion.tr
                                                 key={index}
                                                 className={`cursor-pointer border-gray-300 hover:bg-gray-100 
                                                     ${
@@ -500,13 +492,21 @@ function ListBidRoom({ isAdmin }) {
                                                 onClick={() =>
                                                     handleEnterRoom(bid.id)
                                                 }
-                                                style={{
-                                                    transform: isInView
-                                                        ? 'none'
-                                                        : 'translateX(-200px)',
-                                                    opacity: isInView ? 1 : 0,
-                                                    transition:
-                                                        'all 0.9s cubic-bezier(0.17, 0.55, 0.55, 1) 0.5s',
+                                                initial={{
+                                                    x: -200,
+                                                    opacity: 0,
+                                                }}
+                                                animate={{
+                                                    opacity: 1,
+                                                    x: 0,
+                                                    transition: {
+                                                        ease: [
+                                                            0.25, 0.1, 0.25,
+                                                            1.0,
+                                                        ],
+                                                        duration: 1,
+                                                        delay: index / 5,
+                                                    },
                                                 }}
                                             >
                                                 <td
@@ -653,7 +653,7 @@ function ListBidRoom({ isAdmin }) {
                                                         </span>
                                                     </div>
                                                 </td>
-                                            </tr>
+                                            </motion.tr>
                                         ))}
                                 </tbody>
                             </table>

@@ -361,7 +361,7 @@ function HeaderDefault() {
                                     }
                                 />
 
-                                <ul className="absolute right-0 hidden w-36 text-gray-700 pt-1 group-hover:block">
+                                <ul className="absolute right-0 hidden w-36 text-gray-700 pt-1 group-hover:block ">
                                     {auth.authorities.some(
                                         (autho) =>
                                             autho.authority === 'ROLE_ADMIN',

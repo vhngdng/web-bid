@@ -19,4 +19,5 @@ const colVariant = {
         transition,
     },
 };
+
 export { rowVariant, colVariant };

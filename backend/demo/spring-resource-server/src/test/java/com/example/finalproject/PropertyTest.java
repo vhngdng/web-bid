@@ -14,11 +14,5 @@ public class PropertyTest {
   @Autowired
   public PropertyRepository propertyRepository;
 
-  @Test
-  public void findAllAttendeeByBidIdTest() {
-    System.out.println(propertyRepository
-            .findPropertyDetailsById(32).getBidId());
 
-
-  }
 }

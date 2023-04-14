@@ -21,7 +21,7 @@ else
   (! cat .env | grep NGINX_PORT=8081 ) && echo 'NGINX_PORT=8081' >> .env
   (! cat .env | grep 'REACT_APP_DOMAIN_URL=http://localhost:8080/' ) && echo 'REACT_APP_DOMAIN_URL=http://localhost:8080/' >> .env
   (! cat .env | grep 'NGINX_CONFIG_PART=./config/nginx.local.conf' ) && echo 'NGINX_CONFIG_PART=./config/nginx.local.conf' >> .env
-  docker compose -f docker-compose.local.yml up -d --build --force-recreate --no-deps backend frontend nginx
+  docker compose -f docker-compose.local.yml up -d --build --force-recreate --no-deps backend frontend nginx &&
   docker compose -f docker-compose.local.yml up -d --build --no-deps postgre 
 fi
 
