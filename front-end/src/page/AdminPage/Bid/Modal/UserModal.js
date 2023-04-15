@@ -32,7 +32,6 @@ function UserModal({ userId, setIsOpen, open, setUserId }) {
             onRequestClose={closeModal}
             style={customStyles}
             contentLabel="User"
-            // appElement={appElement}
         >
             <section className=" bg-[#071e34] h-fit flex font-medium items-center justify-center h-screen">
                 <section className="w-64 mx-auto bg-[#20354b] rounded-2xl px-8 py-6 shadowLg">

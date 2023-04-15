@@ -19,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -36,7 +35,7 @@ public class PropertyService {
   private ImageRepository imageRepository;
 
   public List<PropertyDTO> findAll() {
-    return mapper.toListPropertyDTO(propertyRepository.findAll(), imageRepository);
+    return mapper.toListPropertyDTO(propertyRepository.findAllByPermissionNotNull(), imageRepository);
   }
 
   public List<PropertyDTO> findPropertyByUserLogin(String email) {
@@ -68,7 +67,7 @@ public class PropertyService {
   }
 
   public PropertyResponse findDetailProperty(Integer propertyId) {
-    Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id " + propertyId + " is nout found"));
+    Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id " + propertyId + " is not found"));
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
     return PropertyResponse.builder()
             .propertyDTO(mapper.toDTO(property, imageRepository))
@@ -77,11 +76,27 @@ public class PropertyService {
   }
 
   public PropertyResponse findAdminDetailProperty(Integer propertyId) {
-    Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id " + propertyId + " is nout found"));
+    Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id " + propertyId + " is not found"));
     List<ImageProjection> images = imageRepository.findByPropertyId(propertyId);
     return PropertyResponse.builder()
             .propertyDTO(mapper.toDTO(property, imageRepository))
             .images(images)
             .build();
+  }
+
+  public PropertyResponse updateProperty(UpSertProperty upSertProperty, Integer propertyId) {
+    Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id is not found " + propertyId));
+    mapper.updateProperty(upSertProperty, property);
+    propertyRepository.save(property);
+    List<ImageProjection> images = imageRepository.findByPropertyId(propertyId);
+    return PropertyResponse.builder()
+            .propertyDTO(mapper.toDTO(property, imageRepository))
+            .images(images)
+            .build();
+  }
+
+  public PropertyResponse registerProperty(UpSertProperty upSertProperty, Integer propertyId) {
+    upSertProperty.setPermission(PERMISSION.NOTCHECK.name());
+    return updateProperty(upSertProperty, propertyId);
   }
 }

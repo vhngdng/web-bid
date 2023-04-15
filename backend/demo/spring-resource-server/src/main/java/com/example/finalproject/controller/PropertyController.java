@@ -5,6 +5,7 @@ import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.request.UpSertProperty;
 import com.example.finalproject.service.PropertyService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -49,5 +50,15 @@ public class PropertyController {
   @GetMapping("admin/properties/{propertyId}")
   public ResponseEntity<?> findAdminDetailProperty(@PathVariable("propertyId") Integer propertyId) {
     return ResponseEntity.ok(propertyService.findAdminDetailProperty(propertyId));
+  }
+
+  @PutMapping("user/properties/{propertyId}")
+  public ResponseEntity<?> updateProperty(@RequestBody @NotNull UpSertProperty upSertProperty, @PathVariable("propertyId") Integer propertyId) {
+    return ResponseEntity.ok(propertyService.updateProperty(upSertProperty, propertyId));
+  }
+
+  @PutMapping("user/register-properties/{propertyId}")
+  public ResponseEntity<?> registerProperty(@RequestBody @NotNull UpSertProperty upSertProperty, @PathVariable("propertyId") Integer propertyId) {
+    return ResponseEntity.ok(propertyService.registerProperty(upSertProperty, propertyId));
   }
 }

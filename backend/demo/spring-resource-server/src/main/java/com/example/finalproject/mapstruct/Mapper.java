@@ -110,6 +110,8 @@ public interface Mapper {
   @Mapping(target = "property", ignore = true)
   void updateBid(UpSertBid upSertBid, @MappingTarget Bid bid);
 
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  void updateProperty(UpSertProperty upSertProperty, @MappingTarget Property property);
 
   default User mapUserIdToUser(Long id, @Context UserRepository userRepository) {
     return id != null

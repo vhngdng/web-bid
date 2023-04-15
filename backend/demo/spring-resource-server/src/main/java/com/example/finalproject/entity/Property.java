@@ -27,6 +27,8 @@ public class Property {
   private String name;
   @Column
   private String category;
+  @Column
+  private Long auctioneerPrice;
 
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.LAZY)
   @JoinColumn(name = "owner_id", referencedColumnName = "user_id")

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Checkbox, Button, Typography, Radio } from '@material-tailwind/react';
-import PropertyModal from './PropertyModal';
+import PropertyModal from './Modal/PropertyModal';
 import { useCreateBidMutation } from '~/app/service/bid.service';
 // import classNames from 'classnames/bind';
 import SimpleMdeReact from 'react-simplemde-editor';

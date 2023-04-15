@@ -28,6 +28,7 @@ import PropertyDetails from './page/ProfilePage/Properties/PropertyDetails';
 import ListBidRoomAdmin from './page/AdminPage/Bid/ListBidRoomAdmin';
 import AdminPropertyList from './page/AdminPage/Property/AdminPropertyList';
 import AdminPropertyDetails from './page/AdminPage/Property/AdminPropertyDetails';
+import FullImageModal from './page/ProfilePage/Properties/FullImageModal';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -69,7 +70,12 @@ function App() {
                             <Route
                                 path="propertyDetails/:propertyId"
                                 element={<PropertyDetails />}
-                            />
+                            >
+                                <Route
+                                    path=":imageId"
+                                    element={<FullImageModal />}
+                                />
+                            </Route>
                         </Route>
 
                         <Route

@@ -1,30 +1,41 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
 import Loader from '~/Loader';
-import { useGetAllDetailsPropertyQuery } from '~/app/service/property.service';
+import {
+    useGetAllDetailsPropertyQuery,
+    useRegisterPropertyMutation,
+} from '~/app/service/property.service';
 import { arrowDownImage, arrowUpImage, setting } from '~/assets';
 import CustomModal from './CustomModal';
+import { ToastContainer, toast } from 'react-toastify';
 function PropertyDetails() {
     const { propertyId } = useParams();
     const { data, isLoading } = useGetAllDetailsPropertyQuery(propertyId);
+    const [registerProperty] = useRegisterPropertyMutation();
     const [images, setImages] = useState([]);
-    const [files, setFiles] = useState([]);
+    const [file, setFile] = useState(null);
     const [imageListShow, setImageListShow] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
-    const [type, setType] = useState();
+    const [type, setType] = useState('private');
     const [isFixName, setIsFixName] = useState(false);
     const [isFixDescription, setIsFixDescription] = useState(false);
+    const [insertPrice, setInsertPrice] = useState(false);
+    const [reservePrice, setReservePrice] = useState(0);
+    const [quantity, setQuantity] = useState(1);
     // eslint-disable-next-line no-unused-vars
     const [description, setDescription] = useState();
     const [name, setName] = useState();
     // eslint-disable-next-line no-unused-vars
     const [indexImage, setIndexImage] = useState(0);
+    const navigate = useNavigate();
+
     useEffect(() => {
         if (!!data) {
             setImages([...data.images]);
             setName(data.property.name);
+            setReservePrice(data.property.reservePrice);
         }
     }, [data]);
     useEffect(() => {
@@ -55,8 +66,8 @@ function PropertyDetails() {
         }
     }, [indexImage, images]);
     useEffect(() => {
-        if (files.length > 0) setIsOpen((prev) => !prev);
-    }, [files]);
+        if (file != null) setIsOpen((prev) => !prev);
+    }, [file]);
 
     useEffect(() => {
         console.log(name);
@@ -74,7 +85,7 @@ function PropertyDetails() {
         }
     };
     const handleFileInputChange = (e) => {
-        setFiles([...e.target.files]);
+        setFile(e.target.files[0]);
         console.log(e);
     };
 
@@ -86,7 +97,38 @@ function PropertyDetails() {
         setDescription(data.property.description);
         setIsFixDescription(false);
     };
-    console.log('files', files);
+    // Not finished yet
+    const handleShowFullImage = (id) => {
+        setTimeout(() => {
+            navigate(`${id}`);
+        }, 2000);
+    };
+
+    const handlePropertyRegistration = async () => {
+        try {
+            const res = await registerProperty({
+                propertyId,
+                description,
+                quantity,
+                name,
+                reservePrice,
+                bidType: type,
+            });
+            console.log(res);
+            toast.success('Property register successfully', {
+                position: 'top-center',
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+        } catch {
+            (err) => console.log(err);
+        }
+    };
     return (
         <>
             <section className="pt-12 pb-24 bg-blueGray-100 rounded-b-10xl overflow-hidden max-w-screen min-w-full">
@@ -141,7 +183,14 @@ function PropertyDetails() {
                                         />
                                     </div>
                                 </div>
-                                <div className="w-full sm:w-9/12 px-4">
+                                <div
+                                    className="w-full sm:w-9/12 px-4"
+                                    onMouseEnter={() =>
+                                        handleShowFullImage(
+                                            images[indexImage].id,
+                                        )
+                                    }
+                                >
                                     {images.length > 0 && (
                                         <img
                                             className="mb-5 object-fill h-full w-full"
@@ -150,7 +199,7 @@ function PropertyDetails() {
                                         />
                                     )}
                                     <p className="text-sm text-gray-300">
-                                        Roll over image to zoom in
+                                        Hover image to see full size
                                     </p>
                                 </div>
                             </div>
@@ -185,7 +234,9 @@ function PropertyDetails() {
                                                 !!data &&
                                                 !!data.property.description
                                                     ? data.property.description
-                                                    : 'Description'
+                                                    : description
+                                                    ? description
+                                                    : 'No Description'
                                             }
                                             onChange={(e) =>
                                                 setDescription(e.target.value)
@@ -194,7 +245,14 @@ function PropertyDetails() {
                                         <div className="flex ">
                                             <div className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-blue-600 active:shadow-none shadow-lg bg-gradient-to-tr from-blue-600 to-blue-500 border-blue-700 text-white">
                                                 <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
-                                                <span className="relative">
+                                                <span
+                                                    className="relative"
+                                                    onClick={() =>
+                                                        setIsFixDescription(
+                                                            (prev) => !prev,
+                                                        )
+                                                    }
+                                                >
                                                     Confirm change
                                                 </span>
                                             </div>
@@ -212,9 +270,11 @@ function PropertyDetails() {
                                         </div>
                                     </div>
                                 ) : (
-                                    <p className="text-lg text-center text-gray-500">
+                                    <p className="text-lg text-center text-black">
                                         {!!data.property.description
                                             ? data.property.description
+                                            : !!description
+                                            ? description
                                             : 'No description'}
                                     </p>
                                 )}
@@ -222,7 +282,7 @@ function PropertyDetails() {
                         </div>
                         <div className="w-full lg:w-1/2 px-4">
                             <div className="max-w-4xl mb-6">
-                                <span className="text-m text-gray-400 tracking-wider">
+                                <span className="text-xl text-gray-600 tracking-wider">
                                     {!!data && `# ${data.property.id}`}
                                 </span>
                                 <div className="cursor-pointer">
@@ -279,14 +339,34 @@ function PropertyDetails() {
                                     {!!data &&
                                         `${data.property.owner.username}`}
                                 </h2>
-                                <p className="flex items-center mb-6">
-                                    <span className="mr-2 text-m text-blue-500 font-medium">
-                                        $
-                                    </span>
-                                    <span className="text-3xl text-blue-500 font-medium">
-                                        {!!data && data.property.reserveprice}
-                                    </span>
-                                </p>
+                                <div className="flex items-center mb-6">
+                                    {insertPrice ? (
+                                        <div>
+                                            <span>$ </span>
+                                            <input
+                                                className="w-28 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl"
+                                                autoFocus
+                                                type="text"
+                                                defaultValue={reservePrice}
+                                                onChange={(e) =>
+                                                    setReservePrice(
+                                                        e.target.value,
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                    ) : (
+                                        <span
+                                            onClick={() => setInsertPrice(true)}
+                                            className="cursor-pointer title-font font-medium text-2xl text-gray-900 hover:text-red-rgb hover:scale-90"
+                                        >
+                                            ${' '}
+                                            {!!data.property.reservePrice
+                                                ? data.property.reservePrice
+                                                : 'No price'}
+                                        </span>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="mb-10">
@@ -296,10 +376,14 @@ function PropertyDetails() {
                                 <input
                                     className="w-24 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl"
                                     type="text"
+                                    defaultValue={quantity}
                                     placeholder={
                                         !!data.property.quantity
                                             ? data.property.quantity
                                             : '1'
+                                    }
+                                    onChange={(e) =>
+                                        setQuantity(e.target.value)
                                     }
                                 />
                             </div>
@@ -321,7 +405,7 @@ function PropertyDetails() {
                                         >
                                             Public
                                         </label>
-                                        <p className="px-4 py-4 text-xl text-gray-400">
+                                        <p className="px-4 py-4 text-xl text-gray-600">
                                             Properties are sold in home page and
                                             automatically closed on fixed time
                                         </p>
@@ -339,7 +423,7 @@ function PropertyDetails() {
                                         >
                                             Private
                                         </label>
-                                        <p className="px-4 py-4 text-xl text-gray-400">
+                                        <p className="px-4 py-4 text-xl text-gray-600">
                                             Properties are sold in the online
                                             bid room
                                         </p>
@@ -349,8 +433,8 @@ function PropertyDetails() {
                             <div className="flex flex-wrap -mx-2 mb-12">
                                 <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
                                     <div
+                                        onClick={handlePropertyRegistration}
                                         className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
-                                        href="#"
                                     >
                                         Property Registration
                                     </div>
@@ -366,7 +450,6 @@ function PropertyDetails() {
                                             className="hidden"
                                             id="image"
                                             type="file"
-                                            multiple
                                             onChange={(e) =>
                                                 handleFileInputChange(e)
                                             }
@@ -381,9 +464,11 @@ function PropertyDetails() {
             <CustomModal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                setFiles={setFiles}
-                files={files}
+                setFile={setFile}
+                file={file}
+                setImages={setImages}
             />
+            <ToastContainer />
         </>
     );
 }

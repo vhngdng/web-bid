@@ -3,32 +3,40 @@ import { Dialog } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { useUploadMultiImagePropertyMutation } from '~/app/service/image.service';
+import {
+    useUpdateTypeImageMutation,
+    useUploadImageMutation,
+} from '~/app/service/image.service';
 
-function CustomModal({ isOpen, setIsOpen, isDelete, setFiles, files }) {
+function CustomModal({
+    isOpen,
+    setIsOpen,
+    isDelete,
+    setFile,
+    file,
+    setImages,
+}) {
     const { propertyId } = useParams();
-    const [uploadMultiImageProperty] = useUploadMultiImagePropertyMutation();
+    const [uploadImage] = useUploadImageMutation();
+    const [updateTypeImage] = useUpdateTypeImageMutation();
     const handleAccept = async () => {
         const formData = new FormData();
-        console.log(files);
-        files.forEach((file) => {
-            formData.append('files', file);
-        });
-
+        formData.append('file', file);
         try {
-            const { data } = await uploadMultiImageProperty({
+            const { data } = await uploadImage(formData);
+            const res = await updateTypeImage({
+                id: data.id,
                 propertyId,
-                formData,
             });
-            console.log(data);
+            setImages((prev) => [...prev, { id: res.data.id, type: null }]);
         } catch (error) {
             console.log(error);
         }
-        setFiles([]);
+        setFile(null);
         setIsOpen((prev) => !prev);
     };
     const handleCancel = () => {
-        setFiles([]);
+        setFile(null);
         setIsOpen((prev) => !prev);
     };
     return (

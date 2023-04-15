@@ -42,6 +42,7 @@ public class ImageService {
   private Mapper mapper;
   @Value("${IMAGE_URL}")
   private String IMAGE_URL;
+
   @Transactional
   public Image save(MultipartFile file) throws IOException {
     Image img = new Image();
@@ -104,34 +105,39 @@ public class ImageService {
     }
     Optional<Image> imageOptional = imageRepository.findByUserIdAndType(user.getId(), request.getType());
     imageOptional.ifPresent(image -> image.setType(null));
-    switch (request.getType()) {
-      case "AVATAR":
-      case "BACKGROUND": {
-        if (duplicateImage == null) {
-          newImage.setType(request.getType());
-        } else {
-          duplicateImage.setType(request.getType());
-          return mapper.toImageResponse(imageRepository.save(duplicateImage));
+    if (request.getType() != null) {
+      switch (request.getType()) {
+        case "AVATAR":
+        case "BACKGROUND": {
+          if (duplicateImage == null) {
+            newImage.setType(request.getType());
+          } else {
+            duplicateImage.setType(request.getType());
+            return mapper.toImageResponse(imageRepository.save(duplicateImage));
+          }
+          break;
         }
-        break;
+        case "PROPERTY": {
+          Optional<Image> imageProperty = imageRepository.findByPropertyIdAndType(request.getPropertyId(), "PROPERTY");
+          imageProperty.ifPresent(image -> {
+            image.setType(null);
+          });
+          newImage.setType(TYPE_IMAGE.PROPERTY.name());
+          newImage.setProperty(
+                  propertyRepository.findById(
+                                  request.getPropertyId())
+                          .orElseThrow(() ->
+                                  new NotFoundException("Property with id " + request.getPropertyId() + " is not found")));
+          break;
+        }
+        default:
+          throw new BadRequestException("The type of image is not valid");
       }
-      case "PROPERTY": {
-        Optional<Image> imageProperty = imageRepository.findByPropertyIdAndType(request.getPropertyId(), "PROPERTY");
-        imageProperty.ifPresent(image -> {
-          image.setType(null);
-        });
-        newImage.setType(TYPE_IMAGE.PROPERTY.name());
-        newImage.setProperty(
-                propertyRepository.findById(
-                        request.getPropertyId())
-                        .orElseThrow( () ->
-                                new NotFoundException("Property with id " + request.getPropertyId() + " is not found")));
-        break;
-      }
-      default:
-        throw new BadRequestException("The type of image is not valid");
     }
-    return mapper.toImageResponse(newImage);
+    if (request.getPropertyId() != null) {
+      newImage.setProperty(propertyRepository.findById(request.getPropertyId()).orElseThrow(() -> new NotFoundException("Not found Property with Id " + request.getPropertyId())));
+    }
+    return mapper.toImageResponse(imageRepository.save(newImage));
   }
 
   public ImageResponse getAvatar() {
@@ -168,10 +174,10 @@ public class ImageService {
 
   public String findImageAva(String email) {
     User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User not found " + email));
-    return  imageRepository.findImageAva(email) != null
-            ?  IMAGE_URL + "api/v1/images/read/" + imageRepository.findImageAva(email)
-            :  user.getAvatar() != null
-              ? user.getAvatar()
-              : null;
+    return imageRepository.findImageAva(email) != null
+            ? IMAGE_URL + "api/v1/images/read/" + imageRepository.findImageAva(email)
+            : user.getAvatar() != null
+            ? user.getAvatar()
+            : null;
   }
 }

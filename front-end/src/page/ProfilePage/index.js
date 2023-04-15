@@ -6,6 +6,7 @@ import ProfileUserSidebar from '../../component/layouts/DefaultSidebarUser/Profi
 const customSelectStyle = 'bg-blue-200 text-lime-900 shadow-inner scale-y-90';
 function ProfilePage() {
     const [selectSidebar, setSelectSidebar] = useState(1);
+
     const navigate = useNavigate();
     const location = useLocation();
     useEffect(() => {

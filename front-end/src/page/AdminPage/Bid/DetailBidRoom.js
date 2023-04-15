@@ -14,7 +14,7 @@ import {
 import { arrowDropdown, imageDefault } from '~/assets';
 import Loader from '~/Loader';
 import ErrorPage404 from '~/page/ErrorPage';
-import UserModal from './UserModal';
+import UserModal from './Modal/UserModal';
 import { DOMAIN_URL } from '~/CONST/const';
 import { useUpdateStatusBidMutation } from '~/app/service/bid.service';
 import { motion, useAnimate } from 'framer-motion';

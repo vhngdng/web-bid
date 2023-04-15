@@ -78,6 +78,20 @@ export const propeprtyApi = createApi({
                 body,
             }),
         }),
+        updateProperty: builder.mutation({
+            query: ({ propertyId, ...body }) => ({
+                url: `user/properties/${propertyId}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
+        registerProperty: builder.mutation({
+            query: ({ propertyId, ...body }) => ({
+                url: `user/register-properties/${propertyId}`,
+                method: 'PUT',
+                body,
+            }),
+        }),
         getAllDetailsProperty: builder.query({
             query: (id) => `user/property/${id}`,
         }),
@@ -94,4 +108,6 @@ export const {
     useCreatePropertyMutation,
     useGetAllDetailsPropertyQuery,
     useGetAdminDetailPropertyQuery,
+    useUpdatePropertyMutation,
+    useRegisterPropertyMutation,
 } = propeprtyApi;

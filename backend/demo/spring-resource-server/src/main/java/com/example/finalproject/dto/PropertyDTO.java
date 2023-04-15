@@ -25,6 +25,8 @@ public class PropertyDTO {
   private Long reservePrice;
   private String description;
   private Long quantity;
+  private Long auctioneerPrice;
+
   @JsonIgnoreProperties("roles")
   private UserDTO owner;
   @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")

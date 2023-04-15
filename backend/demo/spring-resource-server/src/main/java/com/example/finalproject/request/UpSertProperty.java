@@ -18,4 +18,8 @@ public class UpSertProperty {
   private String imageId;
   private String bidType;
   private long reservePrice;
+  private String permission;
+  private String description;
+  private Long quantity;
+  private Long auctioneerPrice;
 }
