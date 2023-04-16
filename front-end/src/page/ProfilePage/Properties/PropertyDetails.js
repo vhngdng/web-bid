@@ -112,7 +112,7 @@ function PropertyDetails() {
         console.log('image id', id);
         setTimeout(() => {
             setIsOpenImageModal((prev) => !prev);
-        }, 1000);
+        }, 2000);
     };
 
     const handlePropertyRegistration = async () => {

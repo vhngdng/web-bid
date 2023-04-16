@@ -33,10 +33,10 @@ function BidDetailSideBar({ isAdmin }) {
                                 <MenuItem> Pie charts </MenuItem>
                                 <MenuItem> Line charts </MenuItem>
                             </SubMenu>
-                            <MenuItem> Documentation </MenuItem>
-                            <MenuItem> Calendar </MenuItem>
+                            <MenuItem> Go to Home Page </MenuItem>
+                            <MenuItem> Rule </MenuItem>
                             <SubMenu label="Bid">
-                                <MenuItem> Setting </MenuItem>
+                                <MenuItem> Buy </MenuItem>
                                 <MenuItem> Quit </MenuItem>
                             </SubMenu>
                             {isAdmin && (

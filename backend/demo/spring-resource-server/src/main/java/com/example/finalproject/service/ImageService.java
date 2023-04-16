@@ -166,7 +166,7 @@ public class ImageService {
     );
   }
 
-  public ImageResponse getImageWithPropertyId(Integer id) {
+  public ImageResponse getImageWithPropertyIdAndTypeProperty(Integer id) {
     return mapper.toImageResponse(imageRepository.findByPropertyIdAndType(id, "PROPERTY").orElseThrow(() -> new NotFoundException("Property with Id : " + id + " is not found")));
   }
 
@@ -187,5 +187,9 @@ public class ImageService {
             : user.getAvatar() != null
             ? user.getAvatar()
             : null;
+  }
+
+  public List<ImageProjection> getAllImageOfProperty(Integer id) {
+    return imageRepository.findByPropertyId(id);
   }
 }

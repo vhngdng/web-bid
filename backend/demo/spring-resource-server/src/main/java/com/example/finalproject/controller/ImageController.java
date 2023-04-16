@@ -114,7 +114,12 @@ public class ImageController {
 
   @GetMapping("/property/{id}")
   public ResponseEntity<?> getImageWithPropertyId(@PathVariable Integer id) {
-    return ResponseEntity.ok(imageService.getImageWithPropertyId(id));
+    return ResponseEntity.ok(imageService.getImageWithPropertyIdAndTypeProperty(id));
+  }
+
+  @GetMapping("/property-all-images/{id}")
+  public ResponseEntity<?> getAllImageOfProperty(@PathVariable Integer id) {
+    return ResponseEntity.ok(imageService.getAllImageOfProperty(id));
   }
 
   @DeleteMapping("{id}")

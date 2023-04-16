@@ -99,9 +99,15 @@ export const imagesApi = createApi({
                 credentials: 'include',
             }),
         }),
-        getImageByPropertyId: builder.query({
+        getImageByPropertyTypeProperty: builder.query({
             query: (id) => ({
                 url: `images/property/${id}`,
+                credentials: 'include',
+            }),
+        }),
+        getAllImageOfProperty: builder.query({
+            query: (id) => ({
+                url: `images/property-all-images/${id}`,
                 credentials: 'include',
             }),
         }),
@@ -138,7 +144,8 @@ export const {
     useUpdateTypeImageMutation,
     useGetAvatarQuery,
     useGetBackgroundQuery,
-    useLazyGetImageByPropertyIdQuery,
+    useGetImageByPropertyTypePropertyQuery,
     useDeleteImageMutation,
     useUploadMultiImagePropertyMutation,
+    useGetAllImageOfPropertyQuery,
 } = imagesApi;
