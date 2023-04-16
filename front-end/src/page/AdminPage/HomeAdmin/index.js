@@ -266,8 +266,7 @@ function AdminHomePage() {
                     </div>
                 </div>
             </div>
-
-            <ToastContainer />
+            <ToastContainer pauseOnHover={false} />
         </>
     );
 }

@@ -61,4 +61,8 @@ public class PropertyController {
   public ResponseEntity<?> registerProperty(@RequestBody @NotNull UpSertProperty upSertProperty, @PathVariable("propertyId") Integer propertyId) {
     return ResponseEntity.ok(propertyService.registerProperty(upSertProperty, propertyId));
   }
+  @DeleteMapping("user/delete-properties/{propertyId}")
+  public ResponseEntity<?> deleteProperty(@PathVariable("propertyId") Integer propertyId) {
+    return ResponseEntity.ok(propertyService.deleteProperty(propertyId));
+  }
 }

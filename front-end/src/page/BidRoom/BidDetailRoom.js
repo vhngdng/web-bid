@@ -22,6 +22,8 @@ import UserWinningInBidRoom from './UserWinningInBidRoom';
 import { dollar, imageDefault } from '~/assets';
 import AdminSettingInBidRoom from './AdminSettingInBidRoom';
 import { DOMAIN_URL } from '~/CONST/const';
+import { ProSidebarProvider } from 'react-pro-sidebar';
+import BidDetailSideBar from './BidDetailSideBar';
 
 var stompClient = null;
 // var Sock = null;
@@ -47,6 +49,7 @@ function BidDetailRoom() {
     const [isBidClose, setIsBidClose] = useState(false);
     const [bidRoomStatus, setBidRoomStatus] = useState('');
     const [isOpenAdminSetting, setIsOpenAdminSetting] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [scope, animate] = useAnimate();
     const { id } = useParams();
     const {
@@ -133,6 +136,7 @@ function BidDetailRoom() {
             addEventNotiClose();
             setBidRoomStatus(data.status);
         }
+        !!data && auth.email === data.auctioneer.email && setIsAdmin(true);
     }, [isSuccess]);
     useEffect(() => {
         if (bidRoomStatus === 'FINISH') {
@@ -328,167 +332,178 @@ function BidDetailRoom() {
     return (
         <>
             {userData.connected ? (
-                <section className="dark:bg-gray-900 rounded">
-                    <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
-                        <div>
-                            <div className="grid gap-8 lg:gap-16 grid-cols-8 ">
-                                <div className="flex-1 justify-center items-center col-span-2 border-slate-50 rounded-lg">
-                                    <h2 className="text-3xl font-sans">
-                                        Auctioneer
-                                    </h2>
-                                    <div className="my-4 flex justify-center items-center">
-                                        <img
-                                            className=" object-fit h-40 w-40"
-                                            src={
-                                                !!data.auctioneer.avatar
-                                                    ? data.auctioneer.avatar
-                                                    : `https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png`
-                                            }
-                                            alt="IMG"
-                                        />
-                                    </div>
-                                    <div className="text-2xl font-serif text-green-rgb">
-                                        {data.auctioneer.username}
-                                    </div>
-                                    <div className="cursor-pointer text-sm truncate text-purple-500 hover:text-blue-600">
-                                        {data.auctioneer.email}
-                                    </div>
-                                </div>
-                                <div className="relative col-span-4 mx-auto mb-8 max-w-screen-sm lg:mb-16 font-sans">
-                                    <h2 className="mb-4  tracking-tight  text-gray-900 dark:text-white">
-                                        <h3 className="font-extrabold text-3xl">
-                                            {!!data && data.property.name}
-                                        </h3>
-                                        <span className="font-serif text-2xl">
-                                            {' '}
-                                            {`(Category: ${
-                                                !!data && data.property.category
-                                            })`}
-                                        </span>
-                                    </h2>
-                                    <div className="flex justify-center items-center">
-                                        <img
-                                            className=" object-fit h-40 w-40"
-                                            src={
-                                                !!data.property.imageId
-                                                    ? `${DOMAIN_URL}api/v1/images/read/${data.property.imageId}`
-                                                    : `${imageDefault.logo.default}`
-                                            }
-                                            alt="IMG"
-                                        />
-                                    </div>
-                                    <div className="">
-                                        <h2 className="mt-4 text-red-900 text-2xl">
-                                            Price
+                <>
+                    <section className="dark:bg-gray-900 rounded">
+                        <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
+                            <div>
+                                <div className="grid gap-8 lg:gap-16 grid-cols-8 ">
+                                    <div className="flex-1 justify-center items-center col-span-2 border-slate-50 rounded-lg">
+                                        <h2 className="text-3xl font-sans">
+                                            Auctioneer
                                         </h2>
-                                        <span
-                                            ref={moneyRef}
-                                            className="mt-4 text-red-900 text-3xl"
-                                        >{`${price}`}</span>
+                                        <div className="my-4 flex justify-center items-center">
+                                            <img
+                                                className=" object-fit h-40 w-40"
+                                                src={
+                                                    !!data.auctioneer.avatar
+                                                        ? data.auctioneer.avatar
+                                                        : `https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png`
+                                                }
+                                                alt="IMG"
+                                            />
+                                        </div>
+                                        <div className="text-2xl font-serif text-green-rgb">
+                                            {data.auctioneer.username}
+                                        </div>
+                                        <div className="cursor-pointer text-sm truncate text-purple-500 hover:text-blue-600">
+                                            {data.auctioneer.email}
+                                        </div>
                                     </div>
+                                    <div className="relative col-span-4 mx-auto mb-8 max-w-screen-sm lg:mb-16 font-sans">
+                                        <h2 className="mb-4  tracking-tight  text-gray-900 dark:text-white">
+                                            <h3 className="font-extrabold text-3xl">
+                                                {!!data && data.property.name}
+                                            </h3>
+                                            <span className="font-serif text-2xl">
+                                                {' '}
+                                                {`(Category: ${
+                                                    !!data &&
+                                                    data.property.category
+                                                })`}
+                                            </span>
+                                        </h2>
+                                        <div className="flex justify-center items-center">
+                                            <img
+                                                className=" object-fit h-40 w-40"
+                                                src={
+                                                    !!data.property.imageId
+                                                        ? `${DOMAIN_URL}api/v1/images/read/${data.property.imageId}`
+                                                        : `${imageDefault.logo.default}`
+                                                }
+                                                alt="IMG"
+                                            />
+                                        </div>
+                                        <div className="">
+                                            <h2 className="mt-4 text-red-900 text-2xl">
+                                                Price
+                                            </h2>
+                                            <span
+                                                ref={moneyRef}
+                                                className="mt-4 text-red-900 text-3xl"
+                                            >{`${price}`}</span>
+                                        </div>
+                                    </div>
+                                    {!!userWinning.username && (
+                                        <UserWinningInBidRoom
+                                            winner={userWinning}
+                                        />
+                                    )}
                                 </div>
-                                {!!userWinning.username && (
-                                    <UserWinningInBidRoom
-                                        winner={userWinning}
-                                    />
-                                )}
                             </div>
-                        </div>
-                        <div className="mx-auto mb-8 max-w-screen-sm lg:mb-16">
-                            {auth.email === data.auctioneer.email && (
-                                <Button
-                                    onClick={() =>
-                                        setIsOpenAdminSetting((prev) => !prev)
-                                    }
-                                >
-                                    Setting
-                                </Button>
-                            )}
-                            {bidRoomStatus === 'PROCESSING' &&
-                                auth.email !== data.auctioneer.email && (
-                                    <Button onClick={() => handleSendValue()}>
-                                        Send
+                            <div className="mx-auto mb-8 max-w-screen-sm lg:mb-16">
+                                {auth.email === data.auctioneer.email && (
+                                    <Button
+                                        onClick={() =>
+                                            setIsOpenAdminSetting(
+                                                (prev) => !prev,
+                                            )
+                                        }
+                                    >
+                                        Setting
                                     </Button>
                                 )}
-                            <Button onClick={() => sendCloseSocket()}>
-                                Quit
-                            </Button>
-                        </div>
-                        <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                            {participants.map((participant, index) => (
-                                <div
-                                    key={index}
-                                    className="relative text-center text-gray-500 dark:text-gray-400"
-                                >
-                                    <div
-                                        className={`absolute top-0 left-1/2 transform -translate-x-1/2  text-green-600 text-4xl animate-waving-hand
-                                        ${
-                                            !!userWinning &&
-                                            userWinning.username ===
-                                                participant.username
-                                                ? ''
-                                                : 'hidden'
-                                        }`}
-                                    >
-                                        &#128081;
-                                    </div>
-
-                                    <motion.img
-                                        className="mx-auto mb-4 w-36 h-36 rounded-full"
-                                        src={
-                                            participant.imageId
-                                                ? `${DOMAIN_URL}api/v1/images/read/${participant.imageId}`
-                                                : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-                                        }
-                                        alt="Avatar"
-                                        animate={{
-                                            opacity: 1,
-                                            y: [0, -150, 0],
-                                        }}
-                                    />
-                                    <h3 className="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                        <div
-                                            className={`text-gray-600 truncate
-                                            ${
-                                                userWinning.email ===
-                                                    participant.username &&
-                                                'animate-bounce'
-                                            }
-                                            `}
+                                {bidRoomStatus === 'PROCESSING' &&
+                                    auth.email !== data.auctioneer.email && (
+                                        <Button
+                                            onClick={() => handleSendValue()}
                                         >
-                                            {participant.nickName ||
-                                                participant.username}
-                                        </div>
-                                    </h3>
-
-                                    {participant.username ===
-                                        data.auctioneer.email && (
-                                        <p className="text-red-600 text-xl animate-ping">
-                                            Admin
-                                        </p>
+                                            Send
+                                        </Button>
                                     )}
+                                <Button onClick={() => sendCloseSocket()}>
+                                    Quit
+                                </Button>
+                            </div>
+                            <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                                {participants.map((participant, index) => (
                                     <div
-                                        className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit h-fit"
-                                        // onClick={() => handleClick(index)}
+                                        key={index}
+                                        className="relative text-center text-gray-500 dark:text-gray-400"
                                     >
-                                        <motion.div
-                                            ref={(element) =>
-                                                (animationRefs.current[index] =
-                                                    element)
-                                            }
-                                            initial={{ opacity: 0 }}
+                                        <div
+                                            className={`absolute top-0 left-1/2 transform -translate-x-1/2  text-green-600 text-4xl animate-waving-hand
+                                            ${
+                                                !!userWinning &&
+                                                userWinning.username ===
+                                                    participant.username
+                                                    ? ''
+                                                    : 'hidden'
+                                            }`}
                                         >
-                                            <img
-                                                src={dollar.logo.default}
-                                                className="h-20 w-20 object-cover"
-                                            />
-                                        </motion.div>
+                                            &#128081;
+                                        </div>
+
+                                        <motion.img
+                                            className="mx-auto mb-4 w-36 h-36 rounded-full"
+                                            src={
+                                                participant.imageId
+                                                    ? `${DOMAIN_URL}api/v1/images/read/${participant.imageId}`
+                                                    : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
+                                            }
+                                            alt="Avatar"
+                                            animate={{
+                                                opacity: 1,
+                                                y: [0, -150, 0],
+                                            }}
+                                        />
+                                        <h3 className="mb-1 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                            <div
+                                                className={`text-gray-600 truncate
+                                                ${
+                                                    userWinning.email ===
+                                                        participant.username &&
+                                                    'animate-bounce'
+                                                }
+                                                `}
+                                            >
+                                                {participant.nickName ||
+                                                    participant.username}
+                                            </div>
+                                        </h3>
+
+                                        {participant.username ===
+                                            data.auctioneer.email && (
+                                            <p className="text-red-600 text-xl animate-ping">
+                                                Admin
+                                            </p>
+                                        )}
+                                        <div
+                                            className="absolute bottom-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-fit h-fit"
+                                            // onClick={() => handleClick(index)}
+                                        >
+                                            <motion.div
+                                                ref={(element) =>
+                                                    (animationRefs.current[
+                                                        index
+                                                    ] = element)
+                                                }
+                                                initial={{ opacity: 0 }}
+                                            >
+                                                <img
+                                                    src={dollar.logo.default}
+                                                    className="h-20 w-20 object-cover"
+                                                />
+                                            </motion.div>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                    <ProSidebarProvider>
+                        <BidDetailSideBar isAdmin={isAdmin} />
+                    </ProSidebarProvider>
+                </>
             ) : (
                 <>
                     <div className="flex justify-center text-center" ref={ref}>

@@ -8,7 +8,7 @@ import {
     useUploadImageMutation,
 } from '~/app/service/image.service';
 
-function CustomModal({
+function CustomImageModal({
     isOpen,
     setIsOpen,
     isDelete,
@@ -181,4 +181,4 @@ function CustomModal({
     );
 }
 
-export default CustomModal;
+export default CustomImageModal;

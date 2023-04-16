@@ -3,11 +3,13 @@ package com.example.finalproject.response;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ErrorResponse {
+public class DeletePropertyResponse {
   private HttpStatus status;
   private String message;
+  private Integer idProperty;
 }

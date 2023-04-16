@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import { useParams } from 'react-router-dom';
-import { customStyles } from '~/utils/customModalStyle';
+import { customStyles } from '~/utils/customStyle';
 
 Modal.setAppElement('#root');
 function FullImageModal() {

@@ -2,7 +2,7 @@
 import Modal from 'react-modal';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { customStyles } from '~/utils/customModalStyle';
+import { customStyles, customToastStyle } from '~/utils/customStyle';
 import {
     useGetAdminDetailPropertyQuery,
     useUpdatePropertyMutation,
@@ -12,6 +12,8 @@ import Loader from '~/Loader';
 import { liVariant, sidebar } from '~/animation';
 import { imageDefault } from '~/assets';
 import { DOMAIN_URL } from '~/CONST/const';
+// import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 Modal.setAppElement('#root');
 
 function AdminPropertyDetails() {
@@ -19,7 +21,7 @@ function AdminPropertyDetails() {
     const [updateProperty] = useUpdatePropertyMutation();
     const [isOpen, setIsOpen] = useState(true);
     const [imageAvatar, setImageAvatar] = useState('');
-    const { data, isLoading, isSuccess } =
+    const { data, isLoading, isSuccess, refetch } =
         useGetAdminDetailPropertyQuery(propertyId);
     const [permission, setPermission] = useState();
     const [images, setImages] = useState([]);
@@ -70,10 +72,6 @@ function AdminPropertyDetails() {
     }, [images]);
 
     if (isLoading) return <Loader />;
-    const closeModal = () => {
-        setIsOpen(false);
-        navigate('/admin/properties');
-    };
 
     function nextStep() {
         images.length > 0 &&
@@ -108,12 +106,13 @@ function AdminPropertyDetails() {
             setX((prev) => prev + 138);
         }
     }
-    const handleSubmit = async () => {
-        console.log(propertyId);
-        console.log(auctioneerPrice);
-        console.log('reservePrice', data.property.reservePrice);
-        console.log(permission);
 
+    const closeModal = () => {
+        setIsOpen(false);
+        navigate('/admin/properties');
+    };
+
+    const handleSubmit = async () => {
         try {
             const res = await updateProperty({
                 propertyId,
@@ -124,7 +123,12 @@ function AdminPropertyDetails() {
                         : data.property.reservePrice,
                 permission,
             });
-            console.log(res);
+            console.log('res', res);
+            refetch();
+            toast.success('Updated successfully', customToastStyle);
+            setTimeout(() => {
+                navigate('/admin/properties');
+            }, 1000);
         } catch {
             (err) => {
                 console.log(err);
@@ -137,13 +141,13 @@ function AdminPropertyDetails() {
     };
     console.log(data);
     return (
-        <AnimatePresence mode="wait" initial="false">
-            <Modal
-                isOpen={isOpen}
-                onRequestClose={closeModal}
-                style={customStyles}
-                contentLabel="Property"
-            >
+        <Modal
+            isOpen={isOpen}
+            onRequestClose={closeModal}
+            style={customStyles}
+            contentLabel="Property"
+        >
+            <AnimatePresence mode="wait" initial="false">
                 <motion.section
                     initial={sidebar.closed}
                     animate={sidebar.open}
@@ -388,8 +392,9 @@ function AdminPropertyDetails() {
                         </div>
                     </div>
                 </motion.section>
-            </Modal>
-        </AnimatePresence>
+            </AnimatePresence>
+            <ToastContainer />
+        </Modal>
     );
 }
 

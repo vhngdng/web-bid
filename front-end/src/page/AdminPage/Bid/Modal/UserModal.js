@@ -3,7 +3,7 @@ import Modal from 'react-modal';
 import React, { useEffect, useState } from 'react';
 import { useLazyGetUserByIdQuery } from '~/app/service/user.service';
 import Loader from '~/Loader';
-import { customStyles } from '~/utils/customModalStyle';
+import { customStyles } from '~/utils/customStyle';
 Modal.setAppElement('#root');
 function UserModal({ userId, setIsOpen, open, setUserId }) {
     const [fetchGetUserById, { data, isLoading }] = useLazyGetUserByIdQuery();

@@ -1,13 +1,10 @@
 /* eslint-disable no-extra-boolean-cast */
 import React from 'react';
-import { DOMAIN_URL } from '~/CONST/const';
-import Loader from '~/Loader';
-import { useGetUserByEmailQuery } from '~/app/service/user.service';
+import { useSelector } from 'react-redux';
 
 function ProfileUserSidebar() {
-    const { data, isLoading } = useGetUserByEmailQuery();
-    if (isLoading) return <Loader />;
-    console.log(data);
+    const { auth, avatar } = useSelector((state) => state.auth);
+    console.log('data', auth);
     return (
         <>
             <div className="flex justify-center shadow-md mb-10 border-content">
@@ -19,16 +16,14 @@ function ProfileUserSidebar() {
                 <img
                     className="h-32 w-32 rounded-full"
                     src={
-                        !!data.avatar
-                            ? `${DOMAIN_URL}api/v1/images/read/${data.avatar}`
-                            : data.avatar
-                            ? data.avatar
+                        !!avatar
+                            ? avatar
                             : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                     }
                 />
             </div>
             <div className="flex items-center justify-center mx-auto font-sans mb-6">
-                {data.username}
+                {auth.email}
             </div>
         </>
     );

@@ -103,8 +103,13 @@ public class ImageService {
               .user(newImage.getUser())
               .build();
     }
-    Optional<Image> imageOptional = imageRepository.findByUserIdAndType(user.getId(), request.getType());
-    imageOptional.ifPresent(image -> image.setType(null));
+    if (request.getType().equalsIgnoreCase("PROPERTY")) {
+      imageRepository.findByPropertyIdAndType(request.getPropertyId(), request.getType()).ifPresent(image -> image.setType(null));
+    } else {
+      imageRepository.findByUserIdAndType(user.getId(), request.getType()).ifPresent(image -> image.setType(null));
+    }
+
+
     if (request.getType() != null) {
       switch (request.getType()) {
         case "AVATAR":
@@ -118,7 +123,9 @@ public class ImageService {
           break;
         }
         case "PROPERTY": {
+          log.error("test type here");
           Optional<Image> imageProperty = imageRepository.findByPropertyIdAndType(request.getPropertyId(), "PROPERTY");
+          log.error("new image fail");
           imageProperty.ifPresent(image -> {
             image.setType(null);
           });
@@ -128,6 +135,7 @@ public class ImageService {
                                   request.getPropertyId())
                           .orElseThrow(() ->
                                   new NotFoundException("Property with id " + request.getPropertyId() + " is not found")));
+          log.error("=============================================");
           break;
         }
         default:

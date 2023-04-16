@@ -1,16 +1,19 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
 import Loader from '~/Loader';
 import { useGetAllPropertyQuery } from '~/app/service/property.service';
 import { imageDefault } from '~/assets';
 
 function AdminPropertyList() {
-    const { data: properties, isLoading } = useGetAllPropertyQuery();
+    const { data: properties, isLoading, refetch } = useGetAllPropertyQuery();
     const [permission, setPermission] = useState('ALL');
-    const navigate = useNavigate();
 
+    const navigate = useNavigate();
+    useEffect(() => {
+        refetch();
+    }, [useLocation()]);
     if (isLoading) return <Loader />;
     const handleOpenModal = (property) => {
         navigate(`${property.id}`);

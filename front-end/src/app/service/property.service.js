@@ -85,6 +85,12 @@ export const propeprtyApi = createApi({
                 body,
             }),
         }),
+        deleteUserProperty: builder.mutation({
+            query: (propertyId) => ({
+                url: `user/delete-properties/${propertyId}`,
+                method: 'DELETE',
+            }),
+        }),
         registerProperty: builder.mutation({
             query: ({ propertyId, ...body }) => ({
                 url: `user/register-properties/${propertyId}`,
@@ -110,4 +116,5 @@ export const {
     useGetAdminDetailPropertyQuery,
     useUpdatePropertyMutation,
     useRegisterPropertyMutation,
+    useDeleteUserPropertyMutation,
 } = propeprtyApi;

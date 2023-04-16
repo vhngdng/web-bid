@@ -3,27 +3,38 @@ package com.example.finalproject.service;
 import com.example.finalproject.ENUM.PERMISSION;
 import com.example.finalproject.ENUM.TYPE_IMAGE;
 import com.example.finalproject.dto.PropertyDTO;
+import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Image;
 import com.example.finalproject.entity.Property;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.projection.ImageProjection;
+import com.example.finalproject.repository.BidRepository;
 import com.example.finalproject.repository.ImageRepository;
 import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.UpSertProperty;
+import com.example.finalproject.response.DeletePropertyResponse;
+import com.example.finalproject.response.ErrorResponse;
 import com.example.finalproject.response.PropertyResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @Slf4j
 public class PropertyService {
+  @Autowired
+  private BidRepository bidRepository;
 
   @Autowired
   private PropertyRepository propertyRepository;
@@ -98,5 +109,31 @@ public class PropertyService {
   public PropertyResponse registerProperty(UpSertProperty upSertProperty, Integer propertyId) {
     upSertProperty.setPermission(PERMISSION.NOTCHECK.name());
     return updateProperty(upSertProperty, propertyId);
+  }
+
+  @Transactional
+  public Object deleteProperty(Integer propertyId) {
+    Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("This property not found " + propertyId));
+    Optional<Bid> bidOptional = bidRepository.findBidToDelete(propertyId, LocalDateTime.now());
+    List<String> bidStatusList = Arrays.asList("ACTIVE", "PROCESSING", "FINISH");
+    if (bidOptional.isPresent() && bidStatusList.contains(bidOptional.get().getStatus())) {
+      log.error("delete this property v1" + propertyId);
+      return ErrorResponse
+              .builder()
+              .status(HttpStatus.FORBIDDEN)
+              .message("You have to wait for response of admin")
+              .build();
+    } else {
+      imageRepository.deleteAllByProperty(property);
+      log.error("delete Image already" + propertyId);
+      propertyRepository.delete(property);
+      log.error("delete this property v2" + propertyId);
+      return DeletePropertyResponse
+              .builder()
+              .idProperty(propertyId)
+              .status(HttpStatus.OK)
+              .message("The Property #" + propertyId + " is successfully deleted")
+              .build();
+    }
   }
 }

@@ -42,13 +42,14 @@ public class Image {
   private Long size;
   @Column
   private String type;
-  @ManyToOne
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
   @JoinColumn(name = "user_id")
   @JsonIgnore
   private User user;
 
-  @ManyToOne()
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
   @JoinColumn(name = "property_id")
+  @JsonIgnore
   private Property property;
 
   @CreatedDate

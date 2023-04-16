@@ -48,8 +48,12 @@ const backgroundImage = {
 const logoutSvg = {
     logo: require('~/assets/images/log-out.svg'),
 };
+const arrowRight = {
+    logo: require('~/assets/images/arrow-right.png'),
+};
 
 export {
+    arrowRight,
     logoutSvg,
     backgroundImage,
     setting,

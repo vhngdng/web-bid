@@ -8,12 +8,18 @@ import {
     useRegisterPropertyMutation,
 } from '~/app/service/property.service';
 import { arrowDownImage, arrowUpImage, setting } from '~/assets';
-import CustomModal from './CustomModal';
+import CustomImageModal from './Modal/CustomImageModal';
 import { ToastContainer, toast } from 'react-toastify';
+import DeletePropertyModal from '~/component/layouts/Default/DeletePropertyModal';
+import { AnimatePresence, motion } from 'framer-motion';
+import { useUpdateTypeImageMutation } from '~/app/service/image.service';
+import { customToastStyle } from '~/utils/customStyle';
 function PropertyDetails() {
     const { propertyId } = useParams();
-    const { data, isLoading } = useGetAllDetailsPropertyQuery(propertyId);
+    const { data, isLoading, error } =
+        useGetAllDetailsPropertyQuery(propertyId);
     const [registerProperty] = useRegisterPropertyMutation();
+    const [updateTypeImage] = useUpdateTypeImageMutation();
     const [images, setImages] = useState([]);
     const [file, setFile] = useState(null);
     const [imageListShow, setImageListShow] = useState([]);
@@ -24,11 +30,14 @@ function PropertyDetails() {
     const [insertPrice, setInsertPrice] = useState(false);
     const [reservePrice, setReservePrice] = useState(0);
     const [quantity, setQuantity] = useState(1);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [isOpenImageModal, setIsOpenImageModal] = useState(false);
     // eslint-disable-next-line no-unused-vars
     const [description, setDescription] = useState();
     const [name, setName] = useState();
     // eslint-disable-next-line no-unused-vars
     const [indexImage, setIndexImage] = useState(0);
+    // eslint-disable-next-line no-unused-vars
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -74,6 +83,7 @@ function PropertyDetails() {
     }, [name]);
     if (isLoading) return <Loader />;
     console.log('data', data);
+    if (error) navigate('/profile-detail/property-list');
 
     const handleChangeIndex = (index) => {
         if (index < 0) {
@@ -99,9 +109,10 @@ function PropertyDetails() {
     };
     // Not finished yet
     const handleShowFullImage = (id) => {
+        console.log('image id', id);
         setTimeout(() => {
-            navigate(`${id}`);
-        }, 2000);
+            setIsOpenImageModal((prev) => !prev);
+        }, 1000);
     };
 
     const handlePropertyRegistration = async () => {
@@ -127,6 +138,29 @@ function PropertyDetails() {
             });
         } catch {
             (err) => console.log(err);
+        }
+    };
+
+    const handleAcceptPrice = () => {
+        setReservePrice(data.property.auctioneerPrice);
+    };
+
+    const handleDelete = () => {
+        setOpenDeleteModal(true);
+    };
+
+    const handleUpdateTypeImage = async (id) => {
+        if (
+            !!data.images &&
+            data.images.find((i) => i.type === 'PROPERTY') !== id
+        ) {
+            const res = await updateTypeImage({
+                id,
+                propertyId,
+                type: 'PROPERTY',
+            });
+            console.log('res', res);
+            toast.success('updated main image successfuly', customToastStyle);
         }
     };
     return (
@@ -183,24 +217,60 @@ function PropertyDetails() {
                                         />
                                     </div>
                                 </div>
-                                <div
-                                    className="w-full sm:w-9/12 px-4"
-                                    onMouseEnter={() =>
-                                        handleShowFullImage(
-                                            images[indexImage].id,
-                                        )
-                                    }
-                                >
+                                <div className="w-full sm:w-9/12 px-4">
                                     {images.length > 0 && (
                                         <img
+                                            onMouseEnter={() =>
+                                                handleShowFullImage(
+                                                    images[indexImage].id,
+                                                )
+                                            }
                                             className="mb-5 object-fill h-full w-full"
                                             src={`${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`}
                                             alt=""
                                         />
                                     )}
-                                    <p className="text-sm text-gray-300">
+                                    <AnimatePresence>
+                                        {isOpenImageModal && (
+                                            <motion.img
+                                                initial={{ opacity: 0 }}
+                                                animate={{
+                                                    opacity: 1,
+                                                }}
+                                                exit={{
+                                                    opacity: 0,
+                                                }}
+                                                transition={{
+                                                    type: 'spring',
+                                                    bounce: 0,
+                                                    duration: 0.2,
+                                                }}
+                                                onClick={() =>
+                                                    setIsOpenImageModal(
+                                                        (prev) => !prev,
+                                                    )
+                                                }
+                                                className="bg-transparent px-5 fixed object-cover h-1/2 w-1/2 top-1/3 left-1/3"
+                                                src={`${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`}
+                                            />
+                                        )}
+                                    </AnimatePresence>
+                                    <p className="text-sm text-center text-gray-300">
                                         Hover image to see full size
                                     </p>
+                                    <div className=" text-center text-sm text-blue-rgb text-xl py-4">
+                                        <span
+                                            className="w-fit cursor-pointer"
+                                            onClick={() =>
+                                                handleUpdateTypeImage(
+                                                    images[indexImage].id,
+                                                )
+                                            }
+                                        >
+                                            {' '}
+                                            Set Main Picture
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                             <div className=" my-12 px-6 py-4">
@@ -339,6 +409,20 @@ function PropertyDetails() {
                                     {!!data &&
                                         `${data.property.owner.username}`}
                                 </h2>
+                                {!!data.property.auctioneerPrice && (
+                                    <div className="flex my-4">
+                                        <div className="flex justify-center items-center text-gray-600 font-sans text-lg mr-16">
+                                            (auction price){' '}
+                                            {data.property.auctioneerPrice}
+                                        </div>
+                                        <div
+                                            onClick={handleAcceptPrice}
+                                            className="cursor-pointer block px-2 leading-8 font-heading font-medium tracking-tighter text-lg text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
+                                        >
+                                            Accept
+                                        </div>
+                                    </div>
+                                )}
                                 <div className="flex items-center mb-6">
                                     {insertPrice ? (
                                         <div>
@@ -361,8 +445,8 @@ function PropertyDetails() {
                                             className="cursor-pointer title-font font-medium text-2xl text-gray-900 hover:text-red-rgb hover:scale-90"
                                         >
                                             ${' '}
-                                            {!!data.property.reservePrice
-                                                ? data.property.reservePrice
+                                            {!!reservePrice
+                                                ? reservePrice
                                                 : 'No price'}
                                         </span>
                                     )}
@@ -431,7 +515,7 @@ function PropertyDetails() {
                                 </div>
                             </div>
                             <div className="flex flex-wrap -mx-2 mb-12">
-                                <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
+                                <div className="w-full md:w-1/3 px-2 mb-2 md:mb-0">
                                     <div
                                         onClick={handlePropertyRegistration}
                                         className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
@@ -456,17 +540,31 @@ function PropertyDetails() {
                                         />
                                     </label>
                                 </div>
+                                <div className="w-full md:w-1/3 px-2 mb-2 md:mb-0">
+                                    <div
+                                        onClick={handleDelete}
+                                        className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 hover:bg-red-600 rounded-xl"
+                                    >
+                                        Delete
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
-            <CustomModal
+            <CustomImageModal
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
                 setFile={setFile}
                 file={file}
                 setImages={setImages}
+            />
+            <DeletePropertyModal
+                isOpen={openDeleteModal}
+                setIsOpen={setOpenDeleteModal}
+                isDelete={true}
+                idDelete={propertyId}
             />
             <ToastContainer />
         </>

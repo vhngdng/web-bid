@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { useUploadImageMutation } from '~/app/service/image.service';
 import { useCreatePropertyMutation } from '~/app/service/property.service';
+import { customToastStyle } from '~/utils/customStyle';
 
 function UpPropertyPage() {
     // eslint-disable-next-line no-unused-vars
@@ -13,6 +15,8 @@ function UpPropertyPage() {
     const [category, setCategory] = useState('');
     const [showModal, setShowModal] = useState(true);
     // console.log(file);
+
+    const navigate = useNavigate();
     const handleFileInputChange = (e) => {
         setFile(e.target.files[0]);
     };
@@ -24,16 +28,27 @@ function UpPropertyPage() {
         try {
             const { data } = await uploadImage(formData);
             const imageId = data.id;
-            createProperty({
+            await createProperty({
                 name,
                 category,
                 imageId,
             })
                 .unwrap()
-                .then(() => {
+                .then((res) => {
                     toast.success('Create successfully', {
+                        position: 'top-center',
+                        autoClose: 1000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
                         theme: undefined,
                     });
+                    console.log(res.id);
+                    setTimeout(() => {
+                        navigate(`/profile-detail/propertyDetails/${res.id}`);
+                    }, 1000);
                 })
                 .catch((err) => console.log(err));
         } catch (error) {

@@ -13,7 +13,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { notification } from '~/assets';
 import { over } from 'stompjs';
 import { useGetAllPaymentBidFinishQuery } from '~/app/service/payment.service';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { DOMAIN_URL } from '~/CONST/const';
 import { RotatingText } from 'rotating-text';
 const cx = classNames.bind(styles);
@@ -422,7 +422,6 @@ function HeaderDefault() {
                 className={`bg-opacity-20 h-60vh px-0 w-full bg-no-repeat bg-cover bg-center bg-url(${backgroundImage})`}
                 style={{ backgroundImage: `url(${backgroundImage})` }}
             /> */}
-            <ToastContainer />
         </nav>
     );
 }
