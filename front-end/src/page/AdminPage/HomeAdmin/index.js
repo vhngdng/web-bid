@@ -89,7 +89,7 @@ function AdminHomePage() {
                         className="fixed top-0 left-0 z-40 min-w-fit w-[13vw] mr-6 h-full transition-transform -translate-x-full sm:translate-x-0"
                         aria-label="Sidebar"
                     >
-                        <div className="h-full overflow-y-auto bg-gray-500/25 dark:bg-gray-800 w-56 rounded-tr-3xl">
+                        <div className="h-full overflow-y-auto overflow-x-hidden bg-gray-500/25 dark:bg-gray-800 w-56 rounded-tr-3xl">
                             <ProfileUserSidebar />
 
                             <ul className="text-gray-600">
