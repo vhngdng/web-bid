@@ -29,6 +29,7 @@ import ListBidRoomAdmin from './page/AdminPage/Bid/ListBidRoomAdmin';
 import AdminPropertyList from './page/AdminPage/Property/AdminPropertyList';
 import AdminPropertyDetails from './page/AdminPage/Property/AdminPropertyDetails';
 import FullImageModal from './page/ProfilePage/Properties/Modal/FullImageModal';
+import MainPage from './page/HomePage/MainPage';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -39,8 +40,9 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/error" element={<ErrorPage404 />} />
-                <Route element={<Private />}>
-                    <Route element={<DefaultLayout />}>
+                <Route element={<DefaultLayout />}>
+                    <Route path="/main" element={<MainPage />} />
+                    <Route element={<Private />}>
                         <Route path="/" element={<Home />} />
                         <Route path="chat-room" element={<ChatRoom />} />
                         <Route path="bid-room">

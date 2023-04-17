@@ -44,40 +44,48 @@ public class InitTest {
             .filter(u -> u.getRoles().contains(role))
             .collect(Collectors.toList());
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 10; i++) {
 
       System.out.println(propertyRepository.count());
-
-      Property property;
-      boolean isPropertyUsedInBid;
-      do {
+      Property property = propertyRepository
+              .findAll()
+              .get((int) (Math.random() * propertyRepository.count()));
+      while (bidRepository.existsByProperty(property)) {
         property = propertyRepository
                 .findAll()
                 .get((int) (Math.random() * propertyRepository.count()));
-        isPropertyUsedInBid = bidRepository.existsByProperty(property);
-        log.debug(property.getName());
-      } while (isPropertyUsedInBid);
+
+      };
+
+      long randomNumberInRange = rd.nextInt(10000);
       Bid bid = Bid.builder()
               .property(property)
               .auctioneer(userAdmin
                       .get((int) (Math.random() * userAdmin.size())))
               .conditionReport(faker.lorem().sentence())
-              .dayOfSale(LocalDateTime.now())
+              .dayOfSale(rd.nextInt(3) % 2 == 0
+                      ? LocalDateTime.now().plusMinutes(randomNumberInRange)
+                      : LocalDateTime.now().minusMinutes(randomNumberInRange))
               .reservePrice(9000000000L)
               .priceStep(10000000L)
               .status(STATUS_BID.DEACTIVE.name())
               .build();
       bidRepository.save(bid);
 
-//      for (int j = 0; j < 3; j++) {
-//        BidParticipant participant = new BidParticipant();
-//        participant.setBid(bid);
-//        participant.setUser(userRepository
-//                .findAll()
-//                .get((int) (Math.random() * userRepository.count())));
-//        bidParticipantRepository.save(participant);
-//
-//      }
+      for (int j = 0; j < 10; j++) {
+        BidParticipant participant = new BidParticipant();
+        participant.setBid(bid);
+        User user ;
+        do {
+          user = userRepository
+                  .findAll()
+                  .get((int) (Math.random() * userRepository.count()));
+          participant.setUser(userRepository
+                  .findAll()
+                  .get((int) (Math.random() * userRepository.count())));
+        } while (bidParticipantRepository.findByBidAndUser(bid, user).isPresent());
+        bidParticipantRepository.save(participant);
+      }
     }
   }
 
@@ -85,10 +93,16 @@ public class InitTest {
   @Rollback(value = false)
   void save_property() {
     Random rd = new Random();
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 20; i++) {
       Property property = Property.builder()
               .name(faker.commerce().productName())
               .category(faker.commerce().material())
+              .description(faker.lorem().sentence())
+              .bidType("PRIVATE")
+              .permission(Arrays.asList("ACCEPTED", "REFUSED", "NOTCHECK").get(rd.nextInt(3)))
+              .reservePrice(1200000L)
+              .quantity((long) rd.nextInt(9))
+              .auctioneerPrice(rd.nextInt(3) % 2 == 0 ? 1200000L : null)
               .owner(userRepository
                       .findAll()
                       .get((int) (Math.random() * userRepository.count())))

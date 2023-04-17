@@ -83,4 +83,9 @@ public class BidController {
   public ResponseEntity<?> findDetailBidRoomById(@PathVariable("id") Long id) {
     return ResponseEntity.ok(bidService.findDetailBidRoomById(id));
   }
+
+  @GetMapping("guest/home")
+  public ResponseEntity<?> findHomeDetail() {
+    return ResponseEntity.ok(bidService.findHomeDetail());
+  }
 }

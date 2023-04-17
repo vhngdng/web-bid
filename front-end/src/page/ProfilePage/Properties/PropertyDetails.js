@@ -479,7 +479,7 @@ function PropertyDetails() {
                                     <div>
                                         <input
                                             type="radio"
-                                            value="public"
+                                            value="PUBLIC"
                                             checked={type === 'public'}
                                             onChange={() => setType('public')}
                                         />
@@ -497,7 +497,7 @@ function PropertyDetails() {
                                     <div>
                                         <input
                                             type="radio"
-                                            value="private"
+                                            value="PRIVATE"
                                             checked={type === 'private'}
                                             onChange={() => setType('private')}
                                         />

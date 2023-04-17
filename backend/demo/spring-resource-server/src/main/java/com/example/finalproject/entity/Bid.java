@@ -46,11 +46,11 @@ public class Bid implements Serializable {
   private Long updatePrice;
   @Column
   private Long lastPrice;
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "auctioneer_id", referencedColumnName = "user_id")
   @JsonManagedReference
   private User auctioneer;
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "winningBidder_id", referencedColumnName = "user_id")
   @JsonManagedReference
   private User winningBidder;

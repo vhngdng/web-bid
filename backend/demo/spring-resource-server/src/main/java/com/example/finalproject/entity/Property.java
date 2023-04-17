@@ -32,7 +32,7 @@ public class Property {
   @Column
   private Long auctioneerPrice;
 
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "owner_id", referencedColumnName = "user_id")
   @JsonManagedReference
   private User owner;
@@ -62,7 +62,7 @@ public class Property {
   protected String lastModifiedBy;
 
   @LastModifiedDate
-  @Column(name = "lastModifiedDate", unique = true)
+  @Column(name = "lastModifiedDate", unique = false)
   protected LocalDateTime lastModifiedDate;
 
   @CreatedDate

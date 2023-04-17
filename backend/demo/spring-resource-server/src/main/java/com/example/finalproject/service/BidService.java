@@ -9,6 +9,7 @@ import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Payment;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
+import com.example.finalproject.projection.BidHomeProjection;
 import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.utils.QuartUtil;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
 public class BidService {
   private final MessageRepository messageRepository;
   private final ImageRepository imageRepository;
-  private final PaymentRepository PaymentRepository;
+  private final PaymentRepository paymentRepository;
   private final PropertyRepository propertyRepository;
   private final UserRepository userRepository;
   private final BidRepository bidRepository;
@@ -92,9 +93,9 @@ public class BidService {
   public BidDTO updateBidRoom(UpSertBid upSertBid, Long id) {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id " + id + " was not found"));
     if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.FINISH.name())) {
-      Optional<Payment> PaymentOptional = PaymentRepository.findByBid(bid);
-      PaymentOptional.ifPresent(Payment -> PaymentRepository.deleteById(Payment.getId()));
-      PaymentRepository.save(Payment.builder().bid(bid).status("PENDING").build());
+      Optional<Payment> paymentOptional = paymentRepository.findByBid(bid);
+      paymentOptional.ifPresent(payment -> paymentRepository.deleteById(payment.getId()));
+      paymentRepository.save(Payment.builder().bid(bid).status("PENDING").build());
     }else if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.ACTIVE.name())) {
       bid.setDayOfSale(LocalDateTime.now());
     }
@@ -158,7 +159,7 @@ public class BidService {
     bid.setStatus(STATUS_BID.SUCCESS.name());
     Payment payment = bid.getPayment();
     payment.setStatus(STATUS_PAYMENT.SUCCESS.name());
-    PaymentRepository.save(payment);
+    paymentRepository.save(payment);
     Property property = bid.getProperty();
     property.setOwner(bid.getWinningBidder());
     propertyRepository.save(property);
@@ -206,5 +207,11 @@ public class BidService {
 
   public Page<BidDTO> findAllPrivateBid(int page, int size, String[] sort, String type) {
     return findAllBidRoomPaging(page, size, sort, type);
+  }
+
+  public List<BidHomeProjection> findHomeDetail() {
+    Pageable pageable = PageRequest.of(0, 5);
+    return bidRepository.findTop5Earliest(pageable, LocalDateTime.now()).getContent();
+//    return bidRepository.findBidTop5Attend(pageable).getContent();
   }
 }

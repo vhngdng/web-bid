@@ -120,6 +120,9 @@ export const bidApi = createApi({
                 }
             },
         }),
+        getHomeDetails: builder.query({
+            query: () => `guest/home`,
+        }),
     }),
 });
 
@@ -135,4 +138,5 @@ export const {
     useGetDetailBidWithIdQuery,
     useUpdateStatusBidMutation,
     useGetBidRoomPrivateQuery,
+    useGetHomeDetailsQuery,
 } = bidApi;

@@ -21,9 +21,7 @@ public class Role {
   @Column(name = "role", nullable = false, unique = true)
   private EROLE name;
 
-    @ManyToMany(mappedBy = "roles")
-    @JsonBackReference
-    private List<User> users;
+
 
   public Role(String name) {
     this.name = EROLE.valueOf(name.toUpperCase());
