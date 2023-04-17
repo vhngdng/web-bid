@@ -1,7 +1,6 @@
 /* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-unused-vars */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-// eslint-disable-next-line no-unused-vars
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { over } from 'stompjs';
 import SockJS from 'sockjs-client';
@@ -15,6 +14,7 @@ import {
     AnimatePresence,
     motion,
     useAnimate,
+    useAnimationControls,
     useMotionValue,
     useTransform,
 } from 'framer-motion';
@@ -77,6 +77,8 @@ function BidDetailRoom() {
     const ref = useRef();
     const animationRefs = useRef([]);
     const moneyRef = useRef(null);
+    const moneyPingRef = useRef(null);
+    const controls = useAnimationControls();
 
     useEffect(() => {
         console.log('userWining', userWinning);
@@ -337,6 +339,16 @@ function BidDetailRoom() {
         );
         handleClick(index);
         sendValue();
+        controls.start({
+            y: -50,
+            scale: 1.25,
+            opacity: 1,
+            transition: {
+                duration: 0.5,
+                ease: 'linear',
+            },
+        });
+        // controls.end({ y: 0, opacity: 0, scale: 0.75 });
     };
 
     return (
@@ -387,7 +399,6 @@ function BidDetailRoom() {
                                             </h2>
                                             <div className="flex justify-center items-center">
                                                 <img
-                                                    ref={moneyRef}
                                                     className=" object-fit h-40 w-40"
                                                     src={
                                                         !!data.property.imageId
@@ -431,7 +442,15 @@ function BidDetailRoom() {
                                     Quit
                                 </Button>
                             </div>
-                            <BidRoomInformation bidRoomInfo={!!data && data} />
+                            <BidRoomInformation
+                                bidRoomInfo={!!data && data}
+                                sendValue={handleSendValue}
+                                sendClose={sendCloseSocket}
+                                price={price}
+                                moneyRef={moneyRef}
+                                moneyPingRef={moneyPingRef}
+                                controls={controls}
+                            />
 
                             <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                 {participants.map((participant, index) => (

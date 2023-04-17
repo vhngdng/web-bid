@@ -5,6 +5,7 @@ import com.example.finalproject.ENUM.Provider;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -64,13 +65,14 @@ public class User {
           joinColumns = @JoinColumn(name = "user_id"),
           inverseJoinColumns = @JoinColumn(name = "role_id")
   )
+  @JsonManagedReference
   private Set<Role> roles = new HashSet<>();
 
   @OneToMany(mappedBy = "auctioneer", fetch = FetchType.LAZY)
-  @JsonIgnore
+  @JsonBackReference
   private List<Bid> auctioneerBids;
   @OneToMany(mappedBy = "winningBidder", fetch = FetchType.LAZY)
-  @JsonIgnore
+  @JsonBackReference
   private List<Bid> winningBidderBids;
   @OneToMany(mappedBy = "owner", cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
   @JsonBackReference

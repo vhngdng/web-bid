@@ -1,6 +1,8 @@
 package com.example.finalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,14 +44,12 @@ public class Image {
   private Long size;
   @Column
   private String type;
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE})
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
-  @JsonIgnore
   private User user;
 
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "property_id")
-  @JsonIgnore
   private Property property;
 
   @CreatedDate

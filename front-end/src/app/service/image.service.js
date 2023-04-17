@@ -144,7 +144,7 @@ export const {
     useUpdateTypeImageMutation,
     useGetAvatarQuery,
     useGetBackgroundQuery,
-    useGetImageByPropertyTypePropertyQuery,
+    useLazyGetImageByPropertyTypePropertyQuery,
     useDeleteImageMutation,
     useUploadMultiImagePropertyMutation,
     useGetAllImageOfPropertyQuery,

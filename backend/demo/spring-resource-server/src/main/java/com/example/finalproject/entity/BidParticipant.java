@@ -1,5 +1,6 @@
 package com.example.finalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -28,6 +29,7 @@ public class BidParticipant {
   private User user;
   @Column
   private String nickName;
+
 
 
 //  @PostRemove

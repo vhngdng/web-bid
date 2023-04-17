@@ -2,6 +2,7 @@ package com.example.finalproject.entity;
 
 import com.example.finalproject.entity.listener.PaymentListener;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -32,7 +33,7 @@ public class Payment {
   private String status;
   @OneToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "bid_id", nullable = false)
-  @JsonBackReference
+  @JsonManagedReference
   private Bid bid;
 
   @CreatedDate

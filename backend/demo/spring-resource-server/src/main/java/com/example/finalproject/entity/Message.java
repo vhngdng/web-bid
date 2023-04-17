@@ -1,6 +1,8 @@
 package com.example.finalproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
@@ -40,6 +42,7 @@ public class Message {
           joinColumns = @JoinColumn(name = "message_id"),
           inverseJoinColumns = @JoinColumn(name = "bid_id")
   )
+  @JsonManagedReference
   private Set<Bid> bids = new HashSet<>();
   @Column(updatable = false)
   private String message;

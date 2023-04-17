@@ -1,9 +1,12 @@
 package com.example.finalproject.entity;
 
 import com.example.finalproject.ENUM.EROLE;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -18,8 +21,9 @@ public class Role {
   @Column(name = "role", nullable = false, unique = true)
   private EROLE name;
 
-//    @ManyToMany(mappedBy = "roles")
-//    private Collection<Employee> employees = new ArrayList<>();
+    @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
+    private List<User> users;
 
   public Role(String name) {
     this.name = EROLE.valueOf(name.toUpperCase());

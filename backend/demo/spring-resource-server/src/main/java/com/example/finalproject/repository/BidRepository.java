@@ -24,8 +24,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
 
   Optional<Bid> findByPaymentId(Integer PaymentId);
 
-  @Query("select b from Bid b where b.type = :type")
-  Page<Bid> findAllByType (@Param("type") String typ,
+  Page<Bid> findAllByType (String type,
                            Pageable pageable);
   @Query("select b from Bid b where b.property.id = :propertyId and b.dayOfSale > :now ")
   Optional<Bid> findBidToDelete(@Param("propertyId") Integer propertyId, @Param("now") LocalDateTime now);

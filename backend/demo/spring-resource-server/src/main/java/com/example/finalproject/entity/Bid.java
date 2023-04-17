@@ -48,22 +48,26 @@ public class Bid implements Serializable {
   private Long lastPrice;
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "auctioneer_id", referencedColumnName = "user_id")
-
+  @JsonManagedReference
   private User auctioneer;
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.PERSIST ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "winningBidder_id", referencedColumnName = "user_id")
+  @JsonManagedReference
   private User winningBidder;
 
 //  @OneToMany(mappedBy = "bid", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 //  private List<BidParticipant> bidParticipants;
-  @ManyToMany(fetch = FetchType.EAGER, mappedBy = "bids")
+  @ManyToMany(fetch = FetchType.LAZY, mappedBy = "bids")
   @JsonIgnore
+  @JsonBackReference
   private List<Message> messages;
-  @OneToOne(mappedBy = "bid", fetch = FetchType.EAGER)
+  @OneToOne(mappedBy = "bid")
+  @JsonBackReference
   private Payment payment;
 
   @OneToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
   @JoinColumn(name = "property_id", nullable = false, updatable = false)
+  @JsonManagedReference
   private Property property;
   @Column(name = "status",nullable = true, updatable = true , columnDefinition = "varchar(255) default 'DEACTIVE'")
   private String status;

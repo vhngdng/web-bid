@@ -5,9 +5,18 @@ import { NumericFormat } from 'react-number-format';
 import { DOMAIN_URL } from '~/CONST/const';
 import Loader from '~/Loader';
 import { useGetAllImageOfPropertyQuery } from '~/app/service/image.service';
-import { arrowDownImage, arrowUpImage } from '~/assets';
+import { arrowDownImage, arrowUpImage, imageDefault } from '~/assets';
 
-function BidRoomInformation({ bidRoomInfo, userWinning }) {
+function BidRoomInformation({
+    bidRoomInfo,
+    userWinning,
+    sendValue,
+    sendClose,
+    price,
+    moneyRef,
+    // moneyPingRef,
+    controls,
+}) {
     // eslint-disable-next-line no-unused-vars
     const [images, setImages] = useState([]);
     const [imageListShow, setImageListShow] = useState([]);
@@ -105,74 +114,74 @@ function BidRoomInformation({ bidRoomInfo, userWinning }) {
                                     <img src={arrowDownImage.logo.default} />
                                 </div>
                             </div>
-                            <div className=" absolute bottom-0 right-2 flex justify-center items-center px-6 py-6">
+
+                            <div className="w-full sm:w-9/12 px-4">
+                                <img
+                                    onMouseEnter={() =>
+                                        handleShowFullImage(
+                                            images[indexImage].id,
+                                        )
+                                    }
+                                    className="mb-5 object-fill h-full w-full"
+                                    src={
+                                        images.length > 0
+                                            ? `${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`
+                                            : `${imageDefault.logo.default}`
+                                    }
+                                    alt=""
+                                    ref={moneyRef}
+                                />
+                                {isOpenImageModal && (
+                                    <img
+                                        onClick={() =>
+                                            setIsOpenImageModal((prev) => !prev)
+                                        }
+                                        className="bg-transparent px-5 fixed object-cover h-1/2 w-1/2 top-1/3 left-1/3"
+                                        src={`${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`}
+                                        key={images[indexImage].id}
+                                    />
+                                )}
+                                <p className="text-sm text-center text-gray-300">
+                                    Hover image to see full size
+                                </p>
+                                <AnimatePresence>
+                                    <div className="relative flex justify-center mb-6">
+                                        <NumericFormat
+                                            className=" text-center title-font font-medium lg:text-6xl text-red-rgb hover:text-red-rgb hover:scale-125"
+                                            value={price}
+                                            displayType={'text'}
+                                            thousandSeparator={true}
+                                            allowLeadingZeros
+                                            prefix={'$'}
+                                        />
+
+                                        <motion.div
+                                            className="absolute top-0 right-1/3"
+                                            // ref={moneyPingRef}
+                                            initial={{ opacity: 0, y: 0 }}
+                                            animate={controls}
+                                            exit={{ opacity: 0, y: 0 }}
+                                            key={bidRoomInfo.priceStep}
+                                        >
+                                            <NumericFormat
+                                                className=" text-center title-font font-medium lg:text-4xl text-red-500"
+                                                value={bidRoomInfo.priceStep}
+                                                displayType={'text'}
+                                                thousandSeparator={true}
+                                                allowLeadingZeros
+                                                prefix={'$'}
+                                            />
+                                        </motion.div>
+                                    </div>
+                                </AnimatePresence>
+                            </div>
+                        </div>
+                        <div className="my-6 p-4">
+                            <div className="flex justify-center items-center px-6 py-6">
                                 <span className="text-2xl px-4">
                                     Description
                                 </span>
                             </div>
-                            <div className="w-full sm:w-9/12 px-4">
-                                {images.length > 0 && (
-                                    <img
-                                        onMouseEnter={() =>
-                                            handleShowFullImage(
-                                                images[indexImage].id,
-                                            )
-                                        }
-                                        className="mb-5 object-fill h-full w-full"
-                                        src={`${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`}
-                                        alt=""
-                                    />
-                                )}
-                                <AnimatePresence>
-                                    {isOpenImageModal && (
-                                        <motion.img
-                                            initial={{
-                                                opacity: 0,
-                                            }}
-                                            animate={{
-                                                opacity: 1,
-                                            }}
-                                            exit={{
-                                                opacity: 0,
-                                            }}
-                                            transition={{
-                                                type: 'spring',
-                                                bounce: 0,
-                                                duration: 0.2,
-                                            }}
-                                            onClick={() =>
-                                                setIsOpenImageModal(
-                                                    (prev) => !prev,
-                                                )
-                                            }
-                                            className="bg-transparent px-5 fixed object-cover h-1/2 w-1/2 top-1/3 left-1/3"
-                                            src={`${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`}
-                                        />
-                                    )}
-                                </AnimatePresence>
-                                <p className="text-sm text-center text-gray-300">
-                                    Hover image to see full size
-                                </p>
-                                <div className="flex justify-center mb-6">
-                                    <NumericFormat
-                                        className="text-center title-font font-medium lg:text-6xl text-red-rgb hover:text-red-rgb hover:scale-125"
-                                        value={
-                                            bidRoomInfo.property.reservePrice
-                                        }
-                                        displayType={'text'}
-                                        thousandSeparator={true}
-                                        allowLeadingZeros
-                                        prefix={'$'}
-                                    />
-                                </div>
-                                {/* <div className="flex justify-center items-center px-6 py-6">
-                                    <span className="text-2xl px-4">
-                                        Description
-                                    </span>
-                                </div> */}
-                            </div>
-                        </div>
-                        <div className="my-6 p-4">
                             <div className="h-36">
                                 <p className="overflow-y-scroll text-lg text-center text-black">
                                     {!!bidRoomInfo.property.description
@@ -197,7 +206,10 @@ function BidRoomInformation({ bidRoomInfo, userWinning }) {
 
                         <div className="flex justify-center items-center mb-10">
                             <p className="w-full px-3 py-2 text-center text-3xl">
-                                Quantity: {bidRoomInfo.property.quantity}
+                                Quantity:{' '}
+                                {!!bidRoomInfo.property.quantity
+                                    ? bidRoomInfo.property.quantity
+                                    : '1'}
                             </p>
                         </div>
                         <div className="flex justify-center items-center mb-10">
@@ -214,16 +226,35 @@ function BidRoomInformation({ bidRoomInfo, userWinning }) {
                             />
                         </div>
                         <div className="flex justify-center items-center mb-10">
+                            <p className="w-full px-3 py-2 text-center text-3xl">
+                                Reserve Price :{' '}
+                            </p>
+                            <NumericFormat
+                                className="w-full px-3 py-2 text-center text-3xl"
+                                value={bidRoomInfo.reservePrice}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                allowLeadingZeros
+                                prefix={'$'}
+                            />
+                        </div>
+                        <div className="flex justify-center items-center mb-10">
                             Last pay: {userWinning}
                         </div>
                         <div className="flex flex-wrap -mx-2 mb-12">
                             <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
-                                <div className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl">
+                                <div
+                                    onClick={sendValue}
+                                    className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
+                                >
                                     Pay
                                 </div>
                             </div>
                             <div className="w-full md:w-1/3 px-2">
-                                <div className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 hover:bg-red-600 rounded-xl">
+                                <div
+                                    onClick={sendClose}
+                                    className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 hover:bg-red-600 rounded-xl"
+                                >
                                     Exit
                                 </div>
                             </div>

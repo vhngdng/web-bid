@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BidParticipantRepository extends JpaRepository<BidParticipant, Long> {
-  @Query("select b from BidParticipant b where b.bid.id = ?1 and b.user is not null ")
+  @Query("select b from BidParticipant b " +
+          "where b.bid.id = ?1 and b.user is not null "
+          )
   List<BidParticipant> findByBid_Id(Long id);
 
   Optional<BidParticipant> findByBidAndUser(Bid bid, User user);

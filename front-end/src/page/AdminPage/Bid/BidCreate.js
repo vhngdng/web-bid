@@ -6,14 +6,14 @@ import { useCreateBidMutation } from '~/app/service/bid.service';
 import SimpleMdeReact from 'react-simplemde-editor';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-import { useLazyGetImageByPropertyIdQuery } from '~/app/service/image.service';
+import { useLazyGetImageByPropertyTypePropertyQuery } from '~/app/service/image.service';
 import Loader from '~/Loader';
 import { DOMAIN_URL } from '~/CONST/const';
 // import styles from './BidCreate.module.scss';
 // const cx = classNames.bind(styles);
 function BidCreate() {
     const [fetchImage, { data, isLoading: loadImage }] =
-        useLazyGetImageByPropertyIdQuery();
+        useLazyGetImageByPropertyTypePropertyQuery();
     const navigate = useNavigate();
     const [createBid] = useCreateBidMutation();
     const [dateTime, setDateTime] = useState('');
