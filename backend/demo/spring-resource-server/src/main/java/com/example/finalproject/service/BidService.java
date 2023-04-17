@@ -187,9 +187,9 @@ public class BidService {
       }
     Pageable pageable = PageRequest.of(page, size, Sort.by(orders));
     Page<Bid> bidPage = (type != null && type.equalsIgnoreCase("public"))
-            ? bidRepository.findAllByType("public", pageable)
-            : (type != null && type.equalsIgnoreCase("private"))
-            ? bidRepository.findAllByType("private", pageable)
+            ? bidRepository.findAllByType("PUBLIC", pageable)
+            : (type != null && type.equalsIgnoreCase("PRIVATE"))
+            ? bidRepository.findAllByType("PRIVATE", pageable)
             : bidRepository.findAll(pageable);
     List<BidDTO> bidDTOList = mapper.toListBidDTO(bidPage.getContent(), userRepository, imageRepository);
     return new PageImpl<>(bidDTOList, pageable, bidPage.getTotalElements());

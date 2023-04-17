@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Loader from '~/Loader';
 import { useGetHomeDetailsQuery } from '~/app/service/bid.service';
 
