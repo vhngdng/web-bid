@@ -577,8 +577,8 @@ function ListBidRoom({ isAdmin }) {
                                                             </span>
                                                         </div>
                                                     </td>
-                                                    <td className="py-3 px-6 text-center">
-                                                        <div className="flex items-center justify-center">
+                                                    <td className="py-3 px-6 text-center ">
+                                                        <div className="w-36 flex items-center justify-center truncate">
                                                             {!!bid.attendees &&
                                                                 bid.attendees.map(
                                                                     (
@@ -589,7 +589,7 @@ function ListBidRoom({ isAdmin }) {
                                                                             key={
                                                                                 index
                                                                             }
-                                                                            className="w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125"
+                                                                            className="object-cover w-6 h-6 rounded-full border-gray-200 border transform hover:scale-125"
                                                                             src={
                                                                                 !!attendee.avatar
                                                                                     ? attendee.avatar
@@ -601,6 +601,11 @@ function ListBidRoom({ isAdmin }) {
                                                                         />
                                                                     ),
                                                                 )}
+                                                        </div>
+                                                        <div>
+                                                            {!!bid.attendees &&
+                                                                bid.attendees
+                                                                    .length}
                                                         </div>
                                                     </td>
                                                     <td className="py-3 px-6 text-center">

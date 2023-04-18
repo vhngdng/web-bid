@@ -52,11 +52,10 @@ public class UserTest {
     );
   }
 
-//  @Test
-//  public void findRoleTest() {
-//    System.out.println(roleRepository
-//            .findByName(EROLE.ROLE_USER).getName().name()
-//    );
-//
-//  }
+  @Test
+  public void findRoleTest() {
+    System.out.println(userRepository.test(17));
+
+  }
+
 }

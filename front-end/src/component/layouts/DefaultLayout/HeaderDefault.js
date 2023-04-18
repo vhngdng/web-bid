@@ -196,8 +196,8 @@ function HeaderDefault() {
     if (isLoading) return <Loader />;
 
     return (
-        <nav className="flex justify-end border-gray-200 py-2.5 rounded dark:bg-gray-900  border shadow-lg">
-            <div className="w-full flex justify-center items-center border border-gray-100 rounded-lg md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+        <nav className="flex justify-end  py-1 rounded dark:bg-gray-900 shadow-lg">
+            <div className="w-full flex justify-center items-center rounded-lg mt-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <div
                     onClick={() => navigate('/')}
                     className="flex justify-end w-2/3 cursor-pointer block py-2 pl-3 pr-4 text-white rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"

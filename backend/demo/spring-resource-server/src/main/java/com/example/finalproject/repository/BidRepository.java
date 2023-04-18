@@ -2,8 +2,7 @@ package com.example.finalproject.repository;
 
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Property;
-import com.example.finalproject.projection.BidHomeProjection;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.example.finalproject.projection.home.BidHomeProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -36,7 +35,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
           "b.lastPrice as lastPrice, count(bp.user) as countAttendees, " +
           "b.property.id as propertyId, ip.id as propertyImageId," +
           "b.property.quantity as quantity, b.property.category as category, " +
-          "b.auctioneer.id as auctioneerId, " +
+          "b.property.name as propertyName, b.auctioneer.id as auctioneerId, " +
           "ia.id as auctioneerAvatar, " +
           "b.winningBidder.id as winnerId, " +
           "iw.id as winnerAvatar " +
@@ -45,7 +44,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
           "left join Image ip on ip.property.id = b.property.id and ip.type = 'PROPERTY' " +
           "left join Image iw on iw.user.id = b.winningBidder.id and iw.type = 'AVATAR' " +
           "group by b.id, ia.id, ip.id, iw.id, b.property.quantity, b.type, b.auctioneer.id, " +
-          "b.winningBidder.id, b.property.id, b.dayOfSale, b.conditionReport, b.status, " +
+          "b.winningBidder.id, b.property.id, b.dayOfSale, b.conditionReport, b.status, b.property.name, " +
           "b.reservePrice, b.priceStep, b.lastPrice, b.winningBidder.id, b.property.category " +
           "having b.status = 'SUCCESS' order by count(bp.user) desc")
   Page<BidHomeProjection> findBidTop5Attend(Pageable pageable);
@@ -63,7 +62,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
           "b.lastPrice as lastPrice, count(bp.user) as countAttendees, " +
           "b.property.id as propertyId, ip.id as propertyImageId," +
           "b.property.quantity as quantity, b.property.category as category, " +
-          "b.auctioneer.id as auctioneerId, " +
+          "b.property.name as propertyName, b.auctioneer.id as auctioneerId, " +
           "ia.id as auctioneerAvatar, " +
           "b.winningBidder.id as winnerId, " +
           "iw.id as winnerAvatar " +
@@ -72,9 +71,9 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
           "left join Image ip on ip.property.id = b.property.id and ip.type = 'PROPERTY' " +
           "left join Image iw on iw.user.id = b.winningBidder.id and iw.type = 'AVATAR' " +
           "group by b.id, ia.id, ip.id, iw.id, b.property.quantity, b.type, b.auctioneer.id, " +
-          "b.winningBidder.id, b.property.id, b.dayOfSale, b.conditionReport, b.status, " +
+          "b.winningBidder.id, b.property.id, b.dayOfSale, b.conditionReport, b.status, b.property.name, " +
           "b.reservePrice, b.priceStep, b.lastPrice, b.winningBidder.id, b.property.category " +
-          "having b.dayOfSale > :time order by b.dayOfSale asc")
+          "having b.dayOfSale > :time and b.status in ('DEACTIVE', 'ACTIVE', 'PROCESSING') order by b.dayOfSale asc")
   Page<BidHomeProjection> findTop5Earliest(Pageable pageable, @Param("time") LocalDateTime time);
 }
 

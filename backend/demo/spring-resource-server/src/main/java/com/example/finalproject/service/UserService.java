@@ -87,4 +87,5 @@ public class UserService {
     userRepository.save(newUser);
     return customUserDetailsService.loadUserByUsername(newUser.getEmail());
   }
+
 }

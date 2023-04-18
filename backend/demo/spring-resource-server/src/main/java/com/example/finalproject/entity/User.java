@@ -59,7 +59,7 @@ public class User {
   private String providerId;
 
   @ManyToMany(cascade = {CascadeType.DETACH,
-          CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+          CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinTable(
           name = "users_roles",
           joinColumns = @JoinColumn(name = "user_id"),

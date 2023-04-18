@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "bid-participant")
+@Table(name = "bid_participant")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -20,11 +20,13 @@ public class BidParticipant {
   @Column(name = "id")
   private Long id;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH,
+          CascadeType.MERGE, CascadeType.REFRESH} , fetch = FetchType.EAGER)
   @JoinColumn(name = "bid_id")
   private Bid bid;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH,
+          CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "participant_id")
   private User user;
   @Column

@@ -1,7 +1,6 @@
 package com.example.finalproject;
 
-import com.example.finalproject.entity.Bid;
-import com.example.finalproject.projection.BidHomeProjection;
+import com.example.finalproject.projection.home.BidHomeProjection;
 import com.example.finalproject.repository.BidRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @DataJpaTest

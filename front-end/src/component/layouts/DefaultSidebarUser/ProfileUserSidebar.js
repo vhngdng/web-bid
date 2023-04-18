@@ -7,7 +7,7 @@ function ProfileUserSidebar() {
     console.log('data', auth);
     return (
         <>
-            <div className="flex justify-center shadow-md mb-10 border-content">
+            <div className="flex justify-center mb-10 border-content">
                 <h1 className="text-center px-auto py-4 text-3xl uppercase text-indigo-500">
                     Auction for fun
                 </h1>

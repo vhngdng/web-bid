@@ -26,7 +26,7 @@ function FooterDefault() {
     // };
     return (
         <>
-            <footer className="absolute bottom-0 bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200 w-full">
+            <footer className=" bg-neutral-200 text-center text-white dark:bg-neutral-600 dark:text-neutral-200 w-full">
                 {/* <motion.div
                     ref={container}
                     className="cursor-grabbing flex overflow-hidden container p-6"

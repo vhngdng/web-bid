@@ -11,14 +11,14 @@ function DefaultLayout() {
     const { isAuthenticated } = useSelector((state) => state.auth);
     return (
         <BackgroundImage>
-            <div className="h-full w-full relative">
+            <div className="w-full min-h-screen flex-block flex-col justify-between">
                 {!!isAuthenticated ? (
                     <HeaderDefault />
                 ) : (
                     <HeaderNotAuthenticate />
                 )}
-                <section className="flex justify-center items-center">
-                    <Outlet />
+                <section className="my-6 min-h-full flex justify-center items-center">
+                    <Outlet className="py-6" />
                 </section>
                 <FooterDefault />
             </div>

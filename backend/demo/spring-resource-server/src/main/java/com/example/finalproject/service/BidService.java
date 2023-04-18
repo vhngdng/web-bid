@@ -9,7 +9,6 @@ import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Payment;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
-import com.example.finalproject.projection.BidHomeProjection;
 import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.utils.QuartUtil;
@@ -209,9 +208,5 @@ public class BidService {
     return findAllBidRoomPaging(page, size, sort, type);
   }
 
-  public List<BidHomeProjection> findHomeDetail() {
-    Pageable pageable = PageRequest.of(0, 5);
-    return bidRepository.findTop5Earliest(pageable, LocalDateTime.now()).getContent();
-//    return bidRepository.findBidTop5Attend(pageable).getContent();
-  }
+
 }

@@ -1,4 +1,4 @@
-package com.example.finalproject.projection;
+package com.example.finalproject.projection.home;
 
 import com.example.finalproject.dto.PropertyDTO;
 import com.example.finalproject.dto.UserDTO;
@@ -34,6 +34,8 @@ public interface BidHomeProjection {
   @JsonInclude(JsonInclude.Include.NON_NULL)
   public int getCountAttendees();
 
+  @JsonIgnore
+  public String getPropertyName();
   @JsonIgnore
   public Integer getPropertyId();
 
@@ -79,6 +81,7 @@ public interface BidHomeProjection {
   default PropertyHome getProperty() {
     return PropertyHome
             .builder()
+            .name(getPropertyName())
             .id(getPropertyId())
             .category(getCategory())
             .quantity(getQuantity())
@@ -99,6 +102,7 @@ public interface BidHomeProjection {
   @Builder
   class PropertyHome {
     public Integer id;
+    public String name;
     public String imageProperty;
     public Long quantity;
     public String category;

@@ -1,47 +1,32 @@
-import React, { useState } from 'react';
+/* eslint-disable no-extra-boolean-cast */
+import React, { useEffect, useState } from 'react';
 import Loader from '~/Loader';
 import { useGetHomeDetailsQuery } from '~/app/service/bid.service';
+import Top5Property from './components/Top5Property';
+import Top5Earliest from './components/Top5Earliest';
 
 function MainPage() {
     const { data, isLoading } = useGetHomeDetailsQuery();
-    const [search, setSearch] = useState('');
+    const [top5Property, setTop5Property] = useState([]);
+    const [top5Earliest, setTop5Earliest] = useState([]);
+    const [top5Famous, setTop5Famous] = useState([]);
+    const [top5User, setTop5User] = useState([]);
+    useEffect(() => {
+        if (!!data) {
+            setTop5Earliest([...data.bidEarliestTop5]);
+            setTop5Property([...data.propertyTop5]);
+            setTop5User([...data.userRateTop5]);
+            setTop5Famous([...data.bidFamousTop5]);
+        }
+    }, [data]);
     if (isLoading) return <Loader />;
-    console.log(data);
     return (
-        <div className="w-3/4 h-screen bg-gray-200/10">
-            <div className="h-full border-l-1 border-r-1 shadow-lg">
-                <div className="max-w-md mx-auto py-2">
-                    <div className="relative flex items-center w-full h-12 rounded-lg focus-within:shadow-lg bg-white overflow-hidden">
-                        <div className="grid place-items-center h-full w-12 text-gray-300">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-                        </div>
-
-                        <input
-                            className="peer h-full w-full outline-none text-sm text-gray-700 pr-2"
-                            type="text"
-                            id="search"
-                            placeholder="Search something.."
-                            defaultValue={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                        />
-                    </div>
-                </div>
-                <div></div>
-                <div></div>
-                <div></div>
+        <div className="w-4/5">
+            <div className="h-full ">
+                {top5Earliest.length > 0 && (
+                    <Top5Earliest top5Earliest={top5Earliest} />
+                )}
+                <Top5Property top5Property={top5Property} />
             </div>
         </div>
     );
