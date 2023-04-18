@@ -202,7 +202,7 @@ function HeaderDefault() {
                 onClick={() => setIsOpenNotification((prev) => !prev)}
             >
                 <img
-                    className="object-contain h-5 w-7"
+                    className="object-contain h-5 w-7 fill-blue-500"
                     src={notification.logo.default}
                     alt="notification"
                 />

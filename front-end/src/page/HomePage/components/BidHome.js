@@ -6,7 +6,6 @@ import { DOMAIN_URL } from '~/CONST/const';
 import formatDateTime from '~/utils/formatDateTime';
 import Image from '~/assets/images/pikachu.webp';
 function BidHome({ bid }) {
-    console.log('bid', bid);
     const handlenavigate = () => {
         console.log(bid.id);
     };

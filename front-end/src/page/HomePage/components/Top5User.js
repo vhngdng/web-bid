@@ -18,10 +18,18 @@ function Top5User({ top5User }) {
     const isInView = useInView(ref, { once: true });
     return (
         <div className="min-h-80 flex flex-wrap justify-between ">
-            <div className="flex flex-wrap w-4/6">
+            <div
+                className="flex flex-wrap w-9/12"
+                ref={ref}
+                style={{
+                    transform: isInView ? 'none' : 'translateX(-200px)',
+                    opacity: isInView ? 1 : 0,
+                    transition:
+                        'all 0.9s cubic-bezier(0.17, 0.37, 0.67, 0.87) 1s',
+                }}
+            >
                 <div className="relative">
                     <img
-                        ref={ref}
                         className={` w-full bg-white bg-opacity-20 bg-no-repeat bg-cover bg-center`}
                         src={
                             !!top5User[0]?.avatar
@@ -29,18 +37,14 @@ function Top5User({ top5User }) {
                                 : `${ferari}`
                         }
                         style={{
-                            transform: isInView ? 'none' : 'translateX(-200px)',
-                            opacity: isInView ? 1 : 0,
-                            transition:
-                                'all 0.9s cubic-bezier(0.17, 0.37, 0.67, 0.87) 1s',
                             boxShadow: isInView
                                 ? '0 50px 25px -24px rgb(0,0,0,0.3)'
                                 : '',
                         }}
                     />
-                    <div className="flex flex-wrap justify-between">
-                        <div className="text-xl font-sans text-teal-500">
-                            {top5User[0].name}
+                    <div className="flex flex-wrap justify-between space-y-10">
+                        <div className="flex justify-center items-center text-xl font-sans text-teal-500">
+                            <p className="pt-4">{top5User[0].name}</p>
                         </div>
                         <div className={`text-red-800 text-4xl pr-2`}>
                             <p className="text-end">
@@ -66,7 +70,7 @@ function Top5User({ top5User }) {
                 </div>
             </div>
 
-            <div className="w-1/5 inline-block space-y-2">
+            <div className="w-2/12 inline-block space-y-2">
                 {top4List.map((user, index) => (
                     <List4User
                         index={index}

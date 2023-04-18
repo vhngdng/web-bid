@@ -32,6 +32,9 @@ module.exports = withMT({
                 '65vh': '65vh',
                 '50vh': '50vh',
             },
+            minWidth: {
+                '1/2': '50%',
+            },
         },
         fontFamily: {
             sans: ['Open Sans', 'sans-serif'],

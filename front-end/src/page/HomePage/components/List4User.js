@@ -3,13 +3,11 @@ import React from 'react';
 // import { DOMAIN_URL } from '~/CONST/const';
 
 function List4User({ user, defaultAvatar, index, defaultColor }) {
-    console.log(defaultAvatar);
-    console.log('user', user.avatar);
     return (
         <div>
-            <div className="relative">
+            <div className="relative shadow-2xl bg-transparent rounded-lg">
                 <img
-                    className={`shadow-4xl backdrop-brightness-110  h-40 w-full rounded-lg bg-white bg-opacity-20 bg-no-repeat bg-cover bg-center`}
+                    className={`h-40 w-full rounded-lg `}
                     src={!!user.avatar ? user.avatar : `${defaultAvatar}`}
                 />
                 <div

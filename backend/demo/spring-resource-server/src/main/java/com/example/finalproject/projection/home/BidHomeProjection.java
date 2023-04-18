@@ -59,12 +59,16 @@ public interface BidHomeProjection {
 
   @JsonIgnore
   public String getWinnerAvatar();
-
-  default People getAuctionner() {
+  @JsonIgnore
+  public String getWinnerName();
+  @JsonIgnore
+  public String getAuctioneerName();
+  default People getAuctioneer() {
     return People
             .builder()
             .id(getAuctioneerId())
             .avatar(getAuctioneerAvatar())
+            .name(getAuctioneerName())
             .build();
   }
 
@@ -73,6 +77,7 @@ public interface BidHomeProjection {
             .builder()
             .id(getWinnerId())
             .avatar(getWinnerAvatar())
+            .name(getWinnerName())
             .build();
   }
 
@@ -96,6 +101,7 @@ public interface BidHomeProjection {
   class People {
     public Long id;
     public String avatar;
+    public String name;
   }
 
   @AllArgsConstructor

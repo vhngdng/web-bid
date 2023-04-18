@@ -3,23 +3,22 @@
 import React, { useEffect, useState } from 'react';
 import Loader from '~/Loader';
 import { useGetHomeDetailsQuery } from '~/app/service/bid.service';
-import Top5Property from './components/Top5Property';
 import Top5Earliest from './components/Top5Earliest';
 import Top5User from './components/Top5User';
 import { Helmet } from 'react-helmet';
+import Top5Famous from './components/Top5Famous';
 
 function MainPage() {
     const { data, isLoading } = useGetHomeDetailsQuery();
-    const [top5Property, setTop5Property] = useState([]);
     const [top5Earliest, setTop5Earliest] = useState([]);
     const [top5Famous, setTop5Famous] = useState([]);
     const [top5User, setTop5User] = useState([]);
     useEffect(() => {
         if (!!data) {
             setTop5Earliest([...data.bidEarliestTop5]);
-            setTop5Property([...data.propertyTop5]);
             setTop5User([...data.userRateTop5]);
             setTop5Famous([...data.bidFamousTop5]);
+            console.log('data from home', data);
         }
     }, [data]);
     if (isLoading) return <Loader />;
@@ -46,7 +45,9 @@ function MainPage() {
                         )}
                     </div>
                 </div>
-                <Top5Property top5Property={top5Property} />
+                <div className="space-y-10">
+                    <Top5Famous top5Famous={top5Famous} />
+                </div>
             </div>
         </>
     );
