@@ -2,7 +2,7 @@
 import React, { useRef } from 'react';
 import { useInView } from 'framer-motion';
 import List4User from './List4User';
-import { DOMAIN_URL } from '~/CONST/const';
+// import { DOMAIN_URL } from '~/CONST/const';
 import ferari from '~/assets/images/car-ferrari-portofino-m_splash.jpg';
 import ship from '~/assets/images/ship.jpg';
 import gymmer from '~/assets/images/gymmer.jpg';
@@ -15,19 +15,24 @@ function Top5User({ top5User }) {
     console.log('user', top5User);
     const top4List = top5User.filter((t) => t.id != top5User[0].id);
     const ref = useRef(null);
-    const isInView = useInView(ref, { once: false });
+    const isInView = useInView(ref, { once: true });
     return (
         <div className="min-h-80 flex flex-wrap justify-between ">
             <div className="flex flex-wrap w-4/6">
-                <div
+                <img
                     ref={ref}
                     className={`relative w-full bg-white bg-opacity-20 bg-no-repeat bg-cover bg-center`}
+                    src={
+                        !!top5User[0]?.avatar
+                            ? top5User[0]?.avatar
+                            : `${ferari}`
+                    }
                     style={{
-                        backgroundImage: `url(${
-                            !!top5User[0]?.avatar
-                                ? `${DOMAIN_URL}api/v1/images/read/${top5User[0]?.avatar}`
-                                : `${ferari}`
-                        })`,
+                        // backgroundImage: `url(${
+                        //     !!top5User[0]?.avatar
+                        //         ? top5User[0]?.avatar
+                        //         : `${ferari}`
+                        // })`,
                         transform: isInView ? 'none' : 'translateX(-200px)',
                         opacity: isInView ? 1 : 0,
                         transition:
@@ -36,28 +41,28 @@ function Top5User({ top5User }) {
                             ? '0 50px 25px -24px rgb(0,0,0,0.3)'
                             : '',
                     }}
+                />
+                <div className={`absolute top-0 right-0 text-red-800 text-4xl`}>
+                    Top 1
+                </div>
+                <div
+                    className={`absolute bottom-0 right-0 text-red-800 text-4xl pr-2`}
                 >
-                    <div
-                        className={`absolute top-0 right-0 text-red-800 text-4xl`}
-                    >
-                        Top 1
-                    </div>
-                    <div
-                        className={`absolute bottom-0 right-0 text-red-800 text-4xl pr-2`}
-                    >
-                        <p className="text-end">
-                            Entries: {top5User[0].numberEntries}
-                        </p>
-                        <p className="text-end text-green-800">
-                            Win Rate:{' '}
-                            {parseFloat(
-                                (top5User[0].numberWinning /
-                                    top5User[0].numberEntries) *
-                                    100,
-                            ).toFixed(2)}
-                            {' %'}
-                        </p>
-                    </div>
+                    <p className="text-end">
+                        Entries: {top5User[0].numberEntries}
+                    </p>
+                    <p className="text-end text-green-800">
+                        Win Rate:{' '}
+                        {parseFloat(
+                            (top5User[0].numberWinning /
+                                top5User[0].numberEntries) *
+                                100,
+                        ).toFixed(2)}
+                        {' %'}
+                    </p>
+                </div>
+                <div className="text-xl font-sans text-teal-500">
+                    {top5User[0].name}
                 </div>
             </div>
 

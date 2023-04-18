@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   Optional<User> findByEmail(String email);
 
-  @Query("select u.id as id, i.id as imageId, u.avatar as avatarDefault, " +
+  @Query("select u.id as id, i.id as imageId, u.username as name, u.avatar as avatarDefault, " +
           "count(bp.bid) as numberEntries, sum(case when (coalesce(bp.bid.winningBidder.id, 0) = u.id) then 1 else 0 end) as numberWinning " +
           "from User u left join Image i on i.user.id = u.id and i.type = 'AVATAR'" +
           "left join BidParticipant bp on u.id = bp.user.id " +
