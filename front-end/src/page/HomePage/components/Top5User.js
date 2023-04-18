@@ -19,50 +19,50 @@ function Top5User({ top5User }) {
     return (
         <div className="min-h-80 flex flex-wrap justify-between ">
             <div className="flex flex-wrap w-4/6">
-                <img
-                    ref={ref}
-                    className={`relative w-full bg-white bg-opacity-20 bg-no-repeat bg-cover bg-center`}
-                    src={
-                        !!top5User[0]?.avatar
-                            ? top5User[0]?.avatar
-                            : `${ferari}`
-                    }
-                    style={{
-                        // backgroundImage: `url(${
-                        //     !!top5User[0]?.avatar
-                        //         ? top5User[0]?.avatar
-                        //         : `${ferari}`
-                        // })`,
-                        transform: isInView ? 'none' : 'translateX(-200px)',
-                        opacity: isInView ? 1 : 0,
-                        transition:
-                            'all 0.9s cubic-bezier(0.17, 0.37, 0.67, 0.87) 1s',
-                        boxShadow: isInView
-                            ? '0 50px 25px -24px rgb(0,0,0,0.3)'
-                            : '',
-                    }}
-                />
-                <div className={`absolute top-0 right-0 text-red-800 text-4xl`}>
-                    Top 1
-                </div>
-                <div
-                    className={`absolute bottom-0 right-0 text-red-800 text-4xl pr-2`}
-                >
-                    <p className="text-end">
-                        Entries: {top5User[0].numberEntries}
-                    </p>
-                    <p className="text-end text-green-800">
-                        Win Rate:{' '}
-                        {parseFloat(
-                            (top5User[0].numberWinning /
-                                top5User[0].numberEntries) *
-                                100,
-                        ).toFixed(2)}
-                        {' %'}
-                    </p>
-                </div>
-                <div className="text-xl font-sans text-teal-500">
-                    {top5User[0].name}
+                <div className="relative">
+                    <img
+                        ref={ref}
+                        className={` w-full bg-white bg-opacity-20 bg-no-repeat bg-cover bg-center`}
+                        src={
+                            !!top5User[0]?.avatar
+                                ? top5User[0]?.avatar
+                                : `${ferari}`
+                        }
+                        style={{
+                            transform: isInView ? 'none' : 'translateX(-200px)',
+                            opacity: isInView ? 1 : 0,
+                            transition:
+                                'all 0.9s cubic-bezier(0.17, 0.37, 0.67, 0.87) 1s',
+                            boxShadow: isInView
+                                ? '0 50px 25px -24px rgb(0,0,0,0.3)'
+                                : '',
+                        }}
+                    />
+                    <div className="flex flex-wrap justify-between">
+                        <div className="text-xl font-sans text-teal-500">
+                            {top5User[0].name}
+                        </div>
+                        <div className={`text-red-800 text-4xl pr-2`}>
+                            <p className="text-end">
+                                Entries: {top5User[0].numberEntries}
+                            </p>
+                            <p className="text-end text-green-800">
+                                Win Rate:{' '}
+                                {parseFloat(
+                                    (top5User[0].numberWinning /
+                                        top5User[0].numberEntries) *
+                                        100,
+                                ).toFixed(2)}
+                                {' %'}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div
+                        className={`absolute top-0 right-0 text-red-800 text-4xl`}
+                    >
+                        Top 1
+                    </div>
                 </div>
             </div>
 
