@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RotatingText } from 'rotating-text';
+import HeaderDefault from './HeaderDefault';
+import { useSelector } from 'react-redux';
 
 function HeaderNotAuthenticate() {
+    const { isAuthenticated } = useSelector((state) => state.auth);
+
     const navigate = useNavigate();
     const [search, setSearch] = useState('');
 
@@ -52,16 +56,25 @@ function HeaderNotAuthenticate() {
                         />
                     </div>
                 </div>
-                <div className="flex justify-end items-center relative m-6 inline-flex w-1/3">
-                    <div>
+                {isAuthenticated ? (
+                    <HeaderDefault />
+                ) : (
+                    <div className="flex justify-end items-center relative m-6 inline-flex w-1/3 space-x-2">
                         <div
-                            onClick={() => navigate('/profile-details')}
-                            className="cursor-pointer truncate block whitespace-no-wrap"
+                            onClick={() => navigate('/login')}
+                            className="rounded-full cursor-pointer truncate block whitespace-no-wrap px-2 py-2 hover:text-green-rgb"
                         >
                             Login
                         </div>
+
+                        <div
+                            onClick={() => navigate('/sign-up')}
+                            className="rounded-full bg-black text-white cursor-pointer truncate block whitespace-no-wrap px-3 py-2 hover:bg-gray-700/90 hover:text-gray-200"
+                        >
+                            Sign Up
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </nav>
     );

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-extra-boolean-cast */
 import React from 'react';
 import { Outlet } from 'react-router-dom';
@@ -8,15 +9,15 @@ import { useSelector } from 'react-redux';
 import HeaderNotAuthenticate from './HeaderNotAuthenticate';
 
 function DefaultLayout() {
-    const { isAuthenticated } = useSelector((state) => state.auth);
+    // const { isAuthenticated } = useSelector((state) => state.auth);
     return (
         <BackgroundImage>
             <div className="w-full min-h-screen flex-block flex-col justify-between">
-                {!!isAuthenticated ? (
+                {/* {!!isAuthenticated ? (
                     <HeaderDefault />
-                ) : (
-                    <HeaderNotAuthenticate />
-                )}
+                ) : ( */}
+                <HeaderNotAuthenticate />
+                {/* )} */}
                 <section className="my-6 min-h-full flex justify-center items-center">
                     <Outlet className="py-6" />
                 </section>

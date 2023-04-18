@@ -17,9 +17,9 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
 
   List<Property> findAllByPermissionNotNull();
 
-  @Query("select p.name as name, p.quantity as quantity, p.description as description, b.lastPrice as lastPrice, i.id as imageProperty " +
-          "from Property p left join Bid b on b.property.id = p.id " +
-          "left join Image i where i.property.id = p.id and i.type = 'PROPERTY' " +
+  @Query("select p.name as name, p.id as id, p.quantity as quantity, p.description as description, b.lastPrice as lastPrice, i.id as imageProperty " +
+          "from Property p inner join Bid b on b.property.id = p.id " +
+          "left join Image i on i.property.id = p.id and i.type = 'PROPERTY' " +
           "order by lastPrice desc ")
   Page<PropertyHomeProjection> findPropertyTop5(Pageable pageable);
 }

@@ -7,7 +7,7 @@ import AdminProtectedPage from './private/AdminProtectedPage';
 import BidRoom from './page/BidRoom';
 import BidDetailRoom from './page/BidRoom/BidDetailRoom';
 import ChatRoom from './page/ChatRoom';
-import Home from './page/HomePage';
+// import Home from './page/HomePage';
 import LoginPage from './page/Login/LoginPage';
 import Private from './private/Private';
 import AdminHomePage from './page/AdminPage/HomeAdmin';
@@ -41,9 +41,9 @@ function App() {
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/error" element={<ErrorPage404 />} />
                 <Route element={<DefaultLayout />}>
-                    <Route path="/main" element={<MainPage />} />
+                    <Route path="/" element={<MainPage />} />
                     <Route element={<Private />}>
-                        <Route path="/" element={<Home />} />
+                        {/* <Route path="/" element={<Home />} /> */}
                         <Route path="chat-room" element={<ChatRoom />} />
                         <Route path="bid-room">
                             <Route index element={<BidRoom />} />

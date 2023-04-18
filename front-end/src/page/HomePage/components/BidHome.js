@@ -2,33 +2,29 @@
 import React from 'react';
 import { NumericFormat } from 'react-number-format';
 import { DOMAIN_URL } from '~/CONST/const';
-import { imageDefault } from '~/assets';
+// import { imageDefault } from '~/assets';
 import formatDateTime from '~/utils/formatDateTime';
-
+import Image from '~/assets/images/pikachu.webp';
 function BidHome({ bid }) {
     console.log('bid', bid);
     const handlenavigate = () => {
         console.log(bid.id);
     };
     return (
-        <div className=" my-4 mx-auto">
-            <div>{bid.id}</div>
-            <div className="group relative">
-                <div
-                    className="cursor-pointer "
-                    onClick={() => handlenavigate()}
-                >
-                    <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
-                        <img
-                            src={
-                                !!bid.property.imageId
-                                    ? `${DOMAIN_URL}api/v1/images/read/${bid.property.imageId}`
-                                    : `${imageDefault.logo.default}`
-                            }
-                            alt={bid.property.name}
-                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                        />
-                    </div>
+        <div className="w-96 group relative mb-8">
+            <div onClick={() => handlenavigate()}>
+                <div className="w-full rounded-md bg-transparent group-hover:opacity-75 shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
+                    <img
+                        src={
+                            !!bid.property.imageId
+                                ? `${DOMAIN_URL}api/v1/images/read/${bid.property.imageId}`
+                                : Image
+                        }
+                        alt={bid.property.name}
+                        className="w-full rounded-lg"
+                    />
+                </div>
+                <div>
                     <div className="pt-4 flex justify-center items-center">
                         {formatDateTime(bid.dayOfSale).date}
                     </div>
