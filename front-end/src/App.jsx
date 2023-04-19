@@ -7,7 +7,6 @@ import AdminProtectedPage from './private/AdminProtectedPage';
 import BidRoom from './page/BidRoom';
 import BidDetailRoom from './page/BidRoom/BidDetailRoom';
 import ChatRoom from './page/ChatRoom';
-// import Home from './page/HomePage';
 import LoginPage from './page/Login/LoginPage';
 import Private from './private/Private';
 import AdminHomePage from './page/AdminPage/HomeAdmin';
@@ -30,6 +29,9 @@ import AdminPropertyList from './page/AdminPage/Property/AdminPropertyList';
 import AdminPropertyDetails from './page/AdminPage/Property/AdminPropertyDetails';
 import FullImageModal from './page/ProfilePage/Properties/Modal/FullImageModal';
 import MainPage from './page/HomePage/MainPage';
+import ListProperty from './page/HomePage/ListProperty';
+import DefaultHomePage from './component/layouts/DefaultHomePage';
+import DetailProperty from './page/HomePage/DetailProperty';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -41,6 +43,15 @@ function App() {
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/error" element={<ErrorPage404 />} />
                 <Route element={<DefaultLayout />}>
+                    <Route element={<DefaultHomePage />}>
+                        <Route path="/list-property">
+                            <Route index element={<ListProperty />} />
+                            <Route
+                                path=":propertyId"
+                                element={<DetailProperty />}
+                            />
+                        </Route>
+                    </Route>
                     <Route path="/" element={<MainPage />} />
                     <Route element={<Private />}>
                         {/* <Route path="/" element={<Home />} /> */}

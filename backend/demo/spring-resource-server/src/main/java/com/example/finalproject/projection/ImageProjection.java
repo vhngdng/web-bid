@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ImageProjection {
-  public String getId();
+   String getId();
 
-  public String getType();
+   String getType();
 
 }

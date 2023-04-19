@@ -8,6 +8,7 @@ import Top5User from './components/Top5User';
 import { Helmet } from 'react-helmet';
 import Top5Famous from './components/Top5Famous';
 import Tutorial from './Tutorial';
+import ListProperty from './ListProperty';
 
 function MainPage() {
     const { data, isLoading } = useGetHomeDetailsQuery();

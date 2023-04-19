@@ -27,12 +27,31 @@ module.exports = withMT({
                     'linear-gradient(180deg, rgb(190, 215, 176) 0%, rgb(110, 141, 133)30%, rgb(126, 155, 188)60%, rgb(226, 181, 244)90%)',
             },
             height: {
+                '90vh': '90vh',
+                '85vh': '85vh',
                 '75vh': '75vh',
                 '60vh': '60vh',
                 '65vh': '65vh',
                 '50vh': '50vh',
+                '30vh': '30vh',
+            },
+            width: {
+                '30vw': '30vw',
+                '20vw': '20vw',
+                '15vw': '15vw',
+            },
+            minHeight: {
+                '75vh': '75vh',
+                '70vh': '70vh',
+                '60vh': '60vh',
+                '65vh': '65vh',
+                '50vh': '50vh',
+                '1/2': '50%',
             },
             minWidth: {
+                '1/2': '50%',
+            },
+            maxHeight: {
                 '1/2': '50%',
             },
         },

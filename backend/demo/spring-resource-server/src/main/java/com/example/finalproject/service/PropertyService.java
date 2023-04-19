@@ -9,6 +9,7 @@ import com.example.finalproject.entity.Property;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.projection.ImageProjection;
+import com.example.finalproject.projection.home.PropertyHomeProjection;
 import com.example.finalproject.repository.BidRepository;
 import com.example.finalproject.repository.ImageRepository;
 import com.example.finalproject.repository.PropertyRepository;
@@ -16,9 +17,14 @@ import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.UpSertProperty;
 import com.example.finalproject.response.DeletePropertyResponse;
 import com.example.finalproject.response.ErrorResponse;
+import com.example.finalproject.response.PropertyHomeResponse;
 import com.example.finalproject.response.PropertyResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -134,6 +140,36 @@ public class PropertyService {
               .status(HttpStatus.OK)
               .message("The Property #" + propertyId + " is successfully deleted")
               .build();
+    }
+  }
+
+  public Page<PropertyHomeProjection> findListPropertyForGuest(int page, int size, String sort) {
+    String[] _sort = sort.split(",");
+    Sort.Order order = (new Sort.Order(_sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC,
+            _sort[0]));
+    Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+    return propertyRepository.findListPropertyForGuest(pageable);
+  }
+
+  public PropertyHomeResponse
+  findDetailPropertyForGuest(int propertyId) {
+    List<PropertyHomeProjection> propertyHomeProjectionList
+            = propertyRepository.findDetailPropertyForGuest(propertyId);
+      PropertyHomeResponse propertyHomeResponse = PropertyHomeResponse
+              .builder()
+              .property(propertyHomeProjectionList.get(0))
+              .images(new ArrayList<>())
+              .build();
+    if (propertyHomeProjectionList.size() > 0) {
+      propertyHomeProjectionList.forEach(
+              p -> {
+                if (p.getImages() != null) {
+                  propertyHomeResponse.addImage(p.getImages());
+                }
+      });
+      return propertyHomeResponse;
+    }else {
+      return null;
     }
   }
 }

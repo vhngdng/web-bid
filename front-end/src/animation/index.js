@@ -98,7 +98,14 @@ const liVariant = {
     },
 };
 
+const homeSidebarVariants = {
+    open: {
+        height: '100vh',
+    },
+    collapsed: { height: '90vh' },
+};
 export {
+    homeSidebarVariants,
     rowVariant,
     colVariant,
     sidebar,

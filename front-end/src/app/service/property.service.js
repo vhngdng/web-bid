@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Mutex } from 'async-mutex';
 import { logout, tokenReceived } from '../slice/auth.slice';
@@ -68,6 +69,13 @@ export const propeprtyApi = createApi({
         getAllPropertyByUserLogin: builder.query({
             query: () => `user/properties`,
         }),
+        getListPropertyForGuest: builder.query({
+            query: (url) =>
+                !!url ? `guest/list-property?${url}` : `guest/list-property`,
+        }),
+        getDetailPropertyForGuest: builder.query({
+            query: (propertyId) => `guest/list-property/${propertyId}`,
+        }),
         getAllPropertyNotBid: builder.query({
             query: () => `admin/properties-not-bid`,
         }),
@@ -117,4 +125,6 @@ export const {
     useUpdatePropertyMutation,
     useRegisterPropertyMutation,
     useDeleteUserPropertyMutation,
+    useGetListPropertyForGuestQuery,
+    useGetDetailPropertyForGuestQuery,
 } = propeprtyApi;

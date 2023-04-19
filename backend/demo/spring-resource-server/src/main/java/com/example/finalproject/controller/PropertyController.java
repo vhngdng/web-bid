@@ -65,4 +65,15 @@ public class PropertyController {
   public ResponseEntity<?> deleteProperty(@PathVariable("propertyId") Integer propertyId) {
     return ResponseEntity.ok(propertyService.deleteProperty(propertyId));
   }
+
+  @GetMapping("guest/list-property")
+  public ResponseEntity<?> findListPropertyForGuest(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                    @RequestParam(name = "size", defaultValue = "8") int size,
+                                                    @RequestParam(name ="sort", defaultValue = "id,asc") String sort) {
+    return ResponseEntity.ok(propertyService.findListPropertyForGuest(page, size, sort));
+  }
+  @GetMapping("guest/list-property/{propertyId}")
+  public ResponseEntity<?> findDetailPropertyForGuest(@PathVariable int propertyId) {
+    return ResponseEntity.ok(propertyService.findDetailPropertyForGuest(propertyId));
+  }
 }

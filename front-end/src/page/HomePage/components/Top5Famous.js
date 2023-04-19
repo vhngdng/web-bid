@@ -2,19 +2,21 @@
 import React, { useEffect, useState } from 'react';
 import { NumericFormat } from 'react-number-format';
 import { DOMAIN_URL } from '~/CONST/const';
+import { AnimatePresence, motion } from 'framer-motion';
+import formatDateTime from '~/utils/formatDateTime';
 import house from '~/assets/images/beautiful-house.jpg';
 import housev2 from '~/assets/images/housev2.jpg';
 import housev3 from '~/assets/images/housev3.png';
 import airplane from '~/assets/images/airplane.jpeg';
 import girl from '~/assets/images/girl.jpg';
-import formatDateTime from '~/utils/formatDateTime';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 const images = [house, housev2, housev3, airplane, girl];
 function Top5Famous({ top5Famous }) {
     const [imageListShow, setImageListShow] = useState([]);
     // const [data, setData] = useState([]);
     const [indexImage, setIndexImage] = useState(0);
     const [isPropertyInfo, setIsPropertyInfo] = useState(true);
+    const navigate = useNavigate();
     useEffect(() => {
         if (!!top5Famous) {
             top5Famous.forEach((bid, index) =>
@@ -36,7 +38,7 @@ function Top5Famous({ top5Famous }) {
     return (
         <>
             <div className="font-sans text-3xl text-blue-rgb">
-                Top 5 Highest Price
+                Top 5 Property
             </div>
             <div className="w-full">
                 <div className="inline-block w-full h-full ">
@@ -114,7 +116,7 @@ function Top5Famous({ top5Famous }) {
                                                 <p>Reserve Price</p>
                                                 <p className="min-w-1/2 text-start">
                                                     <NumericFormat
-                                                        className="title-font font-medium text-red-rgb hover:text-red-rgb hover:scale-125"
+                                                        className="title-font font-medium text-red-rgb hover:scale-125"
                                                         value={
                                                             top5Famous.length >
                                                             0
@@ -134,7 +136,7 @@ function Top5Famous({ top5Famous }) {
                                                 <p>Last Price</p>
                                                 <p className="min-w-1/2 text-start">
                                                     <NumericFormat
-                                                        className="title-font font-medium text-red-rgb hover:text-red-rgb hover:scale-125"
+                                                        className="title-font font-medium text-blue-rgb hover:scale-125"
                                                         value={
                                                             top5Famous.length >
                                                             0
@@ -197,10 +199,7 @@ function Top5Famous({ top5Famous }) {
                                                 </p>
                                             </div>
                                             <div className="px-3">
-                                                <div className="text-center text-gray-400">
-                                                    Auctioneer
-                                                </div>
-                                                <div className="flex justify-between items-center ">
+                                                <div className="flex justify-center items-center ">
                                                     <div className="w-24">
                                                         <img
                                                             src={
@@ -220,20 +219,23 @@ function Top5Famous({ top5Famous }) {
                                                             className="rounded-full w-full"
                                                         />
                                                     </div>
-                                                    <p className="text-start min-w-1/2">
-                                                        {top5Famous.length >
-                                                            0 &&
-                                                            top5Famous[
-                                                                indexImage
-                                                            ].auctioneer.name}
-                                                    </p>
+                                                    <div className="min-w-1/2">
+                                                        <div className="text-center text-blue-rgb">
+                                                            Auctioneer
+                                                        </div>
+                                                        <p className="flex justify-center items-center font-xl text-start">
+                                                            {top5Famous.length >
+                                                                0 &&
+                                                                top5Famous[
+                                                                    indexImage
+                                                                ].auctioneer
+                                                                    .name}
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div className="px-3">
-                                                <div className="text-center text-gray-400">
-                                                    Winner
-                                                </div>
-                                                <div className="flex justify-between items-center ">
+                                                <div className="flex justify-center items-center ">
                                                     <div className="w-24">
                                                         <img
                                                             src={
@@ -253,14 +255,19 @@ function Top5Famous({ top5Famous }) {
                                                             className="rounded-full w-full"
                                                         />
                                                     </div>
-                                                    <p className="text-start min-w-1/2">
-                                                        {top5Famous.length >
-                                                            0 &&
-                                                            top5Famous[
-                                                                indexImage
-                                                            ].winningBidder
-                                                                .name}
-                                                    </p>
+                                                    <div className="min-w-1/2">
+                                                        <div className="text-center text-red-rgb">
+                                                            Winner
+                                                        </div>
+                                                        <p className="flex justify-center items-center font-xl text-start">
+                                                            {top5Famous.length >
+                                                                0 &&
+                                                                top5Famous[
+                                                                    indexImage
+                                                                ].winningBidder
+                                                                    .name}
+                                                        </p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -272,7 +279,7 @@ function Top5Famous({ top5Famous }) {
                     <div className="flex justify-between items-stretch my-20">
                         {imageListShow.map((image, index) => (
                             <div
-                                className={`cursor-pointer w-1/6
+                                className={`cursor-pointer w-1/12
                                                         ${
                                                             imageListShow.indexOf(
                                                                 image,
@@ -293,6 +300,14 @@ function Top5Famous({ top5Famous }) {
                                 />
                             </div>
                         ))}
+                        <div className="flex justify-center items-center">
+                            <div
+                                onClick={() => navigate('list-property')}
+                                className="h-fit cursor-pointer  mt-4 text-blue-400 hover:text-blue-600 rounded-full"
+                            >
+                                More
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
