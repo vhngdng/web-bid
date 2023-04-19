@@ -81,19 +81,3 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
 
 
 
-//  public Long getId();
-//  public String getType();
-//  public LocalDateTime getDayOfSale();
-//  public String getConditionReport();
-//  public Long getReservePrice();
-//  public Long getPriceStep();
-//  public Long getLastPrice();
-//  public int getCountAttendees();
-//  public Integer getPropertyId();
-//  public String getPropertyImageId();
-//  public Long getQuantity();
-//  public String getCategory();
-//  public Long getAuctioneerId();
-//  public String getAuctioneerAvatar();
-//  public Long getWinnerId();
-//  public String getWinnerAvatar();

@@ -7,6 +7,7 @@ import Top5Earliest from './components/Top5Earliest';
 import Top5User from './components/Top5User';
 import { Helmet } from 'react-helmet';
 import Top5Famous from './components/Top5Famous';
+import Tutorial from './Tutorial';
 
 function MainPage() {
     const { data, isLoading } = useGetHomeDetailsQuery();
@@ -29,24 +30,31 @@ function MainPage() {
                 <title>Auctionforfun Home</title>
                 <meta name="description" content="Home" />
             </Helmet>
-            <div className="w-4/5">
-                <div className="space-y-10">
-                    {top5Earliest.length > 0 && (
-                        <Top5Earliest top5Earliest={top5Earliest} />
-                    )}
+            <div className="w-full inline-block">
+                <div className="h-75vh space-y-10">
+                    <Tutorial />
                 </div>
-                <div className="space-y-10">
-                    <div className="my-10">
-                        <div className="font-sans font-semibold text-2xl text-blue-rgb">
-                            Top 5 User
+                <div className="flex justify-center items-center">
+                    <div className="w-4/5">
+                        <div className="space-y-10">
+                            {top5Earliest.length > 0 && (
+                                <Top5Earliest top5Earliest={top5Earliest} />
+                            )}
                         </div>
-                        {top5User.length > 0 && (
-                            <Top5User top5User={top5User} />
-                        )}
+                        <div className="space-y-10">
+                            <div className="my-10">
+                                <div className="font-sans font-semibold text-2xl text-blue-rgb">
+                                    Top 5 User
+                                </div>
+                                {top5User.length > 0 && (
+                                    <Top5User top5User={top5User} />
+                                )}
+                            </div>
+                        </div>
+                        <div className="space-y-10">
+                            <Top5Famous top5Famous={top5Famous} />
+                        </div>
                     </div>
-                </div>
-                <div className="space-y-10">
-                    <Top5Famous top5Famous={top5Famous} />
                 </div>
             </div>
         </>

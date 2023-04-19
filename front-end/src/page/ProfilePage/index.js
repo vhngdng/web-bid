@@ -13,7 +13,7 @@ function ProfilePage() {
         console.log(location.pathname);
         if (location.pathname.includes('Payment')) {
             setSelectSidebar(3);
-        } else if (location.pathname.includes('upload-property')) {
+        } else if (location.pathname.includes('property-registration')) {
             setSelectSidebar(2);
         } else if (location.pathname.includes('property-list')) {
             setSelectSidebar(4);
@@ -66,10 +66,10 @@ function ProfilePage() {
                                             : 'bg-transparent'
                                     }`}
                                         onClick={() =>
-                                            navigate('upload-property')
+                                            navigate('property-registration')
                                         }
                                     >
-                                        Upload property
+                                        Auction property registration
                                     </button>
                                 </li>
                                 <li>

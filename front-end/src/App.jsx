@@ -54,10 +54,7 @@ function App() {
                         </Route>
                         <Route path="profile-detail" element={<ProfilePage />}>
                             <Route index element={<ProfileDetail />} />
-                            <Route
-                                path="upload-property"
-                                element={<UpPropertyPage />}
-                            />
+                            <Route path="sell" element={<UpPropertyPage />} />
                             <Route path="Payment">
                                 <Route index element={<PaymentPage />} />
                                 <Route
