@@ -5,13 +5,16 @@ import { DOMAIN_URL } from '~/CONST/const';
 // import { imageDefault } from '~/assets';
 import formatDateTime from '~/utils/formatDateTime';
 import Image from '~/assets/images/pikachu.webp';
+import { useNavigate } from 'react-router-dom';
 function BidHome({ bid }) {
+    const navigate = useNavigate();
     const handlenavigate = () => {
         console.log(bid.id);
+        navigate(`bid-room/${bid.id}`);
     };
     return (
         <div className="w-96 group relative mb-8">
-            <div onClick={() => handlenavigate()}>
+            <div>
                 <div className="w-full rounded-md bg-transparent group-hover:opacity-75 shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
                     <img
                         src={
@@ -20,7 +23,8 @@ function BidHome({ bid }) {
                                 : Image
                         }
                         alt={bid.property.name}
-                        className="w-full rounded-lg"
+                        className="w-full rounded-lg cursor-pointer"
+                        onClick={() => handlenavigate()}
                     />
                 </div>
                 <div>

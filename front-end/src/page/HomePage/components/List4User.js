@@ -5,9 +5,9 @@ import React from 'react';
 function List4User({ user, defaultAvatar, index, defaultColor }) {
     return (
         <div>
-            <div className="relative shadow-2xl bg-transparent rounded-lg">
+            <div className="relative rounded-lg">
                 <img
-                    className={`h-40 w-full rounded-lg `}
+                    className={`h-40 w-full rounded-lg shadow-2xl`}
                     src={!!user.avatar ? user.avatar : `${defaultAvatar}`}
                 />
                 <div

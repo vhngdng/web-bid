@@ -14,7 +14,7 @@ function BidRoomInformation({
     sendClose,
     price,
     moneyRef,
-    // moneyPingRef,
+    logInEmail,
     controls,
 }) {
     // eslint-disable-next-line no-unused-vars
@@ -48,13 +48,6 @@ function BidRoomInformation({
     if (isLoading) return <Loader />;
     console.log('image data', data);
     console.log('data in bid room info', bidRoomInfo);
-
-    const handleShowFullImage = (id) => {
-        console.log('image id', id);
-        setTimeout(() => {
-            setIsOpenImageModal((prev) => !prev);
-        }, 2000);
-    };
 
     const handleChangeIndex = (index) => {
         if (index < 0) {
@@ -117,11 +110,6 @@ function BidRoomInformation({
 
                             <div className="w-full sm:w-9/12 px-4">
                                 <img
-                                    onMouseEnter={() =>
-                                        handleShowFullImage(
-                                            images[indexImage].id,
-                                        )
-                                    }
                                     className="mb-5 object-fill h-full w-full"
                                     src={
                                         images.length > 0
@@ -141,9 +129,7 @@ function BidRoomInformation({
                                         key={images[indexImage].id}
                                     />
                                 )}
-                                <p className="text-sm text-center text-gray-300">
-                                    Hover image to see full size
-                                </p>
+
                                 <AnimatePresence>
                                     <div className="relative flex justify-center mb-6">
                                         <NumericFormat
@@ -193,7 +179,7 @@ function BidRoomInformation({
                     </div>
                     <div className="w-full lg:w-1/2 px-4">
                         <div className="max-w-4xl mb-6">
-                            <div className="cursor-pointer">
+                            <div className="">
                                 <h2 className=" mt-6 mb-4 text-5xl md:text-7xl lg:text-8xl font-sans font-extrabold hover:text-gray-600 hover:font-sans">
                                     {bidRoomInfo.property.name} (
                                     {bidRoomInfo.property.category})
@@ -217,7 +203,7 @@ function BidRoomInformation({
                                 Price Step:{' '}
                             </p>
                             <NumericFormat
-                                className="w-full px-3 py-2 text-center text-3xl"
+                                className="w-full px-3 py-2 text-center text-3xl text-red-700"
                                 value={bidRoomInfo.priceStep}
                                 displayType={'text'}
                                 thousandSeparator={true}
@@ -230,7 +216,7 @@ function BidRoomInformation({
                                 Reserve Price :{' '}
                             </p>
                             <NumericFormat
-                                className="w-full px-3 py-2 text-center text-3xl"
+                                className="w-full px-3 py-2 text-center text-3xl text-red-rgb"
                                 value={bidRoomInfo.reservePrice}
                                 displayType={'text'}
                                 thousandSeparator={true}
@@ -244,8 +230,24 @@ function BidRoomInformation({
                         <div className="flex flex-wrap -mx-2 mb-12">
                             <div className="w-full md:w-2/3 px-2 mb-2 md:mb-0">
                                 <div
-                                    onClick={sendValue}
-                                    className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
+                                    onClick={
+                                        !!bidRoomInfo.auctioneer.email &&
+                                        bidRoomInfo.status === 'PROCESSING' &&
+                                        logInEmail !==
+                                            bidRoomInfo.auctioneer.email
+                                            ? sendValue
+                                            : null
+                                    }
+                                    className={`block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center rounded-xl focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50
+                                            ${
+                                                bidRoomInfo.status ===
+                                                    'PROCESSING' &&
+                                                logInEmail !==
+                                                    bidRoomInfo.auctioneer.email
+                                                    ? 'cursor-pointer bg-blue-500 hover:bg-blue-600'
+                                                    : 'bg-gray-300 hover:bg-gray-500 rounded focus:outline-none pointer-event-none'
+                                            }
+                                            `}
                                 >
                                     Pay
                                 </div>
@@ -253,7 +255,7 @@ function BidRoomInformation({
                             <div className="w-full md:w-1/3 px-2">
                                 <div
                                     onClick={sendClose}
-                                    className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 hover:bg-red-600 rounded-xl"
+                                    className="cursor-pointer block py-4 px-2 leading-8 font-heading font-medium tracking-tighter text-xl text-white text-center bg-red-400 focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 hover:bg-red-600 rounded-xl"
                                 >
                                     Exit
                                 </div>

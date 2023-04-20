@@ -45,8 +45,13 @@ function Top5Famous({ top5Famous }) {
                     <div className="w-full h-60vh flex items-stretch justify-between">
                         <div className="w-3/5 ">
                             <img
-                                className="w-full h-full object-fill"
+                                className="w-full h-full object-fill rounded-lg cursor-pointer shadow-2xl"
                                 src={imageListShow[indexImage]}
+                                onClick={() =>
+                                    navigate(
+                                        `/list-property/${top5Famous[indexImage].property.id}`,
+                                    )
+                                }
                             />
                         </div>
                         <div className="w-2/5 ml-4 space-x-4 flex justify-between">

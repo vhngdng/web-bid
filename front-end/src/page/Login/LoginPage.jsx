@@ -27,11 +27,7 @@ function Login() {
 
     useEffect(() => {
         if (isAuthenticated) {
-            if (location.state?.from) {
-                navigate(location.state.from);
-            } else {
-                navigate('/');
-            }
+            navigate(-1);
         }
     }, [isAuthenticated]);
     const handleLogin = (e) => {

@@ -506,18 +506,6 @@ function ListBidRoom({ isAdmin }) {
                                                         ${
                                                             (index + 1) % 2 &&
                                                             'bg-gray-100/25'
-                                                        }
-                                                        ${
-                                                            !!isAdmin
-                                                                ? 'cursor-pointer'
-                                                                : [
-                                                                      'ACTIVE',
-                                                                      'PROCESSING',
-                                                                  ].includes(
-                                                                      bid.status,
-                                                                  )
-                                                                ? 'cursor-pointer'
-                                                                : 'pointer-events-none'
                                                         }`}
                                                     onClick={() =>
                                                         handleEnterRoom(bid.id)

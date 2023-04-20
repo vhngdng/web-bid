@@ -136,7 +136,7 @@ public class FinalProjectApplication {
               .dayOfSale(rd.nextInt(3) % 2 == 0
                       ? LocalDateTime.now().plusMinutes(randomNumberInRange)
                       : LocalDateTime.now().minusMinutes(randomNumberInRange))
-              .reservePrice(9000000000L)
+              .reservePrice(property.getReservePrice())
               .type("PRIVATE")
               .priceStep(10000000L)
               .status(Arrays.asList("SUCCESS", "DEACTIVE", "ACTIVE", "PROCESSING", "FINISH").get(rd.nextInt(5)))

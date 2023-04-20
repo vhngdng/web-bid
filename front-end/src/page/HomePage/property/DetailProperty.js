@@ -100,7 +100,10 @@ function DetailProperty() {
                                 ['PROCESSING', 'ACTIVE'].includes(
                                     data.property.bidStatus,
                                 )
-                                    ? () => navigate('/')
+                                    ? () =>
+                                          navigate(
+                                              `/bid-room/join/${data.property.bidId}`,
+                                          )
                                     : null
                             }
                             className={`text-2xl ${
@@ -142,7 +145,7 @@ function DetailProperty() {
                                             ? readImage(data.owner.avatar)
                                             : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                                     }
-                                    className="w-full object-fill "
+                                    className="w-full object-fill rounded-full"
                                 />
                             </div>
                             <div>{data.property.owner.name}</div>

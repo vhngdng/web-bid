@@ -28,7 +28,7 @@ import { dollar, imageDefault } from '~/assets';
 import AdminSettingInBidRoom from './AdminSettingInBidRoom';
 import { DOMAIN_URL } from '~/CONST/const';
 import { ProSidebarProvider } from 'react-pro-sidebar';
-import BidDetailSideBar from './BidDetailSideBar';
+import BidDetailSideBar from './component/BidDetailSideBar';
 import BidRoomInformation from './component/BidRoomInformation';
 import BidDetail from '../HomePage/bid/BidDetail';
 
@@ -309,55 +309,30 @@ function BidDetailRoom() {
         return <Navigate to="/forbidden" replace="true" />;
     }
     console.log(data);
-    const handleClick = (index) => {
-        const target = moneyRef.current.getBoundingClientRect();
-        let xRef =
-            target.left -
-            animationRefs.current[index].getBoundingClientRect().left;
-        let yRef =
-            target.bottom -
-            animationRefs.current[index].getBoundingClientRect().bottom;
-
-        animate(
-            animationRefs.current[index],
-            {
-                x: [0, xRef, xRef / 100, 0],
-                y: [0, yRef, yRef / 100, 0],
-                opacity: [0, 1, 0, 0],
-            },
-            {
-                duration: 1,
-                repeatType: 'loop',
-                ease: [0.17, 0.37, 0.4, 0.77],
-            },
-        );
-    };
 
     const handleSendValue = () => {
         let index = participants.findIndex(
             (participant) => participant.username === userData.username,
         );
-        handleClick(index);
         sendValue();
         controls.start({
-            y: -50,
-            scale: 1.25,
-            opacity: 1,
+            y: [-50, 0],
+            scale: [1.25, 1],
+            opacity: [1, 0],
             transition: {
                 duration: 0.5,
                 ease: 'linear',
             },
         });
-        // controls.end({ y: 0, opacity: 0, scale: 0.75 });
     };
 
     return (
         <>
             {!!data && userData.connected ? (
                 <>
-                    <section className="dark:bg-gray-900 bg-gray-200 rounded">
-                        <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
-                            <div>
+                    <section className="dark:bg-gray-900 bg-gray-200/20 rounded-lg shadow-[0_25px_25px_-24px_rgb(0,0,0,0.3)] space-y-10 my-10">
+                        <div className="py-8 px-4 mx-auto max-w-screen text-center lg:py-16 lg:px-6">
+                            {/* <div>
                                 <AnimatePresence mode="wait" initial={false}>
                                     <div className="grid gap-8 lg:gap-16 grid-cols-8 ">
                                         <div className="flex-1 justify-center items-center col-span-2 border-slate-50 rounded-lg">
@@ -441,7 +416,7 @@ function BidDetailRoom() {
                                 <Button onClick={() => sendCloseSocket()}>
                                     Quit
                                 </Button>
-                            </div>
+                            </div> */}
                             <BidRoomInformation
                                 bidRoomInfo={!!data && data}
                                 sendValue={handleSendValue}
@@ -450,6 +425,7 @@ function BidDetailRoom() {
                                 moneyRef={moneyRef}
                                 moneyPingRef={moneyPingRef}
                                 controls={controls}
+                                logInEmail={auth.email}
                             />
 
                             <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
@@ -470,7 +446,6 @@ function BidDetailRoom() {
                                         >
                                             &#128081;
                                         </div>
-
                                         <motion.img
                                             className="mx-auto mb-4 w-36 h-36 rounded-full"
                                             src={
@@ -529,7 +504,11 @@ function BidDetailRoom() {
                         </div>
                     </section>
                     <ProSidebarProvider>
-                        <BidDetailSideBar isAdmin={isAdmin} />
+                        <BidDetailSideBar
+                            isAdmin={isAdmin}
+                            setIsOpenAdminSetting={setIsOpenAdminSetting}
+                            id={id}
+                        />
                     </ProSidebarProvider>
                 </>
             ) : (
