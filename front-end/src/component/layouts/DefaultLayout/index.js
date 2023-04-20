@@ -14,7 +14,7 @@ function DefaultLayout() {
         <BackgroundImage>
             <div className="w-full min-h-screen flex-block flex-col justify-between">
                 <HeaderNotAuthenticate />
-                <section className="my-6 min-h-full flex justify-center items-center">
+                <section className="min-h-full flex justify-center items-center">
                     <Outlet className="py-6" />
                 </section>
                 <FooterDefault />

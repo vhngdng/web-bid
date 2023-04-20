@@ -24,13 +24,13 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NotificationTimer from '~/notificationTimer';
 import { Button } from '@material-tailwind/react';
-import UserWinningInBidRoom from './UserWinningInBidRoom';
 import { dollar, imageDefault } from '~/assets';
 import AdminSettingInBidRoom from './AdminSettingInBidRoom';
 import { DOMAIN_URL } from '~/CONST/const';
 import { ProSidebarProvider } from 'react-pro-sidebar';
 import BidDetailSideBar from './BidDetailSideBar';
 import BidRoomInformation from './component/BidRoomInformation';
+import BidDetail from '../HomePage/bid/BidDetail';
 
 var stompClient = null;
 // var Sock = null;
@@ -353,7 +353,7 @@ function BidDetailRoom() {
 
     return (
         <>
-            {userData.connected ? (
+            {!!data && userData.connected ? (
                 <>
                     <section className="dark:bg-gray-900 bg-gray-200 rounded">
                         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">

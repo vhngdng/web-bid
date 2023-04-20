@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RotatingText } from 'rotating-text';
 import HeaderDefault from './HeaderDefault';
@@ -10,18 +10,18 @@ function HeaderNotAuthenticate() {
     const navigate = useNavigate();
 
     return (
-        <nav className="flex justify-end  pt-1 rounded dark:bg-gray-900 shadow-lg">
-            <div className="w-full flex justify-center items-center rounded-lg mt-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                <div
-                    onClick={() => navigate('/')}
-                    className="flex justify-start w-2/3 cursor-pointer block py-2 pl-3  text-white rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
-                >
-                    <h1 className="text-gray-800 px-8 w-96 ">
+        <nav className="flex justify-end h-full rounded dark:bg-gray-900 shadow-lg">
+            <div className="w-full flex justify-center items-center rounded-lg h-10vh">
+                <div className="flex justify-start w-2/3 block py-2 pl-3  text-white rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">
+                    <h1
+                        className="text-gray-800 px-8 w-96 "
+                        onClick={() => navigate('/')}
+                    >
                         <RotatingText
                             text="Auctionforfun"
                             stagger={0.1}
                             timing={0.3}
-                            className="rotating-text"
+                            className="rotating-text cursor-pointer"
                             styles={{ fontSize: '14px' }}
                         />
                     </h1>

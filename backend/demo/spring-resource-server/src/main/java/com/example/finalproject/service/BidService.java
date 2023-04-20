@@ -9,6 +9,7 @@ import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Payment;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
+import com.example.finalproject.projection.BidDetails;
 import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.utils.QuartUtil;
@@ -209,4 +210,7 @@ public class BidService {
   }
 
 
+  public BidDetailsDTO findGuestBidByid(Long id) {
+    return findDetailBidRoomById(id);
+  }
 }

@@ -1,6 +1,7 @@
 package com.example.finalproject;
 
 import com.example.finalproject.ENUM.EROLE;
+import com.example.finalproject.ENUM.PERMISSION;
 import com.example.finalproject.ENUM.Provider;
 import com.example.finalproject.ENUM.STATUS_BID;
 import com.example.finalproject.config.UserLoginProperties;
@@ -115,9 +116,9 @@ public class FinalProjectApplication {
     for (int i = 0; i < 10; i++) {
 
       System.out.println(propertyRepository.count());
-      Property property = propertyRepository
-              .findAll()
-              .get((int) (Math.random() * propertyRepository.count()));
+       List<Property> properties = propertyRepository
+              .findAllPropertyNotBid();
+      Property property = properties.get((int) (Math.random() * properties.size()));
       while (bidRepository.existsByProperty(property)) {
         property = propertyRepository
                 .findAll()

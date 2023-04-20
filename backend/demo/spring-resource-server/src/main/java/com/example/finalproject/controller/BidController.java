@@ -23,15 +23,15 @@ public class BidController {
   public ResponseEntity<?> findAllBidRoom() {
     return ResponseEntity.ok(bidService.findAllBid());
   }
-  @GetMapping("user/bid-room/private")
+  @GetMapping("guest/bid-room/private")
   public ResponseEntity<?> findAllBidPrivate(@RequestParam(name = "page", defaultValue = "0") int page,
-                                            @RequestParam(name = "size", defaultValue = "10") int size,
+                                            @RequestParam(name = "size", defaultValue = "7") int size,
                                             @RequestParam(name ="sort", defaultValue = "dayOfSale,desc") String[] sort) {
     return ResponseEntity.ok(bidService.findAllPrivateBid(page, size, sort, "private"));
   }
   @GetMapping("admin/bid-room/paging")
   public ResponseEntity<?> findAllBidRoomPaging(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                @RequestParam(name = "size", defaultValue = "10") int size,
+                                                @RequestParam(name = "size", defaultValue = "7") int size,
                                                 @RequestParam(name ="sort", defaultValue = "dayOfSale,desc") String[] sort
                                                 ) {
     return ResponseEntity.ok(bidService.findAllBidRoomPaging(page, size, sort, null));
@@ -84,5 +84,8 @@ public class BidController {
     return ResponseEntity.ok(bidService.findDetailBidRoomById(id));
   }
 
-
+  @GetMapping("guest/bid-room/{id}")
+  public ResponseEntity<?> findGuestBidByid(@PathVariable("id") Long id) {
+    return ResponseEntity.ok(bidService.findGuestBidByid(id));
+  }
 }

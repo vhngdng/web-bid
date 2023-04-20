@@ -8,7 +8,7 @@ import house from '~/assets/images/beautiful-house.jpg';
 import housev2 from '~/assets/images/housev2.jpg';
 import housev3 from '~/assets/images/housev3.png';
 import airplane from '~/assets/images/airplane.jpeg';
-import girl from '~/assets/images/girl.jpg';
+import girl from '~/assets/images/girlv2.jpg';
 import { useNavigate } from 'react-router-dom';
 const images = [house, housev2, housev3, airplane, girl];
 function Top5Famous({ top5Famous }) {
@@ -303,9 +303,9 @@ function Top5Famous({ top5Famous }) {
                         <div className="flex justify-center items-center">
                             <div
                                 onClick={() => navigate('list-property')}
-                                className="h-fit cursor-pointer  mt-4 text-blue-400 hover:text-blue-600 rounded-full"
+                                className="h-fit cursor-pointer bg-gray-200/40 hover:bg-blue-400 mt-4 text-blue-400 hover:text-gray-400 rounded-full py-2 px-4 hover:shadow-2xl hover:scale-110"
                             >
-                                More
+                                See More
                             </div>
                         </div>
                     </div>

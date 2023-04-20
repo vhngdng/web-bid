@@ -34,6 +34,8 @@ module.exports = withMT({
                 '65vh': '65vh',
                 '50vh': '50vh',
                 '30vh': '30vh',
+                '10vh': '10vh',
+                '1/10': '10%',
             },
             width: {
                 '30vw': '30vw',
@@ -53,6 +55,8 @@ module.exports = withMT({
             },
             maxHeight: {
                 '1/2': '50%',
+
+                '1/10': '10%',
             },
         },
         fontFamily: {

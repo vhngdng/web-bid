@@ -59,7 +59,7 @@ function DetailProperty() {
                         : imagesFake.map((fake, index) => (
                               <div key={index}>
                                   <img
-                                      className="w-full object-cover"
+                                      className="w-full object-cover rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]"
                                       src={fake}
                                   />
                               </div>
@@ -135,14 +135,14 @@ function DetailProperty() {
                             </p>
                         </div>
                         <div className="flex justify-center items-center space-x-3">
-                            <div className="w-24">
+                            <div className="w-24 rounded-full">
                                 <img
                                     src={
                                         !!data.owner?.avatar
                                             ? readImage(data.owner.avatar)
                                             : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                                     }
-                                    className="w-full object-fill rounded-full"
+                                    className="w-full object-fill "
                                 />
                             </div>
                             <div>{data.property.owner.name}</div>

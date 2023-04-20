@@ -86,7 +86,6 @@ function ProfileDetail() {
                             </h2>
                             <p className="cursor-pointer text-gray-400 mt-2 dark:text-gray-400">
                                 Illustrator
-                                <img src={`${fix.logo.default}`} />
                             </p>
                             <p className="mt-2 text-gray-600 dark:text-gray-300">
                                 Write something to introduce yourself

@@ -1,13 +1,13 @@
 /* eslint-disable no-extra-boolean-cast */
 /* eslint-disable no-unused-vars */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './Login.module.scss';
 import classNames from 'classnames/bind';
 import {
     useLoginGoogleMutation,
     useLoginMutation,
 } from '~/app/service/auth.service';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { GoogleLogin } from '@react-oauth/google';
 import { ToastContainer, toast } from 'react-toastify';
@@ -22,8 +22,18 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [login] = useLoginMutation();
+    const location = useLocation();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (isAuthenticated) {
+            if (location.state?.from) {
+                navigate(location.state.from);
+            } else {
+                navigate('/');
+            }
+        }
+    }, [isAuthenticated]);
     const handleLogin = (e) => {
         e.preventDefault();
         login({ email, password })
@@ -63,15 +73,11 @@ function Login() {
             handleLogin(e);
         }
     };
-    if (isAuthenticated) {
-        return <Navigate to={'/'} />;
-    }
 
     const handleSocialLoginSuccess = async (credentialResponse) => {
         console.log(credentialResponse.clientId);
         try {
             loginGoogle(credentialResponse.credential);
-            navigate('/');
         } catch {
             (err) => console.log(err);
             navigate('/login');

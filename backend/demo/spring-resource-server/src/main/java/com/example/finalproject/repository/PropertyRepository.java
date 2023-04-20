@@ -40,4 +40,6 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
           "left join Image io on io.user.id = u.id and i.type = 'AVATAR' " +
           "where p.id = :propertyId")
   List<PropertyHomeProjection> findDetailPropertyForGuest(@Param("propertyId") int propertyId);
+
+  List<Property> findAllByPermission(String permission);
 }

@@ -3,7 +3,7 @@ import { Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import Loader from '~/Loader';
 import { useGetListPropertyForGuestQuery } from '~/app/service/property.service';
-import Property from './components/Property';
+import Property from '../components/Property';
 
 function ListProperty() {
     // eslint-disable-next-line no-unused-vars
@@ -28,7 +28,14 @@ function ListProperty() {
             <div className="flex justify-center w-full min-h-75vh">
                 <div className="flex flex-col justify-center w-2/3 min-h-full">
                     <div>
-                        <div>ListProperty</div>
+                        <div className="w-full my-10">
+                            <div className="flex justify-end mr-10 ">
+                                <div className="bg-gray-400/50 w-fit">
+                                    {' '}
+                                    Sort by
+                                </div>
+                            </div>
+                        </div>
                         <div className="h-full flex flex-wrap justify-around ">
                             {properties.map((property, index) => (
                                 <Property key={index} property={property} />

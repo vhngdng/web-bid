@@ -9,12 +9,15 @@ import {
 import { AnimatePresence, motion } from 'framer-motion';
 import arrowRight from '~/assets/images/triple-right-arrow.webp';
 import { homeSidebarVariants } from '~/animation';
+import { useNavigate } from 'react-router-dom';
 
 function HomeSidebar() {
     const { collapseSidebar } = useProSidebar();
     const [isCollapse, setIsCollapse] = useState(false);
     const [search, setSearch] = useState('');
     const [scrollPosition, setScrollPosition] = useState(0);
+    const navigate = useNavigate();
+
     const handleScroll = () => {
         const position = window.pageYOffset;
         setScrollPosition(position);
@@ -51,7 +54,7 @@ function HomeSidebar() {
                         backgroundColor="rgb(255,255,255,0.3)"
                     >
                         {isCollapse && (
-                            <p>
+                            <div>
                                 <div className="flex justify-center items-center relative inline-flex w-full">
                                     <div className="relative flex items-center w-5/6 h-12 rounded-lg focus-within:shadow-lg overflow-hidden">
                                         <div className="grid place-items-center h-full w-12 text-gray-300">
@@ -84,18 +87,27 @@ function HomeSidebar() {
                                     </div>
                                 </div>
                                 <Menu className="">
-                                    <SubMenu label="Charts">
-                                        <MenuItem> Pie charts </MenuItem>
-                                        <MenuItem> Line charts </MenuItem>
-                                    </SubMenu>
-                                    <MenuItem> Go to Home Page </MenuItem>
+                                    <MenuItem onClick={() => navigate('/')}>
+                                        {' '}
+                                        Go to Home Page{' '}
+                                    </MenuItem>
                                     <MenuItem> Rule </MenuItem>
-                                    <SubMenu label="Bid">
-                                        <MenuItem> Buy </MenuItem>
-                                        <MenuItem> Quit </MenuItem>
+                                    <SubMenu label="Property">
+                                        <MenuItem>
+                                            {' '}
+                                            Property Registration{' '}
+                                        </MenuItem>
+                                        <MenuItem
+                                            onClick={() =>
+                                                navigate('/list-property')
+                                            }
+                                        >
+                                            {' '}
+                                            List Property{' '}
+                                        </MenuItem>
                                     </SubMenu>
                                 </Menu>
-                            </p>
+                            </div>
                         )}
                         <main
                             style={{ padding: 10 }}

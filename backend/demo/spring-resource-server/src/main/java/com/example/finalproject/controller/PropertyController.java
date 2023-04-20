@@ -76,4 +76,8 @@ public class PropertyController {
   public ResponseEntity<?> findDetailPropertyForGuest(@PathVariable int propertyId) {
     return ResponseEntity.ok(propertyService.findDetailPropertyForGuest(propertyId));
   }
+  @GetMapping("guest/findByPermission/{permission}")
+  public ResponseEntity<?> findAllByPermission(@PathVariable String permission) {
+    return ResponseEntity.ok(propertyService.findAllByPermission(permission));
+  }
 }

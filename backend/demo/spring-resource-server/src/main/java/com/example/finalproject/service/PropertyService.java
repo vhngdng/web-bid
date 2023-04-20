@@ -172,4 +172,8 @@ public class PropertyService {
       return null;
     }
   }
+
+  public List<PropertyDTO> findAllByPermission(String permission) {
+    return mapper.toListPropertyDTO(propertyRepository.findAllByPermission(permission), imageRepository);
+  }
 }

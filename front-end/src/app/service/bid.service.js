@@ -69,9 +69,9 @@ export const bidApi = createApi({
         getBidRoomPrivate: builder.query({
             query: (page) => {
                 if (!page) {
-                    return 'user/bid-room/private';
+                    return 'guest/bid-room/private';
                 } else {
-                    return `user/bid-room/private${page}`;
+                    return `guest/bid-room/private${page}`;
                 }
             },
         }),
@@ -80,6 +80,9 @@ export const bidApi = createApi({
         }),
         getDetailBidWithId: builder.query({
             query: (id) => `/admin/bid-room/${id}`,
+        }),
+        getGuestDetailBidWithId: builder.query({
+            query: (id) => `guest/bid-room/${id}`,
         }),
         getRequestToChangeBidSuccess: builder.query({
             query: () => `admin/bid-room/before-finish`,
@@ -139,4 +142,5 @@ export const {
     useUpdateStatusBidMutation,
     useGetBidRoomPrivateQuery,
     useGetHomeDetailsQuery,
+    useGetGuestDetailBidWithIdQuery,
 } = bidApi;

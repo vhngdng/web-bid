@@ -98,18 +98,20 @@ function ListBidRoom({ isAdmin }) {
                         </button>
                     </div>
                     <div className="w-fit rounded-lg shadow-lg bg-gray-50/10 ">
-                        <section className="max-h-65vh overflow-y-scroll rounded-lg">
+                        <section className="rounded-lg">
                             <AnimatePresence mode="wait" initial="false">
-                                <table className="w-full table-auto shadow-md">
+                                <table className="w-full table-auto ">
                                     <thead>
                                         <tr className="bg-green-rgb text-black uppercase text-sm leading-normal ">
                                             <th className="py-3 px-6 textLeft">
-                                                <div className="flex">
-                                                    <span className="flex items-center justify-center">
-                                                        Property
-                                                    </span>
-                                                    <div className="content-center">
-                                                        <div className="py-1">
+                                                <div className="flex items-center justify-center space-x-2">
+                                                    <div>
+                                                        <span className="text-center">
+                                                            Property
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col justify-center items-center h-24 space-y-1">
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isPropertyASC
@@ -132,19 +134,16 @@ function ListBidRoom({ isAdmin }) {
                                                                             'asc',
                                                                     });
                                                                 }}
-                                                                width="20"
-                                                                height="20"
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
-                                                        <div>
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isPropertyDESC
                                                                         ? `${downSolid.logo.default}`
                                                                         : `${downBlank.logo.default}`
                                                                 }
-                                                                width="20"
-                                                                height="20"
                                                                 onClick={() => {
                                                                     setOrder({
                                                                         field: 'property.name',
@@ -161,6 +160,7 @@ function ListBidRoom({ isAdmin }) {
                                                                         false,
                                                                     );
                                                                 }}
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
                                                     </div>
@@ -173,12 +173,14 @@ function ListBidRoom({ isAdmin }) {
                                                 Participants
                                             </th>
                                             <th className="py-3 px-6 text-center">
-                                                <div className="flex">
-                                                    <span className="flex items-center justify-center">
-                                                        Time
-                                                    </span>
-                                                    <div className="content-center">
-                                                        <div className="py-1">
+                                                <div className="flex items-center justify-center space-x-2">
+                                                    <div>
+                                                        <span className="text-center">
+                                                            Time
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col justify-center items-center h-24 space-y-1">
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isTimeASC
@@ -201,11 +203,10 @@ function ListBidRoom({ isAdmin }) {
                                                                         false,
                                                                     );
                                                                 }}
-                                                                width="20"
-                                                                height="20"
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
-                                                        <div>
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isTimeDESC
@@ -228,20 +229,21 @@ function ListBidRoom({ isAdmin }) {
                                                                         false,
                                                                     );
                                                                 }}
-                                                                width="20"
-                                                                height="20"
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </th>
                                             <th className="py-3 px-6 text-center">
-                                                <div className="flex">
-                                                    <span className="flex items-center justify-center">
-                                                        Reserve Price
-                                                    </span>
-                                                    <div className="">
-                                                        <div className="py-1">
+                                                <div className="flex items-center justify-center space-x-2">
+                                                    <div>
+                                                        <span className="text-center">
+                                                            Reserve Price
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col justify-center items-center h-24 space-y-1">
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isReservePriceASC
@@ -264,11 +266,10 @@ function ListBidRoom({ isAdmin }) {
                                                                         false,
                                                                     );
                                                                 }}
-                                                                width="20"
-                                                                height="20"
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
-                                                        <div>
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isReservePriceDESC
@@ -291,83 +292,90 @@ function ListBidRoom({ isAdmin }) {
                                                                         false,
                                                                     );
                                                                 }}
-                                                                width="20"
-                                                                height="20"
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </th>
                                             <th className="py-3 px-6 text-center">
-                                                <div className="flex justify-center">
-                                                    <span className="flex items-center justify-center">
-                                                        Price Step
-                                                    </span>
+                                                <div className="flex items-center justify-center space-x-2">
                                                     <div>
-                                                        <div className="py-1">
-                                                            <img
-                                                                src={
-                                                                    isPriceStepASC
-                                                                        ? `${upSolid.logo.default}`
-                                                                        : `${upBlank.logo.default}`
-                                                                }
-                                                                onClick={() => {
-                                                                    setOrder({
-                                                                        field: 'priceStep',
-                                                                        direction:
-                                                                            'asc',
-                                                                    });
-                                                                    setIsPriceStepASC(
-                                                                        (
-                                                                            prev,
-                                                                        ) =>
-                                                                            !prev,
-                                                                    );
-                                                                    setIsPriceStepDESC(
-                                                                        false,
-                                                                    );
-                                                                }}
-                                                                width="20"
-                                                                height="20"
-                                                            />
-                                                        </div>
-                                                        <div>
-                                                            <img
-                                                                src={
-                                                                    isPriceStepDESC
-                                                                        ? `${downSolid.logo.default}`
-                                                                        : `${downBlank.logo.default}`
-                                                                }
-                                                                onClick={() => {
-                                                                    setOrder({
-                                                                        field: 'priceStep',
-                                                                        direction:
-                                                                            'desc',
-                                                                    });
-                                                                    setIsPriceStepDESC(
-                                                                        (
-                                                                            prev,
-                                                                        ) =>
-                                                                            !prev,
-                                                                    );
-                                                                    setIsPriceStepASC(
-                                                                        false,
-                                                                    );
-                                                                }}
-                                                                width="20"
-                                                                height="20"
-                                                            />
+                                                        <span className="text-center">
+                                                            Price Step
+                                                        </span>
+                                                    </div>
+                                                    <div>
+                                                        <div className="flex flex-col justify-center items-center h-24 space-y-1">
+                                                            <div className="w-4">
+                                                                <img
+                                                                    src={
+                                                                        isPriceStepASC
+                                                                            ? `${upSolid.logo.default}`
+                                                                            : `${upBlank.logo.default}`
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setOrder(
+                                                                            {
+                                                                                field: 'priceStep',
+                                                                                direction:
+                                                                                    'asc',
+                                                                            },
+                                                                        );
+                                                                        setIsPriceStepASC(
+                                                                            (
+                                                                                prev,
+                                                                            ) =>
+                                                                                !prev,
+                                                                        );
+                                                                        setIsPriceStepDESC(
+                                                                            false,
+                                                                        );
+                                                                    }}
+                                                                    className="w-full object-cover"
+                                                                />
+                                                            </div>
+                                                            <div className="w-4">
+                                                                <img
+                                                                    src={
+                                                                        isPriceStepDESC
+                                                                            ? `${downSolid.logo.default}`
+                                                                            : `${downBlank.logo.default}`
+                                                                    }
+                                                                    onClick={() => {
+                                                                        setOrder(
+                                                                            {
+                                                                                field: 'priceStep',
+                                                                                direction:
+                                                                                    'desc',
+                                                                            },
+                                                                        );
+                                                                        setIsPriceStepDESC(
+                                                                            (
+                                                                                prev,
+                                                                            ) =>
+                                                                                !prev,
+                                                                        );
+                                                                        setIsPriceStepASC(
+                                                                            false,
+                                                                        );
+                                                                    }}
+                                                                    className="w-full object-cover"
+                                                                />
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </th>
                                             <th className="py-3 px-6 text-center">
-                                                <div>
-                                                    <span className="flex items-center justify-center">
-                                                        Last Price
-                                                    </span>
-                                                    <div className="flex space-x-1 justify-center items-center m-auto">
-                                                        <div className="py-1 ">
+                                                <div className="flex items-center justify-center space-x-2">
+                                                    <div>
+                                                        <span className="text-center">
+                                                            Last Price
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col justify-center items-center h-24 space-y-1">
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isLastPriceASC
@@ -390,11 +398,10 @@ function ListBidRoom({ isAdmin }) {
                                                                         false,
                                                                     );
                                                                 }}
-                                                                width="20"
-                                                                height="20"
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
-                                                        <div>
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isLastPriceDESC
@@ -417,20 +424,21 @@ function ListBidRoom({ isAdmin }) {
                                                                         false,
                                                                     );
                                                                 }}
-                                                                width="20"
-                                                                height="20"
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </th>
                                             <th className="py-3 px-6 text-center">
-                                                <div className="flex">
-                                                    <span className="flex items-center justify-center">
-                                                        Status
-                                                    </span>
-                                                    <div className="content-center">
-                                                        <div className="py-1">
+                                                <div className="flex items-center justify-center space-x-2">
+                                                    <div>
+                                                        <span className="text-center">
+                                                            Status
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex flex-col justify-center items-center h-24 space-y-1">
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isStatusASC
@@ -457,7 +465,7 @@ function ListBidRoom({ isAdmin }) {
                                                                 height="20"
                                                             />
                                                         </div>
-                                                        <div>
+                                                        <div className="w-4">
                                                             <img
                                                                 src={
                                                                     isStatusDESC
@@ -480,8 +488,7 @@ function ListBidRoom({ isAdmin }) {
                                                                         false,
                                                                     );
                                                                 }}
-                                                                width="20"
-                                                                height="20"
+                                                                className="w-full object-cover"
                                                             />
                                                         </div>
                                                     </div>
@@ -495,7 +502,7 @@ function ListBidRoom({ isAdmin }) {
                                             data.content.map((bid, index) => (
                                                 <motion.tr
                                                     key={index}
-                                                    className={`cursor-pointer border-gray-300 hover:bg-gray-100 
+                                                    className={`cursor-pointer border-gray-300 hover:bg-gray-100 shadow-md 
                                                         ${
                                                             (index + 1) % 2 &&
                                                             'bg-gray-100/25'
@@ -533,37 +540,41 @@ function ListBidRoom({ isAdmin }) {
                                                     }}
                                                 >
                                                     <td
-                                                        className={`py-3 px-6 textLeft whitespace-nowrap `}
+                                                        className={`px-3 py-6 text-left h-36`}
                                                     >
                                                         <div
-                                                            className={`flex items-center 
-                                                            
-                                                            `}
+                                                            className={`flex items-center justify-center h-full `}
                                                             title={
                                                                 bid.conditionReport
                                                             }
                                                         >
-                                                            <div className="mr-2 ">
-                                                                {bid.id}
+                                                            <div className="h-full w-32">
+                                                                <img
+                                                                    className="object-cover w-full"
+                                                                    src={
+                                                                        !!bid
+                                                                            .property
+                                                                            .imageId
+                                                                            ? `${DOMAIN_URL}api/v1/images/read/${bid.property.imageId}`
+                                                                            : imageDefault
+                                                                                  .logo
+                                                                                  .default
+                                                                    }
+                                                                />
                                                             </div>
-                                                            <img
-                                                                className="object-contain h-10 w-10 mr-2"
-                                                                src={
-                                                                    !!bid
-                                                                        .property
-                                                                        .imageId
-                                                                        ? `${DOMAIN_URL}api/v1/images/read/${bid.property.imageId}`
-                                                                        : imageDefault
-                                                                              .logo
-                                                                              .default
-                                                                }
-                                                            />
-                                                            <span className="font-medium">
-                                                                {
-                                                                    bid.property
-                                                                        .name
-                                                                }
-                                                            </span>
+
+                                                            <div className="text-center w-12 pl-2">
+                                                                <div className="">
+                                                                    #{bid.id}
+                                                                </div>
+                                                                <span className="font-medium">
+                                                                    {
+                                                                        bid
+                                                                            .property
+                                                                            .name
+                                                                    }
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </td>
                                                     <td className="py-3 px-6 textLeft">

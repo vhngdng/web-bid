@@ -29,9 +29,10 @@ import AdminPropertyList from './page/AdminPage/Property/AdminPropertyList';
 import AdminPropertyDetails from './page/AdminPage/Property/AdminPropertyDetails';
 import FullImageModal from './page/ProfilePage/Properties/Modal/FullImageModal';
 import MainPage from './page/HomePage/MainPage';
-import ListProperty from './page/HomePage/ListProperty';
+import ListProperty from './page/HomePage/property/ListProperty';
 import DefaultHomePage from './component/layouts/DefaultHomePage';
-import DetailProperty from './page/HomePage/DetailProperty';
+import DetailProperty from './page/HomePage/property/DetailProperty';
+import BidDetail from './page/HomePage/bid/BidDetail';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -51,21 +52,25 @@ function App() {
                                 element={<DetailProperty />}
                             />
                         </Route>
+                        <Route path="bid-room">
+                            <Route index element={<BidRoom />} />
+                            <Route path=":id" element={<BidDetail />} />
+                        </Route>
                     </Route>
                     <Route path="/" element={<MainPage />} />
                     <Route element={<Private />}>
                         {/* <Route path="/" element={<Home />} /> */}
                         <Route path="chat-room" element={<ChatRoom />} />
-                        <Route path="bid-room">
-                            <Route index element={<BidRoom />} />
-                            <Route
-                                path=":id"
-                                element={<BidDetailRoom />}
-                            ></Route>
-                        </Route>
+                        <Route
+                            path="bid-room/join/:id"
+                            element={<BidDetailRoom />}
+                        />
                         <Route path="profile-detail" element={<ProfilePage />}>
                             <Route index element={<ProfileDetail />} />
-                            <Route path="sell" element={<UpPropertyPage />} />
+                            <Route
+                                path="property-registration"
+                                element={<UpPropertyPage />}
+                            />
                             <Route path="Payment">
                                 <Route index element={<PaymentPage />} />
                                 <Route
