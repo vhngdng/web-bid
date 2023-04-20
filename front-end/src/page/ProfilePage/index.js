@@ -91,7 +91,7 @@ function ProfilePage() {
                                                 )
                                             }
                                         >
-                                            Auction property registration
+                                            Property registration
                                         </button>
                                     </li>
                                     <li>
