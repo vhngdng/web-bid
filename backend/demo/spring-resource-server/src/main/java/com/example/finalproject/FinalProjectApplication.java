@@ -113,7 +113,7 @@ public class FinalProjectApplication {
             .filter(u -> u.getRoles().contains(role))
             .collect(Collectors.toList());
 
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 5; i++) {
 
       System.out.println(propertyRepository.count());
        List<Property> properties = propertyRepository
@@ -142,21 +142,21 @@ public class FinalProjectApplication {
               .status(Arrays.asList("SUCCESS", "DEACTIVE", "ACTIVE", "PROCESSING", "FINISH").get(rd.nextInt(5)))
               .build();
       bidRepository.save(bid);
-
+      BidParticipant participant = new BidParticipant();
+      participant.setBid(bid);
       for (int j = 0; j < 10; j++) {
-        BidParticipant participant = new BidParticipant();
-        participant.setBid(bid);
+
         User user;
         do {
           user = userRepository
                   .findAll()
                   .get((int) (Math.random() * userRepository.count()));
-          participant.setUser(userRepository
-                  .findAll()
-                  .get((int) (Math.random() * userRepository.count())));
         } while (bidParticipantRepository.findByBidAndUser(bid, user).isPresent());
         bidParticipantRepository.save(participant);
       }
+      participant.setUser(userRepository
+              .findAll()
+              .get((int) (Math.random() * userRepository.count())));
     }
   }
 
