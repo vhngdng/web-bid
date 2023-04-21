@@ -8,12 +8,12 @@ docker pull vuhoangdung/web-bid-frontend:latest && docker pull vuhoangdung/web-b
 docker compose stop
 if [ "${PROPERTY}" = 'dev' ] 
 then 
-  echo 'PROPERTY=dev' >> .env
-  echo 'NGINX_PORT=80' >> .env
-  echo 'REACT_APP_DOMAIN_URL=https://auctionforfun.site/' >> .env
-  echo 'NGINX_CONFIG_PART=./config/nginx.conf' >> .env
-  echo 'WDS_SOCKET_PORT=443' >> .env
-  echo 'WDS_SOCKET_PATH=/api/v1/ws' >> .env
+  ( ! cat .env | grep 'PROPERTY=dev' ) && echo 'PROPERTY=dev' >> .env
+  ( ! cat .env | grep 'NGINX_PORT=80' ) && echo 'NGINX_PORT=80' >> .env
+  ( ! cat .env | grep 'REACT_APP_DOMAIN_URL=https://auctionforfun.site/' ) && echo 'REACT_APP_DOMAIN_URL=https://auctionforfun.site/' >> .env
+  ( ! cat .env | grep 'NGINX_CONFIG_PART=./config/nginx.conf' ) && echo 'NGINX_CONFIG_PART=./config/nginx.conf' >> .env
+  ( ! cat .env | grep 'WDS_SOCKET_PORT=443' ) && echo 'WDS_SOCKET_PORT=443' >> .env
+  ( ! cat .env | grep 'WDS_SOCKET_PATH=/api/v1/ws' ) && echo 'WDS_SOCKET_PATH=/api/v1/ws' >> .env
   docker compose up -d --build --force-recreate --no-deps backend frontend nginx
   docker compose up -d --build --no-deps postgre  
 else
