@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 import Xarrow from 'react-xarrows';
-import { customStyles } from '~/utils/customStyle';
+// import { customStyles } from '~/utils/customStyle';
 // import backgroundImage from '~/assets/images/bg-tutorialv2.png';
 function Tutorial() {
     const [isOpen, setIsOpen] = useState(false);

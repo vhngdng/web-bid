@@ -7,7 +7,7 @@ import Top5Earliest from './components/Top5Earliest';
 import Top5User from './components/Top5User';
 import { Helmet } from 'react-helmet';
 import Top5Famous from './components/Top5Famous';
-import Tutorial from './Tutorial';
+// import Tutorial from './Tutorial';
 import ListProperty from './property/ListProperty';
 
 function MainPage() {
@@ -32,9 +32,9 @@ function MainPage() {
                 <meta name="description" content="Home" />
             </Helmet>
             <div className="w-full inline-block">
-                <div className="h-75vh space-y-10">
+                {/* <div className="h-75vh space-y-10">
                     <Tutorial />
-                </div>
+                </div> */}
                 <div className="flex justify-center items-center">
                     <div className="w-4/5">
                         <div className="space-y-10">
