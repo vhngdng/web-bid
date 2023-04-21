@@ -42,4 +42,6 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
   List<PropertyHomeProjection> findDetailPropertyForGuest(@Param("propertyId") int propertyId);
 
   List<Property> findAllByPermission(String permission);
+  @Query("select count(p.id) from Property p where p.permission = 'ACCEPTED'")
+  Integer countAcceptedProperty();
 }

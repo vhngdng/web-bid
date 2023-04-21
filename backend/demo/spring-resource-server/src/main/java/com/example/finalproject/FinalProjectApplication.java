@@ -87,7 +87,7 @@ public class FinalProjectApplication {
                 .enabled(true)
                 .provider(Provider.LOCAL)
                 .build();
-        for (int j = 0; j < 3; j++) {
+        for (int j = 0; j < 2; j++) {
           int rd = new Random().nextInt(4);
           Optional<Role> role = roleRepository.findById(rd);
           role.ifPresent(user::addRole);
@@ -113,19 +113,12 @@ public class FinalProjectApplication {
             .filter(u -> u.getRoles().contains(role))
             .collect(Collectors.toList());
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 20; i++) {
 
       System.out.println(propertyRepository.count());
        List<Property> properties = propertyRepository
               .findAllPropertyNotBid();
-      Property property = properties.get((int) (Math.random() * properties.size()));
-      while (bidRepository.existsByProperty(property)) {
-        property = propertyRepository
-                .findAll()
-                .get((int) (Math.random() * propertyRepository.count()));
-
-      }
-      ;
+      Property property = properties.get((int) (Math.random() *( properties.size())));
 
       long randomNumberInRange = rd.nextInt(10000);
       Bid bid = Bid.builder()
@@ -141,22 +134,35 @@ public class FinalProjectApplication {
               .priceStep(10000000L)
               .status(Arrays.asList("SUCCESS", "DEACTIVE", "ACTIVE", "PROCESSING", "FINISH").get(rd.nextInt(5)))
               .build();
-      bidRepository.save(bid);
-      BidParticipant participant = new BidParticipant();
-      participant.setBid(bid);
+      Bid finalBid = bidRepository.save(bid);
       for (int j = 0; j < 10; j++) {
-
+        BidParticipant participant = new BidParticipant();
+        participant.setBid(bid);
         User user;
         do {
           user = userRepository
                   .findAll()
                   .get((int) (Math.random() * userRepository.count()));
         } while (bidParticipantRepository.findByBidAndUser(bid, user).isPresent());
+        participant.setUser(user);
         bidParticipantRepository.save(participant);
       }
-      participant.setUser(userRepository
-              .findAll()
-              .get((int) (Math.random() * userRepository.count())));
+      if (Arrays.asList("SUCCESS", "FINISH").contains(bid.getStatus())) {
+        List<User> userParticipants = userRepository.findAllUserInBid(bid.getId()).stream().filter(u -> u.getId() != finalBid.getAuctioneer().getId()).collect(Collectors.toList());
+        bid.setWinningBidder(userParticipants.get((int) (Math.random() * userParticipants.size())));
+        bid.setFinishTime(bid.getDayOfSale().plusMinutes(30L));
+        bid.setLastPrice((long) (bid.getReservePrice() + Math.random() * 3000000));
+        Optional<Payment> paymentOptional = paymentRepository.findByBid(bid);
+        paymentOptional.ifPresent(payment -> paymentRepository.deleteById(payment.getId()));
+        Payment payment = bid.getStatus().equalsIgnoreCase("SUCCESS")
+                ? paymentRepository.save(Payment.builder().bid(bid).status("SUCCESS").build())
+                : paymentRepository
+                .save(Payment.builder().bid(bid).status(Arrays.asList("PENDING", "FINISH")
+                        .get(rd.nextInt(2))).build());
+        bidRepository.save(finalBid);
+      }
+
+
     }
   }
 
@@ -177,6 +183,7 @@ public class FinalProjectApplication {
                       .get((int) (Math.random() * userRepository.count())))
               .build();
       propertyRepository.save(property);
+      if(propertyRepository.countAcceptedProperty() <= 20) i = 0;
     }
   }
 }
