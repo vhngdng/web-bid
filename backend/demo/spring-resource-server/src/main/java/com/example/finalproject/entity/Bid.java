@@ -71,7 +71,6 @@ public class Bid implements Serializable {
   private Property property;
   @Column(name = "status",nullable = true, updatable = true , columnDefinition = "varchar(255) default 'DEACTIVE'")
   private String status;
-
   @Transient
   private String originalStatus;
 

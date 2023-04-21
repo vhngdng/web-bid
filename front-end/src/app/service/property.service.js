@@ -64,7 +64,8 @@ export const propeprtyApi = createApi({
     baseQuery: baseQueryWithReauth,
     endpoints: (builder) => ({
         getAllProperty: builder.query({
-            query: () => `admin/properties`,
+            query: (url) =>
+                !!url ? `admin/properties?${url}` : `admin/properties`,
         }),
         getAllPropertyByUserLogin: builder.query({
             query: () => `user/properties`,

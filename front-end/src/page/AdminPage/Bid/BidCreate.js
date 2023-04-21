@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Checkbox, Button, Typography, Radio } from '@material-tailwind/react';
 import PropertyModal from './Modal/PropertyModal';
@@ -22,7 +23,7 @@ function BidCreate() {
     const [reservePrice, setReservePrice] = useState('');
     const [priceStep, setPriceStep] = useState('');
     const [conditionReport, setConditionReport] = useState('');
-    const [type, setType] = useState('public');
+    const [type, setType] = useState('PRIVATE');
     const [open, setOpen] = useState(false);
     const ref = useRef(null);
     useEffect(() => {
@@ -65,8 +66,8 @@ function BidCreate() {
     if (loadImage) return <Loader />;
     console.log(imageId);
     return (
-        <div className="flex justify-center mx-6 my-12">
-            <div className="transparent">
+        <div className="flex justify-center mx-12 my-12 bg-gray-200/20 h-full w-full rounded-lg shadow-2xl">
+            <div className="px-6 py-6">
                 <Typography
                     variant="h4"
                     color="blue-gray"
@@ -147,7 +148,11 @@ function BidCreate() {
 
                                 <label>conditionReport</label>
                                 <SimpleMdeReact
-                                    value={conditionReport}
+                                    value={
+                                        !!property.description
+                                            ? property.description
+                                            : 'No description'
+                                    }
                                     onChange={(value) =>
                                         setConditionReport(value)
                                     }
@@ -220,16 +225,16 @@ function BidCreate() {
                             id="public-type-bid"
                             name="type"
                             label="Public"
-                            value="public"
+                            value="PUBLIC"
                             onChange={(e) => setType(e.target.value)}
-                            defaultChecked
                         />
                         <Radio
                             id="hidden-type-bid"
                             name="type"
-                            label="Hidden"
-                            value="hidden"
+                            label="Private"
+                            value="PRIVATE"
                             onChange={(e) => setType(e.target.value)}
+                            defaultChecked
                         />
                     </div>
                     <Checkbox

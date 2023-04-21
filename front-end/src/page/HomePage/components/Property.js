@@ -21,7 +21,7 @@ function Property({ property }) {
                                 ? `${DOMAIN_URL}api/v1/images/read/${property.imageProperty}`
                                 : ship
                         }
-                        className="w-full object-cover"
+                        className="w-full h-full object-cover rounded-t-lg"
                     />
                 </div>
                 <div className="text-start font-serif h-1/2 space-x-4 space-y-3">

@@ -4,6 +4,7 @@ import com.example.finalproject.dto.PaymentDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Payment;
 import com.example.finalproject.mapstruct.Mapper;
+import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,27 @@ public class PaymentListener {
         PaymentDTO paymentDTO = mapper.toDTO(payment);
         paymentDTO.setAuctioneerEmail(payment.getBid().getAuctioneer().getEmail());
         paymentDTO.setWinningBidderEmail(payment.getBid().getWinningBidder().getEmail());
-
+        paymentDTO.setNotification("PAYMENT");
         simpMessagingTemplate.convertAndSendToUser(bid.getAuctioneer().getEmail(), "private", paymentDTO);  //  /user/${name}/private
 
         // send noti to winner
         log.error(bid.getWinningBidder().getEmail());
         simpMessagingTemplate.convertAndSendToUser(bid.getWinningBidder().getEmail(), "private", paymentDTO);  //  /user/${name}/private
     }
+  }
+  @PostPersist
+  public void onCreatePayment(Payment payment){
+    Bid bid = payment.getBid();
+    // send noti to auctioneer
+    log.error(bid.getAuctioneer().getEmail());
+    PaymentDTO paymentDTO = mapper.toDTO(payment);
+    paymentDTO.setAuctioneerEmail(payment.getBid().getAuctioneer().getEmail());
+    paymentDTO.setWinningBidderEmail(payment.getBid().getWinningBidder().getEmail());
+    paymentDTO.setNotification("PAYMENT");
+    simpMessagingTemplate.convertAndSendToUser(bid.getAuctioneer().getEmail(), "private", paymentDTO);  //  /user/${name}/private
+
+    // send noti to winner
+    log.error(bid.getWinningBidder().getEmail());
+    simpMessagingTemplate.convertAndSendToUser(bid.getWinningBidder().getEmail(), "private", paymentDTO);
   }
 }

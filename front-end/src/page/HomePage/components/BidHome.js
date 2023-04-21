@@ -16,16 +16,18 @@ function BidHome({ bid }) {
         <div className="w-96 group relative mb-8">
             <div>
                 <div className="w-full rounded-md bg-transparent group-hover:opacity-75 shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
-                    <img
-                        src={
-                            !!bid.property.imageId
-                                ? `${DOMAIN_URL}api/v1/images/read/${bid.property.imageId}`
-                                : Image
-                        }
-                        alt={bid.property.name}
-                        className="w-full rounded-lg cursor-pointer"
-                        onClick={() => handlenavigate()}
-                    />
+                    <div className="w-full h-30vh">
+                        <img
+                            src={
+                                !!bid.property.imageProperty
+                                    ? `${DOMAIN_URL}api/v1/images/read/${bid.property.imageProperty}`
+                                    : Image
+                            }
+                            alt={bid.property.name}
+                            className="w-full h-full object-cover object-center rounded-lg cursor-pointer"
+                            onClick={handlenavigate}
+                        />
+                    </div>
                 </div>
                 <div>
                     <div className="pt-4 flex justify-center items-center">
@@ -36,10 +38,6 @@ function BidHome({ bid }) {
                         <div className="grid-span-1 pr-4">
                             <h3 className="text-sm text-gray-700">
                                 <div className="text-blue-700">
-                                    <span
-                                        aria-hidden="true"
-                                        className="absolute inset-0"
-                                    ></span>
                                     {bid.property.name}
                                 </div>
                             </h3>

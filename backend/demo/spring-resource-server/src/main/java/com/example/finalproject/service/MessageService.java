@@ -1,15 +1,18 @@
 package com.example.finalproject.service;
 
+import com.example.finalproject.ENUM.STATUS_BID;
 import com.example.finalproject.ENUM.STATUS_MESSAGE;
 import com.example.finalproject.dto.BidParticipantDTO;
 import com.example.finalproject.dto.MessageDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.BidParticipant;
 import com.example.finalproject.entity.Message;
+import com.example.finalproject.entity.Payment;
 import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.repository.*;
+import com.example.finalproject.request.PaymentRequest;
 import com.example.finalproject.response.FinishResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +39,7 @@ public class MessageService {
   private final Mapper mapper;
   private final BidRepository bidRepository;
 
-  private final PaymentService PaymentService;
+  private final PaymentService paymentService;
 
 
   public Optional<BidParticipant> findParticipant(MessageDTO messageDTO) {
@@ -132,6 +135,9 @@ public class MessageService {
       bid.setStatus(null);
       throw new BadRequestException("The bid is not finish because it has no winner");
     }
+    Payment payment = paymentService.createPayment(new PaymentRequest("PENDING", bid.getId()));
+    bid.setStatus(STATUS_BID.FINISH.name());
+    bid.setPayment(payment);
     mapper.updateFromFinishRequest(request, bid, userRepository);
 
   }

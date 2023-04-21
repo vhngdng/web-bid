@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-extra-boolean-cast */
+import React, { useCallback, useEffect, useState } from 'react';
 import {
     Sidebar,
     Menu,
@@ -13,20 +14,34 @@ import { homeSidebarVariants } from '~/animation';
 import { ToastContainer, toast } from 'react-toastify';
 import NotificationTimer from '~/notificationTimer';
 import { useUpdateStatusBidMutation } from '~/app/service/bid.service';
+// import Modal from 'react-modal';
+// import { customStyles } from '~/utils/customStyle';
+import ConfirmModal from './ConfirmModal';
 // import { arrowRight } from '~/assets';
 
-function BidDetailSideBar({ isAdmin, setIsOpenAdminSetting, id }) {
+function BidDetailSideBar({
+    isAdmin,
+    setIsOpenAdminSetting,
+    id,
+    bidRoomStatus,
+    sendFinishBidMessage,
+    userWinning,
+}) {
     const { collapseSidebar } = useProSidebar();
     const [isCollapse, setIsCollapse] = useState(false);
     const [scrollPosition, setScrollPosition] = useState(0);
     const [updateStatusBid] = useUpdateStatusBidMutation();
+    const [open, setOpen] = useState(false);
+    const [url, setUrl] = useState('');
     // eslint-disable-next-line no-unused-vars
     const navigate = useNavigate();
-
-    const handleScroll = () => {
+    useEffect(() => {
+        if (!open) setUrl('');
+    }, [open]);
+    const handleScroll = useCallback(() => {
         const position = window.pageYOffset;
         setScrollPosition(position);
-    };
+    }, []);
 
     useEffect(() => {
         window.addEventListener('scroll', handleScroll, { passive: true });
@@ -40,32 +55,54 @@ function BidDetailSideBar({ isAdmin, setIsOpenAdminSetting, id }) {
         setIsCollapse((prev) => !prev);
     };
     const handleChangeStatus = (newStatus) => {
-        toast.success(
-            <NotificationTimer
-                timer={Date.now()}
-                message={`Bid will be change to ${newStatus}`}
-            />,
-            {
+        if (bidRoomStatus !== newStatus) {
+            toast.success(
+                <NotificationTimer
+                    timer={Date.now()}
+                    message={`Bid will be change to ${newStatus}`}
+                />,
+                {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: undefined,
+                },
+            );
+            setTimeout(() => {
+                console.log(newStatus);
+
+                updateStatusBid({
+                    id,
+                    status: newStatus,
+                })
+                    .unwrap()
+                    .then((res) => console.log(res))
+                    .catch((err) => console.log(err));
+            }, 5500);
+        } else {
+            toast.error('Can not change status of room', {
                 position: 'top-center',
                 autoClose: 5000,
-                hideProgressBar: false,
+                hideProgressBar: true,
                 closeOnClick: true,
                 pauseOnHover: false,
                 draggable: true,
                 progress: undefined,
-                theme: undefined,
-            },
-        );
-        setTimeout(() => {
-            console.log(newStatus);
-            updateStatusBid({
-                id,
-                status: newStatus,
-            })
-                .unwrap()
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-        }, 5500);
+                theme: 'colored',
+            });
+        }
+    };
+    const handlePropertyRegistration = () => {
+        setUrl('/profile-detail/property-registration');
+        setOpen((prev) => !prev);
+    };
+    const handleListProperty = () => {
+        setUrl('/list-property');
+        setOpen((prev) => !prev);
     };
     return (
         <>
@@ -88,12 +125,28 @@ function BidDetailSideBar({ isAdmin, setIsOpenAdminSetting, id }) {
                         >
                             {isCollapse && (
                                 <Menu className="">
-                                    <MenuItem> Go to Home Page </MenuItem>
+                                    <MenuItem onClick={() => navigate('/')}>
+                                        {' '}
+                                        Go to Home Page{' '}
+                                    </MenuItem>
                                     <MenuItem> Rule </MenuItem>
-                                    <SubMenu label="Bid">
-                                        <MenuItem> Buy </MenuItem>
-                                        <MenuItem> Quit </MenuItem>
+                                    <SubMenu label="Property">
+                                        <MenuItem
+                                            onClick={handlePropertyRegistration}
+                                        >
+                                            Property Registration
+                                        </MenuItem>
+                                        <MenuItem onClick={handleListProperty}>
+                                            List Property
+                                        </MenuItem>
                                     </SubMenu>
+                                    {/* <SubMenu label="Bid">
+                                        <MenuItem>
+                                            {' '}
+                                            Property Registration{' '}
+                                        </MenuItem>
+                                        <MenuItem> List Property </MenuItem>
+                                    </SubMenu> */}
                                     {isAdmin && (
                                         <SubMenu
                                             label="Setting"
@@ -103,22 +156,44 @@ function BidDetailSideBar({ isAdmin, setIsOpenAdminSetting, id }) {
                                                 )
                                             }
                                         >
+                                            <MenuItem
+                                                onClick={() =>
+                                                    handleChangeStatus(
+                                                        'PROCESSING',
+                                                    )
+                                                }
+                                            >
+                                                <div className="pl-2 leading-none font-sans text-blue-600 font-extrabold">
+                                                    Run
+                                                </div>
+                                            </MenuItem>
+                                            <MenuItem
+                                                onClick={() =>
+                                                    sendFinishBidMessage()
+                                                }
+                                            >
+                                                <div
+                                                    className={`pl-2 leading-none font-sans font-extrabold ${
+                                                        !!userWinning.username
+                                                            ? 'text-red-rgb'
+                                                            : 'text-gray-300 pointer-events-none'
+                                                    }`}
+                                                >
+                                                    Finish
+                                                </div>{' '}
+                                            </MenuItem>
                                             <MenuItem>
-                                                <button
+                                                <div
                                                     onClick={() =>
                                                         handleChangeStatus(
-                                                            'PROCESSING',
+                                                            'DEACTIVE',
                                                         )
                                                     }
-                                                    className="transform active:scale-95 bg-blue-500 hover:bg-blue-400 text-white px-8 py-3 rounded-lg font-bold tracking-widest w-auto"
+                                                    className="pl-2 leading-none font-sans text-red-600 font-extrabold"
                                                 >
-                                                    <div className="pl-2 leading-none uppercase">
-                                                        Run
-                                                    </div>
-                                                </button>
+                                                    Close
+                                                </div>
                                             </MenuItem>
-                                            <MenuItem>Finish</MenuItem>
-                                            <MenuItem>Close</MenuItem>
                                         </SubMenu>
                                     )}
                                 </Menu>
@@ -147,6 +222,12 @@ function BidDetailSideBar({ isAdmin, setIsOpenAdminSetting, id }) {
                 </motion.div>
             </AnimatePresence>
             <ToastContainer />
+            <ConfirmModal
+                open={open}
+                setOpen={setOpen}
+                url={url}
+                setUrl={setUrl}
+            />
         </>
     );
 }

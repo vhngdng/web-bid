@@ -294,9 +294,7 @@ function BidDetailRoom() {
         };
         stompClient.send(`/app/room/${id}`, {}, JSON.stringify(chatMessage));
     };
-
     // eslint-disable-next-line no-unused-vars
-
     const handleClose = () => {
         setUserData({
             ...userData,
@@ -332,91 +330,6 @@ function BidDetailRoom() {
                 <>
                     <section className="dark:bg-gray-900 bg-gray-200/20 rounded-lg shadow-[0_25px_25px_-24px_rgb(0,0,0,0.3)] space-y-10 my-10">
                         <div className="py-8 px-4 mx-auto max-w-screen text-center lg:py-16 lg:px-6">
-                            {/* <div>
-                                <AnimatePresence mode="wait" initial={false}>
-                                    <div className="grid gap-8 lg:gap-16 grid-cols-8 ">
-                                        <div className="flex-1 justify-center items-center col-span-2 border-slate-50 rounded-lg">
-                                            <h2 className="text-3xl font-sans">
-                                                Auctioneer
-                                            </h2>
-                                            <div className="my-4 flex justify-center items-center">
-                                                <img
-                                                    className=" object-fit h-40 w-40"
-                                                    src={
-                                                        !!data.auctioneer.avatar
-                                                            ? data.auctioneer
-                                                                  .avatar
-                                                            : `https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png`
-                                                    }
-                                                    alt="IMG"
-                                                />
-                                            </div>
-                                            <div className="text-2xl font-serif text-green-rgb">
-                                                {data.auctioneer.username}
-                                            </div>
-                                            <div className="cursor-pointer text-sm truncate text-purple-500 hover:text-blue-600">
-                                                {data.auctioneer.email}
-                                            </div>
-                                        </div>
-                                        <div className="relative col-span-4 mx-auto mb-8 max-w-screen-sm lg:mb-16 font-sans">
-                                            <h2 className="mb-4  tracking-tight  text-gray-900 dark:text-white">
-                                                <h3 className="font-extrabold text-3xl">
-                                                    {!!data &&
-                                                        data.property.name}
-                                                </h3>
-                                                <span className="font-serif text-2xl">
-                                                    {' '}
-                                                    {`(Category: ${
-                                                        !!data &&
-                                                        data.property.category
-                                                    })`}
-                                                </span>
-                                            </h2>
-                                            <div className="flex justify-center items-center">
-                                                <img
-                                                    className=" object-fit h-40 w-40"
-                                                    src={
-                                                        !!data.property.imageId
-                                                            ? `${DOMAIN_URL}api/v1/images/read/${data.property.imageId}`
-                                                            : `${imageDefault.logo.default}`
-                                                    }
-                                                    alt="IMG"
-                                                />
-                                            </div>
-                                            <div className="">
-                                                <h2 className="mt-4 text-red-900 text-2xl">
-                                                    Price
-                                                </h2>
-                                                <span className="mt-4 text-red-900 text-3xl">{`${price}`}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </AnimatePresence>
-                            </div>
-                            <div className="mx-auto mb-8 max-w-screen-sm lg:mb-16">
-                                {auth.email === data.auctioneer.email && (
-                                    <Button
-                                        onClick={() =>
-                                            setIsOpenAdminSetting(
-                                                (prev) => !prev,
-                                            )
-                                        }
-                                    >
-                                        Setting
-                                    </Button>
-                                )}
-                                {bidRoomStatus === 'PROCESSING' &&
-                                    auth.email !== data.auctioneer.email && (
-                                        <Button
-                                            onClick={() => handleSendValue()}
-                                        >
-                                            Send
-                                        </Button>
-                                    )}
-                                <Button onClick={() => sendCloseSocket()}>
-                                    Quit
-                                </Button>
-                            </div> */}
                             <BidRoomInformation
                                 bidRoomInfo={!!data && data}
                                 sendValue={handleSendValue}
@@ -427,7 +340,6 @@ function BidDetailRoom() {
                                 controls={controls}
                                 logInEmail={auth.email}
                             />
-
                             <div className="grid gap-8 lg:gap-16 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                                 {participants.map((participant, index) => (
                                     <div
@@ -508,6 +420,9 @@ function BidDetailRoom() {
                             isAdmin={isAdmin}
                             setIsOpenAdminSetting={setIsOpenAdminSetting}
                             id={id}
+                            bidRoomStatus={bidRoomStatus}
+                            sendFinishBidMessage={sendFinishBidMessage}
+                            userWinning={userWinning}
                         />
                     </ProSidebarProvider>
                 </>

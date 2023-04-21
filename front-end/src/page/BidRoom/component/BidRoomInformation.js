@@ -25,7 +25,6 @@ function BidRoomInformation({
     const { data, isLoading } = useGetAllImageOfPropertyQuery(
         bidRoomInfo.property.id,
     );
-
     useEffect(() => {
         !!data && data.length > 0 && setImages([...data]);
     }, [data]);
@@ -44,6 +43,13 @@ function BidRoomInformation({
             setImageListShow([...images]);
         }
     }, [indexImage, images]);
+    useEffect(() => {
+        if (images.length > 0 && images.some((i) => i.type === 'PROPERTY')) {
+            setIndexImage(
+                images.indexOf(images.find((i) => i.type === 'PROPERTY')),
+            );
+        }
+    }, [images]);
 
     if (isLoading) return <Loader />;
     console.log('image data', data);

@@ -34,4 +34,5 @@ public class BidDTO {
   private Payment payment;
   private PropertyDTO property;
   private List<Attendee> attendees;
+  private String notification;
 }

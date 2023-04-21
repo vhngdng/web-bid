@@ -81,6 +81,10 @@ function PropertyDetails() {
     useEffect(() => {
         console.log(name);
     }, [name]);
+
+    useEffect(() => {
+        console.log('reserve price change', reservePrice);
+    }, [reservePrice]);
     if (isLoading) return <Loader />;
     console.log('data', data);
     if (error) navigate('/profile-detail/property-list');
@@ -106,13 +110,6 @@ function PropertyDetails() {
     const handleCancelChangeDescription = () => {
         setDescription(data.property.description);
         setIsFixDescription(false);
-    };
-    // Not finished yet
-    const handleShowFullImage = (id) => {
-        console.log('image id', id);
-        setTimeout(() => {
-            setIsOpenImageModal((prev) => !prev);
-        }, 3000);
     };
 
     const handlePropertyRegistration = async () => {
@@ -220,12 +217,7 @@ function PropertyDetails() {
                                 <div className="w-full sm:w-9/12 px-4">
                                     {images.length > 0 && (
                                         <img
-                                            onMouseEnter={() =>
-                                                handleShowFullImage(
-                                                    images[indexImage].id,
-                                                )
-                                            }
-                                            className="mb-5 object-fill h-full w-full"
+                                            className="mb-5 object-cover h-full w-full"
                                             src={`${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`}
                                             alt=""
                                         />
@@ -255,9 +247,6 @@ function PropertyDetails() {
                                             />
                                         )}
                                     </AnimatePresence>
-                                    <p className="text-sm text-center text-gray-300">
-                                        Hover image to see full size
-                                    </p>
                                     <div className=" text-center text-sm text-blue-rgb text-xl py-4">
                                         <span
                                             className="w-fit cursor-pointer"

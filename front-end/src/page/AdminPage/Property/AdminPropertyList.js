@@ -1,4 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-extra-boolean-cast */
+import { Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
@@ -7,31 +9,42 @@ import { useGetAllPropertyQuery } from '~/app/service/property.service';
 import { imageDefault } from '~/assets';
 
 function AdminPropertyList() {
-    const { data: properties, isLoading, refetch } = useGetAllPropertyQuery();
+    const [url, setUrl] = useState(null);
+    const { data, isLoading, refetch } = useGetAllPropertyQuery(url);
     const [permission, setPermission] = useState('ALL');
-
+    const [properties, setProperties] = useState([]);
+    const [page, setPage] = useState(1);
     const navigate = useNavigate();
+    const location = useLocation();
+    useEffect(() => {
+        if (!!data && data.content.length > 0) {
+            setProperties([...data.content]);
+        }
+    }, [data]);
+    useEffect(() => {
+        if (page > 1) setUrl(`page=${page - 1}`);
+    }, [page]);
     useEffect(() => {
         refetch();
-    }, [useLocation()]);
+    }, [location]);
     if (isLoading) return <Loader />;
     const handleOpenModal = (property) => {
         navigate(`${property.id}`);
     };
-    console.log(properties);
+    console.log(data);
 
     return (
         <>
-            <div className="bg-white">
+            <div className="space-y-10">
                 <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                     <div className="flex justify-between">
                         <h2 className="text-center w-96 text-2xl font-bold tracking-tight text-gray-900">
                             Properties
                         </h2>
                         <div className="flex">
-                            <div className=" bg-gray-100 px-4 w-72 space-x-4 rounded-lg">
+                            <div className=" px-4 w-72 space-x-4 ">
                                 <input
-                                    className=" bg-gray-100 outline-none"
+                                    className=" bg-gray-100 outline-none rounded-lg"
                                     type="text"
                                     placeholder="Article name or keyword..."
                                 />
@@ -83,7 +96,7 @@ function AdminPropertyList() {
                                     key={index}
                                     className="group relative"
                                 >
-                                    <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                                    <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200/20 lg:aspect-none group-hover:opacity-75 lg:h-80">
                                         <img
                                             src={
                                                 !!property.imageId
@@ -94,10 +107,10 @@ function AdminPropertyList() {
                                             className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                         />
                                     </div>
-                                    <div className="mt-4 flex justify-between max-w-xs">
-                                        <div className="mr-2">
-                                            <h3 className="text-sm text-blue-500 truncate">
-                                                <div className="truncate">
+                                    <div className="mt-4 flex justify-between max-w-xs break-words">
+                                        <div className="mr-2 w-full">
+                                            <h3 className="text-sm text-blue-500">
+                                                <div className=" ">
                                                     <span
                                                         aria-hidden="true"
                                                         className="absolute inset-0"
@@ -106,10 +119,10 @@ function AdminPropertyList() {
                                                     {property.name}
                                                 </div>
                                             </h3>
-                                            <p className="mt-1 text-sm text-gray-500 truncate">
+                                            <p className="mt-1 text-sm text-gray-700">
                                                 ({property.category})
                                             </p>
-                                            <p className="mt-1 text-sm text-gray-500">
+                                            <p className="mt-1 text-sm text-gray-700">
                                                 Quantity :{' '}
                                                 {!!property.quantity
                                                     ? property.quantity
@@ -150,6 +163,17 @@ function AdminPropertyList() {
                                     </div>
                                 </div>
                             ))}
+                    </div>
+                    <div>
+                        {data && !!data.totalPages && (
+                            <Pagination
+                                className="flex justify-center w-full my-10"
+                                count={data.totalPages}
+                                onChange={(event, value) => {
+                                    setPage(value);
+                                }}
+                            />
+                        )}
                     </div>
                 </div>
             </div>

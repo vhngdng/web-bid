@@ -32,7 +32,13 @@ function BidDetail() {
                                             `/list-property/${bidDetail.property.id}`,
                                         )
                                     }
-                                    src={gaiv3}
+                                    src={
+                                        !!bidDetail.property.imageId
+                                            ? readImage(
+                                                  bidDetail.property.imageId,
+                                              )
+                                            : gaiv3
+                                    }
                                     className="cursor-pointer w-full object-cover rounded-lg shadow-2xl"
                                 />
                             </div>
@@ -42,6 +48,9 @@ function BidDetail() {
                                 </div>
                                 <div className="text-2xl text-gray-700 text-center">
                                     ({bidDetail.property.category})
+                                </div>
+                                <div className="text-2xl font-extrabold text-center text-gray-600">
+                                    Room Id: #{bidDetail.id}
                                 </div>
                                 <div className="text-2xl text-gray-700 text-center space-y-10">
                                     <p className="italic">Description</p>

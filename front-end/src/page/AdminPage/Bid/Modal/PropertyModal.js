@@ -38,7 +38,7 @@ function PropertyModal({ appElement, open, setOpen, setProperty }) {
         setProperty(selectProperty);
         setOpen(!open);
     };
-
+    console.log('propertyList', data);
     return (
         <Modal
             isOpen={open}
@@ -52,8 +52,11 @@ function PropertyModal({ appElement, open, setOpen, setProperty }) {
                 <Select onChange={(e) => setSelectProperty(e)}>
                     {isSuccess &&
                         data.map((prop, index) => (
-                            <Option key={index} value={prop}>
-                                {prop.name}
+                            <Option key={index} value={prop} className="">
+                                <p className="italic text-gray-500">
+                                    Property Id: {prop.id}
+                                </p>
+                                <p>{prop.name}</p>
                             </Option>
                         ))}
                 </Select>

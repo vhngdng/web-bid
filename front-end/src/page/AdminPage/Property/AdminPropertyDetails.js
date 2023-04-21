@@ -2,7 +2,7 @@
 import Modal from 'react-modal';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { customStyles, customToastStyle } from '~/utils/customStyle';
+import { customToastStyle } from '~/utils/customStyle';
 import {
     useGetAdminDetailPropertyQuery,
     useUpdatePropertyMutation,
@@ -16,6 +16,19 @@ import { DOMAIN_URL } from '~/CONST/const';
 import { ToastContainer, toast } from 'react-toastify';
 Modal.setAppElement('#root');
 
+const style = {
+    content: {
+        top: '40%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)',
+        height: '70%',
+        width: '70%',
+        borderRadius: '25px',
+    },
+};
 function AdminPropertyDetails() {
     const { propertyId } = useParams();
     const [updateProperty] = useUpdatePropertyMutation();
@@ -66,7 +79,7 @@ function AdminPropertyDetails() {
         isSuccess && !!data.images > 0 && setImages([...data.images]);
     }, [data]);
     useEffect(() => {
-        if (images.length > 0) {
+        if (isSuccess && images.length > 0) {
             setWidth(ref.current.scrollWidth - ref.current.offsetWidth);
         }
     }, [images]);
@@ -78,7 +91,7 @@ function AdminPropertyDetails() {
             animate(
                 ref.current,
                 {
-                    x: x - 130 > -width ? [x, x - 130] : [x, -width],
+                    x: x - 160 > -width ? [x, x - 160] : [x, -width],
                 },
                 {
                     duration: 1,
@@ -86,24 +99,24 @@ function AdminPropertyDetails() {
                     ease: [0.17, 0.37, 0.63, 0.77],
                 },
             );
-        setX((prev) => (prev - 130 > -width ? x - 130 : -width));
+        setX((prev) => (prev - 160 > -width ? x - 160 : -width));
     }
 
     function prevStep() {
-        if (images.length > 0 && x <= 138) {
+        if (images.length > 0 && x <= 160) {
             animate(
                 ref.current,
                 {
-                    x: [x, x + 130],
+                    x: [x, x + 160],
                 },
                 {
                     duration: 1,
                     repeatType: 'loop',
-                    ease: [0.17, 0.37, 0.63, 0.77],
+                    ease: 'easeInOut',
                 },
             );
             console.log('x', x);
-            setX((prev) => prev + 138);
+            setX((prev) => prev + 160);
         }
     }
 
@@ -116,11 +129,7 @@ function AdminPropertyDetails() {
         try {
             const res = await updateProperty({
                 propertyId,
-                auctioneerPrice:
-                    auctioneerPrice !== data.property.reservePrice &&
-                    !!auctioneerPrice
-                        ? auctioneerPrice
-                        : data.property.reservePrice,
+                auctioneerPrice: !!auctioneerPrice ? auctioneerPrice : null,
                 permission,
             });
             console.log('res', res);
@@ -141,47 +150,43 @@ function AdminPropertyDetails() {
     };
     console.log(data);
     return (
-        <Modal
-            isOpen={isOpen}
-            onRequestClose={closeModal}
-            style={customStyles}
-            contentLabel="Property"
-        >
-            <AnimatePresence mode="wait" initial="false">
+        <AnimatePresence mode="wait" initial="false">
+            <Modal
+                isOpen={isOpen}
+                onRequestClose={closeModal}
+                style={style}
+                contentLabel="Property"
+            >
                 <motion.section
                     initial={sidebar.closed}
                     animate={sidebar.open}
                     exit={sidebar.closed}
-                    className="text-gray-700 body-font w-full bg-white"
+                    className="text-gray-700 body-font w-full px-10"
                 >
-                    <div className="container px-5 py-24 mx-auto">
+                    <div className="px-5 py-24 mx-auto">
                         <div className="lg:w-4/5 mx-auto flex flex-wrap">
-                            <div className="lg:w-1/2 relative">
-                                <AnimatePresence mode="wait" initial={false}>
-                                    <motion.img
-                                        initial={{ scale: 0.5 }}
-                                        animate={{
-                                            rotate: 360,
-                                            scale: 1,
-                                            transition: { duration: 2 },
-                                        }}
-                                        alt={
-                                            !!data
-                                                ? data.property.name
-                                                : 'Property'
-                                        }
-                                        className=" h-full object-fit object-center rounded pb-4 hover:w-full"
-                                        src={
-                                            !!data && data.images
-                                                ? `${DOMAIN_URL}api/v1/images/read/${imageAvatar}`
-                                                : `${imageDefault.logo.default}`
-                                        }
-                                    />
-                                </AnimatePresence>
+                            <div className="lg:w-1/2 relative rounded-lg">
+                                <motion.img
+                                    initial={{ scale: 0.5 }}
+                                    animate={{
+                                        rotate: 360,
+                                        scale: 1,
+                                        transition: { duration: 2 },
+                                    }}
+                                    alt={
+                                        !!data ? data.property.name : 'Property'
+                                    }
+                                    className=" w-full object-cover object-center rounded-lg shadow-2xl"
+                                    src={
+                                        !!data && data.images
+                                            ? `${DOMAIN_URL}api/v1/images/read/${imageAvatar}`
+                                            : `${imageDefault.logo.default}`
+                                    }
+                                />
                                 <div className="relative">
                                     {images.length > 0 && (
                                         <button
-                                            className="absolute bg-transparent -left-8 top-1/2"
+                                            className="absolute -left-8 top-1/2"
                                             onClick={prevStep}
                                         >
                                             ◀
@@ -190,11 +195,12 @@ function AdminPropertyDetails() {
                                     <AnimatePresence
                                         mode="wait"
                                         initial={false}
+                                        className="w-full"
                                     >
-                                        <motion.div className=" w-full overflow-x-hidden">
+                                        <motion.div className="w-full overflow-x-hidden">
                                             <motion.div
+                                                className="flex justify-center items-center my-6"
                                                 ref={ref}
-                                                className=" flex justify-center items-center px-4 "
                                             >
                                                 {images.length > 0 &&
                                                     images.map(
@@ -219,7 +225,7 @@ function AdminPropertyDetails() {
                                                                     stiffness: 260,
                                                                     damping: 20,
                                                                 }}
-                                                                className="object-fit h-40 w-40 px-4"
+                                                                className="object-fit h-40 w-40 px-4 shadow-2xl"
                                                             />
                                                         ),
                                                     )}
@@ -228,7 +234,7 @@ function AdminPropertyDetails() {
                                     </AnimatePresence>
                                     {images.length > 0 && (
                                         <button
-                                            className="absolute bg-transparent -right-8 top-1/2"
+                                            className="absolute bg-transparent -right-8 top-1/2 "
                                             onClick={nextStep}
                                         >
                                             ▶
@@ -281,7 +287,7 @@ function AdminPropertyDetails() {
                                                     {!!data.property
                                                         .reservePrice &&
                                                         data.property
-                                                            .auctionPrice ===
+                                                            .auctioneerPrice ===
                                                             data.property
                                                                 .reservePrice && (
                                                             <option
@@ -392,9 +398,9 @@ function AdminPropertyDetails() {
                         </div>
                     </div>
                 </motion.section>
-            </AnimatePresence>
-            <ToastContainer />
-        </Modal>
+                <ToastContainer />
+            </Modal>
+        </AnimatePresence>
     );
 }
 

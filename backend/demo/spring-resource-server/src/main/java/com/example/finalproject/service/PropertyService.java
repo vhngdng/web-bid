@@ -21,14 +21,12 @@ import com.example.finalproject.response.PropertyHomeResponse;
 import com.example.finalproject.response.PropertyResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -51,8 +49,18 @@ public class PropertyService {
   @Autowired
   private ImageRepository imageRepository;
 
-  public List<PropertyDTO> findAll() {
-    return mapper.toListPropertyDTO(propertyRepository.findAllByPermissionNotNull(), imageRepository);
+  public Page<PropertyDTO> findAll(int page,
+                                   int size,
+                                   String sort) {
+    String[] _sort = sort.split(",");
+    Sort.Order order = (new Sort.Order(_sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC,
+            _sort[0]));
+    Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+    Page<Property> propertyPage = propertyRepository.findAllByPermissionNotNull(pageable);
+    return new PageImpl<>(
+            mapper.toListPropertyDTO(propertyPage.getContent(), imageRepository),
+            pageable,
+            propertyPage.getTotalElements());
   }
 
   public List<PropertyDTO> findPropertyByUserLogin(String email) {

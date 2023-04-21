@@ -29,7 +29,7 @@ function HeaderDefault() {
     } = useGetAllPaymentBidFinishQuery();
     const [isOpenNotification, setIsOpenNotification] = useState(false);
     const [Sock, setSock] = useState(null);
-    const [noti, setNoti] = useState([]);
+    const [noti, setNoti] = useState(new Map());
     // eslint-disable-next-line no-unused-vars
     const [isMouse, setIsMouse] = useState(false);
     const { auth, avatar } = useSelector((state) => state.auth);
@@ -94,93 +94,133 @@ function HeaderDefault() {
         console.log('receive message');
         let payloadData = JSON.parse(payload.body);
         console.log('payloadData', payloadData);
-        switch (payloadData.status) {
-            case 'PENDING': {
-                if (
-                    // eslint-disable-next-line no-extra-boolean-cast
-                    noti &&
-                    noti.some((element) => {
-                        if (element.bidId === payloadData.bidId) return false;
-                        return true;
-                    })
-                ) {
-                    setNoti((prev) => [...prev, payloadData]);
-                    toast.success('You have new Notification', {
-                        position: 'top-center',
-                        autoClose: 5000,
-                        hideProgressBar: false,
-                        closeOnClick: true,
-                        pauseOnHover: false,
-                        draggable: true,
-                        progress: undefined,
-                        theme: 'light',
-                    });
-                } else if (!noti) {
-                    let newNoti = [];
-                    newNoti.push(payloadData);
-                    setNoti(newNoti);
-                    toast.success('You have new Notification', {
-                        position: 'bottom-right',
-                        autoClose: 5000,
-                        hideProgressBar: true,
-                        closeOnClick: true,
-                        pauseOnHover: false,
-                        draggable: true,
-                        progress: undefined,
-                        theme: 'light',
-                    });
+        switch (payloadData.notification) {
+            case 'PAYMENT':
+                noti.get(payloadData.notification);
+                switch (payloadData.status) {
+                    case 'PENDING': {
+                        if (
+                            // eslint-disable-next-line no-extra-boolean-cast
+                            !!noti &&
+                            !!noti.get(payloadData.notification) &&
+                            noti
+                                .get(payloadData.notification)
+                                .some((element) => {
+                                    if (element.bidId === payloadData.bidId)
+                                        return false;
+                                    return true;
+                                })
+                        ) {
+                            const newNoti = new Map(noti);
+                            newNoti
+                                .get(payloadData.notification)
+                                .push(payloadData);
+                            setNoti(new Map(newNoti));
+                            toast.success('You have new Notification', {
+                                position: 'top-center',
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: true,
+                                progress: undefined,
+                                theme: 'light',
+                            });
+                        } else if (
+                            !noti ||
+                            !noti.get(payloadData.notification)
+                        ) {
+                            // let newNoti = [];
+                            // newNoti.push(payloadData);
+                            setNoti(payloadData.notification, payloadData);
+                            toast.success('You have new Notification', {
+                                position: 'bottom-right',
+                                autoClose: 5000,
+                                hideProgressBar: true,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: true,
+                                progress: undefined,
+                                theme: 'light',
+                            });
+                        }
+                        break;
+                    }
+                    case 'FINISH': {
+                        console.log('payload Data', payloadData);
+                        console.log(payloadData.bidId);
+                        const newNoti = new Map(noti);
+                        newNoti.get(payloadData.notification).map((notifi) => {
+                            if (notifi.bidId === payloadData.bidId) {
+                                return {
+                                    ...notifi,
+                                    status: payloadData.status,
+                                };
+                            }
+                        });
+                        setNoti(new Map(newNoti));
+                        // setNoti((prev) =>
+                        //     prev.map((notifi) => {
+                        //         if (notifi.bidId === payloadData.bidId) {
+                        //             return {
+                        //                 ...notifi,
+                        //                 status: payloadData.status,
+                        //             };
+                        //         }
+                        //     }),
+                        // );
+                        toast.success('The payment is completed successfully', {
+                            position: 'top-center',
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: false,
+                            draggable: true,
+                            progress: undefined,
+                            theme: 'light',
+                        });
+
+                        break;
+                    }
+                    case 'SUCCESS': {
+                        console.log('payload Data', payloadData);
+                        const newNoti = new Map(noti);
+                        newNoti
+                            .get(payloadData.notification)
+                            .filter(
+                                (notify) => notify.bidId !== payloadData.bidId,
+                            );
+                        setNoti(newNoti);
+                        // setNoti((prev) => {
+                        //     let newNoti = prev.filter(
+                        //         (notify) => notify.bidId !== payloadData.bidId,
+                        //     );
+                        //     setNoti(newNoti);
+                        // });
+                        toast.success(
+                            <NotificationTimer timer={Date.now()} />,
+                            {
+                                position: 'top-center',
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: false,
+                                draggable: true,
+                                progress: undefined,
+                                theme: undefined,
+                            },
+                        );
+                        setTimeout(() => {
+                            refetch();
+                        }, 1000);
+                        break;
+                    }
                 }
                 break;
-            }
-            case 'FINISH': {
-                console.log('payload Data', payloadData);
-
-                console.log(payloadData.bidId);
-                setNoti((prev) =>
-                    prev.map((notifi) => {
-                        if (notifi.bidId === payloadData.bidId) {
-                            return { ...notifi, status: payloadData.status };
-                        }
-                    }),
-                );
-                toast.success('The payment is completed successfully', {
-                    position: 'top-center',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: 'light',
-                });
-
-                setTimeout(() => {}, 1000);
-
+            case 'PROPERTY':
                 break;
-            }
-            case 'SUCCESS': {
-                console.log('payload Data', payloadData);
-                setNoti((prev) => {
-                    let newNoti = prev.filter(
-                        (notify) => notify.bidId !== payloadData.bidId,
-                    );
-                    setNoti(newNoti);
-                });
-                toast.success(<NotificationTimer timer={Date.now()} />, {
-                    position: 'top-center',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: false,
-                    draggable: true,
-                    progress: undefined,
-                    theme: undefined,
-                });
-                setTimeout(() => {
-                    refetch();
-                }, 1000);
+            case 'BID':
                 break;
-            }
         }
     };
 
@@ -304,7 +344,7 @@ function HeaderDefault() {
             </div>
             <div>
                 <div
-                    onClick={() => navigate('/profile-details')}
+                    onClick={() => navigate('/profile-detail')}
                     className="cursor-pointer truncate block whitespace-no-wrap"
                 >
                     {auth.email}
@@ -323,14 +363,14 @@ function HeaderDefault() {
                     }
                 />
 
-                <ul className="absolute right-0 hidden w-36 text-gray-700 pt-1 group-hover:block ">
+                <ul className="absolute right-0 hidden w-36 text-gray-700 pt-1 bg-gray-200 group-hover:block group-hover:z-50 rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
                     {auth.authorities.some(
                         (autho) => autho.authority === 'ROLE_ADMIN',
                     ) && (
                         <li>
                             <div
                                 onClick={() => navigate('/admin')}
-                                className="rounded-t text-red-rgb bg-gray-200 py-2 px-4 block whitespace-no-wrap transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent hover:text-red-500"
+                                className="rounded-t text-red-rgb py-2 px-4 block whitespace-no-wrap transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent hover:text-red-500"
                             >
                                 Admin Page
                             </div>
@@ -339,7 +379,7 @@ function HeaderDefault() {
                     <li>
                         <div
                             onClick={() => navigate('profile-detail')}
-                            className="rounded-t text-red-rgb bg-gray-200 py-2 px-4 block whitespace-no-wrap transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent hover:text-red-500"
+                            className="rounded-t text-red-rgb py-2 px-4 block whitespace-no-wrap transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent hover:text-red-500"
                         >
                             Profile
                         </div>
@@ -347,7 +387,7 @@ function HeaderDefault() {
                     <li>
                         <div
                             onClick={() => navigate('/bid-room')}
-                            className="rounded-t text-red-rgb bg-gray-200 py-2 px-4 block whitespace-no-wrap transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent hover:text-red-500"
+                            className="rounded-t text-red-rgb py-2 px-4 block whitespace-no-wrap transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent hover:text-red-500"
                         >
                             Join room
                         </div>
@@ -356,7 +396,7 @@ function HeaderDefault() {
                     <li>
                         <div
                             onClick={() => handleLogout()}
-                            className="rounded-t text-red-rgb bg-gray-200 py-2 px-4 block whitespace-no-wrap transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent hover:text-red-500"
+                            className="rounded-t text-red-rgb py-2 px-4 block whitespace-no-wrap transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent hover:text-red-500"
                         >
                             <div className="flex justify-center items-center">
                                 <span>Log out</span>

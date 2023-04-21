@@ -103,17 +103,12 @@ public class ImageService {
               .user(newImage.getUser())
               .build();
     }
-    if (request.getType().equalsIgnoreCase("PROPERTY")) {
-      imageRepository.findByPropertyIdAndType(request.getPropertyId(), request.getType()).ifPresent(image -> image.setType(null));
-    } else {
-      imageRepository.findByUserIdAndType(user.getId(), request.getType()).ifPresent(image -> image.setType(null));
-    }
-
 
     if (request.getType() != null) {
       switch (request.getType()) {
         case "AVATAR":
         case "BACKGROUND": {
+          imageRepository.findByUserIdAndType(user.getId(), request.getType()).ifPresent(image -> image.setType(null));
           if (duplicateImage == null) {
             newImage.setType(request.getType());
           } else {

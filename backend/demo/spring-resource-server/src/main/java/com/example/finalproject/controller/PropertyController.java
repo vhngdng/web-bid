@@ -23,11 +23,13 @@ public class PropertyController {
   private PropertyService propertyService;
 
   @GetMapping("/admin/properties")
-  public ResponseEntity<?> findAllProperty() {
-    return ResponseEntity.ok(propertyService.findAll());
+  public ResponseEntity<?> findAllProperty(@RequestParam(name = "page", defaultValue = "0") int page,
+                                           @RequestParam(name = "size", defaultValue = "8") int size,
+                                           @RequestParam(name ="sort", defaultValue = "id,asc") String sort) {
+    return ResponseEntity.ok(propertyService.findAll(page, size, sort));
   }
 
-  @GetMapping("/admin/properties-not-bid")
+  @GetMapping("admin/properties-not-bid")
   public ResponseEntity<?> findAllPropertyNotBid() {
     return ResponseEntity.ok(propertyService.findAllPropertyNotBid());
   }

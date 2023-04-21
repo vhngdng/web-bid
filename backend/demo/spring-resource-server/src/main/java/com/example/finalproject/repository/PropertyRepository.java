@@ -13,10 +13,10 @@ import java.util.List;
 public interface PropertyRepository extends JpaRepository<Property, Integer> {
   List<Property> findByOwnerEmail(String email);
 
-  @Query("select p from Property p left join Bid b on p.id = b.property.id where b.property.id is null and b.property.permission = 'ACCEPTED'")
+  @Query("select p from Property p left join Bid b on b.property.id = p.id where p.permission = 'ACCEPTED' and b.property.id is null ")
   List<Property> findAllPropertyNotBid();
 
-  List<Property> findAllByPermissionNotNull();
+  Page<Property> findAllByPermissionNotNull(Pageable pageable);
 
   @Query("select p.name as name, p.id as id, p.quantity as quantity, p.description as description, b.lastPrice as lastPrice, i.id as imageProperty " +
           "from Property p inner join Bid b on p.id = b.property.id " +

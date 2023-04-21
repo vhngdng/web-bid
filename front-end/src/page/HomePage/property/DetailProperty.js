@@ -83,6 +83,9 @@ function DetailProperty() {
                         <div className="text-2xl text-gray-600 ">
                             ({data.property.category})
                         </div>
+                        <div className="text-2xl text-black italic">
+                            Property Id: #{data.property.id}
+                        </div>
                         <div className="flex justify-between">
                             <span>Created at</span>
                             <span>
