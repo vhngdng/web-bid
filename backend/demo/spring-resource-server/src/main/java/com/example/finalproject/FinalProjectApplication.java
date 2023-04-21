@@ -57,7 +57,7 @@ public class FinalProjectApplication {
       if (userRepository.count() < 30) {
         initUser(userRepository, roleRepository);
       }
-      if (bidRepository.count() < 40) {
+      if (bidRepository.count() < 20) {
         initProperty(propertyRepository, userRepository);
 
         initBid(propertyRepository,
