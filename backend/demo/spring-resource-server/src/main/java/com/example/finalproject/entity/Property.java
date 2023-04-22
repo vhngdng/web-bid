@@ -41,9 +41,8 @@ public class Property {
   @JsonBackReference
   private Bid bid;
 
-//  @OneToMany(mappedBy = "property", fetch = FetchType.EAGER)
-//  @JsonBackReference
-//  private List<Image> images;
+  @Transient
+  private String originalPermission;
 
   @Column
   private String bidType;
@@ -69,5 +68,8 @@ public class Property {
   @Column(name = "creationDate", updatable = false)
   protected LocalDateTime createdAt;
 
-
+  @PostLoad
+  private void saveOriginalPermission() {
+    this.originalPermission = this.permission;
+  }
 }

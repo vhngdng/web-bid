@@ -52,6 +52,7 @@ module.exports = withMT({
             },
             minWidth: {
                 '1/2': '50%',
+                '70vw': '70vw',
             },
             maxHeight: {
                 '1/2': '50%',

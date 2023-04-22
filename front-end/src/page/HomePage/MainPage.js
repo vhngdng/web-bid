@@ -24,6 +24,7 @@ function MainPage() {
         }
     }, [data]);
     if (isLoading) return <Loader />;
+    console.log('data from home', data);
     return (
         <>
             <Helmet>
