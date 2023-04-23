@@ -58,11 +58,8 @@ function App() {
                             <Route path=":id" element={<BidDetail />} />
                         </Route>
                         <Route path="/search/:keyword" element={<Search />} />
-                        {/* <Route index 
-                            <Route path="?page=:page" element={<Search />} />
-                        </Route> */}
+                        <Route path="/" element={<MainPage />} />
                     </Route>
-                    <Route path="/" element={<MainPage />} />
                     <Route element={<Private />}>
                         {/* <Route path="/" element={<Home />} /> */}
                         <Route path="chat-room" element={<ChatRoom />} />

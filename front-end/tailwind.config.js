@@ -33,6 +33,7 @@ module.exports = withMT({
                 '60vh': '60vh',
                 '65vh': '65vh',
                 '50vh': '50vh',
+                '45vh': '45vh',
                 '30vh': '30vh',
                 '10vh': '10vh',
                 '1/10': '10%',

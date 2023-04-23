@@ -25,7 +25,6 @@ function Tutorial() {
                     height: '70%',
                     width: '70%',
                 }}
-                contentLabel="Property"
             >
                 <div className="space-x-10 h-full bg-gray-700/20">
                     <div className="relative flex justify-between h-full">

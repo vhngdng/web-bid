@@ -2,10 +2,12 @@
 /* eslint-disable no-unused-vars */
 import { Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { NumericFormat } from 'react-number-format';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Loader from '~/Loader';
 import { useLazySearchQuery } from '~/app/service/search.service';
 import girl from '~/assets/images/luudiecphi.webp';
+import formatDateTime from '~/utils/formatDateTime';
 import readImage from '~/utils/readImage';
 function Search() {
     const { keyword } = useParams();
@@ -34,14 +36,19 @@ function Search() {
     console.log(searchParams.get('page'));
     return (
         <div className="w-70vw min-h-75vh flex justify-center space-x-5 mx-10 my-10 ">
-            <div className="w-full bg-white h-full rounded-lg shadow-2xl">
+            <div className="w-full h-full rounded-lg shadow-lg">
                 <div className="flex flex-wrap items-center space-y-2">
                     {!!data &&
                         data.content.map((result, index) => (
                             <div key={index} className="py-4">
                                 {result.typeSearch === 'BID' ? (
-                                    <div className="cursor-pointer w-15vw h-50vh inline-block mx-5 bg-gray-200 rounded-lg shadow-2xl">
-                                        <div className="w-full h-1/2">
+                                    <div
+                                        onClick={() =>
+                                            navigate(`/bid-room/${result.id}`)
+                                        }
+                                        className="cursor-pointer w-15vw h-45vh inline-block mx-5 rounded-lg shadow-lg"
+                                    >
+                                        <div className="w-full h-1/2 my-5">
                                             <img
                                                 src={
                                                     !!result.property
@@ -52,11 +59,11 @@ function Search() {
                                                           )
                                                         : girl
                                                 }
-                                                className="w-full h-full object-cover rounded-lg"
+                                                className="w-full h-full object-cover rounded-lg shadow-2xl"
                                             />
                                         </div>
-                                        <div className="h-1/2 mx-2">
-                                            <div className="flex justify-between items-center font-sans">
+                                        <div className="h-1/2 mx-1 px-2">
+                                            <div className="flex justify-between items-center">
                                                 <div>
                                                     <span>Bid Id: </span>
                                                     <span>{result.id}</span>
@@ -69,13 +76,126 @@ function Search() {
                                                 </div>
                                             </div>
                                             <div>
-                                                <span>Status: </span>
+                                                <span className="">
+                                                    Property:{'  '}
+                                                </span>
+                                                <span className="font-xl">
+                                                    {result.property.name}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span className="">
+                                                    Status:{'  '}
+                                                </span>
+                                                <span
+                                                    className={`${
+                                                        result.status ===
+                                                        'SUCCESS'
+                                                            ? 'text-green-600'
+                                                            : 'text-orange-700'
+                                                    }`}
+                                                >
+                                                    {result.status}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span className="">
+                                                    Day of Sale:{'  '}
+                                                </span>
+                                                <span className="font-semibold">
+                                                    {
+                                                        formatDateTime(
+                                                            result.dayOfSale,
+                                                        ).date
+                                                    }
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="w-15vw h-50vh mx-5 bg-gray-200 rounded-lg shadow-2xl">
-                                        Property
+                                    <div
+                                        onClick={() =>
+                                            navigate(
+                                                `/list-property/${result.id}`,
+                                            )
+                                        }
+                                        className="cursor-pointer w-15vw h-45vh inline-block mx-5 rounded-lg shadow-lg"
+                                    >
+                                        <div className="w-full h-1/2 my-5">
+                                            <img
+                                                src={
+                                                    !!result.imageProperty
+                                                        ? readImage(
+                                                              result.imageProperty,
+                                                          )
+                                                        : girl
+                                                }
+                                                className="w-full h-full object-cover rounded-lg shadow-2xl"
+                                            />
+                                        </div>
+                                        <div className="h-1/2 mx-1 px-2">
+                                            <div className="flex justify-between items-center">
+                                                <div>
+                                                    <span>Property</span>
+                                                    <span>{result.name}</span>
+                                                </div>
+                                                <div>
+                                                    <span>
+                                                        {' '}
+                                                        ({result.category})
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <span className="">
+                                                    Id:{'  '}
+                                                </span>
+                                                <span className="font-xl">
+                                                    {result.id}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span className="">
+                                                    Quantity:{'  '}
+                                                </span>
+                                                <span className="font-xl">
+                                                    {result.quantity}
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span className="">
+                                                    Reserve Price:{'  '}
+                                                </span>
+                                                <NumericFormat
+                                                    className=" text-center title-font font-medium text-xl text-red-rgb hover:text-red-rgb hover:scale-125"
+                                                    value={result.reservePrice}
+                                                    displayType={'text'}
+                                                    thousandSeparator={true}
+                                                    allowLeadingZeros
+                                                    prefix={'$'}
+                                                />
+                                            </div>
+                                            <div className="flex items-center">
+                                                <div className="h-12 w-12 px-2">
+                                                    <img
+                                                        className="object-cover w-full rounded-full"
+                                                        src={
+                                                            !!result.owner
+                                                                .avatar
+                                                                ? readImage(
+                                                                      result
+                                                                          .owner
+                                                                          .avatar,
+                                                                  )
+                                                                : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
+                                                        }
+                                                    />
+                                                </div>
+                                                <span className="">
+                                                    {result.owner.name}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 )}
                             </div>

@@ -35,14 +35,14 @@ function MainPage() {
                     <Tutorial />
                 </div> */}
                 <div className="flex justify-center items-center">
-                    <div className="w-4/5">
+                    <div className="w-4/5 mt-10">
                         <div className="space-y-10">
                             {top5Earliest.length > 0 && (
                                 <Top5Earliest top5Earliest={top5Earliest} />
                             )}
                         </div>
                         <div className="space-y-10">
-                            <div className="my-10">
+                            <div className="my-10 mx-10">
                                 <div className="font-sans font-semibold text-2xl text-blue-rgb">
                                     Top 5 User
                                 </div>
@@ -51,7 +51,7 @@ function MainPage() {
                                 )}
                             </div>
                         </div>
-                        <div className="space-y-10">
+                        <div className="space-y-10 mx-10">
                             <Top5Famous top5Famous={top5Famous} />
                         </div>
                     </div>
