@@ -10,7 +10,7 @@
     font-weight: 400;
     min-height: 100vh;
     color-scheme: light dark;
-    color: rgba(191, 156, 179, 0.87);
+    background-color: rgba(191, 156, 179, 0.87);
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
@@ -31,17 +31,4 @@ a:hover {
 h1 {
     font-size: 3.2em;
     line-height: 1.1;
-}
-
-@media (prefers-color-scheme: light) {
-    :root {
-        color: #213547;
-        background-color: #ffffff;
-    }
-    a:hover {
-        color: #747bff;
-    }
-    button {
-        background-color: #f9f9f9;
-    }
 }

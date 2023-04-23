@@ -4,7 +4,7 @@ import { RotatingText } from 'rotating-text';
 import HeaderDefault from './HeaderDefault';
 import { useSelector } from 'react-redux';
 
-function HeaderNotAuthenticate() {
+function HeaderNotAuthenticate({ isOpenNotification, setIsOpenNotification }) {
     const { isAuthenticated } = useSelector((state) => state.auth);
 
     const navigate = useNavigate();
@@ -28,7 +28,10 @@ function HeaderNotAuthenticate() {
                 </div>
 
                 {isAuthenticated ? (
-                    <HeaderDefault />
+                    <HeaderDefault
+                        isOpenNotification={isOpenNotification}
+                        setIsOpenNotification={setIsOpenNotification}
+                    />
                 ) : (
                     <div className="flex justify-end items-center relative m-6 inline-flex w-1/3 space-x-2">
                         <div

@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { DOMAIN_URL } from '~/CONST/const';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DeletePropertyModal from '~/component/layouts/Default/DeletePropertyModal';
+import { NumericFormat } from 'react-number-format';
 function PropertyList() {
     // eslint-disable-next-line no-unused-vars
     const { data, isLoading, refetch } = useGetAllPropertyByUserLoginQuery();
@@ -90,7 +91,16 @@ function PropertyList() {
                                             </div>
                                             <div>
                                                 <p className="text-sm font-medium text-gray-900">
-                                                    ${property.reservePrice}
+                                                    <NumericFormat
+                                                        className="text-center title-font font-medium text-xl text-red-rgb hover:text-red-rgb hover:scale-125"
+                                                        value={
+                                                            property.reservePrice
+                                                        }
+                                                        displayType={'text'}
+                                                        thousandSeparator={true}
+                                                        allowLeadingZeros
+                                                        prefix={'$'}
+                                                    />
                                                 </p>
                                                 <p
                                                     className={`text-sm  ${

@@ -42,9 +42,7 @@ function AdminHomePage() {
     }, []);
     useEffect(() => {
         console.log(location.pathname);
-        if (location.pathname.includes('details-bid')) {
-            setSelectSidebar(2);
-        } else if (location.pathname.includes('create-bid')) {
+        if (location.pathname.includes('create-bid')) {
             setSelectSidebar(3);
         } else if (location.pathname.includes('open-bid')) {
             setSelectSidebar(4);
@@ -128,19 +126,6 @@ function AdminHomePage() {
                                             onClick={() => navigate('')}
                                         >
                                             List Bid Room
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button
-                                            className={`flex flex-col items-center w-full transition duration-500 ease-in-out ml-0 py-2 text-base font-normal hover:text-black dark:text-white dark:hover:bg-gray-700 transition duration-150 ease-in-out
-                                        transform hover:translate-x-2 transition-transform ease-in hover:bg-transparent 
-                                        ${
-                                            selectSidebar === 2
-                                                ? customSelectStyle
-                                                : 'bg-transparent'
-                                        }`}
-                                        >
-                                            Detail Bid Room
                                         </button>
                                     </li>
                                     <li className="relative">

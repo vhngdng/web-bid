@@ -58,6 +58,7 @@ function BidDetailRoom() {
     const [isOpenAdminSetting, setIsOpenAdminSetting] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [scope, animate] = useAnimate();
+    const [message, setMessage] = useState();
     const { id } = useParams();
     const {
         data: member,
@@ -133,13 +134,50 @@ function BidDetailRoom() {
             },
         );
     }, []);
+    const handleReceiveMessage = () => {
+        switch (message.status) {
+            case 'JOIN':
+                if (!(message in participants)) {
+                    setParticipants((prev) => [...prev, message]);
+                }
+                break;
+            case 'MESSAGE':
+                console.log(message.increaseAmount);
+                increasePrice(message.increaseAmount);
+                setUserWinning({
+                    nickName: message.nickName,
+                    username: message.senderName,
+                });
+                break;
+            case 'LEAVE':
+                setParticipants((prev) =>
+                    prev.filter((p) => p.username !== message.username),
+                );
+                break;
+            case 'DEACTIVE':
+                setBidRoomStatus(message.status);
+                setIsBidClose(!isBidClose);
+                break;
+            case 'PROCESSING':
+                setBidRoomStatus(message.status);
+                break;
+            case 'FINISH':
+                console.log(price);
+                setBidRoomStatus(message.status);
+                break;
+        }
+    };
     useEffect(() => {
         window.addEventListener('beforeunload', sendCloseSocket);
         return () => {
             window.removeEventListener('beforeunload', sendCloseSocket);
         };
     }, []);
-
+    useEffect(() => {
+        if (!!message) {
+            handleReceiveMessage();
+        }
+    }, [message]);
     useEffect(() => {
         if (isSuccess) {
             addEventNotiClose();
@@ -228,38 +266,8 @@ function BidDetailRoom() {
 
     const onMessagePublicReceived = (payload) => {
         let payloadData = JSON.parse(payload.body);
+        setMessage(payloadData);
         // refetch();
-        switch (payloadData.status) {
-            case 'JOIN':
-                if (!(payloadData in participants)) {
-                    setParticipants((prev) => [...prev, payloadData]);
-                }
-                break;
-            case 'MESSAGE':
-                console.log(payloadData.increaseAmount);
-                increasePrice(payloadData.increaseAmount);
-                setUserWinning({
-                    nickName: payloadData.nickName,
-                    username: payloadData.senderName,
-                });
-                break;
-            case 'LEAVE':
-                setParticipants((prev) =>
-                    prev.filter((p) => p.username !== payloadData.username),
-                );
-                break;
-            case 'DEACTIVE':
-                setBidRoomStatus(payloadData.status);
-                setIsBidClose(!isBidClose);
-                break;
-            case 'PROCESSING':
-                setBidRoomStatus(payloadData.status);
-                break;
-            case 'FINISH':
-                console.log(price);
-                setBidRoomStatus(payloadData.status);
-                break;
-        }
     };
 
     const onConnected = () => {

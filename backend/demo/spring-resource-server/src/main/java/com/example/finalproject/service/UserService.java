@@ -9,14 +9,17 @@ import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.projection.UserInfo;
 import com.example.finalproject.repository.ImageRepository;
+import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.RoleRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.SignUpRequest;
 import com.example.finalproject.response.AuthResponse;
+import com.example.finalproject.response.Notification;
 import com.example.finalproject.security.CustomUserDetails;
 import com.example.finalproject.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -40,6 +43,10 @@ public class UserService {
   private String Secret;
   @Autowired
   private RoleRepository roleRepository;
+  @Autowired
+  private PaymentService paymentService;
+  @Autowired
+  private PropertyRepository propertyRepository;
 
   public void processOAuth2PostLogin(String email) {
     Optional<User> user = userRepository.findByEmail(email);
@@ -88,4 +95,10 @@ public class UserService {
     return customUserDetailsService.loadUserByUsername(newUser.getEmail());
   }
 
+  public Notification findNotification() {
+    return Notification.builder()
+            .paymentNotifications(paymentService.getAllPaymentBidFinish())
+            .propertyNotifications(mapper.toListPropertyNotification(propertyRepository.findNotificationByUser(SecurityContextHolder.getContext().getAuthentication().getName())))
+            .build();
+  }
 }

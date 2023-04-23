@@ -9,14 +9,13 @@ import { useNavigate } from 'react-router-dom';
 function BidHome({ bid }) {
     const navigate = useNavigate();
     const handlenavigate = () => {
-        console.log(bid.id);
         navigate(`bid-room/${bid.id}`);
     };
     return (
         <div className="w-96 group relative mb-8">
             <div>
                 <div className="w-full rounded-md bg-transparent group-hover:opacity-75 shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
-                    <div className="w-full h-30vh">
+                    <div className="w-full h-30vh" onClick={handlenavigate}>
                         <img
                             src={
                                 !!bid.property.imageProperty
@@ -24,8 +23,7 @@ function BidHome({ bid }) {
                                     : Image
                             }
                             alt={bid.property.name}
-                            className="w-full h-full object-cover object-center rounded-lg cursor-pointer"
-                            onClick={handlenavigate}
+                            className="w-full h-full object-cover object-center rounded-lg cursor-pointer z-0"
                         />
                     </div>
                 </div>
@@ -62,7 +60,7 @@ function BidHome({ bid }) {
                                         ? 'text-green-700'
                                         : bid.status === 'DEACTIVE'
                                         ? 'text-red-700'
-                                        : 'text-black'
+                                        : 'text-orange-700'
                                 }`}
                             >
                                 {bid.status}

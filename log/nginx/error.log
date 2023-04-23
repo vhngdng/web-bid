@@ -3570,3 +3570,17 @@
 2023/04/21 15:29:58 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
 2023/04/21 15:30:58 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
 2023/04/21 15:31:59 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:29 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:29 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:30 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:31 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:32 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:34 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:38 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:44 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:43:58 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:44:24 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:45:15 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:46:16 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:47:16 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18
+2023/04/23 03:48:17 [emerg] 1#1: host not found in upstream "backend:8080" in /etc/nginx/nginx.conf:18

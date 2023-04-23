@@ -36,7 +36,7 @@ function ListBidRoom({ isAdmin }) {
     const [isStatusDESC, setIsStatusDESC] = useState(false);
     // eslint-disable-next-line no-unused-vars
     const navigate = useNavigate();
-    const [orderList, setOrdetList] = useState(new Map());
+    const [orderList, setOrderList] = useState(new Map());
     const [order, setOrder] = useState({
         field: '',
         direction: '',
@@ -66,10 +66,10 @@ function ListBidRoom({ isAdmin }) {
             console.log(orderList.get(order.field));
             const newOrderList = new Map(orderList);
             newOrderList.delete(order.field);
-            setOrdetList(new Map(newOrderList));
+            setOrderList(new Map(newOrderList));
         } else {
             orderList.set(order.field, order.direction);
-            setOrdetList(new Map(orderList));
+            setOrderList(new Map(orderList));
         }
     }, [order]);
     const convertUriWithOrder = useCallback(() => {
@@ -496,13 +496,13 @@ function ListBidRoom({ isAdmin }) {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="text-gray-700 text-sm fontLight ">
+                                    <tbody className="text-gray-700 text-sm fontLight">
                                         {data &&
                                             data.content &&
                                             data.content.map((bid, index) => (
                                                 <motion.tr
                                                     key={index}
-                                                    className={`cursor-pointer border-gray-300 hover:bg-gray-100 shadow-md 
+                                                    className={`w-full cursor-pointer border-gray-300 hover:bg-gray-100 shadow-md 
                                                         ${
                                                             (index + 1) % 2 &&
                                                             'bg-gray-100/25'
@@ -528,7 +528,7 @@ function ListBidRoom({ isAdmin }) {
                                                     }}
                                                 >
                                                     <td
-                                                        className={`px-3 py-6 text-left h-36`}
+                                                        className={`px-3 py-6 text-left h-36 w-full`}
                                                     >
                                                         <div
                                                             className={`flex items-center justify-center h-full `}
@@ -565,7 +565,7 @@ function ListBidRoom({ isAdmin }) {
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td className="py-3 px-6 textLeft">
+                                                    <td className="py-3 px-6 textLeft w-full">
                                                         <div className="flex items-center">
                                                             <span>
                                                                 {bid.auctioneer
@@ -576,7 +576,7 @@ function ListBidRoom({ isAdmin }) {
                                                             </span>
                                                         </div>
                                                     </td>
-                                                    <td className="py-3 px-6 text-center ">
+                                                    <td className="py-3 px-6 text-center w-full">
                                                         <div className="w-36 flex items-center justify-center truncate">
                                                             {!!bid.attendees &&
                                                                 bid.attendees.map(
@@ -607,7 +607,7 @@ function ListBidRoom({ isAdmin }) {
                                                                     .length}
                                                         </div>
                                                     </td>
-                                                    <td className="py-3 px-6 text-center">
+                                                    <td className="py-3 px-6 text-center w-full">
                                                         <div className="flex item-center justify-center">
                                                             {
                                                                 formatDateTime(
@@ -616,24 +616,24 @@ function ListBidRoom({ isAdmin }) {
                                                             }
                                                         </div>
                                                     </td>
-                                                    <td className="py-3 px-6 text-center">
+                                                    <td className="py-3 px-6 text-center w-full">
                                                         <div className="flex item-center justify-center text-pink-900">
                                                             {bid.reservePrice}
                                                         </div>
                                                     </td>
-                                                    <td className="py-3 px-6 text-center">
+                                                    <td className="py-3 px-6 text-center w-full">
                                                         <div className="flex item-center justify-center text-pink-600">
                                                             {bid.priceStep}
                                                         </div>
                                                     </td>
-                                                    <td className="py-3 px-6 text-center">
+                                                    <td className="py-3 px-6 text-center w-full">
                                                         <div className="flex item-center justify-center text-blue-800 ">
                                                             {!!bid.lastPrice &&
                                                                 bid.lastPrice}
                                                         </div>
                                                     </td>
                                                     <td
-                                                        className={`py-3 px-6 text-center relative ${
+                                                        className={`py-3 px-6 text-center relative w-full ${
                                                             bid.status ===
                                                                 'FINISH' &&
                                                             'transition-all duration-150 ease-in-out animate-bounce '

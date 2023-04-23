@@ -1,5 +1,6 @@
 package com.example.finalproject.entity;
 
+import com.example.finalproject.entity.listener.PropertyListener;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -20,7 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@EntityListeners(AuditingEntityListener.class)
+@EntityListeners({AuditingEntityListener.class, PropertyListener.class})
 public class Property {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

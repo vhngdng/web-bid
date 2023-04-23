@@ -13,5 +13,7 @@ public class PropertyNotification {
   private String name;
   private String category;
   private String permission;
-  private String imageId;
+  private String notification;
+  private Long auctioneerPrice;
+  private Long reservePrice;
 }

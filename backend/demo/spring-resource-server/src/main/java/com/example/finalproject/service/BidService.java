@@ -92,11 +92,7 @@ public class BidService {
   }
   public BidDTO updateBidRoom(UpSertBid upSertBid, Long id) {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id " + id + " was not found"));
-    if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.FINISH.name())) {
-      Optional<Payment> paymentOptional = paymentRepository.findByBid(bid);
-      paymentOptional.ifPresent(payment -> paymentRepository.deleteById(payment.getId()));
-      paymentRepository.save(Payment.builder().bid(bid).status("PENDING").build());
-    }else if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.ACTIVE.name())) {
+      if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.ACTIVE.name())) {
       bid.setDayOfSale(LocalDateTime.now());
     }
     mapper.updateBid(upSertBid, bid);
@@ -156,14 +152,16 @@ public class BidService {
 
   public BidDTO upDateBidRoomSuccess(String auctioneerEmail, Long id) {
     Bid bid = bidRepository.findByIdAndAuctioneerEmail(id, auctioneerEmail);
-    bid.setStatus(STATUS_BID.SUCCESS.name());
-    Payment payment = bid.getPayment();
-    payment.setStatus(STATUS_PAYMENT.SUCCESS.name());
-    paymentRepository.save(payment);
-    Property property = bid.getProperty();
-    property.setOwner(bid.getWinningBidder());
-    propertyRepository.save(property);
-    return mapper.toDTO(bidRepository.save(bid), userRepository, imageRepository);
+    synchronized (bid){
+      bid.setStatus(STATUS_BID.SUCCESS.name());
+      Payment payment = bid.getPayment();
+      payment.setStatus(STATUS_PAYMENT.SUCCESS.name());
+      paymentRepository.save(payment);
+      Property property = bid.getProperty();
+      property.setOwner(bid.getWinningBidder());
+      propertyRepository.save(property);
+      return mapper.toDTO(bidRepository.save(bid), userRepository, imageRepository);
+    }
   }
 
   public List<BidDTO> getAllBidPreparingToRun() {

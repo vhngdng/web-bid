@@ -16,11 +16,10 @@ public class PropertyListener {
   @Autowired
   private SimpMessagingTemplate simpMessagingTemplate;
 
-  @Autowired
-  private ImageService imageService;
   @PostUpdate
   public void onPermissionUpdate(Property property) {
     if(!property.getPermission().equals(property.getOriginalPermission())){
+      log.error("Check message working", property.getId());
       simpMessagingTemplate.convertAndSendToUser(
               property.getOwner().getEmail(),
               "private",
@@ -30,7 +29,9 @@ public class PropertyListener {
                       .name(property.getName())
                       .category(property.getCategory())
                       .permission(property.getPermission())
-                      .imageId(imageService.getImageWithPropertyIdAndTypeProperty(property.getId()).getId())
+                      .auctioneerPrice(property.getAuctioneerPrice())
+                      .reservePrice(property.getReservePrice())
+                      .notification("PROPERTY")
                       .build()
       );
     }

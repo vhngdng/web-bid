@@ -1,3 +1,4 @@
+/* eslint-disable no-extra-boolean-cast */
 import React, { useEffect, useRef, useState } from 'react';
 import styles from './modules/HeaderDefault.module.scss';
 import classNames from 'classnames/bind';
@@ -12,28 +13,54 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { notification } from '~/assets';
 import { over } from 'stompjs';
-import { useGetAllPaymentBidFinishQuery } from '~/app/service/payment.service';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { DOMAIN_URL } from '~/CONST/const';
+import formatDateTime from '~/utils/formatDateTime';
+import { NumericFormat } from 'react-number-format';
+import { useGetNotificationQuery } from '~/app/service/user.service';
 const cx = classNames.bind(styles);
 var stompClient = null;
 
-function HeaderDefault() {
+function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const {
-        data: payments,
-        isLoading,
-        isSuccess,
-        refetch,
-    } = useGetAllPaymentBidFinishQuery();
-    const [isOpenNotification, setIsOpenNotification] = useState(false);
+    const { data, isLoading, isSuccess, refetch } = useGetNotificationQuery();
     const [Sock, setSock] = useState(null);
     const [noti, setNoti] = useState(new Map());
+    const [message, setMessage] = useState();
     // eslint-disable-next-line no-unused-vars
     const [isMouse, setIsMouse] = useState(false);
     const { auth, avatar } = useSelector((state) => state.auth);
     const refNoti = useRef(null);
+
+    useEffect(() => {
+        if (isSuccess) {
+            const newNoti = new Map();
+            !!data.paymentNotifications.length
+                ? newNoti.set('PAYMENT', [...data.paymentNotifications])
+                : newNoti.set('PAYMENT', []);
+            !!data.propertyNotifications.length
+                ? newNoti.set('PROPERTY', [...data.propertyNotifications])
+                : newNoti.set('PROPERTY', []);
+            setNoti(newNoti);
+        }
+    }, [data]);
+    useEffect(() => {
+        console.log('noti effect', noti);
+        if (!!message) {
+            switch (message.notification) {
+                case 'PROPERTY': {
+                    handlePropertyNoti();
+                    break;
+                }
+                case 'PAYMENT':
+                    handlePaymentNoti();
+                    break;
+                case 'BID':
+                    break;
+            }
+        }
+    }, [message]);
     useEffect(() => {
         const handleSock = () => {
             let newSock = new SockJS(
@@ -74,9 +101,12 @@ function HeaderDefault() {
             document.removeEventListener('mousedown', handler);
         };
     }, []);
+
     useEffect(() => {
-        setNoti(payments);
-    }, [isSuccess]);
+        !!noti.get('PROPERTY') &&
+            console.log('noti', noti.get('PROPERTY').length);
+    }, [noti]);
+
     const onError = (err) => {
         console.log(err);
         navigate('/');
@@ -89,139 +119,127 @@ function HeaderDefault() {
             );
         }
     };
-
-    const onPrivateMessage = (payload) => {
-        console.log('receive message');
-        let payloadData = JSON.parse(payload.body);
-        console.log('payloadData', payloadData);
-        switch (payloadData.notification) {
-            case 'PAYMENT':
-                noti.get(payloadData.notification);
-                switch (payloadData.status) {
-                    case 'PENDING': {
-                        if (
-                            // eslint-disable-next-line no-extra-boolean-cast
-                            !!noti &&
-                            !!noti.get(payloadData.notification) &&
-                            noti
-                                .get(payloadData.notification)
-                                .some((element) => {
-                                    if (element.bidId === payloadData.bidId)
-                                        return false;
-                                    return true;
-                                })
-                        ) {
-                            const newNoti = new Map(noti);
-                            newNoti
-                                .get(payloadData.notification)
-                                .push(payloadData);
-                            setNoti(new Map(newNoti));
-                            toast.success('You have new Notification', {
-                                position: 'top-center',
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: false,
-                                draggable: true,
-                                progress: undefined,
-                                theme: 'light',
-                            });
-                        } else if (
-                            !noti ||
-                            !noti.get(payloadData.notification)
-                        ) {
-                            // let newNoti = [];
-                            // newNoti.push(payloadData);
-                            setNoti(payloadData.notification, payloadData);
-                            toast.success('You have new Notification', {
-                                position: 'bottom-right',
-                                autoClose: 5000,
-                                hideProgressBar: true,
-                                closeOnClick: true,
-                                pauseOnHover: false,
-                                draggable: true,
-                                progress: undefined,
-                                theme: 'light',
-                            });
-                        }
-                        break;
+    const handlePropertyNoti = () => {
+        console.log('handlePrivate', noti);
+        if (['ACCEPTED', 'REFUSED'].includes(message.permission)) {
+            console.log(
+                'some',
+                noti
+                    .get(message.notification)
+                    .some((property) => property.id === message.id),
+            );
+            if (!noti.get(message.notification).length) {
+                console.log('it is running');
+                const newNoti = new Map(noti);
+                newNoti.set(message.notification, message);
+                setNoti(newNoti);
+            } else if (
+                !noti
+                    .get(message.notification)
+                    .some((property) => property.id === message.id)
+            ) {
+                const newNoti = new Map(noti);
+                newNoti.get(message.notification).push(message);
+                setNoti(new Map(newNoti));
+            } else {
+                console.log('else is working');
+                const newNoti = new Map(noti);
+                newNoti.get(message.notification).map((noti) => {
+                    if (noti.id === message.id) {
+                        noti.permission = message.permission;
+                        return noti;
                     }
-                    case 'FINISH': {
-                        console.log('payload Data', payloadData);
-                        console.log(payloadData.bidId);
-                        const newNoti = new Map(noti);
-                        newNoti.get(payloadData.notification).map((notifi) => {
-                            if (notifi.bidId === payloadData.bidId) {
-                                return {
-                                    ...notifi,
-                                    status: payloadData.status,
-                                };
-                            }
-                        });
-                        setNoti(new Map(newNoti));
-                        // setNoti((prev) =>
-                        //     prev.map((notifi) => {
-                        //         if (notifi.bidId === payloadData.bidId) {
-                        //             return {
-                        //                 ...notifi,
-                        //                 status: payloadData.status,
-                        //             };
-                        //         }
-                        //     }),
-                        // );
-                        toast.success('The payment is completed successfully', {
-                            position: 'top-center',
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: false,
-                            draggable: true,
-                            progress: undefined,
-                            theme: 'light',
-                        });
-
-                        break;
-                    }
-                    case 'SUCCESS': {
-                        console.log('payload Data', payloadData);
-                        const newNoti = new Map(noti);
-                        newNoti
-                            .get(payloadData.notification)
-                            .filter(
-                                (notify) => notify.bidId !== payloadData.bidId,
-                            );
-                        setNoti(newNoti);
-                        // setNoti((prev) => {
-                        //     let newNoti = prev.filter(
-                        //         (notify) => notify.bidId !== payloadData.bidId,
-                        //     );
-                        //     setNoti(newNoti);
-                        // });
-                        toast.success(
-                            <NotificationTimer timer={Date.now()} />,
-                            {
-                                position: 'top-center',
-                                autoClose: 5000,
-                                hideProgressBar: false,
-                                closeOnClick: true,
-                                pauseOnHover: false,
-                                draggable: true,
-                                progress: undefined,
-                                theme: undefined,
-                            },
-                        );
-                        setTimeout(() => {
-                            refetch();
-                        }, 1000);
-                        break;
-                    }
+                });
+                setNoti(new Map(newNoti));
+            }
+            toast.success('You have new Notification', {
+                position: 'top-center',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: false,
+                draggable: true,
+                progress: undefined,
+                theme: 'light',
+            });
+        }
+    };
+    const handlePaymentNoti = () => {
+        switch (message.status) {
+            case 'PENDING': {
+                if (
+                    !noti
+                        .get(message.notification)
+                        .some((element) => element.bidId === message.bidId)
+                ) {
+                    const newNoti = new Map(noti);
+                    newNoti.get(message.notification).push(message);
+                    setNoti(new Map(newNoti));
+                    toast.success('You have new Notification', {
+                        position: 'top-center',
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: 'light',
+                    });
                 }
                 break;
-            case 'PROPERTY':
+            }
+            case 'FINISH': {
+                console.log('message bid ID', message.bidId);
+                const newNoti = new Map(noti);
+                newNoti.get(message.notification).map((notifi) => {
+                    if (notifi.bidId === message.bidId) {
+                        console.log('notifi bid id', notifi);
+                        notifi.status = message.status;
+                        return notifi;
+                    }
+                });
+                setNoti(new Map(newNoti));
+                toast.success('The payment is completed successfully', {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: 'light',
+                });
+
                 break;
-            case 'BID':
+            }
+            case 'SUCCESS': {
+                console.log('payload Data', message);
+                const newNoti = new Map(noti);
+                const newNotiv2 = newNoti
+                    .get(message.notification)
+                    .filter((notify) => notify.bidId !== message.bidId);
+                newNoti.set(message.notification, newNotiv2);
+                setNoti(newNoti);
+                toast.success(<NotificationTimer timer={Date.now()} />, {
+                    position: 'top-center',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: undefined,
+                });
+                setTimeout(() => {
+                    refetch();
+                }, 1000);
                 break;
+            }
         }
+    };
+    const onPrivateMessage = (payload) => {
+        let payloadData = JSON.parse(payload.body);
+        setMessage(payloadData);
     };
 
     const handleLogout = () => {
@@ -233,7 +251,7 @@ function HeaderDefault() {
         navigate(`/profile-detail/Payment/bidId/${id}`);
     };
     if (isLoading) return <Loader />;
-
+    console.log('noti data', data);
     return (
         <div className="flex justify-end items-center relative m-6 inline-flex w-1/3">
             <div
@@ -246,96 +264,209 @@ function HeaderDefault() {
                     src={notification.logo.default}
                     alt="notification"
                 />
-                {noti && noti.length > 0 && !isOpenNotification && (
-                    <div className="flex justify-center items-center absolute top-0 right-0 bottom-auto left-auto z-10 inline-block w-6 h-6 shrink-0 grow-0 bg-red-500 rounded-full">
-                        {noti.length}
-                    </div>
-                )}
+                {!!noti.get('PAYMENT') &&
+                    !!noti.get('PROPERTY') &&
+                    noti.get('PAYMENT').length + noti.get('PROPERTY').length >
+                        0 &&
+                    !isOpenNotification && (
+                        <div className="flex justify-center items-center absolute top-0 right-0 bottom-auto left-auto z-10 inline-block w-6 h-6 shrink-0 grow-0 bg-red-500 rounded-full">
+                            {noti.get('PAYMENT').length +
+                                noti.get('PROPERTY').length}
+                        </div>
+                    )}
                 {isOpenNotification && (
                     <div
                         className={cx(
-                            'noti-table fixed z-100 absolute right-1/2 top-1/2',
+                            'noti-table absolute z-50 absolute right-1/2 top-1/2 max-h-30vh overflow-y-auto',
                         )}
                     >
                         <div
                             id="toast-message-cta"
-                            className=' w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert"'
+                            className='w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert"'
                         >
-                            <h2 className="flex justify-center mb-1 text-sm font-semibold text-gray-900 dark:text-white">
-                                Payment
-                            </h2>
-                            {noti && noti.length > 0 ? (
-                                noti.map((n, index) => (
-                                    <div
-                                        className="flex cursor-pointer gap-1.5 backdrop-blur-md transition-all hover:bg-gray-200 hover:bg-none xl:gap-2"
-                                        key={index}
-                                    >
-                                        <div
-                                            onClick={() =>
-                                                handleNavigateToPaymentDetail(
-                                                    n.id,
-                                                )
-                                            }
-                                            className="ml-3 text-sm font-normal max-w-xs flex-1"
-                                        >
-                                            <div className="flex justify-center mb-2 text-sm font-normal">
-                                                Bid id : {n.bidId}
-                                            </div>
+                            {!!noti &&
+                            noti.get('PAYMENT').length +
+                                noti.get('PROPERTY').length >
+                                0 ? (
+                                <>
+                                    {!!noti.get('PAYMENT') &&
+                                        noti.get('PAYMENT').map((n, index) => (
                                             <div
-                                                className={`flex justify-center mb-2 text-sm font-normal
-                                                                    
-                                                                    `}
+                                                className="flex cursor-pointer gap-1.5 backdrop-blur-md transition-all hover:bg-gray-200 hover:bg-none xl:gap-2"
+                                                key={index}
                                             >
-                                                Status :{'  '}
-                                                <span
-                                                    className={
-                                                        n.status === 'FINISH'
-                                                            ? 'text-green-500'
-                                                            : ''
+                                                <div
+                                                    onClick={() =>
+                                                        handleNavigateToPaymentDetail(
+                                                            n.id,
+                                                        )
                                                     }
+                                                    className="ml-3 text-sm font-normal max-w-xs flex-1"
                                                 >
-                                                    {n.status}
-                                                </span>
-                                            </div>
-                                            {n.lastModifiedDate && (
-                                                <div className="mb-2 text-sm font-normal italic hover:not-italic">
-                                                    <span className="flex justify-center mb-2 text-sm font-normal italic hover:not-italic">
-                                                        Time:
-                                                    </span>
-                                                    <span className="mb-2 text-sm font-normal italic hover:not-italic">
-                                                        {n.lastModifiedDate}
-                                                    </span>
+                                                    <div className="flex justify-center mb-2 text-sm font-normal">
+                                                        Bid id : {n.bidId}
+                                                    </div>
+                                                    <div
+                                                        className={`flex justify-center mb-2 text-sm font-normal space-x-2`}
+                                                    >
+                                                        <span>Status: </span>
+                                                        <span
+                                                            className={
+                                                                n.status ===
+                                                                'FINISH'
+                                                                    ? 'text-green-500'
+                                                                    : ''
+                                                            }
+                                                        >
+                                                            {n.status}
+                                                        </span>
+                                                    </div>
+                                                    {n.lastModifiedDate && (
+                                                        <div className="mb-2 text-sm font-normal italic hover:not-italic space-x-2">
+                                                            <p className="text-center mb-2 text-sm font-normal italic hover:not-italic">
+                                                                Time:
+                                                            </p>
+                                                            <p className="mb-2 text-sm font-normal italic hover:not-italic">
+                                                                {
+                                                                    formatDateTime(
+                                                                        n.lastModifiedDate,
+                                                                    ).date
+                                                                }
+                                                            </p>
+                                                        </div>
+                                                    )}
                                                 </div>
-                                            )}
-                                        </div>
-                                        <button
-                                            type="button"
-                                            className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                                            data-dismiss-target="#toast-message-cta"
-                                            aria-label="Close"
-                                        >
-                                            <span className="sr-only">
-                                                Close
-                                            </span>
-                                            <svg
-                                                aria-hidden="true"
-                                                className="w-5 h-5"
-                                                fill="currentColor"
-                                                viewBox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                    clipRule="evenodd"
-                                                ></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                ))
+                                                <button
+                                                    type="button"
+                                                    className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                                                    data-dismiss-target="#toast-message-cta"
+                                                    aria-label="Close"
+                                                >
+                                                    <span className="sr-only">
+                                                        Close
+                                                    </span>
+                                                    <svg
+                                                        aria-hidden="true"
+                                                        className="w-5 h-5"
+                                                        fill="currentColor"
+                                                        viewBox="0 0 20 20"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path
+                                                            fillRule="evenodd"
+                                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                            clipRule="evenodd"
+                                                        ></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        ))}
+                                    {!!noti.get('PROPERTY') &&
+                                        noti
+                                            .get('PROPERTY')
+                                            .map((property, index) => (
+                                                <div
+                                                    className="flex cursor-pointer gap-1.5 backdrop-blur-md transition-all hover:bg-gray-200 hover:bg-none xl:gap-2"
+                                                    key={index}
+                                                >
+                                                    <div
+                                                        onClick={() =>
+                                                            navigate(
+                                                                `/profile-detail/propertyDetails/${property.id}`,
+                                                            )
+                                                        }
+                                                        className="ml-3 text-sm font-normal max-w-xs flex-1"
+                                                    >
+                                                        <div className="flex justify-center mb-2 text-sm font-normal">
+                                                            Property id :{' '}
+                                                            {property.id}
+                                                        </div>
+                                                        <div className="mb-2 text-sm font-normal">
+                                                            <span className="mb-2 text-sm font-normal text-center">
+                                                                {property.name}
+                                                            </span>
+                                                        </div>
+                                                        <div className="mb-2 text-sm italic hover:not-italic">
+                                                            <span className="mb-2 text-sm text-gray-600 italic hover:not-italic text-center">
+                                                                (
+                                                                {
+                                                                    property.category
+                                                                }
+                                                                )
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex justify-center items-center mb-2 text-sm font-normal space-x-4">
+                                                            <span>
+                                                                Permission:
+                                                            </span>
+                                                            <span
+                                                                className={
+                                                                    property.permission ===
+                                                                    'ACCEPTED'
+                                                                        ? 'text-green-500'
+                                                                        : property.permission ===
+                                                                          'REFUSED'
+                                                                        ? 'text-red-500'
+                                                                        : 'text-orange-700'
+                                                                }
+                                                            >
+                                                                {
+                                                                    property.permission
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                        {property.permission ===
+                                                            'REFUSED' && (
+                                                            <div className="mb-2 text-sm font-normal italic hover:not-italic flex space-x-4">
+                                                                <span className="mb-2 text-sm font-normal italic hover:not-italic">
+                                                                    Bid Price:
+                                                                </span>
+                                                                <NumericFormat
+                                                                    className=" text-center title-font font-medium text-red-rgb hover:text-red-rgb hover:scale-125"
+                                                                    value={
+                                                                        property.auctioneerPrice
+                                                                    }
+                                                                    displayType={
+                                                                        'text'
+                                                                    }
+                                                                    thousandSeparator={
+                                                                        true
+                                                                    }
+                                                                    allowLeadingZeros
+                                                                    prefix={'$'}
+                                                                />
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <button
+                                                        type="button"
+                                                        className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                                                        data-dismiss-target="#toast-message-cta"
+                                                        aria-label="Close"
+                                                    >
+                                                        <span className="sr-only">
+                                                            Close
+                                                        </span>
+                                                        <svg
+                                                            aria-hidden="true"
+                                                            className="w-5 h-5"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                                clipRule="evenodd"
+                                                            ></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            ))}
+                                </>
                             ) : (
                                 <div className="inline-flex px-2.5 py-1.5 text-xs font-medium text-center text-blue bg-gray-300 ">
-                                    You dont have any request
+                                    You dont have any notification
                                 </div>
                             )}
                         </div>
@@ -409,6 +540,7 @@ function HeaderDefault() {
                     </li>
                 </ul>
             </div>
+            <ToastContainer />
         </div>
     );
 }

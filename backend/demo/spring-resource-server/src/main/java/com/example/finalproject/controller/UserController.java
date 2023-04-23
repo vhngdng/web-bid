@@ -62,4 +62,9 @@ public class UserController {
         .isAuthenticated(true)
         .build());
   }
+
+  @GetMapping("user/notification")
+  public ResponseEntity<?> findNotification() {
+    return ResponseEntity.ok(userService.findNotification());
+  }
 }

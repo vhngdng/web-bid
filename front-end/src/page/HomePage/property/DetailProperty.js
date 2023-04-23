@@ -41,8 +41,7 @@ function DetailProperty() {
     }, [data]);
 
     if (isLoading) return <Loader />;
-    console.log('details', data);
-    console.log('images', images);
+
     return (
         <>
             <div className="min-h-75vh h-full w-full flex flex-col justify-center items-center ">

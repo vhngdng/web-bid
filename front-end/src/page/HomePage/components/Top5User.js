@@ -12,7 +12,6 @@ import thor from '~/assets/images/thor.jpg';
 const defaultAvatarList = [ship, gymmer, luudiecphi, thor];
 const defaultColor = ['green', 'blue', 'yellow', 'gray'];
 function Top5User({ top5User }) {
-    console.log('user', top5User);
     const top4List = top5User.filter((t) => t.id != top5User[0].id);
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true });

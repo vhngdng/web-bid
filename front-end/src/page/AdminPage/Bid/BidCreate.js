@@ -30,6 +30,10 @@ function BidCreate() {
         if (property.id) {
             handleFetchImage(property.id);
         }
+        if (!!property) {
+            console.log('selected property', property);
+            setReservePrice(property.reservePrice);
+        }
     }, [property]);
     const handleFetchImage = useCallback(
         async (id) => {

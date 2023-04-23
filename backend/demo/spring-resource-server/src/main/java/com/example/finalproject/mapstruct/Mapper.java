@@ -9,6 +9,7 @@ import com.example.finalproject.request.UpSertProperty;
 import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.response.FinishResponse;
 import com.example.finalproject.response.ImageResponse;
+import com.example.finalproject.response.PropertyNotification;
 import org.mapstruct.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -234,4 +235,9 @@ public interface Mapper {
                             @MappingTarget Payment payment, @Context BidRepository bidRepository) {
     return bidRepository.findById(paymentDTO.getBidId()).orElse(null);
   }
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(target = "notification", expression = "java(\"PROPERTY\")")
+  PropertyNotification toPropertyNotification(Property property);
+
+  List<PropertyNotification> toListPropertyNotification(List<Property> notificationByUser);
 }

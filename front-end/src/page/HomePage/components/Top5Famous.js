@@ -30,8 +30,6 @@ function Top5Famous({ top5Famous }) {
             // setData([...top5Famous]);
         }
     }, [top5Famous]);
-    console.log('top5Famous', top5Famous);
-    console.log('imageListShow', imageListShow);
     const handleChangeIndex = (index) => {
         setIndexImage(index);
     };

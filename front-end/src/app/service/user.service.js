@@ -68,7 +68,14 @@ export const userApi = createApi({
         getUserById: builder.query({
             query: (id) => `admin/user/${id}`,
         }),
+        getNotification: builder.query({
+            query: () => `user/notification`,
+        }),
     }),
 });
 
-export const { useGetUserByEmailQuery, useLazyGetUserByIdQuery } = userApi;
+export const {
+    useGetUserByEmailQuery,
+    useLazyGetUserByIdQuery,
+    useGetNotificationQuery,
+} = userApi;

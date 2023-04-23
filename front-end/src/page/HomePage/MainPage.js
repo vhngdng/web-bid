@@ -20,11 +20,9 @@ function MainPage() {
             setTop5Earliest([...data.bidEarliestTop5]);
             setTop5User([...data.userRateTop5]);
             setTop5Famous([...data.bidFamousTop5]);
-            console.log('data from home', data);
         }
     }, [data]);
     if (isLoading) return <Loader />;
-    console.log('data from home', data);
     return (
         <>
             <Helmet>
@@ -32,7 +30,7 @@ function MainPage() {
                 <title>Auctionforfun Home</title>
                 <meta name="description" content="Home" />
             </Helmet>
-            <div className="w-full inline-block">
+            <div className="w-full inline-block space-y-20">
                 {/* <div className="h-75vh space-y-10">
                     <Tutorial />
                 </div> */}

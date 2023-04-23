@@ -77,6 +77,29 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
           "having b.dayOfSale > :time order by b.dayOfSale asc"
   )
   Page<BidHomeProjection> findTop5Earliest(Pageable pageable, @Param("time") LocalDateTime time);
+
+  @Query("select b.id as id, b.type as type, b.dayOfSale as dayOfSale, " +
+          "b.conditionReport as conditionReport, b.status as status, " +
+          "b.reservePrice as reservePrice, b.priceStep as priceStep, " +
+          "b.lastPrice as lastPrice, count(bp.user) as countAttendees, " +
+          "b.property.id as propertyId, ip.id as propertyImageId," +
+          "b.property.quantity as quantity, b.property.category as category, " +
+          "b.property.name as propertyName, b.auctioneer.id as auctioneerId, " +
+          "b.auctioneer.username as auctioneerName, " +
+          "ia.id as auctioneerAvatar " +
+          "from Bid b left join BidParticipant bp on bp.bid.id = b.id " +
+          "left join Image ia on ia.user.id = b.auctioneer.id and ia.type = 'AVATAR' " +
+          "left join Image ip on ip.property.id = b.property.id and ip.type = 'PROPERTY' " +
+          "where b.conditionReport like concat('%', :keyword, '%') or b.property.name like lower(concat('%', :keyword, '%')) " +
+          "or b.auctioneer.username like lower(concat('%', :keyword, '%')) or b.winningBidder.username like lower(concat('%', :keyword, '%')) " +
+          "or b.type like lower(concat('%', :keyword, '%')) or b.property.permission like lower(concat('%', :keyword, '%')) " +
+          "or b.status like lower(concat('%', :keyword, '%')) " +
+          "group by b.id, ia.id, ip.id, b.property.quantity, b.type, b.auctioneer.id, " +
+          "b.property.id, b.dayOfSale, b.conditionReport, b.status, b.property.name, b.auctioneer.username, " +
+          "b.reservePrice, b.priceStep, b.lastPrice, b.property.category "
+
+  )
+  List<BidHomeProjection> search(@Param("keyword") String keyword);
 }
 
 

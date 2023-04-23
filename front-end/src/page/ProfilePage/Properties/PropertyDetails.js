@@ -16,7 +16,7 @@ import { useUpdateTypeImageMutation } from '~/app/service/image.service';
 import { customToastStyle } from '~/utils/customStyle';
 function PropertyDetails() {
     const { propertyId } = useParams();
-    const { data, isLoading, error } =
+    const { data, isLoading, error, refetch } =
         useGetAllDetailsPropertyQuery(propertyId);
     const [registerProperty] = useRegisterPropertyMutation();
     const [updateTypeImage] = useUpdateTypeImageMutation();
@@ -123,6 +123,7 @@ function PropertyDetails() {
                 bidType: type,
             });
             console.log(res);
+            refetch();
             toast.success('Property register successfully', {
                 position: 'top-center',
                 autoClose: 3000,
@@ -459,6 +460,23 @@ function PropertyDetails() {
                                         setQuantity(e.target.value)
                                     }
                                 />
+                            </div>
+                            <div className="mb-10">
+                                <h4 className="mb-3 font-heading font-medium">
+                                    Status:
+                                </h4>
+                                <div
+                                    className={`text-2xl ${
+                                        data.property.permission === 'ACCEPTED'
+                                            ? 'text-green-500'
+                                            : data.property.permission ===
+                                              'REFUSED'
+                                            ? 'text-red-500'
+                                            : 'text-orange-700'
+                                    }`}
+                                >
+                                    {data.property.permission}
+                                </div>
                             </div>
                             <div className="mb-10">
                                 <h4 className="mb-3 font-heading font-medium">

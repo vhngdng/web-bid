@@ -12,7 +12,6 @@ import Loader from '~/Loader';
 import { liVariant, sidebar } from '~/animation';
 import { imageDefault } from '~/assets';
 import { DOMAIN_URL } from '~/CONST/const';
-// import { ToastContainer, toast } from 'react-toastify';
 import { ToastContainer, toast } from 'react-toastify';
 Modal.setAppElement('#root');
 
@@ -27,6 +26,7 @@ const style = {
         height: '70%',
         width: '70%',
         borderRadius: '25px',
+        backgroundColor: 'transparent',
     },
 };
 function AdminPropertyDetails() {
@@ -34,7 +34,7 @@ function AdminPropertyDetails() {
     const [updateProperty] = useUpdatePropertyMutation();
     const [isOpen, setIsOpen] = useState(true);
     const [imageAvatar, setImageAvatar] = useState('');
-    const { data, isLoading, isSuccess, refetch } =
+    const { data, isLoading, isSuccess } =
         useGetAdminDetailPropertyQuery(propertyId);
     const [permission, setPermission] = useState();
     const [images, setImages] = useState([]);
@@ -129,11 +129,12 @@ function AdminPropertyDetails() {
         try {
             const res = await updateProperty({
                 propertyId,
-                auctioneerPrice: !!auctioneerPrice ? auctioneerPrice : null,
+                auctioneerPrice: !!auctioneerPrice
+                    ? auctioneerPrice
+                    : data.property.reservePrice,
                 permission,
             });
             console.log('res', res);
-            refetch();
             toast.success('Updated successfully', customToastStyle);
             setTimeout(() => {
                 navigate('/admin/properties');
@@ -149,6 +150,7 @@ function AdminPropertyDetails() {
         navigate('/admin/properties');
     };
     console.log(data);
+    const handleAccept = () => {};
     return (
         <AnimatePresence mode="wait" initial="false">
             <Modal
@@ -183,7 +185,7 @@ function AdminPropertyDetails() {
                                             : `${imageDefault.logo.default}`
                                     }
                                 />
-                                <div className="relative">
+                                <div className="relative bg-transparent">
                                     {images.length > 0 && (
                                         <button
                                             className="absolute -left-8 top-1/2"
@@ -199,7 +201,7 @@ function AdminPropertyDetails() {
                                     >
                                         <motion.div className="w-full overflow-x-hidden">
                                             <motion.div
-                                                className="flex justify-center items-center my-6"
+                                                className="flex justify-center items-center my-6 h-40 w-40 rounded-lg"
                                                 ref={ref}
                                             >
                                                 {images.length > 0 &&
@@ -225,7 +227,7 @@ function AdminPropertyDetails() {
                                                                     stiffness: 260,
                                                                     damping: 20,
                                                                 }}
-                                                                className="object-fit h-40 w-40 px-4 shadow-2xl"
+                                                                className="object-cover h-full w-full px-4 rounded-lg"
                                                             />
                                                         ),
                                                     )}
@@ -317,10 +319,10 @@ function AdminPropertyDetails() {
                                 </div>
 
                                 <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-200 mb-5">
-                                    <div className="flex">
+                                    <div className="flex justify-center items-center">
                                         <span className="mr-3">
                                             <img
-                                                className="object-fit h-8 w-12"
+                                                className="object-fit h-8 w-12 rounded-full"
                                                 src={
                                                     !!data &&
                                                     data.property.owner.avatar
@@ -349,7 +351,7 @@ function AdminPropertyDetails() {
                                         {data.property.auctioneerPrice}
                                     </div>
                                 )}
-                                <div className="flex" ref={inputRef}>
+                                <div className="" ref={inputRef}>
                                     {isNotAcceptedReservePrice ? (
                                         <div>
                                             <span>$ </span>
@@ -380,19 +382,27 @@ function AdminPropertyDetails() {
                                                 : 'No price'}
                                         </span>
                                     )}
-                                    <button
-                                        onClick={handleSubmit}
-                                        className={`flex ml-auto text-white bg-green-400 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded 
-                                        `}
-                                    >
-                                        Confirm
-                                    </button>
-                                    <button
-                                        onClick={handleCancel}
-                                        className="flex ml-auto text-white bg-red-400 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded"
-                                    >
-                                        Cancel
-                                    </button>
+                                    <div className="flex justify-center items-center space-x-2">
+                                        <button
+                                            onClick={handleSubmit}
+                                            className="h-fit flex ml-auto text-white bg-green-400 border-0 py-2 px-6 focus:outline-none hover:bg-green-600 rounded"
+                                        >
+                                            Confirm
+                                        </button>
+                                        <button
+                                            onClick={handleAccept}
+                                            className={`h-fit flex ml-auto text-white bg-blue-400 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded 
+                                            `}
+                                        >
+                                            Accept
+                                        </button>
+                                        <button
+                                            onClick={handleCancel}
+                                            className="h-fit flex ml-auto text-white bg-red-400 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded"
+                                        >
+                                            Cancel
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

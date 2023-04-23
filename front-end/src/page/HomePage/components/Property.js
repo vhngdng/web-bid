@@ -7,7 +7,6 @@ import formatDateTime from '~/utils/formatDateTime';
 import { useNavigate } from 'react-router-dom';
 function Property({ property }) {
     const navigate = useNavigate();
-    console.log(property);
     return (
         <div
             onClick={() => navigate(`${property.id}`)}
