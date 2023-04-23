@@ -4,24 +4,30 @@ import { Pagination } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import Loader from '~/Loader';
-import { useSearchQuery } from '~/app/service/search.service';
+import { useLazySearchQuery } from '~/app/service/search.service';
 import girl from '~/assets/images/luudiecphi.webp';
 import readImage from '~/utils/readImage';
 function Search() {
     const { keyword } = useParams();
     const [searchParams, setSearchParams] = useSearchParams();
-    // eslint-disable-next-line no-unused-vars
-    // useEffect(() => {
-    //     !!searchParams.get('page') &&
-    //         parseInt(searchParams.get('page')) > 1 &&
-    //         setPage(parseInt(searchParams.get('page')));
-    // }, []);
-    const { data, isLoading } = useSearchQuery({
-        keyword,
-        page: null,
-    });
+    const [fetchSearch, { data, isLoading }] = useLazySearchQuery();
+    const [key, setKey] = useState();
+    const [page, setPage] = useState(1);
     const navigate = useNavigate();
 
+    useEffect(() => {
+        setKey(keyword);
+        !!searchParams.get('page') && parseInt(searchParams.get('page')) > 1
+            ? setPage(parseInt(searchParams.get('page')))
+            : setPage(1);
+    }, [keyword, searchParams]);
+    useEffect(() => {
+        !!key &&
+            fetchSearch({
+                keyword: key,
+                page,
+            });
+    }, [key, page]);
     if (isLoading) return <Loader />;
     console.log(data);
     console.log(keyword);
@@ -34,10 +40,7 @@ function Search() {
                         data.content.map((result, index) => (
                             <div key={index} className="py-4">
                                 {result.typeSearch === 'BID' ? (
-                                    <div
-                                        className="cursor-pointer w-15vw h-50vh inline-block mx-5 bg-gray-200 rounded-lg shadow-2xl"
-                                        onClick={navigate('')}
-                                    >
+                                    <div className="cursor-pointer w-15vw h-50vh inline-block mx-5 bg-gray-200 rounded-lg shadow-2xl">
                                         <div className="w-full h-1/2">
                                             <img
                                                 src={
@@ -78,14 +81,20 @@ function Search() {
                             </div>
                         ))}
                 </div>
-                {/* {data && !!data.totalPages && (
+                {data && !!data.totalPages && (
                     <Pagination
                         className="flex justify-center w-full mt-4 pb-4"
                         count={data.totalPages}
                         page={page}
-                        onChange={(event, value) => setPage(value)}
+                        onChange={(event, value) =>
+                            navigate(
+                                value > 1
+                                    ? `/search/${key}?page=${value}`
+                                    : `/search/${key}`,
+                            )
+                        }
                     />
-                )} */}
+                )}
             </div>
         </div>
     );

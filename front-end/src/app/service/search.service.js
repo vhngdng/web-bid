@@ -10,11 +10,9 @@ export const searchApi = createApi({
     endpoints: (builder) => ({
         search: builder.query({
             query: ({ keyword, page }) =>
-                !!page
-                    ? `guest/search/${keyword}?page=${page - 1}`
-                    : `guest/search/${keyword}`,
+                `guest/search/${keyword}?page=${page - 1}`,
         }),
     }),
 });
 
-export const { useSearchQuery } = searchApi;
+export const { useLazySearchQuery } = searchApi;
