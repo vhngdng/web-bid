@@ -1,20 +1,26 @@
 package com.example.finalproject.service;
 
+import com.example.finalproject.projection.home.BidHomeProjection;
+import com.example.finalproject.projection.home.PropertyHomeProjection;
 import com.example.finalproject.repository.BidRepository;
 import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.response.HomeResponse;
-import com.example.finalproject.response.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +34,10 @@ public class HomeService {
   PropertyRepository propertyRepository;
   @Autowired
   PaymentService paymentService;
+  @Autowired
+  BidService bidService;
+  @Autowired
+  PropertyService propertyService;
 
   public HomeResponse findHomeDetail() {
     Pageable pageable = PageRequest.of(0, 5);
@@ -40,10 +50,24 @@ public class HomeService {
             .build();
 //    return bidRepository.findBidTop5Attend(pageable).getContent();
   }
-
-
-  public Object search(String keyword) {
-     bidRepository.search(keyword);
-    return propertyRepository.search(keyword);
+  public Page<Object> search(String keyword, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size);
+    List<Object> result = new ArrayList<>();
+      CompletableFuture<List<BidHomeProjection>> bid = bidService.searchBid(keyword);
+      CompletableFuture<List<PropertyHomeProjection>> property = propertyService.search(keyword);
+       CompletableFuture
+              .allOf(bid, property)
+              .thenApplyAsync(v -> {
+                result.addAll(bid.join());
+                result.addAll(property.join());
+                return result;
+              })
+              .join();
+    int offset = page * size;
+    int endIndex = Math.min(offset + size, result.size());
+    List<Object> content = result.subList(offset, endIndex);
+    return new PageImpl<>(content, pageable, result.size());
   }
+
+
 }

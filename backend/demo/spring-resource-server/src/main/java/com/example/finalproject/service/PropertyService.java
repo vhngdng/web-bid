@@ -23,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -183,5 +185,9 @@ public class PropertyService {
 
   public List<PropertyDTO> findAllByPermission(String permission) {
     return mapper.toListPropertyDTO(propertyRepository.findAllByPermission(permission), imageRepository);
+  }
+  @Async
+  public CompletableFuture<List<PropertyHomeProjection>> search(String keyword) {
+    return CompletableFuture.completedFuture(propertyRepository.search(keyword));
   }
 }

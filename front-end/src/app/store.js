@@ -10,6 +10,7 @@ import { userApi } from './service/user.service';
 import authReducer from './slice/auth.slice';
 import imageReducer from './slice/image.slice';
 import participantReducer from './slice/participant.slice';
+import { searchApi } from './service/search.service';
 const store = configureStore({
     reducer: {
         [authApi.reducerPath]: authApi.reducer,
@@ -20,6 +21,7 @@ const store = configureStore({
         [imagesApi.reducerPath]: imagesApi.reducer,
         [userApi.reducerPath]: userApi.reducer,
         [PaymentApi.reducerPath]: PaymentApi.reducer,
+        [searchApi.reducerPath]: searchApi.reducer,
         auth: authReducer,
         participant: participantReducer,
         image: imageReducer,
@@ -34,6 +36,7 @@ const store = configureStore({
             imagesApi.middleware,
             userApi.middleware,
             PaymentApi.middleware,
+            searchApi.middleware,
         ),
 });
 

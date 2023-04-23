@@ -13,14 +13,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.Executor;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableConfigurationProperties(UserLoginProperties.class)
+@EnableAsync
 public class FinalProjectApplication {
 
 
@@ -33,6 +37,16 @@ public class FinalProjectApplication {
     return new Faker();
   }
 
+  @Bean
+  public Executor asyncExecutor() {
+    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+    executor.setCorePoolSize(2);
+    executor.setMaxPoolSize(5);
+    executor.setQueueCapacity(500);
+    executor.setThreadNamePrefix("WebBidAsync-");
+    executor.initialize();
+    return executor;
+  }
   @Bean
   public CommandLineRunner initialValue(RoleRepository roleRepository,
                                         UserRepository userRepository,

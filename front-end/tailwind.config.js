@@ -38,11 +38,14 @@ module.exports = withMT({
                 '1/10': '10%',
             },
             width: {
+                '70vw': '70vw',
                 '30vw': '30vw',
                 '20vw': '20vw',
                 '15vw': '15vw',
             },
             minHeight: {
+                '90vh': '90vh',
+                '80vh': '80vh',
                 '75vh': '75vh',
                 '70vh': '70vh',
                 '60vh': '60vh',
@@ -53,6 +56,7 @@ module.exports = withMT({
             minWidth: {
                 '1/2': '50%',
                 '70vw': '70vw',
+                '100vw': '100vw',
             },
             maxHeight: {
                 '1/2': '50%',

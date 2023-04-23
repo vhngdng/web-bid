@@ -54,6 +54,7 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
           "u.avatar as defaultAvatar,u.username as ownerName, u.id as ownerId, b.id as bidId, b.status as bidStatus, i.id as imageId, i.type as imageType " +
           "from Property p inner join p.bid b inner join p.owner u left join Image i on p.id = i.property.id " +
           "left join Image io on io.user.id = u.id and i.type = 'AVATAR' " +
-          "where p.name like lower(concat('%', :keyword, '%')) ")
+          "where (p.name like lower(concat('%', :keyword, '%')) or cast(p.id as string) like lower(concat('%', :keyword, '%')) " +
+          "or p.category like lower(concat('%', :keyword, '%')) ) and p.permission = 'ACCEPTED' ")
   List<PropertyHomeProjection> search(@Param("keyword") String keyword);
 }

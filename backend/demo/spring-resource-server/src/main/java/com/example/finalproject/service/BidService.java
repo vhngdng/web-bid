@@ -9,7 +9,7 @@ import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Payment;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
-import com.example.finalproject.projection.BidDetails;
+import com.example.finalproject.projection.home.BidHomeProjection;
 import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.utils.QuartUtil;
@@ -20,12 +20,14 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.springframework.data.domain.*;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,12 +94,12 @@ public class BidService {
   }
   public BidDTO updateBidRoom(UpSertBid upSertBid, Long id) {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id " + id + " was not found"));
-      if(upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.ACTIVE.name())) {
-      bid.setDayOfSale(LocalDateTime.now());
-    }
-    mapper.updateBid(upSertBid, bid);
-    schedulerChangeBidStatus(bid);
-    return mapper.toDTO(bid, userRepository, imageRepository);
+      if (upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.ACTIVE.name())) {
+        bid.setDayOfSale(LocalDateTime.now());
+      }
+      mapper.updateBid(upSertBid, bid);
+      schedulerChangeBidStatus(bid);
+      return mapper.toDTO(bid, userRepository, imageRepository);
   }
 
   public void schedulerChangeBidStatus(Bid bid) {
@@ -152,7 +154,6 @@ public class BidService {
 
   public BidDTO upDateBidRoomSuccess(String auctioneerEmail, Long id) {
     Bid bid = bidRepository.findByIdAndAuctioneerEmail(id, auctioneerEmail);
-    synchronized (bid){
       bid.setStatus(STATUS_BID.SUCCESS.name());
       Payment payment = bid.getPayment();
       payment.setStatus(STATUS_PAYMENT.SUCCESS.name());
@@ -161,7 +162,6 @@ public class BidService {
       property.setOwner(bid.getWinningBidder());
       propertyRepository.save(property);
       return mapper.toDTO(bidRepository.save(bid), userRepository, imageRepository);
-    }
   }
 
   public List<BidDTO> getAllBidPreparingToRun() {
@@ -211,4 +211,12 @@ public class BidService {
   public BidDetailsDTO findGuestBidByid(Long id) {
     return findDetailBidRoomById(id);
   }
+  @Async
+  public CompletableFuture<List<BidHomeProjection>> searchBid(String keyword) {
+    return CompletableFuture.completedFuture(bidRepository.search(keyword));
+  }
+//  @Async
+//  public CompletableFuture<List<BidHomeProjection>> searchInt(String keyword) {
+//    return CompletableFuture.completedFuture(bidRepository.searchInt(keyword));
+//  }
 }

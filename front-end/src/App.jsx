@@ -33,6 +33,7 @@ import ListProperty from './page/HomePage/property/ListProperty';
 import DefaultHomePage from './component/layouts/DefaultHomePage';
 import DetailProperty from './page/HomePage/property/DetailProperty';
 import BidDetail from './page/HomePage/bid/BidDetail';
+import Search from './page/HomePage/Search';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
@@ -56,6 +57,7 @@ function App() {
                             <Route index element={<BidRoom />} />
                             <Route path=":id" element={<BidDetail />} />
                         </Route>
+                        <Route path="/search/:keyword" element={<Search />} />
                     </Route>
                     <Route path="/" element={<MainPage />} />
                     <Route element={<Private />}>

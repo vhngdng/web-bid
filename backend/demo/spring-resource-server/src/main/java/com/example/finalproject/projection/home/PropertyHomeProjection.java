@@ -55,6 +55,9 @@ public interface PropertyHomeProjection {
 
   String getBidStatus();
 
+  default String getTypeSearch() {
+    return "PROPERTY";
+  }
   default Owner getOwner() {
     return Owner.builder()
             .avatar(getOwnerAvatar())

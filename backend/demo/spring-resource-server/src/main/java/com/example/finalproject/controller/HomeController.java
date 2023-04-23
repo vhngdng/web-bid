@@ -5,10 +5,9 @@ import com.example.finalproject.service.HomeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("guest")
@@ -23,8 +22,12 @@ public class HomeController {
   }
 
   @GetMapping("search/{keyword}")
-  public ResponseEntity<?> searchWord(@PathVariable("keyword") String keyword) {
-    return ResponseEntity.ok(homeService.search(keyword));
+  public ResponseEntity<?> searchWord(
+          @RequestParam(name = "page", defaultValue = "0") int page,
+          @RequestParam(name = "size", defaultValue = "8") int size,
+          @PathVariable("keyword") String keyword) throws ExecutionException, InterruptedException {
+    log.error("page", page);
+    return ResponseEntity.ok(homeService.search(keyword, page, size));
   }
 
 }

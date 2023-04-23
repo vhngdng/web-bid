@@ -33,7 +33,12 @@ function HomeSidebar() {
         collapseSidebar();
         setIsCollapse((prev) => !prev);
     };
-
+    const handleSearch = (e) => {
+        console.log(e.key);
+        if (e.key === 'Enter') {
+            navigate(`/search/${search}`);
+        }
+    };
     return (
         <AnimatePresence>
             <motion.div
@@ -79,6 +84,7 @@ function HomeSidebar() {
                                             type="text"
                                             id="search"
                                             placeholder="Search something.."
+                                            onKeyDown={(e) => handleSearch(e)}
                                             defaultValue={search}
                                             onChange={(e) =>
                                                 setSearch(e.target.value)
