@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styles from './modules/HeaderDefault.module.scss';
 import classNames from 'classnames/bind';
 import Loader from '~/Loader';
@@ -18,6 +18,7 @@ import { DOMAIN_URL } from '~/CONST/const';
 import formatDateTime from '~/utils/formatDateTime';
 import { NumericFormat } from 'react-number-format';
 import { useGetNotificationQuery } from '~/app/service/user.service';
+import { NotificationContext } from '~/context/NotificationProvider';
 const cx = classNames.bind(styles);
 var stompClient = null;
 
@@ -29,8 +30,9 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
     const [noti, setNoti] = useState(new Map());
     const [message, setMessage] = useState();
     // eslint-disable-next-line no-unused-vars
-    const [isMouse, setIsMouse] = useState(false);
     const { auth, avatar } = useSelector((state) => state.auth);
+    // eslint-disable-next-line no-unused-vars
+    const { newNoti, setNewNoti } = useContext(NotificationContext);
     const refNoti = useRef(null);
 
     useEffect(() => {
@@ -45,9 +47,11 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
             setNoti(newNoti);
         }
     }, [data]);
+
     useEffect(() => {
         console.log('noti effect', noti);
         if (!!message) {
+            setNewNoti(message);
             switch (message.notification) {
                 case 'PROPERTY': {
                     handlePropertyNoti();
@@ -68,11 +72,7 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
                 undefined,
                 // eslint-disable-next-line no-undef
                 {
-                    protocols_whitelist: [
-                        'xhr-polling',
-                        'xdr-polling',
-                        'jsonp-polling',
-                    ],
+                    transports: ['xhr-polling', 'xdr-polling', 'jsonp-polling'],
                 },
             );
             setSock(newSock);
@@ -102,11 +102,6 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
         };
     }, []);
 
-    useEffect(() => {
-        !!noti.get('PROPERTY') &&
-            console.log('noti', noti.get('PROPERTY').length);
-    }, [noti]);
-
     const onError = (err) => {
         console.log(err);
         navigate('/');
@@ -122,14 +117,7 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
     const handlePropertyNoti = () => {
         console.log('handlePrivate', noti);
         if (['ACCEPTED', 'REFUSED'].includes(message.permission)) {
-            console.log(
-                'some',
-                noti
-                    .get(message.notification)
-                    .some((property) => property.id === message.id),
-            );
             if (!noti.get(message.notification).length) {
-                console.log('it is running');
                 const newNoti = new Map(noti);
                 newNoti.set(message.notification, message);
                 setNoti(newNoti);
@@ -142,14 +130,16 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
                 newNoti.get(message.notification).push(message);
                 setNoti(new Map(newNoti));
             } else {
-                console.log('else is working');
                 const newNoti = new Map(noti);
-                newNoti.get(message.notification).map((noti) => {
-                    if (noti.id === message.id) {
-                        noti.permission = message.permission;
+                const updatedNoti = newNoti
+                    .get(message.notification)
+                    .map((noti) => {
+                        if (noti.id === message.id) {
+                            return { ...noti, permission: message.permission };
+                        }
                         return noti;
-                    }
-                });
+                    });
+                newNoti.set(message.notification, updatedNoti);
                 setNoti(new Map(newNoti));
             }
             toast.success('You have new Notification', {
@@ -191,13 +181,17 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
             case 'FINISH': {
                 console.log('message bid ID', message.bidId);
                 const newNoti = new Map(noti);
-                newNoti.get(message.notification).map((notifi) => {
-                    if (notifi.bidId === message.bidId) {
-                        console.log('notifi bid id', notifi);
-                        notifi.status = message.status;
+                const updatedNoti = newNoti
+                    .get(message.notification)
+                    .map((notifi) => {
+                        if (notifi.bidId === message.bidId) {
+                            console.log('notifi bid id', notifi);
+                            notifi.status = message.status;
+                            return notifi;
+                        }
                         return notifi;
-                    }
-                });
+                    });
+                newNoti.set(message.notification, updatedNoti);
                 setNoti(new Map(newNoti));
                 toast.success('The payment is completed successfully', {
                     position: 'top-center',
@@ -256,7 +250,7 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
         <div className="flex justify-end items-center relative m-6 inline-flex w-1/3">
             <div
                 ref={refNoti}
-                className="cursor-pointer relative m-2 p-2 text-gray-400 rounded-lg hover:text-gray-600 focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4 active:animate-bounce duration-700 active:opacity-25 transition  ease-linear"
+                className="cursor-pointer relative m-2 p-2 text-gray-400 rounded-lg hover:text-gray-600 focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4"
                 onClick={() => setIsOpenNotification((prev) => !prev)}
             >
                 <img
@@ -264,7 +258,8 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
                     src={notification.logo.default}
                     alt="notification"
                 />
-                {!!noti.get('PAYMENT') &&
+                {!!noti &&
+                    !!noti.get('PAYMENT') &&
                     !!noti.get('PROPERTY') &&
                     noti.get('PAYMENT').length + noti.get('PROPERTY').length >
                         0 &&
@@ -481,10 +476,7 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
                     {auth.email}
                 </div>
             </div>
-            <div
-                className="relative cursor-pointer group inline-block px-4"
-                onClick={() => setIsMouse((prev) => !prev)}
-            >
+            <div className="relative cursor-pointer group inline-block px-4">
                 <img
                     className="object-fill h-12 w-12 rounded-full"
                     src={

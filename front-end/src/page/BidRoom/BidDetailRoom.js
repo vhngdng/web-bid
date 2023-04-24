@@ -236,11 +236,7 @@ function BidDetailRoom() {
         // eslint-disable-next-line no-unused-vars
         let newSock = new SockJS(DOMAIN_URL + 'api/v1/ws', undefined, {
             // eslint-disable-next-line no-undef
-            protocols_whitelist: [
-                'xhr-polling',
-                'xdr-polling',
-                'jsonp-polling',
-            ],
+            transports: ['xhr-polling', 'xdr-polling', 'jsonp-polling'],
         });
         // eslint-disable-next-line no-unused-vars
         setSock(newSock);

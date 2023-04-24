@@ -15,14 +15,12 @@ import com.example.finalproject.repository.ImageRepository;
 import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.UpSertProperty;
-import com.example.finalproject.response.DeletePropertyResponse;
-import com.example.finalproject.response.ErrorResponse;
-import com.example.finalproject.response.PropertyHomeResponse;
-import com.example.finalproject.response.PropertyResponse;
+import com.example.finalproject.response.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -50,6 +48,8 @@ public class PropertyService {
   private UserRepository userRepository;
   @Autowired
   private ImageRepository imageRepository;
+  @Autowired
+  private SimpMessagingTemplate simpMessagingTemplate;
 
   public Page<PropertyDTO> findAll(int page,
                                    int size,
@@ -113,9 +113,25 @@ public class PropertyService {
 
   public PropertyResponse updateProperty(UpSertProperty upSertProperty, Integer propertyId) {
     Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id is not found " + propertyId));
+    String originalPermission = property.getPermission();
+    long originalPrice = property.getReservePrice();
     mapper.updateProperty(upSertProperty, property);
     propertyRepository.save(property);
     List<ImageProjection> images = imageRepository.findByPropertyId(propertyId);
+    if(!upSertProperty.getPermission().equalsIgnoreCase(originalPermission) || upSertProperty.getReservePrice() != originalPrice) {
+        userRepository.findAdminOnline().forEach(u -> simpMessagingTemplate.convertAndSendToUser(u.getEmail(), "private", PropertyNotification
+                .builder()
+                .id(property.getId())
+                .name(property.getName())
+                .category(property.getCategory())
+                .permission(property.getPermission())
+                .auctioneerPrice(property.getAuctioneerPrice())
+                .reservePrice(property.getReservePrice())
+                .notification("PROPERTY")
+                .build()));
+        log.error("send noti to admin");
+      }
+
     return PropertyResponse.builder()
             .propertyDTO(mapper.toDTO(property, imageRepository))
             .images(images)

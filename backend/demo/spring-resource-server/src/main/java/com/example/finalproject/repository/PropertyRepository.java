@@ -45,8 +45,8 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
   List<Property> findAllByPermission(String permission);
   @Query("select count(p.id) from Property p where p.permission = 'ACCEPTED'")
   Integer countAcceptedProperty();
-  @Query("select p from Property p left join Bid b on b.property.id = p.id " +
-          "where p.owner.email = :email and (p.permission in ('ACCEPTED', 'REFUSED') or p.auctioneerPrice <> p.reservePrice)")
+  @Query("select p from Property p left join Bid b on b.property.id = p.id and b.id is null " +
+          "where p.owner.email = :email and (p.permission in ('ACCEPTED', 'REFUSED') or p.auctioneerPrice <> p.reservePrice) ")
   List<Property> findNotificationByUser(@Param("email") String email);
 
   @Query("select p.name as name, p.id as id, p.quantity as quantity, p.description as description, p.reservePrice as reservePrice, " +

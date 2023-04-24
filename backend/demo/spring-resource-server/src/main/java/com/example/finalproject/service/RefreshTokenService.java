@@ -23,6 +23,7 @@ public class RefreshTokenService {
   @Autowired
   private UserRepository userRepository;
 
+
   public Optional<RefreshToken> findByToken(String token) {
     return refreshTokenRepository.findByToken(token);
   }
@@ -42,6 +43,7 @@ public class RefreshTokenService {
 
   public RefreshToken verifyExpiration(RefreshToken token) {
     if(token.getExpiryDate().isBefore(Instant.now())) {
+      userRepository.findByEmail(token.getUser().getEmail()).ifPresent(u -> u.setOnline(false));
       refreshTokenRepository.delete(token);
       throw new TokenRefreshException(token.getToken(), "Refresh token was expired. Please make a new signin request");
     }
@@ -51,5 +53,9 @@ public class RefreshTokenService {
   @Transactional
   public void deleteByUserId(Long userId) {
     refreshTokenRepository.deleteByUser(userRepository.findById(userId).get());
+  }
+
+  public void deleteByEmail(String email) {
+    refreshTokenRepository.deleteByUser_Email(email);
   }
 }

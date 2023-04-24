@@ -3,6 +3,7 @@ package com.example.finalproject;
 import com.example.finalproject.ENUM.EROLE;
 import com.example.finalproject.ENUM.STATUS_MESSAGE;
 import com.example.finalproject.entity.Message;
+import com.example.finalproject.entity.User;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.projection.Attendee;
 import com.example.finalproject.repository.BidRepository;
@@ -58,4 +59,9 @@ public class UserTest {
 
   }
 
+  @Test
+  public void adminIsOnlineTest() {
+    System.out.println(userRepository.findAdminOnline().stream().map(User::getId).collect(Collectors.toList()).toString());
+
+  }
 }

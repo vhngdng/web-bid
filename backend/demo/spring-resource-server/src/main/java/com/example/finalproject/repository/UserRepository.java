@@ -49,4 +49,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query("select u from User u inner join BidParticipant bp " +
           "on u.id = bp.user.id where bp.bid.id = :bidId")
   List<User> findAllUserInBid(@Param("bidId") Long bidId);
+  @Query("select u from User u inner join u.roles r where cast(r.name as string ) = 'ROLE_ADMIN' and u.isOnline = true ")
+  List<User> findAdminOnline();
 }

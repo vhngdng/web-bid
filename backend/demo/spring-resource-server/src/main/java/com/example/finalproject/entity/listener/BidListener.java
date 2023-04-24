@@ -2,6 +2,7 @@ package com.example.finalproject.entity.listener;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.request.ChangeBidStatusRequest;
+import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
 import jakarta.persistence.PreUpdate;
 import lombok.extern.slf4j.Slf4j;
@@ -50,5 +51,10 @@ public class BidListener {
     }else if(bid.getStatus().equalsIgnoreCase("SUCCESS")) {
       bid.setFinishTime(bid.getLastModifiedDate());
     }
+  }
+
+  @PostPersist
+  private void sendNoti(Bid bid) {
+    simpMessagingTemplate.convertAndSendToUser(bid.getProperty().getOwner().getEmail(), "private", "test" );
   }
 }

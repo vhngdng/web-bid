@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useGetAllPropertyByUserLoginQuery } from '~/app/service/property.service';
 import Loader from '~/Loader';
 import { imageDefault } from '~/assets';
@@ -10,6 +10,7 @@ import { DOMAIN_URL } from '~/CONST/const';
 import { useLocation, useNavigate } from 'react-router-dom';
 import DeletePropertyModal from '~/component/layouts/Default/DeletePropertyModal';
 import { NumericFormat } from 'react-number-format';
+import { NotificationContext } from '~/context/NotificationProvider';
 function PropertyList() {
     // eslint-disable-next-line no-unused-vars
     const { data, isLoading, refetch } = useGetAllPropertyByUserLoginQuery();
@@ -19,6 +20,7 @@ function PropertyList() {
     const [idDelete, setIdDelete] = useState();
     // eslint-disable-next-line no-unused-vars
     const [propertyToUpdate, setPropertyToUpdate] = useState();
+    const { newNoti } = useContext(NotificationContext);
     // const ref = useRef(null);
     const navigate = useNavigate();
     console.log(data);
@@ -27,7 +29,23 @@ function PropertyList() {
             setProperties(data);
         }
     }, [data]);
-
+    useEffect(() => {
+        if (!!properties && newNoti.notification === 'PROPERTY') {
+            const newProperties = properties;
+            newProperties.map((property) => {
+                if (property.id === newNoti.id) {
+                    return {
+                        ...property,
+                        auctioneerPrice: newNoti.auctioneerPrice,
+                        permission: newNoti.permission,
+                        reservePrice: newNoti.reservePrice,
+                    };
+                }
+                return property;
+            });
+            setProperties(newProperties);
+        }
+    }, [newNoti, properties]);
     useEffect(() => {
         refetch();
     }, [useLocation()]);

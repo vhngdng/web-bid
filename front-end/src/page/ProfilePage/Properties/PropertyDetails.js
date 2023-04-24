@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
 import Loader from '~/Loader';
@@ -14,6 +14,7 @@ import DeletePropertyModal from '~/component/layouts/Default/DeletePropertyModal
 import { AnimatePresence, motion } from 'framer-motion';
 import { useUpdateTypeImageMutation } from '~/app/service/image.service';
 import { customToastStyle } from '~/utils/customStyle';
+import { NotificationContext } from '~/context/NotificationProvider';
 function PropertyDetails() {
     const { propertyId } = useParams();
     const { data, isLoading, error, refetch } =
@@ -24,7 +25,7 @@ function PropertyDetails() {
     const [file, setFile] = useState(null);
     const [imageListShow, setImageListShow] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
-    const [type, setType] = useState('private');
+    const [type, setType] = useState('PRIVATE');
     const [isFixName, setIsFixName] = useState(false);
     const [isFixDescription, setIsFixDescription] = useState(false);
     const [insertPrice, setInsertPrice] = useState(false);
@@ -37,6 +38,9 @@ function PropertyDetails() {
     const [name, setName] = useState();
     // eslint-disable-next-line no-unused-vars
     const [indexImage, setIndexImage] = useState(0);
+    const { newNoti } = useContext(NotificationContext);
+    const [permission, setPermission] = useState();
+    const [auctioneerPrice, setAuctioneerPrice] = useState();
     // eslint-disable-next-line no-unused-vars
     const navigate = useNavigate();
 
@@ -45,8 +49,26 @@ function PropertyDetails() {
             setImages([...data.images]);
             setName(data.property.name);
             setReservePrice(data.property.reservePrice);
+            setDescription(data.property.description);
+            setPermission(data.property.permission);
+            setAuctioneerPrice(data.property.auctioneerPrice);
         }
     }, [data]);
+    useEffect(() => {
+        console.log('noti context', newNoti);
+        if (
+            newNoti.notification === 'PROPERTY' &&
+            newNoti.id === data.property.id
+        ) {
+            console.log('context run');
+            permission !== newNoti.permission &&
+                setPermission(newNoti.permission);
+            auctioneerPrice !== newNoti.auctioneerPrice &&
+                setAuctioneerPrice(newNoti.auctioneerPrice);
+            reservePrice !== newNoti.reservePrice &&
+                setReservePrice(newNoti.auctioneerPrice);
+        }
+    }, [newNoti]);
     useEffect(() => {
         if (
             !!data &&
@@ -290,14 +312,7 @@ function PropertyDetails() {
                                             id="exampleFormControlTextarea1"
                                             rows="4"
                                             placeholder={name}
-                                            defaultValue={
-                                                !!data &&
-                                                !!data.property.description
-                                                    ? data.property.description
-                                                    : description
-                                                    ? description
-                                                    : 'No Description'
-                                            }
+                                            defaultValue={description}
                                             onChange={(e) =>
                                                 setDescription(e.target.value)
                                             }
@@ -331,9 +346,7 @@ function PropertyDetails() {
                                     </div>
                                 ) : (
                                     <p className="text-lg text-center text-black">
-                                        {!!data.property.description
-                                            ? data.property.description
-                                            : !!description
+                                        {!!description
                                             ? description
                                             : 'No description'}
                                     </p>
@@ -341,7 +354,7 @@ function PropertyDetails() {
                             </div>
                         </div>
                         <div className="w-full lg:w-1/2 px-4">
-                            <div className="max-w-4xl mb-6">
+                            <div className="max-w-4xl mb-6 space-y-6">
                                 <span className="text-xl text-gray-600 tracking-wider">
                                     {!!data && `# ${data.property.id}`}
                                 </span>
@@ -399,11 +412,10 @@ function PropertyDetails() {
                                     {!!data &&
                                         `${data.property.owner.username}`}
                                 </h2>
-                                {!!data.property.auctioneerPrice && (
-                                    <div className="flex my-4">
+                                {!!auctioneerPrice && (
+                                    <div className="flex w-1/2 justify-between">
                                         <div className="flex justify-center items-center text-gray-600 font-sans text-lg mr-16">
-                                            (auction price){' '}
-                                            {data.property.auctioneerPrice}
+                                            (auction price) {auctioneerPrice}
                                         </div>
                                         <div
                                             onClick={handleAcceptPrice}
@@ -413,33 +425,51 @@ function PropertyDetails() {
                                         </div>
                                     </div>
                                 )}
-                                <div className="flex items-center mb-6">
-                                    {insertPrice ? (
-                                        <div>
-                                            <span>$ </span>
-                                            <input
-                                                className="w-28 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl"
-                                                autoFocus
-                                                type="text"
-                                                defaultValue={reservePrice}
-                                                onChange={(e) =>
-                                                    setReservePrice(
-                                                        e.target.value,
-                                                    )
+                                <div className="mb-6 flex justify-between items-center w-1/2">
+                                    <div className=" ">
+                                        {insertPrice &&
+                                        permission !== 'ACCEPTED' ? (
+                                            <div>
+                                                <span>$ </span>
+                                                <input
+                                                    className="w-28 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl"
+                                                    autoFocus
+                                                    type="text"
+                                                    defaultValue={reservePrice}
+                                                    onChange={(e) =>
+                                                        setReservePrice(
+                                                            e.target.value,
+                                                        )
+                                                    }
+                                                    // onMouseDown={(e) =>
+                                                    //     handleMouseClose(e)
+                                                    // }
+                                                />
+                                            </div>
+                                        ) : (
+                                            <span
+                                                onClick={() =>
+                                                    setInsertPrice(true)
                                                 }
-                                            />
-                                        </div>
-                                    ) : (
-                                        <span
-                                            onClick={() => setInsertPrice(true)}
-                                            className="cursor-pointer title-font font-medium text-2xl text-gray-900 hover:text-red-rgb hover:scale-90"
+                                                className="cursor-pointer title-font font-medium text-2xl text-gray-900 hover:text-red-rgb hover:scale-90"
+                                            >
+                                                ${' '}
+                                                {!!reservePrice
+                                                    ? reservePrice
+                                                    : 'No price'}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <div
+                                            onClick={() =>
+                                                setInsertPrice((prev) => !prev)
+                                            }
+                                            className="cursor-pointer block px-2 leading-8 font-heading font-medium tracking-tighter text-lg text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
                                         >
-                                            ${' '}
-                                            {!!reservePrice
-                                                ? reservePrice
-                                                : 'No price'}
-                                        </span>
-                                    )}
+                                            Change Price
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -467,7 +497,7 @@ function PropertyDetails() {
                                 </h4>
                                 <div
                                     className={`text-2xl ${
-                                        data.property.permission === 'ACCEPTED'
+                                        permission === 'ACCEPTED'
                                             ? 'text-green-500'
                                             : data.property.permission ===
                                               'REFUSED'
@@ -475,7 +505,7 @@ function PropertyDetails() {
                                             : 'text-orange-700'
                                     }`}
                                 >
-                                    {data.property.permission}
+                                    {permission}
                                 </div>
                             </div>
                             <div className="mb-10">
@@ -485,14 +515,15 @@ function PropertyDetails() {
                                 <div>
                                     <div>
                                         <input
+                                            id="public"
                                             type="radio"
                                             value="PUBLIC"
-                                            checked={type === 'public'}
-                                            onChange={() => setType('public')}
+                                            checked={type === 'PUBLIC'}
+                                            onChange={() => setType('PUBLIC')}
                                         />
                                         <label
                                             className="px-4 py-4 text-xl"
-                                            htmlFor="public"
+                                            htmlFor="PUBLIC"
                                         >
                                             Public
                                         </label>
@@ -503,14 +534,15 @@ function PropertyDetails() {
                                     </div>
                                     <div>
                                         <input
+                                            id="private"
                                             type="radio"
                                             value="PRIVATE"
-                                            checked={type === 'private'}
-                                            onChange={() => setType('private')}
+                                            checked={type === 'PRIVATE'}
+                                            onChange={() => setType('PRIVATE')}
                                         />
                                         <label
                                             className="px-4 py-4 text-xl"
-                                            htmlFor="private"
+                                            htmlFor="PRIVATE"
                                         >
                                             Private
                                         </label>

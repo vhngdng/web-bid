@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-extra-boolean-cast */
 import { Pagination } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DOMAIN_URL } from '~/CONST/const';
 import Loader from '~/Loader';
 import { useGetAllPropertyQuery } from '~/app/service/property.service';
 import { imageDefault } from '~/assets';
+import { NotificationContext } from '~/context/NotificationProvider';
 
 function AdminPropertyList() {
     const [url, setUrl] = useState(null);
@@ -16,6 +17,7 @@ function AdminPropertyList() {
     const [page, setPage] = useState(1);
     const navigate = useNavigate();
     const location = useLocation();
+    const { newNoti } = useContext(NotificationContext);
     useEffect(() => {
         if (!!data && data.content.length > 0) {
             setProperties([...data.content]);
@@ -25,8 +27,25 @@ function AdminPropertyList() {
         if (page > 1) setUrl(`page=${page - 1}`);
     }, [page]);
     useEffect(() => {
-        refetch();
-    }, [location]);
+        if (!!properties && newNoti.notification === 'PROPERTY') {
+            const newProperties = properties;
+            newProperties.map((property) => {
+                if (property.id === newNoti.id) {
+                    return {
+                        ...property,
+                        auctioneerPrice: newNoti.auctioneerPrice,
+                        permission: newNoti.permission,
+                        reservePrice: newNoti.reservePrice,
+                    };
+                }
+                return property;
+            });
+            setProperties(newProperties);
+        }
+    }, [newNoti, properties]);
+    // useEffect(() => {
+    //     refetch();
+    // }, [location]);
     if (isLoading) return <Loader />;
     const handleOpenModal = (property) => {
         navigate(`${property.id}`);
@@ -35,7 +54,7 @@ function AdminPropertyList() {
 
     return (
         <>
-            <div className="space-y-10">
+            <div className="space-y-10 mt-10">
                 <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                     <div className="flex justify-between">
                         <h2 className="text-center w-96 text-2xl font-bold tracking-tight text-gray-900">
@@ -96,7 +115,7 @@ function AdminPropertyList() {
                                     key={index}
                                     className="group relative"
                                 >
-                                    <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-gray-200/20 lg:aspect-none group-hover:opacity-75 lg:h-80">
+                                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md group-hover:opacity-75 shadow-2xl">
                                         <img
                                             src={
                                                 !!property.imageId
@@ -104,7 +123,7 @@ function AdminPropertyList() {
                                                     : `${imageDefault.logo.default}`
                                             }
                                             alt={property.name}
-                                            className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                                            className="w-full object-cover object-center lg:w-full"
                                         />
                                     </div>
                                     <div className="mt-4 flex justify-between max-w-xs break-words">
@@ -141,7 +160,7 @@ function AdminPropertyList() {
                                                         : property.permission ===
                                                           'REFUSED'
                                                         ? 'text-red-700'
-                                                        : 'text-yellow-700'
+                                                        : 'text-orange-700'
                                                 }`}
                                             >
                                                 {!!property.permission

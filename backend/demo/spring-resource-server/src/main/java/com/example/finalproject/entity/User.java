@@ -53,6 +53,8 @@ public class User {
   @Column(name = "enabled", nullable = false, columnDefinition = "BOOLEAN DEFAULT true")
   private boolean enabled = true;
 
+  @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+  private boolean isOnline;
   @Enumerated(EnumType.STRING)
   private Provider provider;
 

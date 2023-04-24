@@ -13,9 +13,7 @@ import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.RoleRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.SignUpRequest;
-import com.example.finalproject.response.AuthResponse;
 import com.example.finalproject.response.Notification;
-import com.example.finalproject.security.CustomUserDetails;
 import com.example.finalproject.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -100,5 +99,14 @@ public class UserService {
             .paymentNotifications(paymentService.getAllPaymentBidFinish())
             .propertyNotifications(mapper.toListPropertyNotification(propertyRepository.findNotificationByUser(SecurityContextHolder.getContext().getAuthentication().getName())))
             .build();
+  }
+
+  public void handleLogInLogOut(String email, String type) {
+    User user = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("User with email: " + email + "is not found"));
+    user.setOnline(type.equalsIgnoreCase("online"));
+  }
+
+  public List<User> findAdminOnline() {
+    return userRepository.findAdminOnline();
   }
 }

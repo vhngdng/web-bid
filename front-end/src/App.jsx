@@ -37,7 +37,6 @@ import Search from './page/HomePage/Search';
 
 function App() {
     const { auth } = useSelector((state) => state.auth);
-    console.log('test');
     return (
         <>
             <Routes>

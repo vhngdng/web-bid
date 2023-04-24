@@ -1,6 +1,6 @@
 /* eslint-disable no-extra-boolean-cast */
 import Modal from 'react-modal';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { customToastStyle } from '~/utils/customStyle';
 import {
@@ -13,6 +13,7 @@ import { liVariant, sidebar } from '~/animation';
 import { imageDefault } from '~/assets';
 import { DOMAIN_URL } from '~/CONST/const';
 import { ToastContainer, toast } from 'react-toastify';
+import { NotificationContext } from '~/context/NotificationProvider';
 Modal.setAppElement('#root');
 
 const style = {
@@ -37,12 +38,14 @@ function AdminPropertyDetails() {
     const { data, isLoading, isSuccess } =
         useGetAdminDetailPropertyQuery(propertyId);
     const [permission, setPermission] = useState();
+    const [reservePrice, setReservePrice] = useState();
     const [images, setImages] = useState([]);
     const [auctioneerPrice, setAuctioneerPrice] = useState(0);
     const [isNotAcceptedReservePrice, setIsNotAcceptedReservePrice] =
         useState(false);
     const [width, setWidth] = useState(0);
     const [x, setX] = useState(0);
+    const { newNoti } = useContext(NotificationContext);
     const navigate = useNavigate();
     const ref = useRef(null);
     const inputRef = useRef();
@@ -76,6 +79,8 @@ function AdminPropertyDetails() {
             !!data.property.reservePrice &&
             setAuctioneerPrice(data.property.auctioneerPrice);
 
+        isSuccess && setReservePrice(data.property.reservePrice);
+
         isSuccess && !!data.images > 0 && setImages([...data.images]);
     }, [data]);
     useEffect(() => {
@@ -83,6 +88,22 @@ function AdminPropertyDetails() {
             setWidth(ref.current.scrollWidth - ref.current.offsetWidth);
         }
     }, [images]);
+
+    useEffect(() => {
+        console.log('noti context', newNoti);
+        if (
+            newNoti.notification === 'PROPERTY' &&
+            newNoti.id === data.property.id
+        ) {
+            console.log('context run');
+            permission !== newNoti.permission &&
+                setPermission(newNoti.permission);
+            auctioneerPrice !== newNoti.auctioneerPrice &&
+                setAuctioneerPrice(newNoti.auctioneerPrice);
+            reservePrice !== newNoti.reservePrice &&
+                setReservePrice(newNoti.reservePrice);
+        }
+    }, [newNoti]);
 
     if (isLoading) return <Loader />;
 
@@ -131,7 +152,7 @@ function AdminPropertyDetails() {
                 propertyId,
                 auctioneerPrice: !!auctioneerPrice
                     ? auctioneerPrice
-                    : data.property.reservePrice,
+                    : reservePrice,
                 permission,
             });
             console.log('res', res);
@@ -150,6 +171,7 @@ function AdminPropertyDetails() {
         navigate('/admin/properties');
     };
     console.log(data);
+    console.log('new noti console bottom', newNoti);
     const handleAccept = () => {};
     return (
         <AnimatePresence mode="wait" initial="false">
@@ -286,12 +308,10 @@ function AdminPropertyDetails() {
                                                     >
                                                         REFUSE
                                                     </option>
-                                                    {!!data.property
-                                                        .reservePrice &&
+                                                    {!!reservePrice &&
                                                         data.property
                                                             .auctioneerPrice ===
-                                                            data.property
-                                                                .reservePrice && (
+                                                            reservePrice && (
                                                             <option
                                                                 className="text-green-700"
                                                                 value="ACCEPTED"
@@ -351,6 +371,7 @@ function AdminPropertyDetails() {
                                         {data.property.auctioneerPrice}
                                     </div>
                                 )}
+
                                 <div className="" ref={inputRef}>
                                     {isNotAcceptedReservePrice ? (
                                         <div>
@@ -377,11 +398,14 @@ function AdminPropertyDetails() {
                                             className="cursor-pointer title-font font-medium text-2xl text-gray-900"
                                         >
                                             $
-                                            {!!data.property.reservePrice
-                                                ? data.property.reservePrice
+                                            {!!reservePrice
+                                                ? reservePrice
                                                 : 'No price'}
                                         </span>
                                     )}
+                                    <div className="font-sans ">
+                                        Quantity: {data.property.quantity}
+                                    </div>
                                     <div className="flex justify-center items-center space-x-2">
                                         <button
                                             onClick={handleSubmit}
