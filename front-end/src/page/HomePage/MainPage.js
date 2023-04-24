@@ -31,11 +31,13 @@ function MainPage() {
                 <meta name="description" content="Home" />
             </Helmet>
             <div className="w-full inline-block space-y-20">
-                {/* <div className="h-75vh space-y-10">
-                    <Tutorial />
-                </div> */}
-                <div className="flex justify-center items-center">
-                    <div className="w-4/5 mt-10">
+                <div className="h-75vh space-y-10 flex justify-center items-center">
+                    <div className="text-4xl font-extrabold">Welcome</div>
+                </div>
+                {/* <div className="w-screen h-screen">Welcome</div> */}
+
+                <div className="flex justify-center items-center ">
+                    <div className="w-4/5 mt-20">
                         <div className="space-y-10">
                             {top5Earliest.length > 0 && (
                                 <Top5Earliest top5Earliest={top5Earliest} />

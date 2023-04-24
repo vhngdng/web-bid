@@ -97,12 +97,12 @@ function ListBidRoom({ isAdmin }) {
                             Refresh
                         </button>
                     </div>
-                    <div className="w-fit rounded-lg shadow-lg bg-gray-50/10 ">
+                    <div className="w-fit rounded-lg shadow-lg bg-gray-50/50">
                         <section className="rounded-lg">
                             <AnimatePresence mode="wait" initial="false">
-                                <table className="w-full table-auto ">
+                                <table className="w-full table-auto text-black">
                                     <thead>
-                                        <tr className="bg-green-rgb text-black uppercase text-sm leading-normal ">
+                                        <tr className="bg-green-rgb uppercase text-sm leading-normal ">
                                             <th className="py-3 px-6 textLeft">
                                                 <div className="flex items-center justify-center space-x-2">
                                                     <div>
@@ -496,16 +496,16 @@ function ListBidRoom({ isAdmin }) {
                                             </th>
                                         </tr>
                                     </thead>
-                                    <tbody className="text-gray-700 text-sm fontLight">
+                                    <tbody className="text-gray-700 text-sm font-light">
                                         {data &&
                                             data.content &&
                                             data.content.map((bid, index) => (
                                                 <motion.tr
                                                     key={index}
-                                                    className={`w-full cursor-pointer border-gray-300 hover:bg-gray-100 shadow-md 
+                                                    className={`text-black w-full cursor-pointer border-gray-300 hover:bg-gray-100/90 shadow-md 
                                                         ${
                                                             (index + 1) % 2 &&
-                                                            'bg-gray-100/25'
+                                                            'bg-gray-300/50'
                                                         }`}
                                                     onClick={() =>
                                                         handleEnterRoom(bid.id)

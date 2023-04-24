@@ -251,7 +251,7 @@ function BidRoomInformation({
                                                 logInEmail !==
                                                     bidRoomInfo.auctioneer.email
                                                     ? 'cursor-pointer bg-blue-500 hover:bg-blue-600'
-                                                    : 'bg-gray-300 hover:bg-gray-500 rounded focus:outline-none pointer-event-none'
+                                                    : 'bg-gray-400 hover:bg-gray-600 rounded focus:outline-none pointer-event-none'
                                             }
                                             `}
                                 >
