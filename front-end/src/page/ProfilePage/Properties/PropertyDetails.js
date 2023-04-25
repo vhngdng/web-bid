@@ -28,6 +28,7 @@ function PropertyDetails() {
     const [type, setType] = useState('PRIVATE');
     const [isFixName, setIsFixName] = useState(false);
     const [isFixDescription, setIsFixDescription] = useState(false);
+    const [isFixQuantity, setIsFixQuantity] = useState(false);
     const [insertPrice, setInsertPrice] = useState(false);
     const [reservePrice, setReservePrice] = useState(0);
     const [quantity, setQuantity] = useState(1);
@@ -304,11 +305,11 @@ function PropertyDetails() {
                                 </div>
                                 {isFixDescription ? (
                                     <div
-                                        className="relative mb-3 xl:w-96"
+                                        className="relative mb-3 w-full"
                                         data-te-input-wrapper-init
                                     >
                                         <textarea
-                                            className="peer block min-h-[auto] w-full rounded border-0 bg-gray-400/20 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                            className="peer block min-h-[auto] w-full rounded border-0 bg-gray-200/20 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                             id="exampleFormControlTextarea1"
                                             rows="4"
                                             placeholder={name}
@@ -317,7 +318,7 @@ function PropertyDetails() {
                                                 setDescription(e.target.value)
                                             }
                                         ></textarea>
-                                        <div className="flex ">
+                                        <div className="flex justify-end">
                                             <div className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-blue-600 active:shadow-none shadow-lg bg-gradient-to-tr from-blue-600 to-blue-500 border-blue-700 text-white">
                                                 <span className="absolute w-0 h-0 transition-all duration-300 ease-out bg-white rounded-full group-hover:w-32 group-hover:h-32 opacity-10"></span>
                                                 <span
@@ -362,11 +363,11 @@ function PropertyDetails() {
                                     {isFixName ? (
                                         <>
                                             <div
-                                                className="relative mb-3 xl:w-96"
+                                                className="relative mb-3 w-full"
                                                 data-te-input-wrapper-init
                                             >
                                                 <textarea
-                                                    className="peer block min-h-[auto] w-full rounded border-0 bg-gray-400/20 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                                                    className="peer block min-h-[auto] w-1/2 rounded border-0 bg-gray-200/20 px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                                                     id="exampleFormControlTextarea1"
                                                     rows="4"
                                                     placeholder={name}
@@ -374,7 +375,7 @@ function PropertyDetails() {
                                                     onChange={(e) =>
                                                         setName(e.target.value)
                                                     }
-                                                ></textarea>
+                                                />
                                             </div>
                                             <div className="flex ">
                                                 <div className="rounded relative inline-flex group items-center justify-center px-3.5 py-2 m-1 cursor-pointer border-b-4 border-l-2 active:border-blue-600 active:shadow-none shadow-lg bg-gradient-to-tr from-blue-600 to-blue-500 border-blue-700 text-white">
@@ -412,20 +413,25 @@ function PropertyDetails() {
                                     {!!data &&
                                         `${data.property.owner.username}`}
                                 </h2>
+                                <h4 className="mb-3 font-heading text-2xl font-medium">
+                                    Price:
+                                </h4>
                                 {!!auctioneerPrice && (
                                     <div className="flex w-1/2 justify-between">
-                                        <div className="flex justify-center items-center text-gray-600 font-sans text-lg mr-16">
+                                        <div className="flex justify-center items-center text-gray-600 font-sans text-lg">
                                             (auction price) {auctioneerPrice}
                                         </div>
-                                        <div
-                                            onClick={handleAcceptPrice}
-                                            className="cursor-pointer block px-2 leading-8 font-heading font-medium tracking-tighter text-lg text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
-                                        >
-                                            Accept
-                                        </div>
+                                        {permission !== 'ACCEPTED' && (
+                                            <div
+                                                onClick={handleAcceptPrice}
+                                                className="cursor-pointer block px-2 leading-8 font-heading font-medium tracking-tighter text-lg text-white text-center bg-green-500 focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 hover:bg-green-600 rounded-xl"
+                                            >
+                                                Accept
+                                            </div>
+                                        )}
                                     </div>
                                 )}
-                                <div className="mb-6 flex justify-between items-center w-1/2">
+                                <div className="mb-6 flex justify-between items-center w-2/3">
                                     <div className=" ">
                                         {insertPrice &&
                                         permission !== 'ACCEPTED' ? (
@@ -461,35 +467,59 @@ function PropertyDetails() {
                                         )}
                                     </div>
                                     <div>
-                                        <div
-                                            onClick={() =>
-                                                setInsertPrice((prev) => !prev)
-                                            }
-                                            className="cursor-pointer block px-2 leading-8 font-heading font-medium tracking-tighter text-lg text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
-                                        >
-                                            Change Price
-                                        </div>
+                                        {permission !== 'ACCEPTED' && (
+                                            <div
+                                                onClick={() =>
+                                                    setInsertPrice(
+                                                        (prev) => !prev,
+                                                    )
+                                                }
+                                                className="cursor-pointer block px-2 leading-8 font-heading font-medium tracking-tighter text-lg text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
+                                            >
+                                                Change
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
 
                             <div className="mb-10">
-                                <h4 className="mb-3 font-heading font-medium">
+                                <h4 className="mb-3 font-heading text-2xl font-medium">
                                     Qty:
                                 </h4>
-                                <input
-                                    className="w-24 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl"
-                                    type="text"
-                                    defaultValue={quantity}
-                                    placeholder={
-                                        !!data.property.quantity
-                                            ? data.property.quantity
-                                            : '1'
-                                    }
-                                    onChange={(e) =>
-                                        setQuantity(e.target.value)
-                                    }
-                                />
+                                <div className="flex justify-between items-center w-2/3">
+                                    {!isFixQuantity ? (
+                                        <div className="text-2xl font-semibold">
+                                            {quantity}
+                                        </div>
+                                    ) : (
+                                        <input
+                                            className="w-24 px-3 py-2 text-center bg-white border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl"
+                                            type="text"
+                                            defaultValue={quantity}
+                                            placeholder={
+                                                !!data.property.quantity
+                                                    ? data.property.quantity
+                                                    : '1'
+                                            }
+                                            onChange={(e) =>
+                                                setQuantity(e.target.value)
+                                            }
+                                        />
+                                    )}
+                                    {permission !== 'ACCEPTED' && (
+                                        <div
+                                            onClick={() =>
+                                                setIsFixQuantity(
+                                                    (prev) => !prev,
+                                                )
+                                            }
+                                            className="cursor-pointer block px-2 leading-8 font-heading font-medium tracking-tighter text-lg text-white text-center bg-blue-500 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 hover:bg-blue-600 rounded-xl"
+                                        >
+                                            Change
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                             <div className="mb-10">
                                 <h4 className="mb-3 font-heading font-medium">

@@ -98,6 +98,33 @@ function DetailProperty() {
                             </span>
                         </div>
                         <div
+                            className={`text-2xl ${
+                                ['PROCESSING', 'ACTIVE'].includes(
+                                    data.property.bidStatus,
+                                )
+                                    ? 'text-lime-400 hover:text-lime-600'
+                                    : ''
+                            }`}
+                        >
+                            {data.property.bidStatus === 'ACTIVE'
+                                ? 'Can join the room to purchase now'
+                                : data.property.bidStatus === 'PROCESSING'
+                                ? `The room is in progress #${data.property.bidId}`
+                                : 'Can not purchase this item now'}
+                        </div>
+                        <button
+                            className={`text-black rounded-lg text-sm px-5 py-2.5 text-center mb-2 font-medium shadow-lg dark:shadow-lg focus:outline-none ${
+                                ['PROCESSING', 'ACTIVE'].includes(
+                                    data.property.bidStatus,
+                                )
+                                    ? 'bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-blue-300 dark:focus:ring-blue-800 shadow-blue-500/50 dark:shadow-blue-800/80'
+                                    : 'bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-gray-300 dark:focus:ring-gray-800 shadow-gray-500/50 dark:shadow-gray-800/80'
+                            }`}
+                            disabled={
+                                !['PROCESSING', 'ACTIVE'].includes(
+                                    data.property.bidStatus,
+                                )
+                            }
                             onClick={
                                 ['PROCESSING', 'ACTIVE'].includes(
                                     data.property.bidStatus,
@@ -108,20 +135,9 @@ function DetailProperty() {
                                           )
                                     : null
                             }
-                            className={`text-2xl ${
-                                ['PROCESSING', 'ACTIVE'].includes(
-                                    data.property.bidStatus,
-                                )
-                                    ? 'cursor-pointer text-blue-400 hover:text-blue-600'
-                                    : ''
-                            }`}
                         >
-                            {data.property.bidStatus === 'ACTIVE'
-                                ? 'Can join the room to purchase now'
-                                : data.property.bidStatus === 'PROCESSING'
-                                ? `The room is in progress #${data.property.bidId}`
-                                : 'Can not purchase this item now'}
-                        </div>
+                            Enter Room
+                        </button>
                         <div className="flex justify-between items-center ">
                             <p>Reserve Price</p>
                             <p className="min-w-1/2 text-start">

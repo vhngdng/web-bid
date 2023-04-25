@@ -35,9 +35,9 @@ function Search() {
     console.log(keyword);
     console.log(searchParams.get('page'));
     return (
-        <div className="w-70vw min-h-75vh flex justify-center space-x-5 mx-10 my-10 ">
+        <div className="w-70vw min-h-75vh flex justify-center mx-10 my-10 ">
             <div className="w-full h-full rounded-lg shadow-lg">
-                <div className="flex flex-wrap items-center space-y-2">
+                <div className="flex flex-wrap py-5">
                     {!!data &&
                         data.content.map((result, index) => (
                             <div key={index} className="py-4">
@@ -46,7 +46,7 @@ function Search() {
                                         onClick={() =>
                                             navigate(`/bid-room/${result.id}`)
                                         }
-                                        className="cursor-pointer w-15vw h-45vh inline-block mx-5 rounded-lg shadow-lg"
+                                        className="cursor-pointer w-15vw h-50vh inline-block mx-5 rounded-lg shadow-lg"
                                     >
                                         <div className="w-full h-1/2 my-5">
                                             <img
@@ -65,11 +65,15 @@ function Search() {
                                         <div className="h-1/2 mx-1 px-2">
                                             <div className="flex justify-between items-center">
                                                 <div>
-                                                    <span>Bid Id: </span>
+                                                    <span className="text-red-400">
+                                                        Bid Id:{' '}
+                                                    </span>
                                                     <span>{result.id}</span>
                                                 </div>
                                                 <div>
-                                                    <span>Property Id: </span>
+                                                    <span className="text-teal-700">
+                                                        Property Id:{' '}
+                                                    </span>
                                                     <span>
                                                         {result.property.id}
                                                     </span>
@@ -119,7 +123,7 @@ function Search() {
                                                 `/list-property/${result.id}`,
                                             )
                                         }
-                                        className="cursor-pointer w-15vw h-45vh inline-block mx-5 rounded-lg shadow-lg"
+                                        className="cursor-pointer w-15vw h-50vh inline-block mx-5 rounded-lg shadow-lg"
                                     >
                                         <div className="w-full h-1/2 my-5">
                                             <img
@@ -135,9 +139,11 @@ function Search() {
                                         </div>
                                         <div className="h-1/2 mx-1 px-2">
                                             <div className="flex justify-between items-center">
-                                                <div>
-                                                    <span>Property</span>
-                                                    <span>{result.name}</span>
+                                                <div className="">
+                                                    <span>Property: </span>
+                                                    <span className="font-sans">
+                                                        {result.name}
+                                                    </span>
                                                 </div>
                                                 <div>
                                                     <span>
@@ -147,8 +153,8 @@ function Search() {
                                                 </div>
                                             </div>
                                             <div>
-                                                <span className="">
-                                                    Id:{'  '}
+                                                <span className="text-teal-700">
+                                                    Property Id:{'  '}
                                                 </span>
                                                 <span className="font-xl">
                                                     {result.id}
@@ -176,7 +182,7 @@ function Search() {
                                                 />
                                             </div>
                                             <div className="flex items-center">
-                                                <div className="h-12 w-12 px-2">
+                                                <div className="h-12 w-12 px-2 flex justify-center items-center">
                                                     <img
                                                         className="object-cover w-full rounded-full"
                                                         src={
@@ -191,7 +197,7 @@ function Search() {
                                                         }
                                                     />
                                                 </div>
-                                                <span className="">
+                                                <span className="flex justify-center items-center">
                                                     {result.owner.name}
                                                 </span>
                                             </div>

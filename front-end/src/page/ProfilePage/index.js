@@ -25,7 +25,10 @@ function ProfilePage() {
             setSelectSidebar(3);
         } else if (location.pathname.includes('property-registration')) {
             setSelectSidebar(2);
-        } else if (location.pathname.includes('property-list')) {
+        } else if (
+            location.pathname.includes('property-list') ||
+            location.pathname.includes('propertyDetails')
+        ) {
             setSelectSidebar(4);
         } else {
             setSelectSidebar(1);

@@ -6,11 +6,9 @@ function BidRoom() {
 
     return (
         <>
-            <div className="w-fit rounded-lg mx-auto font-mono mb-8  ">
-                <div className="w-fit max-h-full ">
-                    <div className="w-fit rounded-lg ">
-                        <ListBidRoom />
-                    </div>
+            <div className="rounded-lg mb-8">
+                <div className="max-h-full w-70vw">
+                    <ListBidRoom />
                 </div>
             </div>
         </>

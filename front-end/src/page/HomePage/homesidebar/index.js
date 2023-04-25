@@ -56,7 +56,7 @@ function HomeSidebar() {
                     <div className="h-full">
                         <Sidebar
                             className="relative h-full"
-                            collapsedWidth="40px"
+                            collapsedWidth="30px"
                             defaultCollapsed={true}
                             transitionDuration={1000}
                             backgroundColor="rgb(255,255,255,0.3)"
@@ -144,7 +144,7 @@ function HomeSidebar() {
                             )}
                             <main
                                 style={{ padding: 10 }}
-                                className="absolute top-1/2 right-0 pr-0"
+                                className="absolute top-1/2 right-0"
                             >
                                 <div>
                                     <motion.img
