@@ -22,10 +22,10 @@ function BidDetail() {
     return (
         <>
             {!!bidDetail && (
-                <div className="w-screen min-h-75vh flex justify-center font-serif">
+                <div className="w-screen min-h-75vh flex justify-center font-serif h-full box-border">
                     <div className="w-3/4 my-6 space-y-10">
                         <div className="w-full flex space-x-3">
-                            <div className="w-1/2">
+                            <div className="w-1/2 h-85vh">
                                 <img
                                     onClick={() =>
                                         navigate(
@@ -39,7 +39,7 @@ function BidDetail() {
                                               )
                                             : gaiv3
                                     }
-                                    className="cursor-pointer w-full object-cover rounded-lg shadow-2xl"
+                                    className="cursor-pointer w-full h-full object-cover rounded-lg shadow-2xl"
                                 />
                             </div>
                             <div className="w-1/2 space-y-5">

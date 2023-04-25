@@ -29,6 +29,7 @@ module.exports = withMT({
             height: {
                 '90vh': '90vh',
                 '85vh': '85vh',
+                '80vh': '80vh',
                 '75vh': '75vh',
                 '60vh': '60vh',
                 '65vh': '65vh',
