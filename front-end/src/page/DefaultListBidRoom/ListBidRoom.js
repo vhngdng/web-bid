@@ -108,7 +108,7 @@ function ListBidRoom({ isAdmin }) {
                             className="text-black bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                             onClick={() => setIsSort((prev) => !prev)}
                         >
-                            Sort by
+                            Sort
                         </button>
                         <button
                             type="button"
@@ -460,8 +460,8 @@ function ListBidRoom({ isAdmin }) {
                     <div className="rounded-lg w-full ">
                         <section className="rounded-lg">
                             <AnimatePresence mode="wait" initial="false">
-                                <div className="w-full backdrop-blur-md bg-white/30">
-                                    <div className="text-gray-700 text-sm font-light rounded-lg">
+                                <div className="w-full ">
+                                    <div className="text-gray-700 text-sm font-light rounded-lg backdrop-blur-sm bg-white/50">
                                         {data &&
                                             data.content &&
                                             data.content.map((bid, index) => (
@@ -493,7 +493,7 @@ function ListBidRoom({ isAdmin }) {
                                                         },
                                                     }}
                                                 >
-                                                    <div className="h-full w-1/3">
+                                                    <div className="h-full w-1/4">
                                                         <img
                                                             className="object-cover w-full rounded-lg shadow-2xl"
                                                             src={
@@ -519,7 +519,7 @@ function ListBidRoom({ isAdmin }) {
                                                                 className={`flex items-center justify-center h-full `}
                                                             >
                                                                 <div className="text-center">
-                                                                    <div className="font-extrabold lg:text-6xl text-4xl text-black">
+                                                                    <div className="font-extrabold lg:text-4xl text-2xl text-black">
                                                                         <span>
                                                                             {
                                                                                 bid

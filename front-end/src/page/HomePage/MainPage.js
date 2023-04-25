@@ -9,12 +9,15 @@ import { Helmet } from 'react-helmet';
 import Top5Famous from './components/Top5Famous';
 // import Tutorial from './Tutorial';
 import ListProperty from './property/ListProperty';
+import trippleArrow from '~/assets/images/triple-right-arrow.webp';
+import { useNavigate } from 'react-router-dom';
 
 function MainPage() {
     const { data, isLoading } = useGetHomeDetailsQuery();
     const [top5Earliest, setTop5Earliest] = useState([]);
     const [top5Famous, setTop5Famous] = useState([]);
     const [top5User, setTop5User] = useState([]);
+    const navigate = useNavigate();
     useEffect(() => {
         if (!!data) {
             setTop5Earliest([...data.bidEarliestTop5]);
@@ -30,31 +33,35 @@ function MainPage() {
                 <title>Auctionforfun Home</title>
                 <meta name="description" content="Home" />
             </Helmet>
-            <div className="w-full inline-block space-y-20">
-                <div className="h-75vh space-y-10 flex justify-center items-center">
+            <div className="w-full inline-block">
+                <div className="h-screen flex justify-center items-center">
                     <div className="text-4xl font-extrabold">Welcome</div>
                 </div>
-                {/* <div className="w-screen h-screen">Welcome</div> */}
-
-                <div className="flex justify-center items-center ">
-                    <div className="w-4/5 mt-20">
-                        <div className="space-y-10">
-                            {top5Earliest.length > 0 && (
-                                <Top5Earliest top5Earliest={top5Earliest} />
-                            )}
+                <div className="w-screen">
+                    <div className="w-screen mt-10">
+                        <div className="flex justify-center items-center">
+                            <div className="space-y-10 w-4/5 rounded-t-lg">
+                                {top5Earliest.length > 0 && (
+                                    <Top5Earliest top5Earliest={top5Earliest} />
+                                )}
+                            </div>
                         </div>
-                        <div className="space-y-10">
-                            <div className="my-10 mx-10">
-                                <div className="font-sans font-semibold text-2xl text-blue-rgb">
-                                    Top 5 User
+                        <div className="bg-[rgba(182,207,201,0.815)] flex justify-center items-center">
+                            <div className="w-4/5">
+                                <div className="flex items-center w-full mx-5vw py-5">
+                                    <span className="underline underline-offset-auto text-3xl">
+                                        Top 5 User
+                                    </span>
                                 </div>
                                 {top5User.length > 0 && (
                                     <Top5User top5User={top5User} />
                                 )}
                             </div>
                         </div>
-                        <div className="space-y-10 mx-10">
-                            <Top5Famous top5Famous={top5Famous} />
+                        <div className="flex justify-center items-center">
+                            <div className="w-4/5 rounded-b-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
+                                <Top5Famous top5Famous={top5Famous} />
+                            </div>
                         </div>
                     </div>
                 </div>

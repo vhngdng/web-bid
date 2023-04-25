@@ -56,10 +56,10 @@ function HomeSidebar() {
                     <div className="h-full">
                         <Sidebar
                             className="relative h-full"
-                            collapsedWidth="30px"
+                            collapsedWidth="2vw"
                             defaultCollapsed={true}
                             transitionDuration={1000}
-                            backgroundColor="rgb(255,255,255,0.3)"
+                            backgroundColor="rgba(182, 207, 201, 0.815, 0.3)"
                             width="11vw"
                         >
                             {isCollapse && (

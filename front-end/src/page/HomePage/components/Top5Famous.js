@@ -34,11 +34,11 @@ function Top5Famous({ top5Famous }) {
         setIndexImage(index);
     };
     return (
-        <>
-            <div className="font-sans text-3xl text-blue-rgb">
+        <div className="mx-5vw py-5">
+            <div className="underline underline-offset-auto text-3xl py-5">
                 Top 5 Property
             </div>
-            <div className="w-full">
+            <div className="w-full py-5">
                 <div className="inline-block w-full h-full ">
                     <div className="w-full h-60vh flex items-stretch justify-between">
                         <div className="w-3/5 ">
@@ -314,7 +314,7 @@ function Top5Famous({ top5Famous }) {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

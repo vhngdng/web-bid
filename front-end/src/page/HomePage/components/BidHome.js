@@ -12,8 +12,8 @@ function BidHome({ bid }) {
         navigate(`bid-room/${bid.id}`);
     };
     return (
-        <div className="w-96 group relative mb-8">
-            <div>
+        <div className="w-96 group relative mb-8 shadow-xl">
+            <div className="w-full px-4 py-4 bg-[rgb(182,207,201)] rounded-t-lg h-full hover:ring hover:ring-[rgb(182,207,201)] hover:ring-offset-0">
                 <div className="w-full rounded-md bg-transparent group-hover:opacity-75 shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
                     <div className="w-full h-30vh" onClick={handlenavigate}>
                         <img

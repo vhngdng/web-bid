@@ -102,7 +102,7 @@ const homeSidebarVariants = {
     open: {
         height: '100vh',
     },
-    collapsed: { height: '90%' },
+    collapsed: { height: '93vh' },
 };
 export {
     homeSidebarVariants,

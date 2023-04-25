@@ -2,29 +2,30 @@
 import React from 'react';
 import BidHome from './BidHome';
 import { useNavigate } from 'react-router-dom';
+import trippleArrow from '~/assets/images/triple-right-arrow.webp';
 function Top5Earliest({ top5Earliest }) {
     const navigate = useNavigate();
     return (
-        <section className="w-full min-h-full shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)] space-y-5 z-0">
-            <div className="flex justify-center items-center min-h-full text-4xl font-sans font-black">
-                Opening soon
+        <section className="w-full min-h-full space-y-10 z-0">
+            <div className="flex items-center w-full mx-5vw space-x-4 mt-10">
+                <span className="underline underline-offset-auto text-3xl">
+                    Opening soon
+                </span>
+                <div className="h-4 w-4 bg-transparent">
+                    <img src={trippleArrow} className="object-fill w-full" />
+                </div>
+                <div
+                    className="text-2xl text-gray-600 cursor-pointer hover:text-blue-500"
+                    onClick={() => navigate('bid-room')}
+                >
+                    See more
+                </div>
             </div>
-            <div className="w-full ">
-                <div className="flex flex-wrap justify-evenly items-strech">
+            <div className="w-full my-5">
+                <div className="flex flex-wrap justify-evenly items-strech mx-auto">
                     {top5Earliest.map((bid, key) => (
                         <BidHome bid={bid} key={key} />
                     ))}
-                </div>
-            </div>
-
-            <div className="space-y-10 h-24">
-                <div className="flex justify-center items-center ">
-                    <div
-                        onClick={() => navigate('bid-room')}
-                        className="h-fit cursor-pointer bg-gray-200/40 hover:bg-blue-400 mt-4 text-blue-400 hover:text-gray-400 rounded-full py-2 px-4 hover:shadow-2xl hover:scale-110 "
-                    >
-                        See More
-                    </div>
                 </div>
             </div>
         </section>

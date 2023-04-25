@@ -247,17 +247,19 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
     if (isLoading) return <Loader />;
     console.log('noti data', data);
     return (
-        <div className="flex justify-end items-center relative m-6 inline-flex w-1/3">
+        <div className="flex items-center relative mr-6 inline-flex w-full">
             <div
                 ref={refNoti}
                 className="cursor-pointer relative m-2 p-2 text-gray-400 rounded-lg hover:text-gray-600 focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4"
                 onClick={() => setIsOpenNotification((prev) => !prev)}
             >
-                <img
-                    className="object-contain h-5 w-7 fill-blue-500"
-                    src={notification.logo.default}
-                    alt="notification"
-                />
+                <div className="w-5 h-full">
+                    <img
+                        className="object-cover w-full fill-blue-500"
+                        src={notification.logo.default}
+                        alt="notification"
+                    />
+                </div>
                 {!!noti &&
                     !!noti.get('PAYMENT') &&
                     !!noti.get('PROPERTY') &&
@@ -471,20 +473,22 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
             <div>
                 <div
                     onClick={() => navigate('/profile-detail')}
-                    className="cursor-pointer truncate block whitespace-no-wrap"
+                    className="cursor-pointer truncate block w-24"
                 >
                     {auth.email}
                 </div>
             </div>
             <div className="relative cursor-pointer group inline-block px-4">
-                <img
-                    className="object-fill h-12 w-12 rounded-full"
-                    src={
-                        avatar
-                            ? avatar
-                            : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-                    }
-                />
+                <div className="w-8 h-full">
+                    <img
+                        className="object-cover w-full rounded-full"
+                        src={
+                            avatar
+                                ? avatar
+                                : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
+                        }
+                    />
+                </div>
 
                 <ul className="absolute right-0 hidden w-36 text-gray-700 pt-1 bg-gray-200 group-hover:block group-hover:z-50 rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
                     {auth.authorities.some(

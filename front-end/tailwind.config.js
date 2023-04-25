@@ -27,6 +27,7 @@ module.exports = withMT({
                     'linear-gradient(90deg, rgb(171, 185, 186)0% , rgb(235, 250, 248)30%, rgba(197, 205, 203, 0.815)60%, rgb(189, 211, 213)90%)',
             },
             height: {
+                '93vh': '93vh',
                 '90vh': '90vh',
                 '85vh': '85vh',
                 '80vh': '80vh',
@@ -37,6 +38,8 @@ module.exports = withMT({
                 '45vh': '45vh',
                 '30vh': '30vh',
                 '10vh': '10vh',
+                '7vh': '7vh',
+                '5vh': '5vh',
                 '1/10': '10%',
             },
             width: {
@@ -46,6 +49,8 @@ module.exports = withMT({
                 '30vw': '30vw',
                 '20vw': '20vw',
                 '15vw': '15vw',
+                '2vw': '2vw',
+                '98vw': '98vw',
             },
 
             minWidth: {
@@ -58,9 +63,14 @@ module.exports = withMT({
                 '30vh': '30vh',
                 '1/10': '10%',
             },
+            margin: {
+                '5vw': '5vw',
+                '5vh': '5vh',
+            },
         },
         fontFamily: {
             sans: ['Open Sans', 'sans-serif'],
+            serif: ['Source Serif Pro', 'serif'],
         },
         colors: {
             'lime-rgb': 'rgb(190, 215, 176)',
@@ -84,6 +94,9 @@ module.exports = withMT({
             '50vh': '50vh',
             '1/2': '50%',
         },
+        // spacing: {
+        //     '5vw': '5vw',
+        // },
     },
 
     plugins: [
