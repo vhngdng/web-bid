@@ -30,7 +30,7 @@ function PropertyList() {
         }
     }, [data]);
     useEffect(() => {
-        if (!!properties && newNoti.notification === 'PROPERTY') {
+        if (!!properties && !!newNoti && newNoti.notification === 'PROPERTY') {
             const newProperties = properties;
             newProperties.map((property) => {
                 if (property.id === newNoti.id) {
@@ -65,7 +65,7 @@ function PropertyList() {
     };
     return (
         <>
-            <div className="bg-gray-200/20 min-h-75vh min-w-70vw my-8 rounded-lg">
+            <div className="min-h-75vh min-w-70vw my-8 rounded-lg">
                 <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                     <h2 className="text-2xl font-bold tracking-tight text-gray-900">
                         Your properties
@@ -74,14 +74,17 @@ function PropertyList() {
                     <div className="mt-6 grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                         {!!properties &&
                             properties.map((property, index) => (
-                                <div key={index} className="group relative">
+                                <div
+                                    key={index}
+                                    className="group relative backdrop-blur-md bg-white/30 rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]"
+                                >
                                     <div
                                         className="cursor-pointer"
                                         onClick={() =>
                                             handleOpenModal(property)
                                         }
                                     >
-                                        <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden bg-gray-200/10 rounded-md lg:aspect-none group-hover:opacity-75 lg:h-80">
+                                        <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-t-md lg:aspect-none group-hover:opacity-75 lg:h-80">
                                             <img
                                                 src={
                                                     !!property.imageId
@@ -92,7 +95,7 @@ function PropertyList() {
                                                 className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                                             />
                                         </div>
-                                        <div className="mt-4 flex justify-between">
+                                        <div className="mt-4 mx-2 flex justify-between">
                                             <div>
                                                 <h3 className="text-sm text-gray-700">
                                                     <div className="text-blue-700">
@@ -103,14 +106,14 @@ function PropertyList() {
                                                         {property.name}
                                                     </div>
                                                 </h3>
-                                                <p className="mt-1 text-sm text-gray-500">
+                                                <p className="mt-1 text-sm">
                                                     ({property.category})
                                                 </p>
                                             </div>
                                             <div>
                                                 <p className="text-sm font-medium text-gray-900">
                                                     <NumericFormat
-                                                        className="text-center title-font font-medium text-xl text-red-rgb hover:text-red-rgb hover:scale-125"
+                                                        className="text-center title-font font-medium text-xl text-red-500 hover:text-red-700 hover:scale-125"
                                                         value={
                                                             property.reservePrice
                                                         }

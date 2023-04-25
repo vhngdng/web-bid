@@ -457,21 +457,21 @@ function ListBidRoom({ isAdmin }) {
                             </div>
                         )}
                     </motion.div>
-                    <div className="rounded-lg w-full">
+                    <div className="rounded-lg w-full ">
                         <section className="rounded-lg">
                             <AnimatePresence mode="wait" initial="false">
-                                <div className="w-full ">
+                                <div className="w-full backdrop-blur-md bg-white/30">
                                     <div className="text-gray-700 text-sm font-light rounded-lg">
                                         {data &&
                                             data.content &&
                                             data.content.map((bid, index) => (
                                                 <motion.div
                                                     key={index}
-                                                    className={`flex h-fit justify-evenly items-center w-full cursor-pointer hover:bg-gray-100 my-4 rounded-lg
+                                                    className={`flex h-fit justify-evenly items-center w-full cursor-pointer hover:bg-gray-100 rounded-lg
                                                         ${
                                                             (index + 1) % 2
                                                                 ? 'bg-gray-200/25'
-                                                                : 'bg-gray-400/50'
+                                                                : 'bg-gray-400/25'
                                                         }`}
                                                     onClick={() =>
                                                         handleEnterRoom(bid.id)

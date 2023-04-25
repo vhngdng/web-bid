@@ -53,11 +53,13 @@ function FooterDefault() {
                     </motion.div>
                 </motion.div> */}
 
-                <div className="bg-neutral-300 p-4 text-center text-black text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
-                    © 2023 Copyright:&nbsp;
-                    <a className="dark:text-neutral-400 " href="#">
-                        vhngdng@gmail.com
-                    </a>
+                <div className="bg-neutral-300 p-4 flex justify-center items-center text-black text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
+                    <div className="w-fit backdrop-blur-sm bg-white/30">
+                        © 2023 Copyright:&nbsp;
+                        <a className="dark:text-neutral-400 " href="#">
+                            vhngdng@gmail.com
+                        </a>
+                    </div>
                 </div>
             </footer>
         </>

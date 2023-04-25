@@ -10,7 +10,7 @@ function Property({ property }) {
     return (
         <div
             onClick={() => navigate(`${property.id}`)}
-            className="cursor-pointer my-4 bg-gray-200/10 rounded-lg shadow-2xl"
+            className="cursor-pointer my-4 rounded-lg shadow-2xl"
         >
             <div className="h-50vh w-15vw">
                 <div className="w-full h-1/2 flex justify-center items-center border-b">
@@ -23,11 +23,11 @@ function Property({ property }) {
                         className="w-full h-full object-cover rounded-t-lg"
                     />
                 </div>
-                <div className="text-start font-serif h-1/2 space-x-4 space-y-3 bg-gray-200 rounded-b-lg">
+                <div className="text-start font-serif h-1/2 space-x-4 space-y-3 rounded-b-lg">
                     <div className="text-2xl font-semibold">
                         {property.name}
                     </div>
-                    <div className="text-lime-800 italic">
+                    <div className="text-gray-700 italic">
                         ({property.category})
                     </div>
                     <div>

@@ -65,11 +65,11 @@ function BidRoomInformation({
         }
     };
     return (
-        <section className="pt-12 pb-12 bg-blueGray-100 rounded-b-10xl overflow-hidden max-w-screen min-w-full">
+        <section className="pt-12 pb-12 rounded-b-10xl overflow-hidden max-w-screen min-w-full">
             <div className="container px-4 mx-auto">
                 <div className="flex flex-wrap -mx-4">
-                    <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
-                        <div className="relative flex -mx-4 flex items-center justify-between lg:justify-start lg:items-start xl:items-center">
+                    <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0 backdrop-blur-md bg-white/30 rounded-lg">
+                        <div className="relative flex mx-4 flex items-center justify-between lg:justify-start lg:items-start xl:items-center">
                             <div className="w-full sm:w-auto min-w-max px-4 text-center flex sm:flex-col items-center justify-center">
                                 <div
                                     className="cursor-pointer inline-block sm:mb-12 mr-4 sm:mr-0 transform -rotate-90 sm:transform-none hover:text-darkBlueGray-400"
@@ -130,7 +130,7 @@ function BidRoomInformation({
                                         onClick={() =>
                                             setIsOpenImageModal((prev) => !prev)
                                         }
-                                        className="bg-transparent px-5 fixed object-cover h-1/2 w-1/2 top-1/3 left-1/3"
+                                        className="px-5 fixed object-cover h-1/2 w-1/2 top-1/3 left-1/3"
                                         src={`${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`}
                                         key={images[indexImage].id}
                                     />

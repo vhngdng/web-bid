@@ -58,8 +58,8 @@ function UpPropertyPage() {
 
     return (
         <>
-            <form className="">
-                <div className="mb-6">
+            <form className="backdrop-blur-md bg-white/30 rounded-lg">
+                <div className="my-6">
                     <label
                         form="name"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"

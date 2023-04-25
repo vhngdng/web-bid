@@ -24,7 +24,7 @@ module.exports = withMT({
             },
             backgroundImage: {
                 'my-pattern':
-                    'linear-gradient(180deg, rgb(190, 215, 176) 0%, rgb(110, 141, 133)30%, rgb(126, 155, 188)60%, rgb(226, 181, 244)90%)',
+                    'linear-gradient(90deg, rgb(171, 185, 186)0% , rgb(235, 250, 248)30%, rgba(197, 205, 203, 0.815)60%, rgb(189, 211, 213)90%)',
             },
             height: {
                 '90vh': '90vh',
@@ -47,16 +47,7 @@ module.exports = withMT({
                 '20vw': '20vw',
                 '15vw': '15vw',
             },
-            minHeight: {
-                '90vh': '90vh',
-                '80vh': '80vh',
-                '75vh': '75vh',
-                '70vh': '70vh',
-                '60vh': '60vh',
-                '65vh': '65vh',
-                '50vh': '50vh',
-                '1/2': '50%',
-            },
+
             minWidth: {
                 '1/2': '50%',
                 '70vw': '70vw',
@@ -82,6 +73,16 @@ module.exports = withMT({
             '75vh': '75vh',
             '60vh': '60vh',
             '65vh': '65vh',
+        },
+        minHeight: {
+            '90vh': '90vh',
+            '80vh': '80vh',
+            '75vh': '75vh',
+            '70vh': '70vh',
+            '60vh': '60vh',
+            '65vh': '65vh',
+            '50vh': '50vh',
+            '1/2': '50%',
         },
     },
 

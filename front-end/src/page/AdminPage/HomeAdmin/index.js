@@ -203,7 +203,7 @@ function AdminHomePage() {
                         <Outlet />
                     </section>
                     <div
-                        className={`fixed bottom-0 right-0 w-[16vw] bg-my-pattern shadow-lg p-10 text-white fixed h-full z-40  ease-in-out duration-300 ${
+                        className={`fixed bottom-0 right-0 w-[16vw] bg-[rgb(189, 211, 213)] shadow-lg p-10 text-white fixed h-full z-40  ease-in-out duration-300 ${
                             showSidebar
                                 ? 'translate-x-0 '
                                 : 'translate-x-full hidden'

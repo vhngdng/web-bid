@@ -24,10 +24,10 @@ function AdminPropertyList() {
         }
     }, [data]);
     useEffect(() => {
-        if (page > 1) setUrl(`page=${page - 1}`);
+        if (page > 0) setUrl(`page=${page - 1}`);
     }, [page]);
     useEffect(() => {
-        if (!!properties && newNoti.notification === 'PROPERTY') {
+        if (!!properties && !!newNoti && newNoti.notification === 'PROPERTY') {
             const newProperties = properties;
             newProperties.map((property) => {
                 if (property.id === newNoti.id) {
@@ -113,7 +113,7 @@ function AdminPropertyList() {
                                 <div
                                     onClick={() => handleOpenModal(property)}
                                     key={index}
-                                    className="group relative"
+                                    className="group relative backdrop-blur-md bg-white/30 rounded-lg"
                                 >
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md group-hover:opacity-75 shadow-2xl">
                                         <img
@@ -127,7 +127,7 @@ function AdminPropertyList() {
                                         />
                                     </div>
                                     <div className="mt-4 flex justify-between max-w-xs break-words">
-                                        <div className="mr-2 w-full">
+                                        <div className="mx-2 w-full">
                                             <h3 className="text-sm text-blue-500">
                                                 <div className=" ">
                                                     <span

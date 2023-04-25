@@ -56,7 +56,7 @@ function PaymentDetail() {
     console.log('message', message);
 
     return (
-        <>
+        <div className="mt-10 rounded-lg backdrop-blur-md bg-white/30">
             <div className="grid grid-cols-5 border-1 gap-1">
                 <div className="flex justify-center my-2 col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl">
                     Payment
@@ -183,7 +183,7 @@ function PaymentDetail() {
                           )}
                 </div>
             </div>
-        </>
+        </div>
     );
 }
 

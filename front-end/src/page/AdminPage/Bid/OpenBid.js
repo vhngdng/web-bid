@@ -58,8 +58,8 @@ function OpenBid() {
     };
     return (
         <>
-            <div>
-                <table className="rounded-lg table-fixed border-collapse border-spacing-2 border border-slate-400 bg-transparent box-sizing: border-box shadow-xl">
+            <div className="roounded-lg backdrop-blur-md bg-white/30">
+                <table className="table-fixed border-collapse border-spacing-2 border border-slate-400 bg-transparent box-sizing: border-box shadow-xl">
                     <thead>
                         <tr className="">
                             <th className="border border-slate-300">Bid id</th>

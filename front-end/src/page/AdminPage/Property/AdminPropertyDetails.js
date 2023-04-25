@@ -92,6 +92,7 @@ function AdminPropertyDetails() {
     useEffect(() => {
         console.log('noti context', newNoti);
         if (
+            !!newNoti &&
             newNoti.notification === 'PROPERTY' &&
             newNoti.id === data.property.id
         ) {
