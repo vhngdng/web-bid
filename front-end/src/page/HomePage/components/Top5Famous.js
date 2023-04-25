@@ -10,6 +10,8 @@ import housev3 from '~/assets/images/housev3.png';
 import airplane from '~/assets/images/airplane.jpeg';
 import girl from '~/assets/images/girlv2.jpg';
 import { useNavigate } from 'react-router-dom';
+import trippleArrow from '~/assets/images/triple-right-arrow.webp';
+
 const images = [house, housev2, housev3, airplane, girl];
 function Top5Famous({ top5Famous }) {
     const [imageListShow, setImageListShow] = useState([]);
@@ -34,13 +36,25 @@ function Top5Famous({ top5Famous }) {
         setIndexImage(index);
     };
     return (
-        <div className="mx-5vw py-5">
-            <div className="underline underline-offset-auto text-3xl py-5">
-                Top 5 Property
+        <div className="py-5">
+            <div className="flex items-center w-full mx-5vw space-x-4">
+                <div className="underline underline-offset-auto text-3xl py-5">
+                    Top 5 Property
+                </div>
+                <div className="h-4 w-4 bg-transparent">
+                    <img src={trippleArrow} className="object-fill w-full" />
+                </div>
+                <div
+                    className="text-2xl text-gray-600 cursor-pointer hover:text-blue-500 italic hover:not-italic"
+                    onClick={() => navigate('list-property')}
+                >
+                    See more
+                </div>
             </div>
-            <div className="w-full py-5">
+
+            <div className="w-full py-5 px-5">
                 <div className="inline-block w-full h-full ">
-                    <div className="w-full h-60vh flex items-stretch justify-between">
+                    <div className="w-full h-60vh flex items-stretch justify-between p-5 bg-white/30 rounded-t-lg">
                         <div className="w-3/5 ">
                             <img
                                 className="w-full h-full object-fill rounded-lg cursor-pointer shadow-2xl"
@@ -155,7 +169,7 @@ function Top5Famous({ top5Famous }) {
                                                     />
                                                 </p>
                                             </div>
-                                            <div className="px-3 text-lg italic font-serif">
+                                            <div className="px-3 text-lg italic">
                                                 {top5Famous.length > 0 &&
                                                     top5Famous[indexImage]
                                                         .conditionReport}
@@ -303,14 +317,6 @@ function Top5Famous({ top5Famous }) {
                                 />
                             </div>
                         ))}
-                        <div className="flex justify-center items-center">
-                            <div
-                                onClick={() => navigate('list-property')}
-                                className="h-fit cursor-pointer bg-gray-200/40 hover:bg-blue-400 mt-4 text-blue-400 hover:text-gray-400 rounded-full py-2 px-4 hover:shadow-2xl hover:scale-110"
-                            >
-                                See More
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

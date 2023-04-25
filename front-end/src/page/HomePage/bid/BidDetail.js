@@ -22,7 +22,7 @@ function BidDetail() {
     return (
         <>
             {!!bidDetail && (
-                <div className="w-screen min-h-75vh flex justify-center font-serif h-full box-border">
+                <div className="w-screen min-h-75vh flex justify-center h-full box-border">
                     <div className="w-3/4 my-6 space-y-10">
                         <div className="w-full flex space-x-3">
                             <div className="w-1/2 h-85vh">

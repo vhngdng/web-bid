@@ -7,7 +7,7 @@ function Top5Earliest({ top5Earliest }) {
     const navigate = useNavigate();
     return (
         <section className="w-full min-h-full space-y-10 z-0">
-            <div className="flex items-center w-full mx-5vw space-x-4 mt-10">
+            <div className="flex items-center w-full mx-5vw space-x-4">
                 <span className="underline underline-offset-auto text-3xl">
                     Opening soon
                 </span>
@@ -15,7 +15,7 @@ function Top5Earliest({ top5Earliest }) {
                     <img src={trippleArrow} className="object-fill w-full" />
                 </div>
                 <div
-                    className="text-2xl text-gray-600 cursor-pointer hover:text-blue-500"
+                    className="text-2xl text-gray-600 cursor-pointer hover:text-blue-500 italic hover:not-italic"
                     onClick={() => navigate('bid-room')}
                 >
                     See more

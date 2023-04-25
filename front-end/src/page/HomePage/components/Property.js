@@ -13,7 +13,7 @@ function Property({ property }) {
             className="cursor-pointer my-4 rounded-lg shadow-2xl"
         >
             <div className="h-50vh w-15vw">
-                <div className="w-full h-1/2 flex justify-center items-center border-b">
+                <div className="w-full h-1/2 flex justify-center items-center p-2">
                     <img
                         src={
                             !!property.imageProperty
@@ -23,10 +23,8 @@ function Property({ property }) {
                         className="w-full h-full object-cover rounded-t-lg"
                     />
                 </div>
-                <div className="text-start font-serif h-1/2 space-x-4 space-y-3 rounded-b-lg">
-                    <div className="text-2xl font-semibold">
-                        {property.name}
-                    </div>
+                <div className="text-start h-1/2 space-x-4 space-y-1 rounded-b-lg">
+                    <div className="text-xl font-semibold">{property.name}</div>
                     <div className="text-gray-700 italic">
                         ({property.category})
                     </div>

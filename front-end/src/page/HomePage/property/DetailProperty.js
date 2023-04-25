@@ -75,7 +75,7 @@ function DetailProperty() {
                         duration: 1,
                     }}
                 >
-                    <div className=" w-full font-serif inline-block text-center space-x-3 space-y-4">
+                    <div className=" w-full inline-block text-center space-x-3 space-y-4">
                         <div className="text-4xl mt-5">
                             {data.property.name}
                         </div>
@@ -142,7 +142,7 @@ function DetailProperty() {
                             <p>Reserve Price</p>
                             <p className="min-w-1/2 text-start">
                                 <NumericFormat
-                                    className="title-font font-serif font-medium text-2xl text-red-500 hover:scale-125"
+                                    className="title-font font-medium text-2xl text-red-500 hover:scale-125"
                                     value={
                                         !!data.property.reservePrice
                                             ? data.property.reservePrice
@@ -168,7 +168,7 @@ function DetailProperty() {
                             </div>
                             <div>{data.property.owner.name}</div>
                         </div>
-                        <div className="font-serif space-y-3">
+                        <div className="space-y-3">
                             <p className="italic text-gray-700/75">
                                 Description
                             </p>

@@ -101,7 +101,7 @@ function ListBidRoom({ isAdmin }) {
 
     return (
         <>
-            <section className="font-mono my-12">
+            <section className="my-12">
                 <div className="w-full">
                     <div className="flex justify-end">
                         <button
@@ -507,7 +507,7 @@ function ListBidRoom({ isAdmin }) {
                                                         />
                                                     </div>
                                                     <div
-                                                        className="w-2/3 font-serif text-lg space-x-2 py-4"
+                                                        className="w-2/3 text-lg space-x-2 py-4"
                                                         title={
                                                             bid.conditionReport
                                                         }

@@ -9,7 +9,6 @@ import { Helmet } from 'react-helmet';
 import Top5Famous from './components/Top5Famous';
 // import Tutorial from './Tutorial';
 import ListProperty from './property/ListProperty';
-import trippleArrow from '~/assets/images/triple-right-arrow.webp';
 import { useNavigate } from 'react-router-dom';
 
 function MainPage() {
@@ -34,11 +33,16 @@ function MainPage() {
                 <meta name="description" content="Home" />
             </Helmet>
             <div className="w-full inline-block">
-                <div className="h-screen flex justify-center items-center">
-                    <div className="text-4xl font-extrabold">Welcome</div>
+                <div className="h-screen flex justify-between">
+                    <div className="w-1/2" />
+                    <div className="w-1/2 my-20">
+                        <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold ">
+                            Welcome to AuctionForFun
+                        </div>
+                    </div>
                 </div>
                 <div className="w-screen">
-                    <div className="w-screen mt-10">
+                    <div className="w-screen">
                         <div className="flex justify-center items-center">
                             <div className="space-y-10 w-4/5 rounded-t-lg">
                                 {top5Earliest.length > 0 && (
@@ -47,7 +51,7 @@ function MainPage() {
                             </div>
                         </div>
                         <div className="bg-[rgba(182,207,201,0.815)] flex justify-center items-center">
-                            <div className="w-4/5">
+                            <div className="w-4/5 my-10">
                                 <div className="flex items-center w-full mx-5vw py-5">
                                     <span className="underline underline-offset-auto text-3xl">
                                         Top 5 User
@@ -58,8 +62,8 @@ function MainPage() {
                                 )}
                             </div>
                         </div>
-                        <div className="flex justify-center items-center">
-                            <div className="w-4/5 rounded-b-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
+                        <div className="flex justify-center items-center overflow-hidden">
+                            <div className=" w-4/5 my-10">
                                 <Top5Famous top5Famous={top5Famous} />
                             </div>
                         </div>
