@@ -467,10 +467,10 @@ function ListBidRoom({ isAdmin }) {
                                             data.content.map((bid, index) => (
                                                 <motion.div
                                                     key={index}
-                                                    className={`flex h-fit justify-evenly items-center w-full cursor-pointer hover:bg-gray-100 my-4
+                                                    className={`w-full cursor-pointer border-gray-300 hover:bg-gray-100 shadow-md 
                                                         ${
                                                             (index + 1) % 2 &&
-                                                            'rounded-lg'
+                                                            'bg-gray-100/25'
                                                         }`}
                                                     onClick={() =>
                                                         handleEnterRoom(bid.id)

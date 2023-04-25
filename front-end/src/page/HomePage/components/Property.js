@@ -23,11 +23,13 @@ function Property({ property }) {
                         className="w-full h-full object-cover rounded-t-lg"
                     />
                 </div>
-                <div className="text-start font-serif h-1/2 space-x-4 space-y-3">
+                <div className="text-start font-serif h-1/2 space-x-4 space-y-3 bg-gray-200 rounded-b-lg">
                     <div className="text-2xl font-semibold">
                         {property.name}
                     </div>
-                    <div className="text-gray-600">({property.category})</div>
+                    <div className="text-lime-800 italic">
+                        ({property.category})
+                    </div>
                     <div>
                         <span>Reserve Price: </span>
                         <NumericFormat
@@ -41,13 +43,13 @@ function Property({ property }) {
                     </div>
                     <div>
                         <span className="">Created At: </span>{' '}
-                        <span className="text-gray-600">
+                        <span className="text-purple-600">
                             {formatDateTime(property.createdAt).date}
                         </span>
                     </div>
                     <div>
                         <span>Owner: </span>
-                        <span className="text-gray-600">
+                        <span className="text-blue-800">
                             {property.owner.name}
                         </span>
                     </div>
