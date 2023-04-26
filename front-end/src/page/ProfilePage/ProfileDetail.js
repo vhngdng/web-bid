@@ -47,7 +47,7 @@ function ProfileDetail() {
         <>
             <div
                 ref={ref}
-                className="dark:bg-gray-900 flex flex-wrap items-center justify-center rounded-lg"
+                className="dark:bg-gray-900 flex flex-wrap items-center justify-center rounded-lg bg-white/30 p-3 my-6"
             >
                 <div className="container max-w-lg bg-white rounded dark:bg-gray-800 shadow-lg transform duration-200 easy-in-out m-12">
                     <div className="h-2/4 sm:h-64 overflow-hidden">

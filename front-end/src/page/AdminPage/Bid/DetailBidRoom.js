@@ -82,7 +82,7 @@ function DetailBidRoom() {
         },
     };
     return (
-        <div className="static" ref={tableRef}>
+        <div className="static p-3 my-6" ref={tableRef}>
             <div className=" max-h-full ">
                 <div className="flex-1 justify-center items-center">
                     <h2 className="flex justify-center my-2 col-span-5 border-slate-50 rounded-lg w-4/5 text-3xl">

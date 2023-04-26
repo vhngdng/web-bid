@@ -76,7 +76,7 @@ function PropertyList() {
                             properties.map((property, index) => (
                                 <div
                                     key={index}
-                                    className="group relative rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]"
+                                    className="group relative rounded-lg bg-white/30 px-3"
                                 >
                                     <div
                                         className="cursor-pointer"
@@ -84,7 +84,7 @@ function PropertyList() {
                                             handleOpenModal(property)
                                         }
                                     >
-                                        <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-t-md lg:aspect-none group-hover:opacity-75 lg:h-80">
+                                        <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-t-md lg:aspect-none group-hover:opacity-75 lg:h-80  shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]">
                                             <img
                                                 src={
                                                     !!property.imageId

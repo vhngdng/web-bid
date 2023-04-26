@@ -18,7 +18,7 @@ function DefaultLayout() {
                 setIsOpenNotification={setIsOpenNotification}
             />
             <section
-                className={`min-h-80vh flex justify-center items-center ${
+                className={`min-h-80vh flex justify-center ${
                     isOpenNotification ? 'pointer-events-none' : ''
                 }`}
             >

@@ -38,8 +38,15 @@ function MainPage() {
                     <div className="h-50vh flex justify-between">
                         <div className="w-1/2" />
                         <div className="w-1/2 my-20">
-                            <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold ">
-                                Welcome to AuctionForFun
+                            <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold font-nowy">
+                                <div>
+                                    <span className="italic p-2">
+                                        Welcome to AuctionForFun
+                                    </span>
+                                    {/* <div className="text-center text-black text-xl my-5">
+                                        Do you want to
+                                    </div> */}
+                                </div>
                             </div>
                         </div>
                     </div>

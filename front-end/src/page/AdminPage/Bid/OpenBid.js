@@ -58,34 +58,40 @@ function OpenBid() {
     };
     return (
         <>
-            <div className="roounded-lg bg-white/30">
+            <div className="roounded-lg bg-white/30 my-6">
                 <table className="table-fixed border-collapse border-spacing-2 border border-slate-400 bg-transparent box-sizing: border-box shadow-xl">
                     <thead>
                         <tr className="">
-                            <th className="border border-slate-300">Bid id</th>
-                            <th className="border border-slate-300">
+                            <th className="border border-slate-300 p-3">
+                                Bid id
+                            </th>
+                            <th className="border border-slate-300 p-3">
                                 Auctioneer
                             </th>
-                            <th className="border border-slate-300">
+                            <th className="border border-slate-300 p-3">
                                 Day of Sale
                             </th>
-                            <th className="border border-slate-300">
+                            <th className="border border-slate-300 p-3">
                                 Reserve Price
                             </th>
-                            <th className="border border-slate-300">
+                            <th className="border border-slate-300 p-3">
                                 Price Step
                             </th>
-                            <th className="border border-slate-300">Type</th>
-                            <th className="border border-slate-300">
+                            <th className="border border-slate-300 p-3">
+                                Type
+                            </th>
+                            <th className="border border-slate-300 p-3">
                                 Property Id
                             </th>
-                            <th className="border border-slate-300">
+                            <th className="border border-slate-300 p-3">
                                 Property Name
                             </th>
-                            <th className="border border-slate-300">
+                            <th className="border border-slate-300 p-3">
                                 Owner Name
                             </th>
-                            <th className="border border-slate-300">Active</th>
+                            <th className="border border-slate-300 p-3">
+                                Active
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -93,41 +99,41 @@ function OpenBid() {
                             data &&
                             data.map((bid, index) => (
                                 <tr key={index}>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {bid.id}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {bid.auctioneer.username ||
                                             bid.auctioneer.email}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {bid.dayOfSale}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {bid.reservePrice}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {' '}
                                         {bid.priceStep}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {' '}
                                         {bid.type}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {' '}
                                         {bid.property.id}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {' '}
                                         {bid.property.name}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {' '}
                                         {bid.property.owner.username ||
                                             bid.property.owner.email}
                                     </td>
-                                    <td className="border border-slate-300 text-center px-1 ">
+                                    <td className="border border-slate-300 text-center px-3">
                                         {!bid.status ? (
                                             <button
                                                 type="button"

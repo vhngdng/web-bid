@@ -16,7 +16,7 @@ function HeaderNotAuthenticate({ isOpenNotification, setIsOpenNotification }) {
                 <div className="w-98vw flex justify-between items-center">
                     <div className="flex justify-start w-1/4 block pl-3  text-white rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white">
                         <h1
-                            className="text-gray-800 w-96"
+                            className="text-gray-800 w-96 text-lg font-nowy text-bold italic"
                             onClick={() => navigate('/')}
                         >
                             <RotatingText

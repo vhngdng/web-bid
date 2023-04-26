@@ -72,6 +72,7 @@ module.exports = withMT({
         fontFamily: {
             sans: ['Open Sans', 'sans-serif'],
             serif: ['Source Serif Pro', 'serif'],
+            nowy: ['Poltawski Nowy', 'serif'],
         },
         colors: {
             'lime-rgb': 'rgb(190, 215, 176)',

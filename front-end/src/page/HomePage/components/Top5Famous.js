@@ -334,7 +334,7 @@ function Top5Famous({ top5Famous }) {
                                                                 imageListShow.indexOf(
                                                                     image,
                                                                 ) === indexImage
-                                                                    ? 'ring-offset-2 ring-blue-300 ring-2 contrast-125 shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)] scale-125 rounded-lg'
+                                                                    ? 'ring-offset-2 ring-blue-300 ring-2 contrast-125 transition duration-1000 ease-in-out shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)] scale-125 rounded-lg'
                                                                     : 'contrast-50'
                                                             }`}
                                     onClick={() =>

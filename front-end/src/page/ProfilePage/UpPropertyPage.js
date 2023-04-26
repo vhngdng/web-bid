@@ -58,7 +58,7 @@ function UpPropertyPage() {
 
     return (
         <>
-            <form className="bg-white/30 rounded-lg">
+            <form className="bg-white/30 rounded-lg p-3  my-6">
                 <div className="my-6">
                     <label
                         form="name"

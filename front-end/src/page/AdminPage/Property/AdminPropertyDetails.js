@@ -125,11 +125,12 @@ function AdminPropertyDetails() {
     }
 
     function prevStep() {
+        console.log('width', width);
         if (images.length > 0 && x <= 160) {
             animate(
                 ref.current,
                 {
-                    x: [x, x + 160],
+                    x: x + 160 <= 0 ? [x, x + 160] : [x, 0],
                 },
                 {
                     duration: 1,
@@ -203,9 +204,9 @@ function AdminPropertyDetails() {
                                     }
                                     className=" w-full object-cover object-center rounded-lg shadow-2xl"
                                     src={
-                                        !!data && data.images
+                                        !!data && !!data.images.length
                                             ? `${DOMAIN_URL}api/v1/images/read/${imageAvatar}`
-                                            : `${imageDefault.logo.default}`
+                                            : imageDefault.logo.default
                                     }
                                 />
                                 <div className="relative bg-transparent">
@@ -222,7 +223,7 @@ function AdminPropertyDetails() {
                                         initial={false}
                                         className="w-full"
                                     >
-                                        <motion.div className="w-full overflow-x-hidden">
+                                        <motion.div className="w-full overflow-x-hidden box-border">
                                             <motion.div
                                                 className="flex justify-center items-center my-6 h-40 w-40 rounded-lg"
                                                 ref={ref}
@@ -238,7 +239,7 @@ function AdminPropertyDetails() {
                                                                     opacity: 0,
                                                                 }}
                                                                 animate={{
-                                                                    x: 0,
+                                                                    x: 90,
                                                                     opacity: 1,
                                                                 }}
                                                                 exit={{
@@ -343,7 +344,7 @@ function AdminPropertyDetails() {
                                     <div className="flex justify-center items-center">
                                         <span className="mr-3">
                                             <img
-                                                className="object-fit h-8 w-12 rounded-full"
+                                                className="object-fit h-8 w-8 rounded-full"
                                                 src={
                                                     !!data &&
                                                     data.property.owner.avatar
