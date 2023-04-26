@@ -83,17 +83,17 @@ const variantsDirection = {
 
 const liVariant = {
     open: {
-        y: 0,
+        x: 0,
         opacity: 1,
         transition: {
-            y: { stiffness: 1000, velocity: -100 },
+            x: { stiffness: 1000, velocity: -100 },
         },
     },
     closed: {
-        y: 50,
+        x: 50,
         opacity: 0,
         transition: {
-            y: { stiffness: 1000 },
+            x: { stiffness: 1000 },
         },
     },
 };
@@ -104,7 +104,31 @@ const homeSidebarVariants = {
     },
     collapsed: { height: '93vh' },
 };
+
+const learnMoreVariants = {
+    open: {
+        opacity: 1,
+        x: [500, 0],
+        transition: {
+            x: { type: 'spring', stiffness: 200, damping: 30, velocity: -100 },
+            opacity: { stiffness: 1000 },
+            duration: 1,
+            ease: [0.17, 0.67, 0.83, 0.67],
+        },
+    },
+    closed: {
+        opacity: 0,
+        x: [0, -500],
+        transition: {
+            x: { type: 'spring', stiffness: 200, damping: 30, velocity: -100 },
+            opacity: { stiffness: 1000 },
+            duration: 1,
+            ease: [0.17, 0.67, 0.63, 0.87],
+        },
+    },
+};
 export {
+    learnMoreVariants,
     homeSidebarVariants,
     rowVariant,
     colVariant,
