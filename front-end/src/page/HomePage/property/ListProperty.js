@@ -27,7 +27,7 @@ function ListProperty() {
         <div className="w-full flex justify-start">
             <div className="flex justify-center w-full min-h-75vh">
                 <div className="flex flex-col justify-center w-2/3 min-h-full">
-                    <div className="backdrop-blur-sm bg-white/50 mt-10 rounded-lg">
+                    <div className="bg-white/50 mt-10 rounded-lg">
                         <div className="w-full my-10">
                             <div className="flex justify-end mr-10 ">
                                 <div className="bg-gray-400/50 w-fit">

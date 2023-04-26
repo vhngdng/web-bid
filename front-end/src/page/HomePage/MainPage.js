@@ -10,6 +10,7 @@ import Top5Famous from './components/Top5Famous';
 // import Tutorial from './Tutorial';
 import ListProperty from './property/ListProperty';
 import { useNavigate } from 'react-router-dom';
+import BackgroundImage from '~/component/layouts/DefaultLayout/BackgroundImage';
 
 function MainPage() {
     const { data, isLoading } = useGetHomeDetailsQuery();
@@ -33,18 +34,20 @@ function MainPage() {
                 <meta name="description" content="Home" />
             </Helmet>
             <div className="w-full inline-block">
-                <div className="h-screen flex justify-between">
-                    <div className="w-1/2" />
-                    <div className="w-1/2 my-20">
-                        <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold ">
-                            Welcome to AuctionForFun
+                <BackgroundImage>
+                    <div className="h-50vh flex justify-between">
+                        <div className="w-1/2" />
+                        <div className="w-1/2 my-20">
+                            <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold ">
+                                Welcome to AuctionForFun
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className="w-screen">
-                    <div className="w-screen">
+                </BackgroundImage>
+                <div className="w-full">
+                    <div className="w-full">
                         <div className="flex justify-center items-center">
-                            <div className="space-y-10 w-4/5 rounded-t-lg">
+                            <div className="space-y-10 mt-10 w-4/5 rounded-t-lg">
                                 {top5Earliest.length > 0 && (
                                     <Top5Earliest top5Earliest={top5Earliest} />
                                 )}

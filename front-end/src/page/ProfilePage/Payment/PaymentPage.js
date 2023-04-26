@@ -17,7 +17,7 @@ function PaymentPage() {
         navigate(`bidId/${id}`);
     };
     return (
-        <div className="backdrop-blur-md bg-white/30 rounded-lg">
+        <div className="rounded-lg">
             <h1 className="flex justify-center">Payment</h1>
             <div className="flex flex-col">
                 <div className=" overflow-x-auto sm:mx-6 lg:mx-8">

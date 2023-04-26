@@ -54,7 +54,7 @@ function FooterDefault() {
                 </motion.div> */}
 
                 <div className="bg-neutral-300 p-4 flex justify-center items-center text-black text-neutral-700 dark:bg-neutral-700 dark:text-neutral-200">
-                    <div className="w-fit backdrop-blur-sm bg-white/30">
+                    <div className="w-fit">
                         © 2023 Copyright:&nbsp;
                         <a className="dark:text-neutral-400 " href="#">
                             vhngdng@gmail.com

@@ -333,7 +333,7 @@ function BidDetailRoom() {
             {!!data && userData.connected ? (
                 <>
                     <section className="dark:bg-gray-900 rounded-lg shadow-[0_25px_25px_-24px_rgb(0,0,0,0.3)] space-y-10 my-10">
-                        <div className="py-8 px-4 mx-auto max-w-screen text-center lg:py-16 lg:px-6">
+                        <div className="py-8 px-4 mx-auto max-w-full text-center lg:py-16 lg:px-6">
                             <BidRoomInformation
                                 bidRoomInfo={!!data && data}
                                 sendValue={handleSendValue}

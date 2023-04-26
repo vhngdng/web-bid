@@ -5,7 +5,6 @@ import Loader from '~/Loader';
 import { useGetDetailPropertyForGuestQuery } from '~/app/service/property.service';
 import { AnimatePresence, motion } from 'framer-motion';
 import { homeSidebarVariants } from '~/animation';
-import { DOMAIN_URL } from '~/CONST/const';
 import house from '~/assets/images/beautiful-house.jpg';
 import housev2 from '~/assets/images/housev2.jpg';
 import housev3 from '~/assets/images/housev3.png';
@@ -14,6 +13,7 @@ import girl from '~/assets/images/girl.jpg';
 import formatDateTime from '~/utils/formatDateTime';
 import { NumericFormat } from 'react-number-format';
 import readImage from '~/utils/readImage';
+import ImageSlideShow from './ImageSlideShow';
 const imagesFake = [house, housev2, housev3, airplane, girl];
 
 function DetailProperty() {
@@ -44,25 +44,11 @@ function DetailProperty() {
 
     return (
         <>
-            <div className="min-h-75vh h-full w-full flex flex-col justify-center items-center ">
-                <div className="w-1/2 space-y-10">
-                    {images.length > 0
-                        ? images.map((image, index) => (
-                              <div key={index}>
-                                  <img
-                                      className="w-full object-cover rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]"
-                                      src={`${DOMAIN_URL}api/v1/images/read/${image.id}`}
-                                  />
-                              </div>
-                          ))
-                        : imagesFake.map((fake, index) => (
-                              <div key={index}>
-                                  <img
-                                      className="w-full object-cover rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]"
-                                      src={fake}
-                                  />
-                              </div>
-                          ))}
+            <div className="min-h-75vh h-full w-full flex flex-col justify-center items-center mt-10">
+                <div className="w-full space-y-10">
+                    <ImageSlideShow
+                        images={images.length > 0 ? images : imagesFake}
+                    />
                 </div>
             </div>
             <AnimatePresence>
@@ -97,17 +83,9 @@ function DetailProperty() {
                                 {data.property.quantity}
                             </span>
                         </div>
-                        <div
-                            className={`text-2xl ${
-                                ['PROCESSING', 'ACTIVE'].includes(
-                                    data.property.bidStatus,
-                                )
-                                    ? 'text-lime-400 hover:text-lime-600'
-                                    : ''
-                            }`}
-                        >
+                        <div className={`text-2xl`}>
                             {data.property.bidStatus === 'ACTIVE'
-                                ? 'Can join the room to purchase now'
+                                ? 'Purchase now'
                                 : data.property.bidStatus === 'PROCESSING'
                                 ? `The room is in progress #${data.property.bidId}`
                                 : 'Can not purchase this item now'}

@@ -43,6 +43,7 @@ module.exports = withMT({
                 '1/10': '10%',
             },
             width: {
+                '100vw': '100vw',
                 '80vw': '80vw',
                 '75vw': '75vw',
                 '70vw': '70vw',

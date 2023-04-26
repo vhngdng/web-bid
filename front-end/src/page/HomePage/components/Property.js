@@ -23,7 +23,7 @@ function Property({ property }) {
                         className="w-full h-full object-cover rounded-t-lg"
                     />
                 </div>
-                <div className="text-start h-1/2 space-x-4 space-y-1 rounded-b-lg">
+                <div className="text-start h-1/2 px-4 space-y-1 rounded-b-lg">
                     <div className="text-xl font-semibold">{property.name}</div>
                     <div className="text-gray-700 italic">
                         ({property.category})
@@ -41,7 +41,7 @@ function Property({ property }) {
                     </div>
                     <div>
                         <span className="">Created At: </span>{' '}
-                        <span className="text-purple-600">
+                        <span className="italic">
                             {formatDateTime(property.createdAt).date}
                         </span>
                     </div>

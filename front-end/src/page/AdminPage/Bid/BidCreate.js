@@ -70,7 +70,7 @@ function BidCreate() {
     if (loadImage) return <Loader />;
     console.log(imageId);
     return (
-        <div className="flex justify-center mx-12 my-12 backdrop-blur-sm bg-white/30 h-full w-full rounded-lg shadow-2xl">
+        <div className="flex justify-center mx-12 my-12 bg-white/30 h-full w-full rounded-lg shadow-2xl">
             <div className="px-6 py-6">
                 <Typography
                     variant="h4"

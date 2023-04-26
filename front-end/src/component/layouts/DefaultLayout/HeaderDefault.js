@@ -289,7 +289,7 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
                                     {!!noti.get('PAYMENT') &&
                                         noti.get('PAYMENT').map((n, index) => (
                                             <div
-                                                className="flex cursor-pointer gap-1.5 backdrop-blur-md transition-all hover:bg-gray-200 hover:bg-none xl:gap-2"
+                                                className="flex cursor-pointer gap-1.5 transition-all hover:bg-gray-200 hover:bg-none xl:gap-2"
                                                 key={index}
                                             >
                                                 <div
@@ -363,7 +363,7 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
                                             .get('PROPERTY')
                                             .map((property, index) => (
                                                 <div
-                                                    className="flex cursor-pointer gap-1.5 backdrop-blur-md transition-all hover:bg-gray-200 hover:bg-none xl:gap-2"
+                                                    className="flex cursor-pointer gap-1.5 transition-all hover:bg-gray-200 hover:bg-none xl:gap-2"
                                                     key={index}
                                                 >
                                                     <div

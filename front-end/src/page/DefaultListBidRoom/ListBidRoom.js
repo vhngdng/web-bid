@@ -461,7 +461,7 @@ function ListBidRoom({ isAdmin }) {
                         <section className="rounded-lg">
                             <AnimatePresence mode="wait" initial="false">
                                 <div className="w-full ">
-                                    <div className="text-gray-700 text-sm font-light rounded-lg backdrop-blur-sm bg-white/50">
+                                    <div className="text-gray-700 text-sm font-light rounded-lg bg-white/50">
                                         {data &&
                                             data.content &&
                                             data.content.map((bid, index) => (

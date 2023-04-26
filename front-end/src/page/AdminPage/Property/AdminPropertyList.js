@@ -113,7 +113,7 @@ function AdminPropertyList() {
                                 <div
                                     onClick={() => handleOpenModal(property)}
                                     key={index}
-                                    className="group relative backdrop-blur-md bg-white/30 rounded-lg"
+                                    className="group relative bg-white/30 rounded-lg"
                                 >
                                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md group-hover:opacity-75 shadow-2xl">
                                         <img

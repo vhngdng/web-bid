@@ -188,14 +188,14 @@ function PropertyDetails() {
     return (
         <>
             <section className="pt-12 pb-24 rounded-b-10xl overflow-hidden max-w-screen min-w-full">
-                <div className="container px-4 mx-auto my-10 backdrop-blur-md bg-white/30 rounded-lg">
+                <div className="container px-4 mx-auto my-10 rounded-lg">
                     <div className="w-full h-full py-10">
                         <div className="flex flex-wrap mx-4">
                             <div className="w-full lg:w-1/2 px-4 mb-16 lg:mb-0">
                                 <div className="flex -mx-4 flex items-center justify-between lg:justify-start lg:items-start xl:items-center">
                                     <div className="w-full sm:w-auto min-w-max px-4 text-center flex sm:flex-col items-center justify-center">
                                         <div
-                                            className="cursor-pointer inline-block sm:mb-12 mr-4 sm:mr-0 transform -rotate-90 sm:transform-none hover:text-darkBlueGray-400"
+                                            className="cursor-pointer inline-block sm:mb-12 mr-4 sm:mr-0 transform -rotate-90 sm:transform-none"
                                             onClick={() =>
                                                 handleChangeIndex(
                                                     indexImage - 1,
@@ -241,7 +241,7 @@ function PropertyDetails() {
                                         </div>
 
                                         <div
-                                            className="cursor-pointer inline-block transform -rotate-90 sm:transform-none hover:text-darkBlueGray-400"
+                                            className="cursor-pointer inline-block transform -rotate-90 sm:transform-none"
                                             onClick={() =>
                                                 handleChangeIndex(
                                                     indexImage + 1,
@@ -367,7 +367,7 @@ function PropertyDetails() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <p className="text-lg text-center text-black">
+                                        <p className="text-lg text-center">
                                             {!!description
                                                 ? description
                                                 : 'No description'}
