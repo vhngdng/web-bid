@@ -127,7 +127,34 @@ const learnMoreVariants = {
         },
     },
 };
+
+const backgroundVariants = {
+    open: {
+        opacity: [0, 1],
+        scale: [0.3, 1],
+        transition: {
+            scale: {
+                stiffness: 50,
+            },
+            duration: 1,
+            ease: [0.17, 0.37, 0.63, 0.97],
+        },
+    },
+    closed: {
+        opacity: [1, 0],
+        scale: [1, 0.3],
+        transition: {
+            scale: {
+                stiffness: 50,
+            },
+            duration: 1,
+            ease: [0.17, 0.37, 0.63, 0.97],
+        },
+    },
+};
+
 export {
+    backgroundVariants,
     learnMoreVariants,
     homeSidebarVariants,
     rowVariant,

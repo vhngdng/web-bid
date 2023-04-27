@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-extra-boolean-cast */
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Loader from '~/Loader';
 import { useGetHomeDetailsQuery } from '~/app/service/bid.service';
@@ -12,7 +12,9 @@ import Top5Famous from './components/Top5Famous';
 import ListProperty from './property/ListProperty';
 import { useNavigate } from 'react-router-dom';
 import BackgroundImage from '~/component/layouts/DefaultLayout/BackgroundImage';
-import { learnMoreVariants } from '~/animation';
+import { colVariant, learnMoreVariants } from '~/animation';
+import Tutorial from './Tutorial';
+import checkIcon from '~/assets/images/check-icon.jpg';
 
 function MainPage() {
     const { data, isLoading } = useGetHomeDetailsQuery();
@@ -43,43 +45,8 @@ function MainPage() {
                 <meta name="description" content="Home" />
             </Helmet>
             <div className="w-full inline-block overflow-x-hidden">
-                <BackgroundImage>
-                    <div className="h-50vh flex justify-between">
-                        <div className="w-1/2" />
-                        <div className="w-1/2 my-20">
-                            <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold font-nowy">
-                                <div>
-                                    <span className="italic p-2">
-                                        Welcome to AuctionForFun
-                                    </span>
-                                    <div className="w-full flex justify-center items-center">
-                                        {!isLearnMore ? (
-                                            <div
-                                                onClick={() =>
-                                                    setIsLearnMore(true)
-                                                }
-                                                className="cursor-pointer text-center text-black text-xl my-5 py-2 bg-[rgba(213,224,221,0.815)] w-1/3 rounded-full hover:bg-opacity-75 hover:text-white"
-                                            >
-                                                Learn more
-                                            </div>
-                                        ) : (
-                                            <div
-                                                onClick={() =>
-                                                    setIsLearnMore(false)
-                                                }
-                                                className="cursor-pointer text-center text-black text-xl my-5 py-2 bg-[rgba(213,224,221,0.815)] w-1/3 rounded-full hover:bg-opacity-75 hover:text-white"
-                                            >
-                                                I understood !!
-                                            </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </BackgroundImage>
-                <AnimatePresence>
-                    {isDisable ? (
+                {isDisable ? (
+                    <AnimatePresence>
                         <motion.div
                             className="w-full"
                             animate={
@@ -89,6 +56,49 @@ function MainPage() {
                             }
                             variants={learnMoreVariants}
                         >
+                            <div className="h-60vh flex justify-between">
+                                <div className="w-1/2" />
+                                <div className="w-1/2 my-20">
+                                    <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold font-nowy">
+                                        <div>
+                                            <div className="p-2 text-center">
+                                                Welcome to AuctionForFun
+                                            </div>
+                                            <AnimatePresence>
+                                                <motion.div
+                                                    className="font-nowy text-base text-black text-center p-4 italic"
+                                                    initial={colVariant.hidden}
+                                                    animate={colVariant.show}
+                                                >
+                                                    Unlock the full potential of
+                                                    your passion for property
+                                                    investment on our exclusive
+                                                    online bidding platform.
+                                                    With a wide range of
+                                                    exciting and lucrative
+                                                    properties, including luxury
+                                                    condos, beachfront villas,
+                                                    and prime commercial real
+                                                    estate, you can build your
+                                                    dream lifestyle and achieve
+                                                    financial freedom with ease.
+                                                </motion.div>
+                                            </AnimatePresence>
+                                            <div className="w-full flex justify-center items-center">
+                                                <div
+                                                    onClick={() => {
+                                                        setIsLearnMore(true);
+                                                    }}
+                                                    className="cursor-pointer text-center text-black text-xl my-5 py-2 bg-[rgba(213,224,221,0.815)] w-1/3 rounded-full hover:bg-opacity-75 hover:text-gray-700/50"
+                                                >
+                                                    Learn more
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div className="w-full">
                                 <div className="flex justify-center items-center">
                                     <div className="space-y-10 mt-10 w-4/5 rounded-t-lg">
@@ -118,7 +128,9 @@ function MainPage() {
                                 </div>
                             </div>
                         </motion.div>
-                    ) : (
+                    </AnimatePresence>
+                ) : (
+                    <AnimatePresence>
                         <motion.div
                             className="w-full"
                             animate={
@@ -129,12 +141,29 @@ function MainPage() {
                             variants={learnMoreVariants}
                         >
                             <div className="w-full flex justify-center items-center">
-                                <div>Buy</div>
-                                <div>Prooperty Registration</div>
+                                <Tutorial />
+                            </div>
+                            <div className="w-full flex justify-center items-center">
+                                <div
+                                    onClick={() => {
+                                        setIsLearnMore(false);
+                                    }}
+                                    className="cursor-pointer text-center text-black text-lg my-5 py-2 px-4 bg-[rgb(187,205,206)] w-fit rounded-full hover:bg-opacity-75 hover:text-gray-700 flex justify-center items-center"
+                                >
+                                    <div className="w-6 h-6">
+                                        <img
+                                            src={checkIcon}
+                                            className="object-fill w-full"
+                                        />
+                                    </div>
+                                    <span className="px-2">
+                                        I understand and want to join now
+                                    </span>
+                                </div>
                             </div>
                         </motion.div>
-                    )}
-                </AnimatePresence>
+                    </AnimatePresence>
+                )}
             </div>
         </>
     );

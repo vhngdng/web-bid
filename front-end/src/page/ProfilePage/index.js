@@ -60,7 +60,7 @@ function ProfilePage() {
                         }}
                     >
                         {
-                            <div className="h-full overflow-y-auto overflow-x-hidden bg-gray-500/25 dark:bg-gray-800 w-56 rounded-tr-3xl">
+                            <div className="h-full overflow-y-auto overflow-x-auto bg-gray-500/25 dark:bg-gray-800 w-56 rounded-tr-3xl">
                                 <ProfileUserSidebar />
                                 <ul className="text-gray-600">
                                     <li>

@@ -10,14 +10,12 @@ import { AnimatePresence, motion } from 'framer-motion';
 import arrowRight from '~/assets/images/triple-right-arrow.webp';
 import { homeSidebarVariants } from '~/animation';
 import { useNavigate } from 'react-router-dom';
-import TutorialModal from './TutorialModal';
 
 function HomeSidebar() {
     const { collapseSidebar } = useProSidebar();
     const [isCollapse, setIsCollapse] = useState(false);
     const [search, setSearch] = useState('');
     const [scrollPosition, setScrollPosition] = useState(0);
-    const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleScroll = () => {
@@ -103,14 +101,6 @@ function HomeSidebar() {
                                             {' '}
                                             Go to Home Page{' '}
                                         </MenuItem>
-                                        <MenuItem
-                                            onClick={() =>
-                                                setIsOpen((prev) => !prev)
-                                            }
-                                        >
-                                            {' '}
-                                            Tutorial{' '}
-                                        </MenuItem>
                                         <SubMenu label="Property">
                                             <MenuItem
                                                 onClick={() =>
@@ -165,7 +155,6 @@ function HomeSidebar() {
                     </div>
                 </motion.div>
             </AnimatePresence>
-            <TutorialModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
     );
 }

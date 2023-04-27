@@ -10,7 +10,7 @@ function HeaderNotAuthenticate({ isOpenNotification, setIsOpenNotification }) {
     const navigate = useNavigate();
 
     return (
-        <nav className="flex justify-end h-full rounded dark:bg-gray-900">
+        <nav className="flex justify-end rounded dark:bg-gray-900">
             <div className="w-full h-7vh flex shadow-lg">
                 <div className="w-2vw" />
                 <div className="w-98vw flex justify-between items-center">

@@ -1,14 +1,19 @@
 /* eslint-disable no-extra-boolean-cast */
 import React from 'react';
+import readImage from '~/utils/readImage';
 // import { DOMAIN_URL } from '~/CONST/const';
 
-function List4User({ user, defaultAvatar }) {
+function List5User({ user, defaultAvatar }) {
     return (
         <div className="rounded-lg h-40vh w-1/6 bg-[rgb(189,211,213)] p-3">
             <div className="h-2/3 w-full">
                 <img
                     className={`w-full h-full rounded-lg shadow-2xl object-cover`}
-                    src={!!user.avatar ? user.avatar : `${defaultAvatar}`}
+                    src={
+                        !!user.avatar
+                            ? readImage(user.avatar)
+                            : `${defaultAvatar}`
+                    }
                 />
             </div>
             <div className="text-xl text-teal-500 truncate">{user.name}</div>
@@ -26,4 +31,4 @@ function List4User({ user, defaultAvatar }) {
     );
 }
 
-export default List4User;
+export default List5User;
