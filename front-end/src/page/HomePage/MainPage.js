@@ -60,7 +60,7 @@ function MainPage() {
                                 <div className="w-1/2" />
                                 <div className="w-1/2 my-20">
                                     <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold font-nowy">
-                                        <div>
+                                        <div className="w-4/5">
                                             <div className="p-2 text-center">
                                                 Welcome to AuctionForFun
                                             </div>
@@ -102,11 +102,9 @@ function MainPage() {
                             <div className="w-full">
                                 <div className="flex justify-center items-center">
                                     <div className="space-y-10 mt-10 w-4/5 rounded-t-lg">
-                                        {top5Earliest.length > 0 && (
-                                            <Top5Earliest
-                                                top5Earliest={top5Earliest}
-                                            />
-                                        )}
+                                        <Top5Earliest
+                                            top5Earliest={top5Earliest}
+                                        />
                                     </div>
                                 </div>
                                 <div className="bg-[rgba(182,207,201,0.815)] flex justify-center items-center">

@@ -22,10 +22,10 @@ function BidDetail() {
     return (
         <>
             {!!bidDetail && (
-                <div className="w-full min-h-75vh flex justify-center h-full box-border">
-                    <div className="w-3/4 my-6 space-y-10">
+                <div className="w-full min-h-80vh flex justify-center h-full box-border">
+                    <div className="w-5/6 my-6 space-y-10">
                         <div className="w-full flex space-x-3">
-                            <div className="w-1/2 h-85vh">
+                            <div className="w-1/3 h-50vh px-3">
                                 <img
                                     onClick={() =>
                                         navigate(
@@ -42,7 +42,7 @@ function BidDetail() {
                                     className="cursor-pointer w-full h-full object-cover rounded-lg shadow-2xl"
                                 />
                             </div>
-                            <div className="w-1/2 space-y-5">
+                            <div className="w-1/3 space-y-5 px-3">
                                 <div className="text-4xl font-extrabold text-center">
                                     {bidDetail.property.name}
                                 </div>
@@ -51,14 +51,6 @@ function BidDetail() {
                                 </div>
                                 <div className="text-2xl font-extrabold text-center text-gray-600">
                                     Room Id: #{bidDetail.id}
-                                </div>
-                                <div className="text-2xl text-gray-700 text-center space-y-10">
-                                    <p className="italic">Description</p>
-                                    <p className="text-black text-xl italic">
-                                        {!!bidDetail.property.description
-                                            ? bidDetail.property.description
-                                            : 'No description'}
-                                    </p>
                                 </div>
                                 <div className="flex justify-center items-center w-full space-x-10">
                                     <div className="w-full flex">
@@ -75,14 +67,23 @@ function BidDetail() {
                                         </p>
                                     </div>
                                 </div>
-                                <div className="flex justify-center items-center w-full space-x-10">
+                                <div className="text-2xl text-gray-700 text-center space-y-2">
+                                    <p className="italic">Description</p>
+                                    <p className="text-black text-base italic">
+                                        {!!bidDetail.property.description
+                                            ? bidDetail.property.description
+                                            : 'No description'}
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="w-1/3 space-y-5 flex flex-col justify-center items-center px-3">
+                                <div className="w-full space-x-10 flex">
                                     <div className="w-full flex">
-                                        <div className="w-1/2" />
                                         <div className="w-1/2">
                                             Reserve Price:
                                         </div>
                                     </div>
-                                    <div className="w-full">
+                                    <div className="w-full flex">
                                         <NumericFormat
                                             className="title-font font-medium lg:text-4xl text-red-500"
                                             value={bidDetail.reservePrice}
@@ -93,9 +94,8 @@ function BidDetail() {
                                         />
                                     </div>
                                 </div>
-                                <div className="flex justify-center items-center w-full space-x-10">
+                                <div className="w-full space-x-10 flex">
                                     <div className="w-full flex">
-                                        <div className="w-1/2" />
                                         <div className="w-1/2">Price Step:</div>
                                     </div>
                                     <div className="w-full">
@@ -109,9 +109,8 @@ function BidDetail() {
                                         />
                                     </div>
                                 </div>
-                                <div className="flex justify-center items-center w-full space-x-10">
+                                <div className="w-full space-x-10 flex">
                                     <div className="w-full flex">
-                                        <div className="w-1/2" />
                                         <div className="w-1/2">Last Step:</div>
                                     </div>
                                     <div className="w-full">
@@ -125,6 +124,7 @@ function BidDetail() {
                                         />
                                     </div>
                                 </div>
+
                                 <div className="text-xl text-gray-700">
                                     <p className="italic text-center">
                                         Auctioneer
@@ -145,7 +145,7 @@ function BidDetail() {
                                                 className="w-full object-cover rounded-full"
                                             />
                                         </div>
-                                        <p className="text-black">
+                                        <p className="text-black text-base">
                                             {bidDetail.auctioneer.username}
                                         </p>
                                     </div>

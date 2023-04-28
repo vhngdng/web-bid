@@ -16,7 +16,7 @@ function ImageSlideShow({
 }) {
     const [indexImage, setIndexImage] = useState(0);
     return (
-        <div className="w-full my-5">
+        <div className="w-full">
             <div className="flex justify-between p-3">
                 <div className="w-30vw h-50vh p-3 bg-white/30 p-3 rounded-lg items-center">
                     <img

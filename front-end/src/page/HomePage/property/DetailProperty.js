@@ -42,7 +42,7 @@ function DetailProperty() {
 
     return (
         <>
-            <div className="min-h-75vh h-full w-full flex flex-col justify-center items-center mt-10">
+            <div className="min-h-75vh h-full w-full flex flex-col justify-center items-center mt-5">
                 <div className="w-full space-y-10">
                     {!!data && (
                         <ImageSlideShow

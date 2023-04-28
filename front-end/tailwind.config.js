@@ -34,6 +34,7 @@ module.exports = withMT({
                 '75vh': '75vh',
                 '60vh': '60vh',
                 '65vh': '65vh',
+                '53vh': '53vh',
                 '50vh': '50vh',
                 '45vh': '45vh',
                 '30vh': '30vh',
@@ -88,6 +89,7 @@ module.exports = withMT({
         },
         minHeight: {
             '90vh': '90vh',
+            '85vh': '85vh',
             '80vh': '80vh',
             '75vh': '75vh',
             '70vh': '70vh',

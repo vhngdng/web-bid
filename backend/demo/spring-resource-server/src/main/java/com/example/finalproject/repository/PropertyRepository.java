@@ -14,7 +14,7 @@ import java.util.List;
 public interface PropertyRepository extends JpaRepository<Property, Integer> {
   List<Property> findByOwnerEmail(String email);
 
-  @Query("select p from Property p left join Bid b on b.property.id = p.id where p.permission = 'ACCEPTED' and b.property.id is null ")
+  @Query("select p from Property p left join Bid b on b.property.id = p.id where p.permission = 'ACCEPTED' and b.property.id is null")
   List<Property> findAllPropertyNotBid();
 
   Page<Property> findAllByPermissionNotNull(Pageable pageable);
@@ -43,7 +43,7 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
   List<PropertyHomeProjection> findDetailPropertyForGuest(@Param("propertyId") int propertyId);
 
   List<Property> findAllByPermission(String permission);
-  @Query("select count(p.id) from Property p where p.permission = 'ACCEPTED'")
+  @Query("select count(p.id) from Property p left join Bid b on b.property.id = p.id  where p.permission = 'ACCEPTED' and b.property.id is null")
   Integer countAcceptedProperty();
   @Query("select p from Property p left join Bid b on b.property.id = p.id and b.id is null " +
           "where p.owner.email = :email and (p.permission in ('ACCEPTED', 'REFUSED') or p.auctioneerPrice <> p.reservePrice) ")

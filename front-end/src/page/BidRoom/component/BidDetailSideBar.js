@@ -118,10 +118,12 @@ function BidDetailSideBar({
                 >
                     <div className="h-full">
                         <Sidebar
-                            className="h-screen relative"
-                            collapsedWidth="40px"
+                            className="relative h-full"
+                            collapsedWidth="2vw"
                             defaultCollapsed={true}
                             transitionDuration={1000}
+                            backgroundColor="rgba(182, 207, 201, 0.815, 0.3)"
+                            width="11vw"
                         >
                             {isCollapse && (
                                 <Menu className="">

@@ -68,12 +68,11 @@ public class FinalProjectApplication {
         roleRepository.save(new Role("ROLE_GUEST"));
       }
       ;
-      if (userRepository.count() < 30) {
+      if (userRepository.count() < 40) {
         initUser(userRepository, roleRepository);
       }
-      if (bidRepository.count() < 20) {
+      if (bidRepository.count() < 40) {
         initProperty(propertyRepository, userRepository);
-
         initBid(propertyRepository,
                 roleRepository,
                 userRepository,
@@ -85,7 +84,7 @@ public class FinalProjectApplication {
 
   }
 
-  @Transactional
+  @Transactional()
   public void initUser(UserRepository userRepository, RoleRepository roleRepository) {
     Faker faker;
 
@@ -179,7 +178,7 @@ public class FinalProjectApplication {
 
     }
   }
-
+  @Transactional
   void initProperty(PropertyRepository propertyRepository, UserRepository userRepository) {
     Random rd = new Random();
     for (int i = 0; i < 20; i++) {

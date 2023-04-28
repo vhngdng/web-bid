@@ -432,10 +432,16 @@ function BidDetailRoom() {
                 </>
             ) : (
                 <>
-                    <div className="flex justify-center text-center" ref={ref}>
-                        <Button onClick={() => setIsOpen(!isOpen)}>
+                    <div
+                        className="flex justify-center text-center h-fit mt-10"
+                        ref={ref}
+                    >
+                        <button
+                            className="text-white rounded-lg text-sm px-5 py-2.5 text-center mb-2 font-medium shadow-lg dark:shadow-lg focus:outline-none bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-blue-300 dark:focus:ring-blue-800 shadow-blue-500/50 dark:shadow-blue-800/80"
+                            onClick={() => setIsOpen(!isOpen)}
+                        >
                             Connect
-                        </Button>
+                        </button>
                     </div>
                     <Modal
                         isOpen={isOpen}
