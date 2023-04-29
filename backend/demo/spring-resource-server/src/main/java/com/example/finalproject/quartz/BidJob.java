@@ -13,6 +13,7 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
@@ -39,7 +40,8 @@ public class BidJob extends QuartzJobBean {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid id: " + id + " is not found"));
     setScheduler(bid);
   }
-
+  @Async
+  @Transactional(rollbackFor = Exception.class)
   protected void setScheduler(Bid bid) {
     if (bid.getStatus().equalsIgnoreCase(STATUS_BID.DEACTIVE.name())) {
       bid.setStatus(STATUS_BID.ACTIVE.name());
@@ -53,15 +55,10 @@ public class BidJob extends QuartzJobBean {
         bidRepository.save(bid);
         return;
       }
-
-//      log.error("before save Payment");
-//      Payment Payment = PaymentRepository.save(Payment.builder().bid(bid).status("PENDING").build());
-//      log.error(Payment.getStatus());
       Payment payment = paymentService.createPayment(new PaymentRequest("PENDING", bid.getId()));
       bid.setStatus(STATUS_BID.FINISH.name());
       bid.setPayment(payment);
       log.info(bid.getPayment().getStatus());
-
       bidRepository.save(bid);
     }
   }

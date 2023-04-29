@@ -2,6 +2,7 @@ package com.example.finalproject.controller;
 
 import com.example.finalproject.dto.MessageDTO;
 import com.example.finalproject.entity.Message;
+import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.repository.BidRepository;
 import com.example.finalproject.response.FinishResponse;
 import com.example.finalproject.service.MessageService;
@@ -14,8 +15,11 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.ExecutionException;
 
 @Controller
 @RequiredArgsConstructor
@@ -42,15 +46,16 @@ public class WSMessageController {
 
   @MessageMapping("/room/{bidId}")  //  app/room/{bidId}
   @SendTo("/room/{bidId}")
-  private Object receiveMessage(@Payload MessageDTO messageDTO, @DestinationVariable Long bidId) {
+//  @Transactional(propagation = Propagation.REQUIRES_NEW)
+  public Object receiveMessage(@Payload MessageDTO messageDTO, @DestinationVariable Long bidId) throws ExecutionException, InterruptedException {
     log.info(messageDTO.getMessage());
     log.info(bidId.toString());
-
-    return messageService.saveWithBidId(messageDTO);
+    return messageService.saveWithBidId(messageDTO).get();
   }
 
   @MessageMapping("/finish/room/{bidId}")  // app/finish/room/{bidId}
-  private void receiveMessage(@Payload FinishResponse request, @DestinationVariable Long bidId) {
+  @Transactional(noRollbackFor = BadRequestException.class)
+  public void receiveMessage(@Payload FinishResponse request, @DestinationVariable Long bidId) {
     log.info(bidId.toString());
     messageService.finishBid(request);
   }

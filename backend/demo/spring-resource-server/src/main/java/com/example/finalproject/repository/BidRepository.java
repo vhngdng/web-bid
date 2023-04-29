@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface BidRepository extends JpaRepository<Bid, Long> {
 
   boolean existsByProperty(Property property);
-  @Query("select t.bid from Payment t where t.bid.auctioneer.email = :auctioneerEmail and t.status = :statusPayment and t.bid.status = 'FINISH'")
+  @Query("select b from Bid b inner join b.payment p where b.auctioneer.email = :auctioneerEmail and p.status = :statusPayment and b.status = 'FINISH'")
   List<Bid> findListBidRoomBeforeFinish(@Param("auctioneerEmail") String auctioneerEmail, @Param("statusPayment") String statusPayment);
 
   Bid findByIdAndAuctioneerEmail(Long id, String auctioneerEmail);

@@ -16,14 +16,17 @@ import com.example.finalproject.request.PaymentRequest;
 import com.example.finalproject.response.FinishResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 //@Scope(value="prototype", proxyMode= ScopedProxyMode.TARGET_CLASS)
@@ -52,8 +55,7 @@ public class MessageService {
                     .orElseThrow(() -> new NotFoundException("Bid is not exist with id: " + messageDTO.getBid()))
     );
   }
-
-  @Transactional
+  @Transactional(noRollbackFor = NotFoundException.class, propagation = Propagation.REQUIRES_NEW)
   public BidParticipantDTO saveJoinMessage(MessageDTO messageDTO) {
     Optional<BidParticipant> participant = findParticipant(messageDTO);
     if (participant.isPresent()) {
@@ -89,20 +91,20 @@ public class MessageService {
     List<Message> messages = messageRepository.findAllMessageInBidRoom(id, time, finish);
     return mapper.toListDTO(messages);
   }
-
-  public Object saveWithBidId(MessageDTO messageDTO) {
+  @Async
+  public CompletableFuture<Object> saveWithBidId(MessageDTO messageDTO) {
     Bid bid = bidRepository.findById(messageDTO.getBid()).orElseThrow(() -> new NotFoundException("Bid with id: " + messageDTO.getBid() + " is not found"));
     Message message = mapper.toEntity(messageDTO);
     message.setBids(new HashSet<>());
     message.addBid(bid);
     if (messageDTO.getStatus().equals("LEAVE")) {
       messageRepository.save(message);
-      return saveLeaveMessage(messageDTO);
+      return CompletableFuture.completedFuture(saveLeaveMessage(messageDTO));
     }
     messageRepository.save(message);
     if (messageDTO.getStatus().equals("JOIN")) {
       log.info("save");
-      return saveJoinMessage(messageDTO);
+      return CompletableFuture.completedFuture(saveJoinMessage(messageDTO));
     }
 
     if (bid.getUpdatePrice() != null) {
@@ -114,21 +116,18 @@ public class MessageService {
             .findByEmail(messageDTO.getSenderName())
             .orElseThrow(() -> new UsernameNotFoundException("Email of sender: " + messageDTO.getSenderName() + " is not found")));
     bidRepository.save(bid);
-    return mapper.toDTO(message);
+    return CompletableFuture.completedFuture(mapper.toDTO(message));
   }
-
-  private BidParticipantDTO saveLeaveMessage(MessageDTO messageDTO) {
+  @Transactional(noRollbackFor = NotFoundException.class, propagation = Propagation.REQUIRES_NEW)
+  public BidParticipantDTO saveLeaveMessage(MessageDTO messageDTO) {
     Optional<BidParticipant> participant = findParticipant(messageDTO);
 
-    if (participant.isPresent()) {
-      bidParticipantRepository.delete(participant.get());
-      log.error("======================");
-    }
-    BidParticipantDTO bidParticipantDTO = mapper.toDTO(participant.get(), imageRepository);
+    participant.ifPresent(bidParticipantRepository::delete);
+    BidParticipantDTO bidParticipantDTO = mapper.toDTO(participant.orElseThrow(() -> new NotFoundException("participant not found")), imageRepository);
     bidParticipantDTO.setStatus(STATUS_MESSAGE.LEAVE.name());
     return bidParticipantDTO;
   }
-
+  @Async
   public void finishBid(FinishResponse request) {
     Bid bid = bidRepository.findById(request.getId()).orElseThrow(() -> new NotFoundException("Bid with Id: " + request.getId() + " is not found"));
     if(request.getWinningBidderUsername() == null) {
@@ -139,7 +138,6 @@ public class MessageService {
     bid.setStatus(STATUS_BID.FINISH.name());
     bid.setPayment(payment);
     mapper.updateFromFinishRequest(request, bid, userRepository);
-
   }
 
   public List<MessageDTO> getAllMessageBySuccessBidId(Integer PaymentId) {

@@ -76,7 +76,7 @@ function PropertyList() {
                             properties.map((property, index) => (
                                 <div
                                     key={index}
-                                    className="group relative rounded-lg bg-white/30 px-3"
+                                    className="group relative rounded-lg bg-white/30 p-3"
                                 >
                                     <div
                                         className="cursor-pointer"

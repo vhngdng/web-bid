@@ -32,7 +32,7 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
     // eslint-disable-next-line no-unused-vars
     const { auth, avatar } = useSelector((state) => state.auth);
     // eslint-disable-next-line no-unused-vars
-    const { newNoti, setNewNoti } = useContext(NotificationContext);
+    const { setNewNoti } = useContext(NotificationContext);
     const refNoti = useRef(null);
 
     useEffect(() => {
@@ -186,8 +186,7 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
                     .map((notifi) => {
                         if (notifi.bidId === message.bidId) {
                             console.log('notifi bid id', notifi);
-                            notifi.status = message.status;
-                            return notifi;
+                            return { ...notifi, status: message.status };
                         }
                         return notifi;
                     });

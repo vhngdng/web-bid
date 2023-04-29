@@ -101,7 +101,6 @@ public class BidService {
       schedulerChangeBidStatus(bid);
       return mapper.toDTO(bid, userRepository, imageRepository);
   }
-
   public void schedulerChangeBidStatus(Bid bid) {
     if(bid.getDayOfSale().minusMinutes(2L).isBefore(LocalDateTime.now())) return;
 
@@ -144,10 +143,6 @@ public class BidService {
   }
 
   public List<BidDTO> findListBidRoomBeforeFinish(String auctioneerEmail) {
-//    Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id: " + id + " is not found"));
-//    if (!auctioneerEmail.equalsIgnoreCase(bid.getAuctioneer().getEmail())) {
-//      throw new BadRequestException("The email of auctioneer is not valid");
-//    }
     List<Bid> listBidFinish = bidRepository.findListBidRoomBeforeFinish(auctioneerEmail, STATUS_PAYMENT.FINISH.name());
     return mapper.toListBidDTO(listBidFinish, userRepository, imageRepository);
   }

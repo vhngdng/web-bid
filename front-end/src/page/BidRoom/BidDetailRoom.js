@@ -138,6 +138,7 @@ function BidDetailRoom() {
         switch (message.status) {
             case 'JOIN':
                 if (!(message in participants)) {
+                    console.log('roi vao day');
                     setParticipants((prev) => [...prev, message]);
                 }
                 break;

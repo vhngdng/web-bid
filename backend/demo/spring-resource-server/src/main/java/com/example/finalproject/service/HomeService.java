@@ -50,19 +50,20 @@ public class HomeService {
             .build();
 //    return bidRepository.findBidTop5Attend(pageable).getContent();
   }
+
   public Page<Object> search(String keyword, int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
     List<Object> result = new ArrayList<>();
-      CompletableFuture<List<BidHomeProjection>> bid = bidService.searchBid(keyword);
-      CompletableFuture<List<PropertyHomeProjection>> property = propertyService.search(keyword);
-       CompletableFuture
-              .allOf(bid, property)
-              .thenApplyAsync(v -> {
-                result.addAll(bid.join());
-                result.addAll(property.join());
-                return result;
-              })
-              .join();
+    CompletableFuture<List<BidHomeProjection>> bid = bidService.searchBid(keyword);
+    CompletableFuture<List<PropertyHomeProjection>> property = propertyService.search(keyword);
+    CompletableFuture
+            .allOf(bid, property)
+            .thenApplyAsync(v -> {
+              result.addAll(bid.join());
+              result.addAll(property.join());
+              return result;
+            })
+            .join();
     int offset = page * size;
     int endIndex = Math.min(offset + size, result.size());
     List<Object> content = result.subList(offset, endIndex);

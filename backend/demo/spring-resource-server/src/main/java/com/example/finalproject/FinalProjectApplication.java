@@ -38,16 +38,6 @@ public class FinalProjectApplication {
   }
 
   @Bean
-  public Executor asyncExecutor() {
-    ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-    executor.setCorePoolSize(2);
-    executor.setMaxPoolSize(5);
-    executor.setQueueCapacity(500);
-    executor.setThreadNamePrefix("WebBidAsync-");
-    executor.initialize();
-    return executor;
-  }
-  @Bean
   public CommandLineRunner initialValue(RoleRepository roleRepository,
                                         UserRepository userRepository,
                                         PropertyRepository propertyRepository,

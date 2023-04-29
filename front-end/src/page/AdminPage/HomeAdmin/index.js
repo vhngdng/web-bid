@@ -202,81 +202,94 @@ function AdminHomePage() {
                     <section className=" mr-5 flex flex-col text-start ">
                         <Outlet />
                     </section>
-                    <div
-                        className={`fixed bottom-0 right-0 w-[16vw] bg-[rgb(189, 211, 213)] shadow-lg p-10 text-white fixed h-full z-40  ease-in-out duration-300 ${
-                            showSidebar
-                                ? 'translate-x-0 '
-                                : 'translate-x-full hidden'
-                        }`}
-                        ref={refNoti}
-                    >
-                        <h3 className="mt-20 text-4xl font-semibold text-graay-200">
-                            Finish
-                        </h3>
-                        {showSidebar && (
-                            <div className={cx('noti-table')}>
-                                <div
-                                    id="toast-message-cta"
-                                    className={cx(
-                                        ' w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert"',
-                                    )}
-                                >
-                                    {data && data.length > 0 ? (
-                                        data.map((noti, index) => (
-                                            <div className="flex" key={index}>
-                                                <div className="ml-3 text-sm font-normal">
-                                                    <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
-                                                        Bid Id: {noti.id}
-                                                    </span>
-                                                    <div className="mb-2 text-sm font-normal">
-                                                        Day of Sale:{' '}
-                                                        {noti.dayOfSale}
+                    <AnimatePresence>
+                        <motion.div
+                            className={`fixed bottom-0 right-0 w-[15vw] bg-gray-500/25 shadow-lg p-10 text-white fixed h-full z-40 ${
+                                showSidebar
+                                    ? 'translate-x-0 '
+                                    : 'translate-x-full hidden'
+                            }`}
+                            ref={refNoti}
+                            animate={
+                                scrollPosition >= 120 ? 'open' : 'collapsed'
+                            }
+                            variants={homeSidebarVariants}
+                            transition={{
+                                ease: 'easeInOut',
+                                duration: 1,
+                            }}
+                        >
+                            <h3 className="mt-20 text-4xl font-semibold text-graay-200">
+                                Finish
+                            </h3>
+                            {showSidebar && (
+                                <div className={cx('noti-table')}>
+                                    <div
+                                        id="toast-message-cta"
+                                        className={cx(
+                                            ' w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:bg-gray-800 dark:text-gray-400" role="alert"',
+                                        )}
+                                    >
+                                        {data && data.length > 0 ? (
+                                            data.map((noti, index) => (
+                                                <div
+                                                    className="flex"
+                                                    key={index}
+                                                >
+                                                    <div className="ml-3 text-sm font-normal">
+                                                        <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">
+                                                            Bid Id: {noti.id}
+                                                        </span>
+                                                        <div className="mb-2 text-sm font-normal">
+                                                            Day of Sale:{' '}
+                                                            {noti.dayOfSale}
+                                                        </div>
+                                                        <button
+                                                            onClick={() =>
+                                                                handleAccept(
+                                                                    noti.id,
+                                                                )
+                                                            }
+                                                            className="inline-flex px-2.5 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                                                        >
+                                                            Accept
+                                                        </button>
                                                     </div>
                                                     <button
-                                                        onClick={() =>
-                                                            handleAccept(
-                                                                noti.id,
-                                                            )
-                                                        }
-                                                        className="inline-flex px-2.5 py-1.5 text-xs font-medium text-center text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+                                                        type="button"
+                                                        className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                                                        data-dismiss-target="#toast-message-cta"
+                                                        aria-label="Close"
                                                     >
-                                                        Accept
+                                                        <span className="sr-only">
+                                                            Close
+                                                        </span>
+                                                        <svg
+                                                            aria-hidden="true"
+                                                            className="w-5 h-5"
+                                                            fill="currentColor"
+                                                            viewBox="0 0 20 20"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                fillRule="evenodd"
+                                                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                                clipRule="evenodd"
+                                                            ></path>
+                                                        </svg>
                                                     </button>
                                                 </div>
-                                                <button
-                                                    type="button"
-                                                    className="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                                                    data-dismiss-target="#toast-message-cta"
-                                                    aria-label="Close"
-                                                >
-                                                    <span className="sr-only">
-                                                        Close
-                                                    </span>
-                                                    <svg
-                                                        aria-hidden="true"
-                                                        className="w-5 h-5"
-                                                        fill="currentColor"
-                                                        viewBox="0 0 20 20"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                                            clipRule="evenodd"
-                                                        ></path>
-                                                    </svg>
-                                                </button>
+                                            ))
+                                        ) : (
+                                            <div className="inline-flex px-2.5 py-1.5 text-xs font-medium text-center text-blue bg-gray-300 ">
+                                                You dont have any request
                                             </div>
-                                        ))
-                                    ) : (
-                                        <div className="inline-flex px-2.5 py-1.5 text-xs font-medium text-center text-blue bg-gray-300 ">
-                                            You dont have any request
-                                        </div>
-                                    )}
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </motion.div>
+                    </AnimatePresence>
                 </div>
             </div>
             <ToastContainer pauseOnHover={false} />
