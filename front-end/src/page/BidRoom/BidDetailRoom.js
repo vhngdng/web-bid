@@ -31,6 +31,7 @@ import { ProSidebarProvider } from 'react-pro-sidebar';
 import BidDetailSideBar from './component/BidDetailSideBar';
 import BidRoomInformation from './component/BidRoomInformation';
 import BidDetail from '../HomePage/bid/BidDetail';
+import readImage from '~/utils/readImage';
 
 var stompClient = null;
 // var Sock = null;
@@ -366,8 +367,10 @@ function BidDetailRoom() {
                                         <motion.img
                                             className="mx-auto mb-4 w-36 h-36 rounded-full"
                                             src={
-                                                participant.imageId
-                                                    ? `${DOMAIN_URL}api/v1/images/read/${participant.imageId}`
+                                                !!participant.imageId
+                                                    ? readImage(
+                                                          participant.imageId,
+                                                      )
                                                     : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                                             }
                                             alt="Avatar"
