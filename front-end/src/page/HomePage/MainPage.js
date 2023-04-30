@@ -56,7 +56,7 @@ function MainPage() {
                             }
                             variants={learnMoreVariants}
                         >
-                            <div className="h-60vh flex justify-between">
+                            <div className="min-h-60vh flex justify-between">
                                 <div className="w-1/2" />
                                 <div className="w-1/2 my-20">
                                     <div className="flex justify-center items-center text-4xl text-gray-700 font-extrabold font-nowy">
