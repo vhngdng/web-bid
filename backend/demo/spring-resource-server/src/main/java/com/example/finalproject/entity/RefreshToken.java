@@ -2,7 +2,6 @@ package com.example.finalproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.redis.core.RedisHash;
 
 import java.time.Instant;
 
