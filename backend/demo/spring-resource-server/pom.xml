@@ -175,8 +175,11 @@
 	<repositories>
 		<repository>
 			<id>spring-milestone</id>
-			<name>Spring Maven MILESTONE Repository</name>
+			<name>Spring Libs Milestone</name>
 			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 	</repositories>
 
