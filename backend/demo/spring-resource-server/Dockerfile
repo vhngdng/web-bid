@@ -8,4 +8,4 @@ ENV SPRING_PROFILES_ACTIVE=dev
 
 EXPOSE 8080
 # ENTRYPOINT [ "java", "-Dspring.profiles.active=$SPRING_PROFILES_ACTIVE", "-jar", "/app.jar" ]
-CMD ["./mvnw", "spring-boot:run", "-Dspring.profiles.active=$SPRING_PROFILES_ACTIVE"]
+CMD ["./mvnw", "spring-boot:run", "-DskipTests", "-Dspring.profiles.active=$SPRING_PROFILES_ACTIVE"]
