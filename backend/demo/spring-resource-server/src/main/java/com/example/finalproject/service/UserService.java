@@ -17,6 +17,8 @@ import com.example.finalproject.response.Notification;
 import com.example.finalproject.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -56,15 +58,12 @@ public class UserService {
               .provider(Provider.GOOGLE)
               .enabled(true)
               .build();
-
       userRepository.save(newUser);
     }
   }
-
   public UserDTO findUserByEmail(String email) {
     return mapper.toDTO(userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Email " + email + " is not found")), imageRepository);
   }
-
   public UserDTO findUserById(Long id) {
     return mapper.toDTO(userRepository.findById(id).orElseThrow(() -> new NotFoundException("User with id: " + id + " is not found")), imageRepository);
   }

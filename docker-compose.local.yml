@@ -5,12 +5,25 @@ services:
     image: vuhoangdung/web-bid-backend:latest
     depends_on:
       - postgre
+      - cache
     env_file: .env
     restart: unless-stopped
     ports:
       - 8080:8080
     volumes:
       - ./backend/demo/spring-resource-server/src:/usr/src/web-bid-app/src
+    networks:
+      - web-bid-network
+
+  cache:
+    image: redis:7.2-rc1-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command: redis-server --save 20 1 --loglevel warning
+    volumes: 
+      - ./cache:/data
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - web-bid-network
 
@@ -58,6 +71,8 @@ services:
       - POSTGRES_DB=web-project
     volumes:
       - ./dbdata:/var/lib/postgres
+      - ./postgre:/docker-entrypoint-initdb.d
+    # command: psql -U postgres \i /docker-entrypoint-initdb.d/vproperty_202305102303.sql
     ports:
       - "5433:5432"
     restart: unless-stopped

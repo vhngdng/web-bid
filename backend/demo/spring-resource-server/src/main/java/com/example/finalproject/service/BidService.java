@@ -19,7 +19,10 @@ import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +37,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
+
 public class BidService {
-  private final MessageRepository messageRepository;
   private final ImageRepository imageRepository;
   private final PaymentRepository paymentRepository;
   private final PropertyRepository propertyRepository;
@@ -60,7 +63,6 @@ public class BidService {
 
     mapper.createBid(upSertBid, bid, propertyRepository, userRepository);
     bidRepository.save(bid);
-//    schedulerChangeBidStatus(bidRepository.save(bid));
     return mapper.toDTO(bid, userRepository, imageRepository);
   }
 
@@ -92,6 +94,7 @@ public class BidService {
     }
     return mapper.toDTO(oldBid, userRepository, imageRepository);
   }
+//  @CachePut("bid")
   public BidDTO updateBidRoom(UpSertBid upSertBid, Long id) {
     Bid bid = bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with id " + id + " was not found"));
       if (upSertBid.getStatus().equalsIgnoreCase(STATUS_BID.ACTIVE.name())) {
@@ -197,9 +200,9 @@ public class BidService {
             .messageDTOs(messageService.getAllBidMessage(bid.getId()))
             .build();
   }
-
-  public Page<BidDTO> findAllPrivateBid(int page, int size, String[] sort, String type) {
-    return findAllBidRoomPaging(page, size, sort, type);
+  @Async
+  public CompletableFuture<Page<BidDTO>> findAllPrivateBid(int page, int size, String[] sort, String type) {
+    return CompletableFuture.completedFuture(findAllBidRoomPaging(page, size, sort, type));
   }
 
 
@@ -210,8 +213,5 @@ public class BidService {
   public CompletableFuture<List<BidHomeProjection>> searchBid(String keyword) {
     return CompletableFuture.completedFuture(bidRepository.search(keyword));
   }
-//  @Async
-//  public CompletableFuture<List<BidHomeProjection>> searchInt(String keyword) {
-//    return CompletableFuture.completedFuture(bidRepository.searchInt(keyword));
-//  }
+
 }

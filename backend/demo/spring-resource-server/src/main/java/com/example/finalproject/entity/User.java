@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -19,6 +23,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -31,7 +36,7 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User implements Serializable {
   @Id
   @Column(name = "user_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,6 +100,8 @@ public class User {
   @CreatedDate
   @Column(name = "creationDate", updatable = false)
   @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
   private LocalDateTime createdAt;
 
   @LastModifiedBy
@@ -104,6 +111,8 @@ public class User {
   @LastModifiedDate
   @Column(name = "lastModifiedDate")
   @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
   private LocalDateTime lastModifiedDate;
 
 }

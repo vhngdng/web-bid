@@ -17,7 +17,7 @@ import { customToastStyle } from '~/utils/customStyle';
 import { NotificationContext } from '~/context/NotificationProvider';
 function PropertyDetails() {
     const { propertyId } = useParams();
-    const { data, isLoading, error, refetch } =
+    const { data, isLoading, isError, refetch } =
         useGetAllDetailsPropertyQuery(propertyId);
     const [registerProperty] = useRegisterPropertyMutation();
     const [updateTypeImage] = useUpdateTypeImageMutation();
@@ -111,7 +111,7 @@ function PropertyDetails() {
     }, [reservePrice]);
     if (isLoading) return <Loader />;
     console.log('data', data);
-    if (error) navigate('/profile-detail/property-list');
+    if (isError) navigate('/profile-detail/property-list');
 
     const handleChangeIndex = (index) => {
         if (index < 0) {

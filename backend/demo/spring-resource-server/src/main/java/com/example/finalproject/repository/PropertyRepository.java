@@ -2,21 +2,19 @@ package com.example.finalproject.repository;
 
 import com.example.finalproject.entity.Property;
 import com.example.finalproject.projection.home.PropertyHomeProjection;
-import com.example.finalproject.response.PropertyNotification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
-
-public interface PropertyRepository extends JpaRepository<Property, Integer> {
+public interface PropertyRepository extends JpaRepository<Property, Integer>{
   List<Property> findByOwnerEmail(String email);
-
   @Query("select p from Property p left join Bid b on b.property.id = p.id where p.permission = 'ACCEPTED' and b.property.id is null")
   List<Property> findAllPropertyNotBid();
-
   Page<Property> findAllByPermissionNotNull(Pageable pageable);
 
   @Query("select p.name as name, p.id as id, p.quantity as quantity, p.description as description, b.lastPrice as lastPrice, i.id as imageProperty " +
@@ -57,4 +55,6 @@ public interface PropertyRepository extends JpaRepository<Property, Integer> {
           "where (p.name like lower(concat('%', :keyword, '%')) or cast(p.id as string) like lower(concat('%', :keyword, '%')) " +
           "or p.category like lower(concat('%', :keyword, '%')) ) and p.permission = 'ACCEPTED' ")
   List<PropertyHomeProjection> search(@Param("keyword") String keyword);
+
+
 }

@@ -6,6 +6,7 @@ import com.example.finalproject.dto.PropertyDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Image;
 import com.example.finalproject.entity.Property;
+import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.projection.ImageProjection;
@@ -16,9 +17,16 @@ import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.UpSertProperty;
 import com.example.finalproject.response.*;
+import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
@@ -28,10 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -50,7 +55,6 @@ public class PropertyService {
   private ImageRepository imageRepository;
   @Autowired
   private SimpMessagingTemplate simpMessagingTemplate;
-
   public Page<PropertyDTO> findAll(int page,
                                    int size,
                                    String sort) {
@@ -96,6 +100,9 @@ public class PropertyService {
   public PropertyResponse findDetailProperty(Integer propertyId) {
     Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id " + propertyId + " is not found"));
     String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    if (!propertyRepository.findByOwnerEmail(email).contains(property)) {
+      throw new BadRequestException("Not own this property" + propertyId);
+    }
     return PropertyResponse.builder()
             .propertyDTO(mapper.toDTO(property, imageRepository))
             .images(imageRepository.findByPropertyIdAndUserEmail(propertyId, email))
@@ -110,15 +117,15 @@ public class PropertyService {
             .images(images)
             .build();
   }
-
+//  @CachePut(value = "properties", key = "{#propertyId}")
   public PropertyResponse updateProperty(UpSertProperty upSertProperty, Integer propertyId) {
     Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("Property with id is not found " + propertyId));
     String originalPermission = property.getPermission();
-    long originalPrice = property.getReservePrice();
+    Long originalPrice = property.getReservePrice() != null ? property.getReservePrice() : null;
     mapper.updateProperty(upSertProperty, property);
     propertyRepository.save(property);
     List<ImageProjection> images = imageRepository.findByPropertyId(propertyId);
-    if(!upSertProperty.getPermission().equalsIgnoreCase(originalPermission) || upSertProperty.getReservePrice() != originalPrice) {
+    if(!upSertProperty.getPermission().equalsIgnoreCase(originalPermission) || !Objects.equals(upSertProperty.getReservePrice(), originalPrice)) {
         userRepository.findAdminOnline().forEach(u -> simpMessagingTemplate.convertAndSendToUser(u.getEmail(), "private", PropertyNotification
                 .builder()
                 .id(property.getId())
@@ -137,12 +144,10 @@ public class PropertyService {
             .images(images)
             .build();
   }
-
   public PropertyResponse registerProperty(UpSertProperty upSertProperty, Integer propertyId) {
     upSertProperty.setPermission(PERMISSION.NOTCHECK.name());
     return updateProperty(upSertProperty, propertyId);
   }
-
   @Transactional
   public Object deleteProperty(Integer propertyId) {
     Property property = propertyRepository.findById(propertyId).orElseThrow(() -> new NotFoundException("This property not found " + propertyId));
@@ -169,11 +174,24 @@ public class PropertyService {
     }
   }
 
-  public Page<PropertyHomeProjection> findListPropertyForGuest(int page, int size, String sort) {
+  public Page<PropertyHomeProjection> findListPropertyForGuest(int page, int size, String sort, Long id, Long reservePrice, String name) {
     String[] _sort = sort.split(",");
     Sort.Order order = (new Sort.Order(_sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC,
             _sort[0]));
     Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+    Specification<PropertyHomeProjection> specification = (root, query, builder) -> {
+      List<Predicate> predicates = new ArrayList<>();
+      if(id != null) {
+        predicates.add(builder.equal(root.get("id"), id));
+      }
+      if(reservePrice != null) {
+        predicates.add(builder.equal(root.get("reservePrice"), reservePrice));
+      }
+      if(StringUtils.isBlank(name)) {
+        predicates.add(builder.like(root.get("name"), "%" + name + "%"));
+      }
+      return builder.and(predicates.toArray(new Predicate[0]));
+    };
     return propertyRepository.findListPropertyForGuest(pageable);
   }
 

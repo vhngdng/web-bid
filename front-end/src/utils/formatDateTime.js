@@ -1,8 +1,9 @@
-import { format, parseISO } from 'date-fns';
+import { format } from 'date-fns';
 
 const formatDateTime = (time) => {
+    console.log(time);
     return {
-        date: format(parseISO(time), 'yyyy-MM-dd hh:mm:ss a'),
+        date: format(new Date(...time), 'yyyy-MM-dd hh:mm:ss a'),
     };
 };
 

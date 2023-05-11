@@ -17,8 +17,8 @@ public class HomeController {
   HomeService homeService;
 
   @GetMapping("home")
-  public ResponseEntity<?> findHomeDetail() {
-    return ResponseEntity.ok(homeService.findHomeDetail());
+  public ResponseEntity<?> findHomeDetail() throws ExecutionException, InterruptedException {
+    return ResponseEntity.ok(homeService.findHomeDetail().get());
   }
 
   @GetMapping("search/{keyword}")

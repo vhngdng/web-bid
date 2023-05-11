@@ -6,3 +6,4 @@ certbot
 docker-compose.local.yml
 config/nginx.local.conf
 log
+cache

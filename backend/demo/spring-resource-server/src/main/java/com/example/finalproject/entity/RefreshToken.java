@@ -2,6 +2,7 @@ package com.example.finalproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.time.Instant;
 
@@ -11,7 +12,7 @@ import java.time.Instant;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RefreshToken {
+public class RefreshToken  {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;

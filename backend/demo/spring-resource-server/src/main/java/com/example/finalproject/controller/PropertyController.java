@@ -71,8 +71,11 @@ public class PropertyController {
   @GetMapping("guest/list-property")
   public ResponseEntity<?> findListPropertyForGuest(@RequestParam(name = "page", defaultValue = "0") int page,
                                                     @RequestParam(name = "size", defaultValue = "8") int size,
+                                                    @RequestParam(name = "id", required = false , defaultValue = "") Long id,
+                                                    @RequestParam(name = "reservePrice",required = false , defaultValue = "") Long reservePrice,
+                                                    @RequestParam(name = "name", required = false , defaultValue = "") String name,
                                                     @RequestParam(name ="sort", defaultValue = "id,asc") String sort) {
-    return ResponseEntity.ok(propertyService.findListPropertyForGuest(page, size, sort));
+    return ResponseEntity.ok(propertyService.findListPropertyForGuest(page, size, sort, id, reservePrice, name));
   }
   @GetMapping("guest/list-property/{propertyId}")
   public ResponseEntity<?> findDetailPropertyForGuest(@PathVariable int propertyId) {

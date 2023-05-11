@@ -3,6 +3,10 @@ package com.example.finalproject.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +21,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,7 +31,7 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "image")
 @EntityListeners({AuditingEntityListener.class})
-public class Image {
+public class Image implements Serializable {
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -54,6 +59,8 @@ public class Image {
 
   @CreatedDate
   @Column(name = "created_date", updatable = false)
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
   protected LocalDateTime createdAt;
 
   @LastModifiedBy
@@ -66,6 +73,8 @@ public class Image {
 
   @LastModifiedDate
   @Column(name = "last_modified_date")
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
   protected LocalDateTime lastModifiedDate;
 
 

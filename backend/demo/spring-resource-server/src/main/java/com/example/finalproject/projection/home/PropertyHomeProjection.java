@@ -90,4 +90,3 @@ public interface PropertyHomeProjection {
   }
 }
 
-// u.avatar as defaultAvatar, i.id as ownerAvatar, u.username as ownerName, u.id as ownerId, b.id as bidId " +

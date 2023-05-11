@@ -3,9 +3,11 @@ package com.example.finalproject.repository;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Property;
 import com.example.finalproject.projection.home.BidHomeProjection;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface BidRepository extends JpaRepository<Bid, Long> {
+public interface BidRepository extends JpaRepository<Bid, Long>, JpaSpecificationExecutor<Bid> {
 
   boolean existsByProperty(Property property);
   @Query("select b from Bid b inner join b.payment p where b.auctioneer.email = :auctioneerEmail and p.status = :statusPayment and b.status = 'FINISH'")
@@ -102,28 +104,7 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
 
   )
   List<BidHomeProjection> search(@Param("keyword") String keyword);
-//  @Query("select b.id as id, b.type as type, b.dayOfSale as dayOfSale, " +
-//          "b.conditionReport as conditionReport, b.status as status, " +
-//          "b.reservePrice as reservePrice, b.priceStep as priceStep, " +
-//          "b.lastPrice as lastPrice, count(bp.user) as countAttendees, " +
-//          "b.property.id as propertyId, ip.id as propertyImageId," +
-//          "b.property.quantity as quantity, b.property.category as category, " +
-//          "b.property.name as propertyName, b.auctioneer.id as auctioneerId, " +
-//          "b.auctioneer.username as auctioneerName, " +
-//          "ia.id as auctioneerAvatar " +
-//          "from Bid b left join BidParticipant bp on bp.bid.id = b.id " +
-//          "left join Image ia on ia.user.id = b.auctioneer.id and ia.type = 'AVATAR' " +
-//          "left join Image ip on ip.property.id = b.property.id and ip.type = 'PROPERTY' " +
-//          "where cast(b.id as string) like concat('%', :keyword, '%') or b.property.name like lower(concat('%', :keyword, '%')) " +
-//          "or b.auctioneer.username like lower(concat('%', :keyword, '%')) or b.winningBidder.username like lower(concat('%', :keyword, '%')) " +
-//          "or b.type like lower(concat('%', :keyword, '%')) or b.property.permission like lower(concat('%', :keyword, '%')) " +
-//          "or b.status like lower(concat('%', :keyword, '%')) " +
-//          "group by b.id, ia.id, ip.id, b.property.quantity, b.type, b.auctioneer.id, " +
-//          "b.property.id, b.dayOfSale, b.conditionReport, b.status, b.property.name, b.auctioneer.username, " +
-//          "b.reservePrice, b.priceStep, b.lastPrice, b.property.category "
-//
-//  )
-//  List<BidHomeProjection> searchInt(String keyword);
+
 }
 
 

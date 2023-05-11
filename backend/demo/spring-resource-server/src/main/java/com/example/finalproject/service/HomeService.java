@@ -38,22 +38,22 @@ public class HomeService {
   BidService bidService;
   @Autowired
   PropertyService propertyService;
-
-  public HomeResponse findHomeDetail() {
+  @Async
+  public CompletableFuture<HomeResponse> findHomeDetail() {
     Pageable pageable = PageRequest.of(0, 5);
-    return HomeResponse
+    return CompletableFuture.completedFuture(HomeResponse
             .builder()
             .bidEarliestTop5(bidRepository.findTop5Earliest(pageable, LocalDateTime.now()).getContent())
             .bidFamousTop5(bidRepository.findBidTop5Attend(pageable).getContent())
             .propertyTop5(propertyRepository.findPropertyTop5(pageable).getContent())
             .userRateTop5(userRepository.findUserTop5(pageable).getContent())
-            .build();
-//    return bidRepository.findBidTop5Attend(pageable).getContent();
+            .build());
   }
 
   public Page<Object> search(String keyword, int page, int size) {
     Pageable pageable = PageRequest.of(page, size);
     List<Object> result = new ArrayList<>();
+
     CompletableFuture<List<BidHomeProjection>> bid = bidService.searchBid(keyword);
     CompletableFuture<List<PropertyHomeProjection>> property = propertyService.search(keyword);
     CompletableFuture

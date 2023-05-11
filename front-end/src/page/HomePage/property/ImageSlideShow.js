@@ -1,9 +1,9 @@
 /* eslint-disable no-extra-boolean-cast */
 import React, { useState } from 'react';
 import { NumericFormat } from 'react-number-format';
-import { DOMAIN_URL } from '~/CONST/const';
 import formatDateTime from '~/utils/formatDateTime';
 import { motion } from 'framer-motion';
+import readImage from '~/utils/readImage';
 
 function ImageSlideShow({
     images,
@@ -19,14 +19,12 @@ function ImageSlideShow({
         <div className="w-full">
             <div className="flex justify-between p-3">
                 <div className="w-30vw h-50vh p-3 bg-white/30 p-3 rounded-lg items-center">
-                    <img
-                        className="w-full h-full object-cover rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]"
-                        src={
-                            images[indexImage].includes('static/media')
-                                ? images[indexImage]
-                                : `${DOMAIN_URL}api/v1/images/read/${images[indexImage].id}`
-                        }
-                    />
+                    {!!images[indexImage].id && (
+                        <img
+                            className="w-full h-full object-cover rounded-lg shadow-[0_50px_25px_-24px_rgb(0,0,0,0.3)]"
+                            src={readImage(images[indexImage].id)}
+                        />
+                    )}
                 </div>
                 <motion.div
                     className="inline-block w-1/2 text-center space-y-2 space-x-4"

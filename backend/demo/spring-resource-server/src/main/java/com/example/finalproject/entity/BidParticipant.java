@@ -7,13 +7,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "bid_participant")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BidParticipant {
+public class BidParticipant implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

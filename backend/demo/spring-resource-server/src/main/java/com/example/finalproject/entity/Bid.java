@@ -2,6 +2,10 @@ package com.example.finalproject.entity;
 
 import com.example.finalproject.entity.listener.BidListener;
 import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,6 +14,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -35,6 +40,8 @@ public class Bid implements Serializable {
   @Column
   private LocalDateTime dayOfSale;
   @Column
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
   private LocalDateTime finishTime;
   @Column(name = "conditionReport", columnDefinition = "TEXT")
   private String conditionReport;
@@ -55,8 +62,7 @@ public class Bid implements Serializable {
   @JsonManagedReference
   private User winningBidder;
 
-//  @OneToMany(mappedBy = "bid", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-//  private List<BidParticipant> bidParticipants;
+
   @ManyToMany(fetch = FetchType.LAZY, mappedBy = "bids")
   @JsonIgnore
   @JsonBackReference
@@ -81,6 +87,8 @@ public class Bid implements Serializable {
 
   @CreatedDate
   @Column(name = "createdAt", updatable = false, unique = true)
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
   protected LocalDateTime createdAt;
   @CreatedBy
   @Column(name = "createdBy", updatable = false)
@@ -90,6 +98,8 @@ public class Bid implements Serializable {
   protected String lastModifiedBy;
   @LastModifiedDate
   @Column(name = "lastModifiedDate")
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
   protected LocalDateTime lastModifiedDate;
 
 

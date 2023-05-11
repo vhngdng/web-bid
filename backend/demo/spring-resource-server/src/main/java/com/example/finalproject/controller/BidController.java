@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.ExecutionException;
+
 
 @RestController
 @RequestMapping("")
@@ -26,15 +28,15 @@ public class BidController {
   @GetMapping("guest/bid-room/private")
   public ResponseEntity<?> findAllBidPrivate(@RequestParam(name = "page", defaultValue = "0") int page,
                                             @RequestParam(name = "size", defaultValue = "7") int size,
-                                            @RequestParam(name ="sort", defaultValue = "dayOfSale,desc") String[] sort) {
-    return ResponseEntity.ok(bidService.findAllPrivateBid(page, size, sort, "private"));
+                                            @RequestParam(name ="sort", defaultValue = "dayOfSale,desc") String[] sort) throws ExecutionException, InterruptedException {
+    return ResponseEntity.ok(bidService.findAllPrivateBid(page, size, sort, "private").get());
   }
   @GetMapping("admin/bid-room/paging")
   public ResponseEntity<?> findAllBidRoomPaging(@RequestParam(name = "page", defaultValue = "0") int page,
                                                 @RequestParam(name = "size", defaultValue = "7") int size,
                                                 @RequestParam(name ="sort", defaultValue = "dayOfSale,desc") String[] sort
                                                 ) {
-    return ResponseEntity.ok(bidService.findAllBidRoomPaging(page, size, sort, null));
+    return ResponseEntity.ok(bidService.findAllBidRoomPaging(page, size, sort, null).get());
   }
 
   @GetMapping("bid-room/{id}")

@@ -38,7 +38,7 @@ function Search() {
         <div className="w-70vw min-h-75vh flex justify-center space-x-5 mx-10 my-10 ">
             <div className="w-full h-full rounded-lg shadow-lg bg-white/30">
                 <div className="flex flex-wrap items-center space-y-2">
-                    {!!data &&
+                    {!!data && data.content.length > 0 ? (
                         data.content.map((result, index) => (
                             <div key={index} className="py-4">
                                 {result.typeSearch === 'BID' ? (
@@ -205,7 +205,12 @@ function Search() {
                                     </div>
                                 )}
                             </div>
-                        ))}
+                        ))
+                    ) : (
+                        <div className="min-h-65vh">
+                            <div className="mx-10 my-10">Can not found any</div>
+                        </div>
+                    )}
                 </div>
                 {data && !!data.totalPages && (
                     <Pagination

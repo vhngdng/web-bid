@@ -72,6 +72,7 @@ public interface BidHomeProjection {
             .build();
   }
 
+
   default String getTypeSearch() {
     return "BID";
   }

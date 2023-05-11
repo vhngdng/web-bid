@@ -2,19 +2,24 @@ package com.example.finalproject.entity;
 
 import com.example.finalproject.entity.listener.PropertyListener;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
+@Table(name = "property", indexes = {
+        @Index(name = "o_index", columnList = "owner_id")
+})
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -22,7 +27,7 @@ import java.util.List;
 @Setter
 @Builder
 @EntityListeners({AuditingEntityListener.class, PropertyListener.class})
-public class Property {
+public class Property implements Serializable {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -34,7 +39,7 @@ public class Property {
   private Long auctioneerPrice;
 
   @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
-  @JoinColumn(name = "owner_id", referencedColumnName = "user_id")
+  @JoinColumn(name = "owner_id", referencedColumnName = "user_id", nullable = false)
   @JsonManagedReference
   private User owner;
 
@@ -62,11 +67,15 @@ public class Property {
   protected String lastModifiedBy;
 
   @LastModifiedDate
-  @Column(name = "lastModifiedDate", unique = false)
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
+  @Column(name = "last_modified_date", unique = false)
   protected LocalDateTime lastModifiedDate;
 
   @CreatedDate
-  @Column(name = "creationDate", updatable = false)
+  @JsonSerialize(using= LocalDateTimeSerializer.class)
+  @JsonDeserialize(using= LocalDateTimeDeserializer.class)
+  @Column(name = "creation_date", updatable = false)
   protected LocalDateTime createdAt;
 
   @PostLoad
