@@ -1,7 +1,7 @@
 package com.example.finalproject.controller;
 
 import com.example.finalproject.request.PaymentRequest;
-import com.example.finalproject.service.PaymentService;
+import com.example.finalproject.service.Impl.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,33 +1,16 @@
 package com.example.finalproject.security.OAuth2.userInfo.handler;
 
 
-import com.example.finalproject.entity.User;
-import com.example.finalproject.repository.UserRepository;
-import com.example.finalproject.security.OAuth2.CustomOAuth2User;
-import com.example.finalproject.service.RefreshTokenService;
-import com.example.finalproject.service.UserService;
-import com.example.finalproject.utils.JwtUtils;
-
-import com.google.gson.Gson;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientId;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor

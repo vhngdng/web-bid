@@ -1,7 +1,6 @@
 package com.example.finalproject.controller;
 
-import com.example.finalproject.service.BidService;
-import com.example.finalproject.service.HomeService;
+import com.example.finalproject.service.Impl.HomeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

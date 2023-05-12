@@ -1,9 +1,7 @@
 package com.example.finalproject.entity.listener;
 
 import com.example.finalproject.entity.Property;
-import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.response.PropertyNotification;
-import com.example.finalproject.service.ImageService;
 import jakarta.persistence.PostUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

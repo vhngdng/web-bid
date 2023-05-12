@@ -1,7 +1,7 @@
 package com.example.finalproject.controller;
 
 import com.example.finalproject.request.UpSertBid;
-import com.example.finalproject.service.BidService;
+import com.example.finalproject.service.Impl.BidService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 

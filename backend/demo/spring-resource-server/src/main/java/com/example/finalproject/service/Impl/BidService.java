@@ -1,4 +1,4 @@
-package com.example.finalproject.service;
+package com.example.finalproject.service.Impl;
 
 import com.example.finalproject.ENUM.STATUS_BID;
 import com.example.finalproject.ENUM.STATUS_PAYMENT;
@@ -19,10 +19,7 @@ import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

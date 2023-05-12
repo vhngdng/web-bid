@@ -1,4 +1,4 @@
-package com.example.finalproject.service;
+package com.example.finalproject.service.Impl;
 
 import com.example.finalproject.ENUM.PERMISSION;
 import com.example.finalproject.ENUM.TYPE_IMAGE;
@@ -17,24 +17,15 @@ import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.UpSertProperty;
 import com.example.finalproject.response.*;
-import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.*;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -55,6 +46,7 @@ public class PropertyService {
   private ImageRepository imageRepository;
   @Autowired
   private SimpMessagingTemplate simpMessagingTemplate;
+
   public Page<PropertyDTO> findAll(int page,
                                    int size,
                                    String sort) {
@@ -174,26 +166,7 @@ public class PropertyService {
     }
   }
 
-  public Page<PropertyHomeProjection> findListPropertyForGuest(int page, int size, String sort, Long id, Long reservePrice, String name) {
-    String[] _sort = sort.split(",");
-    Sort.Order order = (new Sort.Order(_sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC,
-            _sort[0]));
-    Pageable pageable = PageRequest.of(page, size, Sort.by(order));
-    Specification<PropertyHomeProjection> specification = (root, query, builder) -> {
-      List<Predicate> predicates = new ArrayList<>();
-      if(id != null) {
-        predicates.add(builder.equal(root.get("id"), id));
-      }
-      if(reservePrice != null) {
-        predicates.add(builder.equal(root.get("reservePrice"), reservePrice));
-      }
-      if(StringUtils.isBlank(name)) {
-        predicates.add(builder.like(root.get("name"), "%" + name + "%"));
-      }
-      return builder.and(predicates.toArray(new Predicate[0]));
-    };
-    return propertyRepository.findListPropertyForGuest(pageable);
-  }
+
 
   public PropertyHomeResponse
   findDetailPropertyForGuest(int propertyId) {

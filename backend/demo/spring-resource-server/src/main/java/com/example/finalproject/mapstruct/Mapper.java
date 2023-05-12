@@ -3,6 +3,7 @@ package com.example.finalproject.mapstruct;
 import com.example.finalproject.dto.*;
 import com.example.finalproject.entity.*;
 import com.example.finalproject.projection.Attendee;
+import com.example.finalproject.projection.home.PropertyHomeProjection;
 import com.example.finalproject.repository.*;
 import com.example.finalproject.request.UpSertProperty;
 
@@ -240,4 +241,16 @@ public interface Mapper {
   PropertyNotification toPropertyNotification(Property property);
 
   List<PropertyNotification> toListPropertyNotification(List<Property> notificationByUser);
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(target = "owner", expression = "java(setOwner(propertyView))")
+  PropertyViewDto toDto(PropertyView propertyView);
+
+  default PropertyViewDto.Owner setOwner(PropertyView propertyView){
+    return PropertyViewDto.Owner
+            .builder()
+            .name(propertyView.getOwnerName())
+            .avatar(propertyView.getAvatar() != null ? propertyView.getAvatar() : propertyView.getDefaultAvatar())
+            .id(propertyView.getOwnerId())
+            .build();
+  };
 }

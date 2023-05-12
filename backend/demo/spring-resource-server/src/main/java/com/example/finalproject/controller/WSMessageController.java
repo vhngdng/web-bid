@@ -5,7 +5,7 @@ import com.example.finalproject.entity.Message;
 import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.repository.BidRepository;
 import com.example.finalproject.response.FinishResponse;
-import com.example.finalproject.service.MessageService;
+import com.example.finalproject.service.Impl.MessageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -13,9 +13,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;

@@ -37,6 +37,7 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.43.9",
+    "react-imask": "^6.6.1",
     "react-markdown": "^8.0.5",
     "react-modal": "^3.16.1",
     "react-number-format": "^5.1.4",

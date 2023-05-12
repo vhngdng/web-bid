@@ -1,14 +1,13 @@
 package com.example.finalproject.controller;
 
-import com.example.finalproject.dto.PropertyDTO;
-import com.example.finalproject.request.UpSertBid;
 import com.example.finalproject.request.UpSertProperty;
-import com.example.finalproject.service.PropertyService;
+import com.example.finalproject.service.Impl.PropertyService;
+import com.example.finalproject.service.PropertyHomeService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,15 +16,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("")
 @Slf4j
+@RequiredArgsConstructor
 public class PropertyController {
 
-  @Autowired
-  private PropertyService propertyService;
+  private final PropertyService propertyService;
+  private final PropertyHomeService propertyHomeService;
 
   @GetMapping("/admin/properties")
   public ResponseEntity<?> findAllProperty(@RequestParam(name = "page", defaultValue = "0") int page,
                                            @RequestParam(name = "size", defaultValue = "8") int size,
-                                           @RequestParam(name ="sort", defaultValue = "id,asc") String sort) {
+                                           @RequestParam(name = "sort", defaultValue = "id,asc") String sort) {
     return ResponseEntity.ok(propertyService.findAll(page, size, sort));
   }
 
@@ -45,10 +45,12 @@ public class PropertyController {
     return new ResponseEntity<>(propertyService.saveProperty(upSertProperty)
             , HttpStatus.CREATED);
   }
+
   @GetMapping("user/property/{propertyId}")
   public ResponseEntity<?> findDetailProperty(@PathVariable("propertyId") Integer propertyId) {
     return ResponseEntity.ok(propertyService.findDetailProperty(propertyId));
   }
+
   @GetMapping("admin/properties/{propertyId}")
   public ResponseEntity<?> findAdminDetailProperty(@PathVariable("propertyId") Integer propertyId) {
     return ResponseEntity.ok(propertyService.findAdminDetailProperty(propertyId));
@@ -63,6 +65,7 @@ public class PropertyController {
   public ResponseEntity<?> registerProperty(@RequestBody @NotNull UpSertProperty upSertProperty, @PathVariable("propertyId") Integer propertyId) {
     return ResponseEntity.ok(propertyService.registerProperty(upSertProperty, propertyId));
   }
+
   @DeleteMapping("user/delete-properties/{propertyId}")
   public ResponseEntity<?> deleteProperty(@PathVariable("propertyId") Integer propertyId) {
     return ResponseEntity.ok(propertyService.deleteProperty(propertyId));
@@ -71,16 +74,20 @@ public class PropertyController {
   @GetMapping("guest/list-property")
   public ResponseEntity<?> findListPropertyForGuest(@RequestParam(name = "page", defaultValue = "0") int page,
                                                     @RequestParam(name = "size", defaultValue = "8") int size,
-                                                    @RequestParam(name = "id", required = false , defaultValue = "") Long id,
-                                                    @RequestParam(name = "reservePrice",required = false , defaultValue = "") Long reservePrice,
-                                                    @RequestParam(name = "name", required = false , defaultValue = "") String name,
-                                                    @RequestParam(name ="sort", defaultValue = "id,asc") String sort) {
-    return ResponseEntity.ok(propertyService.findListPropertyForGuest(page, size, sort, id, reservePrice, name));
+                                                    @RequestParam(name = "id", required = false, defaultValue = "") Long id,
+                                                    @RequestParam(name = "reservePrice", required = false, defaultValue = "") String reservePrice,
+                                                    @RequestParam(name = "name", required = false, defaultValue = "") String name,
+                                                    @RequestParam(name = "category", required = false, defaultValue = "") String category,
+                                                    @RequestParam(name = "owner", required = false, defaultValue = "") String owner,
+                                                    @RequestParam(name = "sort", defaultValue = "id,asc") String sort) {
+    return ResponseEntity.ok(propertyHomeService.findListPropertyForGuest(page, size, sort, id, reservePrice, name, category, owner));
   }
+
   @GetMapping("guest/list-property/{propertyId}")
   public ResponseEntity<?> findDetailPropertyForGuest(@PathVariable int propertyId) {
     return ResponseEntity.ok(propertyService.findDetailPropertyForGuest(propertyId));
   }
+
   @GetMapping("guest/findByPermission/{permission}")
   public ResponseEntity<?> findAllByPermission(@PathVariable String permission) {
     return ResponseEntity.ok(propertyService.findAllByPermission(permission));

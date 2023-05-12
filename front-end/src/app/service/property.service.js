@@ -126,6 +126,6 @@ export const {
     useUpdatePropertyMutation,
     useRegisterPropertyMutation,
     useDeleteUserPropertyMutation,
-    useGetListPropertyForGuestQuery,
+    useLazyGetListPropertyForGuestQuery,
     useGetDetailPropertyForGuestQuery,
 } = propeprtyApi;

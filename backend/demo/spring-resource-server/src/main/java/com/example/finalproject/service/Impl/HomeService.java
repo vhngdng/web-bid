@@ -1,4 +1,4 @@
-package com.example.finalproject.service;
+package com.example.finalproject.service.Impl;
 
 import com.example.finalproject.projection.home.BidHomeProjection;
 import com.example.finalproject.projection.home.PropertyHomeProjection;

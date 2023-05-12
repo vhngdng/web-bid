@@ -1,4 +1,4 @@
-package com.example.finalproject.service;
+package com.example.finalproject.service.Impl;
 
 import com.example.finalproject.ENUM.TYPE_IMAGE;
 import com.example.finalproject.entity.Image;

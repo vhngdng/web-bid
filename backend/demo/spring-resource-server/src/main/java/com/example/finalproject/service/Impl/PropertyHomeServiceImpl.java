@@ -1,0 +1,62 @@
+package com.example.finalproject.service.Impl;
+
+import com.example.finalproject.dao.PropertyHomeDao;
+import com.example.finalproject.entity.PropertyView;
+import com.example.finalproject.mapstruct.Mapper;
+import com.example.finalproject.service.PropertyHomeService;
+import jakarta.persistence.criteria.Predicate;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@Slf4j
+public class PropertyHomeServiceImpl implements PropertyHomeService {
+  @Autowired
+  private PropertyHomeDao propertyHomeDao;
+  @Autowired
+  private Mapper mapper;
+
+  @Override
+  public Page<Object> findListPropertyForGuest(int page, int size, String sort, Long id, String reservePrice, String name, String category, String owner) {
+    String[] _sort = sort.split(",");
+    Sort.Order order = (new Sort.Order(_sort[1].equalsIgnoreCase("desc") ? Sort.Direction.DESC : Sort.Direction.ASC,
+            _sort[0]));
+    Pageable pageable = PageRequest.of(page, size, Sort.by(order));
+    Specification<PropertyView> specification = (root, query, builder) -> {
+      List<Predicate> predicates = new ArrayList<>();
+      if (id != null) {
+        predicates.add(builder.equal(root.get("id"), id));
+      }
+      if (!StringUtils.isBlank(reservePrice) && reservePrice.split(",").length == 2) {
+        String[] _reservePrice = reservePrice.split(",");
+        predicates.add(_reservePrice[1].equalsIgnoreCase("greater")
+                ? builder.greaterThanOrEqualTo(root.get("reservePrice"), Long.parseLong(_reservePrice[0]))
+                : builder.lessThanOrEqualTo(root.get("reservePrice"), Long.parseLong(_reservePrice[0]))
+        );
+      }
+      if (!StringUtils.isBlank(name)) {
+        predicates.add(builder.like(root.get("name"), "%" + name + "%"));
+      }
+      if (!StringUtils.isBlank(category)) {
+        predicates.add(builder.like(root.get("category"), "%" + category + "%"));
+      }
+      if (!StringUtils.isBlank(owner)) {
+        predicates.add(builder.like(root.get("ownerName"), "%" + owner + "%"));
+      }
+      return builder.and(predicates.toArray(new Predicate[0]));
+    };
+    return propertyHomeDao.findAll(specification, pageable).map(propertyView -> mapper.toDto(propertyView));
+
+  }
+}

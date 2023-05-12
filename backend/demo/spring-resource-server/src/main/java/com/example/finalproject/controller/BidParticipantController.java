@@ -1,6 +1,6 @@
 package com.example.finalproject.controller;
 
-import com.example.finalproject.service.BidParticipantService;
+import com.example.finalproject.service.Impl.BidParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
