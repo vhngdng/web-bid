@@ -25,6 +25,7 @@ public class PropertyViewDto {
   private Long bidId;
   private String bidStatus;
   private Owner owner;
+  private String bidType;
   private final String typeSearch = "PROPERTY";
 
   @AllArgsConstructor

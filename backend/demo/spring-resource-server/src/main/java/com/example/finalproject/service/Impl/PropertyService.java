@@ -17,6 +17,7 @@ import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.request.UpSertProperty;
 import com.example.finalproject.response.*;
+import com.example.finalproject.service.PropertyHomeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -46,6 +47,8 @@ public class PropertyService {
   private ImageRepository imageRepository;
   @Autowired
   private SimpMessagingTemplate simpMessagingTemplate;
+  @Autowired
+  private PropertyHomeService propertyHomeService;
 
   public Page<PropertyDTO> findAll(int page,
                                    int size,

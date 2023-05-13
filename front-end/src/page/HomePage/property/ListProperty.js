@@ -72,10 +72,16 @@ function ListProperty() {
                     <div className="bg-white/50 mt-10 rounded-lg min-w-70vw">
                         <div className="w-full my-10">
                             <div className="mr-10 ">
-                                <div className="w-full flex justify-end">
+                                <div className="w-full flex justify-between">
+                                    <div className="flex justify-between items-center">
+                                        <h2 className="ml-8 text-6xl italic text-extrabold">
+                                            Properties
+                                        </h2>
+                                    </div>
                                     <div
                                         className={`inline-block m-2 p-4 w-1/2 ${
-                                            isSearch && 'bg-gray-400/50'
+                                            isSearch &&
+                                            'bg-gray-400/50 rounded-lg'
                                         }`}
                                     >
                                         <div className="text-end">
@@ -96,8 +102,8 @@ function ListProperty() {
                                         </div>
                                         {isSearch && (
                                             <>
-                                                <div className="flex space-x-2 my-2 bg-white/30">
-                                                    <div className="w-1/2">
+                                                <div className="flex space-x-2 my-2 bg-white/30 rounded-r-lg">
+                                                    <div className="w-1/2 flex items-center pl-2">
                                                         Name
                                                     </div>
                                                     <input
@@ -112,8 +118,8 @@ function ListProperty() {
                                                         }
                                                     />
                                                 </div>
-                                                <div className="flex space-x-2 my-2 bg-white/30">
-                                                    <div className="w-1/2">
+                                                <div className="flex space-x-2 my-2 bg-white/30 rounded-r-lg">
+                                                    <div className="w-1/2 flex items-center pl-2">
                                                         Category
                                                     </div>
                                                     <input
@@ -128,8 +134,8 @@ function ListProperty() {
                                                         }
                                                     />
                                                 </div>
-                                                <div className="flex space-x-2 my-2 bg-white/30">
-                                                    <div className="w-1/2">
+                                                <div className="flex space-x-2 my-2 bg-white/30 rounded-r-lg">
+                                                    <div className="w-1/2 flex items-center pl-2">
                                                         Owner Name
                                                     </div>
                                                     <input
@@ -144,8 +150,8 @@ function ListProperty() {
                                                         }
                                                     />
                                                 </div>
-                                                <div className="flex space-x-2 my-2 bg-white/30">
-                                                    <div className="relative w-1/2">
+                                                <div className="flex space-x-2 my-2 bg-white/30 rounded-r-lg">
+                                                    <div className="relative w-1/2 flex items-center pl-2">
                                                         <button
                                                             className="text-center text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 w-36"
                                                             type="button"

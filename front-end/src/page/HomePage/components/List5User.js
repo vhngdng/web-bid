@@ -4,6 +4,7 @@ import readImage from '~/utils/readImage';
 // import { DOMAIN_URL } from '~/CONST/const';
 
 function List5User({ user, defaultAvatar }) {
+    console.log(user.avatar);
     return (
         <div className="rounded-lg h-40vh w-1/6 bg-[rgb(189,211,213)] p-3">
             <div className="h-2/3 w-full">

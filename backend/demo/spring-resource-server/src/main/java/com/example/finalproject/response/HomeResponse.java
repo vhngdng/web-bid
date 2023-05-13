@@ -1,5 +1,6 @@
 package com.example.finalproject.response;
 
+import com.example.finalproject.dto.PropertyViewDto;
 import com.example.finalproject.entity.User;
 import com.example.finalproject.projection.home.BidHomeProjection;
 import com.example.finalproject.projection.home.PropertyHomeProjection;
@@ -21,5 +22,5 @@ public class HomeResponse {
   private List<BidHomeProjection> bidFamousTop5;
   private List<BidHomeProjection> bidEarliestTop5;
   private List<UserHomeProjection> userRateTop5;
-  private List<PropertyHomeProjection> propertyTop5;
+  private List<PropertyViewDto> propertyTop5;
 }

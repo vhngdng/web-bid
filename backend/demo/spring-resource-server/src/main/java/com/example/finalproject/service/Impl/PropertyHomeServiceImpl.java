@@ -1,18 +1,17 @@
 package com.example.finalproject.service.Impl;
 
 import com.example.finalproject.dao.PropertyHomeDao;
+import com.example.finalproject.dto.PropertyViewDto;
 import com.example.finalproject.entity.PropertyView;
 import com.example.finalproject.mapstruct.Mapper;
+import com.example.finalproject.projection.home.PropertyHomeProjection;
 import com.example.finalproject.service.PropertyHomeService;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +44,7 @@ public class PropertyHomeServiceImpl implements PropertyHomeService {
                 : builder.lessThanOrEqualTo(root.get("reservePrice"), Long.parseLong(_reservePrice[0]))
         );
       }
+      predicates.add(builder.isNotNull(root.get("bidType")));
       if (!StringUtils.isBlank(name)) {
         predicates.add(builder.like(root.get("name"), "%" + name + "%"));
       }
@@ -58,5 +58,16 @@ public class PropertyHomeServiceImpl implements PropertyHomeService {
     };
     return propertyHomeDao.findAll(specification, pageable).map(propertyView -> mapper.toDto(propertyView));
 
+  }
+
+  @Override
+  public Page<PropertyViewDto> findPropertyTop5(Pageable pageable) {
+    Pageable pageable1 = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.Direction.DESC, "lastPrice");
+    Specification<PropertyView> specification = (root, query, builder) -> {
+      List<Predicate> predicates = new ArrayList<>();
+      predicates.add(builder.isNotNull(root.get("lastPrice")));
+      return builder.and(predicates.toArray(new Predicate[0]));
+    };
+    return propertyHomeDao.findAll(specification, pageable1).map(propertyView -> mapper.toDto(propertyView));
   }
 }

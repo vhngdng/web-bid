@@ -6,6 +6,7 @@ import com.example.finalproject.repository.BidRepository;
 import com.example.finalproject.repository.PropertyRepository;
 import com.example.finalproject.repository.UserRepository;
 import com.example.finalproject.response.HomeResponse;
+import com.example.finalproject.service.PropertyHomeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class HomeService {
   BidService bidService;
   @Autowired
   PropertyService propertyService;
+  @Autowired
+  PropertyHomeService propertyHomeService;
   @Async
   public CompletableFuture<HomeResponse> findHomeDetail() {
     Pageable pageable = PageRequest.of(0, 5);
@@ -45,7 +48,7 @@ public class HomeService {
             .builder()
             .bidEarliestTop5(bidRepository.findTop5Earliest(pageable, LocalDateTime.now()).getContent())
             .bidFamousTop5(bidRepository.findBidTop5Attend(pageable).getContent())
-            .propertyTop5(propertyRepository.findPropertyTop5(pageable).getContent())
+            .propertyTop5(propertyHomeService.findPropertyTop5(pageable).getContent())
             .userRateTop5(userRepository.findUserTop5(pageable).getContent())
             .build());
   }

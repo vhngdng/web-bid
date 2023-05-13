@@ -15,10 +15,10 @@ select row_number()       over (order by (select null)) as property_home_id, p.n
        b.status        as bid_status,
        i.id            as image_property,
        i.type          as image_type,
-       io.id           as image_avatar
+       io.id           as image_avatar,
+       p.bid_type      as bid_type
 from property p
          inner join bid b on b.property_id = p.id
          inner join users u on p.owner_id = u.user_id
          left join image i on p.id = i.property_id and i.type = 'PROPERTY'
-         left join image io on io.user_id = u.user_id and i.type = 'AVATAR'
-where p.bid_type is not null;
+         left join image io on io.user_id = u.user_id and i.type = 'AVATAR';

@@ -50,7 +50,8 @@ public class PropertyView {
   private String imageType;
   @Column(name = "image_avatar")
   private String avatar;
-
+  @Column(name = "bid_type")
+  private String bidType;
   public class Owner {
   }
 }
