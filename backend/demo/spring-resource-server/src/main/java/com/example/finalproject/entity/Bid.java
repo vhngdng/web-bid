@@ -53,11 +53,11 @@ public class Bid implements Serializable {
   private Long updatePrice;
   @Column
   private Long lastPrice;
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.LAZY)
   @JoinColumn(name = "auctioneer_id", referencedColumnName = "user_id")
   @JsonManagedReference
   private User auctioneer;
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.LAZY)
   @JoinColumn(name = "winningBidder_id", referencedColumnName = "user_id")
   @JsonManagedReference
   private User winningBidder;
@@ -67,11 +67,11 @@ public class Bid implements Serializable {
   @JsonIgnore
   @JsonBackReference
   private List<Message> messages;
-  @OneToOne(mappedBy = "bid")
+  @OneToOne(mappedBy = "bid", fetch = FetchType.LAZY)
   @JsonBackReference
   private Payment payment;
 
-  @OneToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+  @OneToOne(optional = false, cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
   @JoinColumn(name = "property_id", nullable = false, updatable = false)
   @JsonManagedReference
   private Property property;

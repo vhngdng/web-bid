@@ -38,12 +38,12 @@ public class Property implements Serializable {
   @Column
   private Long auctioneerPrice;
 
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE ,CascadeType.REFRESH}, fetch = FetchType.LAZY)
   @JoinColumn(name = "owner_id", referencedColumnName = "user_id", nullable = false)
   @JsonManagedReference
   private User owner;
 
-  @OneToOne(mappedBy = "property", fetch = FetchType.EAGER)
+  @OneToOne(mappedBy = "property", fetch = FetchType.LAZY)
   @JsonBackReference
   private Bid bid;
 

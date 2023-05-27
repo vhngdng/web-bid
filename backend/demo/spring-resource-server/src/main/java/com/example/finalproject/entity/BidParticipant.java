@@ -23,12 +23,12 @@ public class BidParticipant implements Serializable {
   private Long id;
 
   @ManyToOne(cascade = {CascadeType.DETACH,
-          CascadeType.MERGE, CascadeType.REFRESH} , fetch = FetchType.EAGER)
+          CascadeType.MERGE, CascadeType.REFRESH} , fetch = FetchType.LAZY)
   @JoinColumn(name = "bid_id")
   private Bid bid;
 
   @ManyToOne(cascade = {CascadeType.DETACH,
-          CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+          CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
   @JoinColumn(name = "participant_id")
   private User user;
   @Column

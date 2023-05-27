@@ -66,7 +66,7 @@ public class User implements Serializable {
   private String providerId;
 
   @ManyToMany(cascade = {CascadeType.DETACH,
-          CascadeType.REFRESH}, fetch = FetchType.EAGER)
+          CascadeType.REFRESH}, fetch = FetchType.LAZY)
   @JoinTable(
           name = "users_roles",
           joinColumns = @JoinColumn(name = "user_id"),

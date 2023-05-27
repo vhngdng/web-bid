@@ -6,6 +6,7 @@ import com.example.finalproject.entity.PropertyView;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.projection.home.PropertyHomeProjection;
 import com.example.finalproject.service.PropertyHomeService;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,12 @@ public class PropertyHomeServiceImpl implements PropertyHomeService {
       }
       predicates.add(builder.isNotNull(root.get("bidType")));
       if (!StringUtils.isBlank(name)) {
-        predicates.add(builder.like(root.get("name"), "%" + name + "%"));
+//        Expression<String> expression = builder.literal("%" + name + "%" + " COLLATE for latin1_general_cs");
+        Expression<String> expression1 = builder.literal("%" + name + "%");
+//        predicates.add(builder.like(root.get("name"), "%" + name + "%" + expression));
+//                predicates.add(builder.like(builder.function("COLLATION for latin1_general_cs", String.class, root.get("name")), "%" + name + "%"));
+
+        predicates.add(builder.like(root.get("name"), expression1));
       }
       if (!StringUtils.isBlank(category)) {
         predicates.add(builder.like(root.get("category"), "%" + category + "%"));

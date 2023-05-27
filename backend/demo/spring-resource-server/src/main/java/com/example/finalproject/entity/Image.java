@@ -49,11 +49,11 @@ public class Image implements Serializable {
   private Long size;
   @Column
   private String type;
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.LAZY)
   @JoinColumn(name = "property_id")
   private Property property;
 

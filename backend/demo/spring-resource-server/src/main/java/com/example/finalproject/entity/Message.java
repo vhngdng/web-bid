@@ -37,7 +37,7 @@ public class Message implements Serializable {
   private String nickName;
   @Column(name = "receiver_name")
   private String receiverName;
-  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JoinTable(
           name = "message_bid",
           joinColumns = @JoinColumn(name = "message_id"),
