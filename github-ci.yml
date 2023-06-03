@@ -66,7 +66,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           chmod 700 ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" > ~/.ssh/known_hosts
+          echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" >> ~/.ssh/known_hosts
 
       - name: Create env file
         run: |
