@@ -6,35 +6,63 @@
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.data.redis.cache.RedisCacheConfiguration;
 //import org.springframework.data.redis.cache.RedisCacheManager;
-//import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-//import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
-//import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+//import org.springframework.data.redis.connection.RedisClusterConfiguration;
+//import org.springframework.data.redis.connection.RedisConnectionFactory;
+//import org.springframework.data.redis.connection.RedisSentinelConfiguration;
+//import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
+//import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 //import org.springframework.data.redis.core.RedisTemplate;
-//import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+//import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
+//import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 //import org.springframework.data.redis.serializer.RedisSerializationContext;
 //import org.springframework.data.redis.serializer.RedisSerializer;
 //import org.springframework.data.redis.serializer.StringRedisSerializer;
 //
 //import java.time.Duration;
+//import java.util.Arrays;
+//import java.util.List;
 //
-//import static io.lettuce.core.ReadFrom.REPLICA_PREFERRED;
 //
 //@Configuration
 //@EnableCaching
 //public class RedisConfig {
-//  @Value("${spring.data.redis.host}")
-//  private String host;
-//  @Value("${spring.data.redis.port}")
-//  private Integer port;
+//  @Value("${spring.data.redis.sentinel.master}")
+//  private String sentinelMaster;
+//  @Value("${spring.data.redis.sentinel.nodes}")
+//  private String sentinelNodes;
+//
 //  @Bean
-//  public LettuceConnectionFactory redisConnectionFactory() {
-//    LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
-//            .readFrom(REPLICA_PREFERRED)
-//            .build();
-//    RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(host, port);
-//    return new LettuceConnectionFactory(serverConfig, clientConfig);
+//  RedisConnectionFactory jedisConnectionFactory() {
+//    RedisSentinelConfiguration sentinelConfig = new RedisSentinelConfiguration()
+//            .master(sentinelMaster)
+//            .sentinel("127.0.0.1", 26379) .sentinel("127.0.0.1", 26380);
+//    return new JedisConnectionFactory(sentinelConfig);
+////    JedisConnectionFactory jedisConnectionFactory = new JedisConnectionFactory();
+//
+////    jedisConnectionFactory.master(sentinelMaster);
+////    List<String> nodes = Arrays.asList(sentinelNodes.split(","));
+////    for (String node : sentinelNodes.split(",")) {
+////      String[] split = node.split(":");
+////      sentinelConfig.sentinel(split[0], Integer.parseInt(split[1]));
+////    }
+//
+////    return new JedisConnectionFactory(new RedisClusterConfiguration(nodes));
 //  }
 //
+//  // Setting up the Redis template object.
+//  @Bean
+//  public RedisTemplate<String,Object> redisTemplate(){
+//    RedisTemplate<String,Object> redisTemplate = new RedisTemplate<>();
+//    redisTemplate.setConnectionFactory(jedisConnectionFactory());
+//    redisTemplate.setExposeConnection(true);
+//    redisTemplate.setKeySerializer(new StringRedisSerializer());
+//    redisTemplate.setHashKeySerializer(new JdkSerializationRedisSerializer());
+//    redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
+//    redisTemplate.setEnableTransactionSupport(true);
+//    redisTemplate.afterPropertiesSet();
+//    return redisTemplate;
+//
+//  }
 //
 //  @Bean
 //  public RedisCacheManager cacheManager() {
@@ -43,8 +71,9 @@
 //            .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
 //            .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(RedisSerializer.java()))
 //            .entryTtl(Duration.ofMinutes(5));
-//    return RedisCacheManager.builder(redisConnectionFactory())
+//    return RedisCacheManager.builder(jedisConnectionFactory())
 //            .cacheDefaults(cacheConfig)
 //            .build();
 //  }
+//
 //}

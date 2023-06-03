@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 })
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Getter
 @Setter
 @Builder
@@ -43,7 +42,7 @@ public class Property implements Serializable {
   @JsonManagedReference
   private User owner;
 
-  @OneToOne(mappedBy = "property", fetch = FetchType.EAGER)
+  @OneToOne(mappedBy = "property", fetch = FetchType.LAZY)
   @JsonBackReference
   private Bid bid;
 

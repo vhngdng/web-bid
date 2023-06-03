@@ -44,6 +44,7 @@ public class FinalProjectApplication {
   }
 
   @Bean
+  @Transactional
   public CommandLineRunner initialValue(RoleRepository roleRepository,
                                         UserRepository userRepository,
                                         PropertyRepository propertyRepository,
@@ -64,10 +65,10 @@ public class FinalProjectApplication {
         roleRepository.save(new Role("ROLE_GUEST"));
       }
       ;
-      if (userRepository.count() < 40) {
+      if (userRepository.count() < 50) {
         initUser(userRepository, roleRepository);
       }
-      if (bidRepository.count() < 40) {
+      if (bidRepository.count() < 30) {
         initProperty(propertyRepository, userRepository);
         initBid(propertyRepository,
                 roleRepository,
@@ -124,7 +125,6 @@ public class FinalProjectApplication {
 
     for (int i = 0; i < 20; i++) {
 
-      System.out.println(propertyRepository.count());
        List<Property> properties = propertyRepository
               .findAllPropertyNotBid();
       Property property = properties.get((int) (Math.random() *( properties.size())));
@@ -168,8 +168,8 @@ public class FinalProjectApplication {
                 : paymentRepository
                 .save(Payment.builder().bid(bid).status(Arrays.asList("PENDING", "FINISH")
                         .get(rd.nextInt(2))).build());
-        bidRepository.save(finalBid);
       }
+      bidRepository.save(finalBid);
 
 
     }

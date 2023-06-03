@@ -1,0 +1,108 @@
+version: "3.9"
+
+services:
+  redis-overcommit:
+    build: https://github.com/bkuhl/redis-overcommit-on-host.git
+    restart: "no"
+    privileged: true
+    volumes:
+      - /proc/sys/vm:/mnt/vm
+
+  master:
+    image: redis:latest
+    container_name: master
+    hostname: master
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - redis-cluster-network
+
+  slave-1:
+    image: redis:latest
+    container_name: slave-1
+    hostname: slave-1
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: always
+    ports:
+      - 6380:6379
+    networks:
+      - redis-cluster-network
+
+  slave-2:
+    image: redis:latest
+    container_name: slave-2
+    hostname: slave-2
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    restart: always
+    ports:
+      - 6381:6379
+    networks:
+      - redis-cluster-network
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-commander
+    hostname: redis-commander
+    environment:
+      - REDIS_HOSTS=master:master,slave-1:slave-1,slave-2:slave-2
+    restart: always
+    ports:
+      - "6378:8081"
+    depends_on:
+      - master
+      - slave-1
+      - slave-2
+    networks:
+      - redis-cluster-network
+
+  sentinel:
+    image: redis
+    volumes:
+      - ./config/sentinel.conf:/usr/local/etc/redis/redis.conf
+    depends_on:
+      - master
+      - slave-1
+      - slave-2
+    ports:
+      - 26379:26379
+    networks:
+      - redis-cluster-network
+
+  sentinel1:
+    image: redis
+    volumes:
+      - ./config/sentinel.conf:/usr/local/etc/redis/redis.conf
+    depends_on:
+      - master
+      - slave-1
+      - slave-2
+    ports:
+      - 26380:26380
+    networks:
+      - redis-cluster-network
+
+  sentinel2:
+    image: redis
+    volumes:
+      - ./config/sentinel.conf:/usr/local/etc/redis/redis.conf
+    depends_on:
+      - master
+      - slave-1
+      - slave-2
+    ports:
+      - 26381:26381
+    networks:
+      - redis-cluster-network
+
+networks:
+  redis-cluster-network:
+    driver: bridge
+
+  # my-networks:
+  #   external: true
+  #   name: my-networks

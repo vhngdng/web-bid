@@ -58,6 +58,8 @@ public class PropertyService {
             _sort[0]));
     Pageable pageable = PageRequest.of(page, size, Sort.by(order));
     Page<Property> propertyPage = propertyRepository.findAllByPermissionNotNull(pageable);
+    List<Property> properties = propertyPage.getContent();
+
     return new PageImpl<>(
             mapper.toListPropertyDTO(propertyPage.getContent(), imageRepository),
             pageable,
