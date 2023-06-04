@@ -74,7 +74,7 @@ jobs:
 
       - name: Deploy
         run: |
-          scp -i ~/.ssh/id_rsa \
+          rsync -avz --chmod=ugo=rwX \
           ${GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/postgre ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh \
           ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./web-bit
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
@@ -84,4 +84,3 @@ jobs:
 
       - name: cleanup
         run: rm -rf ~/.ssh
-        ##
