@@ -90,6 +90,15 @@ jobs:
               IdentityFile ~/.ssh/id_rsa
               StrictHostKeyChecking no
 
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DIGITALOCEAN_DROPLET_IP }}
+          username: ${{ secrets.USER_SERVER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # port: ${{ secrets.DIGITALOCEAN_DROPLET_IP }}
+          script: whoami
+
       - name: SCP via port-forwarding
         run: scp \
           ${GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/postgre ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh \
