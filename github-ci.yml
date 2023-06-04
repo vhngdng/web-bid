@@ -63,11 +63,13 @@ jobs:
       - name: install ssh keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
           chmod 700 ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" >> ~/.ssh/known_hosts
-
+        # uses: webfactory/ssh-agent@v0.7.0
+        # with:
+        #   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Create env file
         run: |
           echo "${{ secrets.DOCKERCOMPOSE_ENV }}" >> .env
