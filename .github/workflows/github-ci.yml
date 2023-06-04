@@ -72,7 +72,6 @@ jobs:
             StrictHostKeyChecking no
           END
           install -m 600 -D /dev/null ~/.ssh/id_rsa
-          install -m 600 -D /dev/null ~/.ssh/known_hosts
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           ssh -v ${{ secrets.DIGITALOCEAN_DROPLET_IP }} /bin/true
         # uses: webfactory/ssh-agent@v0.7.0
