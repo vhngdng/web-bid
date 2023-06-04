@@ -63,6 +63,7 @@ jobs:
       - name: install ssh keys
         run: |
           install -m 600 -D /dev/null ~/.ssh/id_rsa
+          install -m 600 -D /dev/null ~/.ssh/known_hosts
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           cat >>~/.ssh/config <<END
           Host staging
@@ -72,7 +73,7 @@ jobs:
             StrictHostKeyChecking no
           END
           ssh -v ${{ secrets.DIGITALOCEAN_DROPLET_IP }} /bin/true
-        # echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" >> ~/.ssh/known_hosts
+          echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" >> ~/.ssh/known_hosts
         # uses: webfactory/ssh-agent@v0.7.0
         # with:
         #   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
