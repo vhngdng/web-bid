@@ -60,69 +60,22 @@ jobs:
       - name: Checkout files
         uses: actions/checkout@v3
 
-      # - name: install ssh keys
-      #   run: |
-      #     cat >>~/.ssh/config <<END
-      #     Host staging
-      #       HostName $DIGITALOCEAN_DROPLET_IP
-      #       User $USER
-      #       IdentityFile ~/.ssh/id_rsa
-      #       StrictHostKeyChecking no
-      #     END
-      #     install -m 600 -D /dev/null ~/.ssh/id_rsa
-      #     echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-      #     echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" >> ~/.ssh/known_hosts
-      #     ssh -v ${{ secrets.DIGITALOCEAN_DROPLET_IP }} /bin/true
-      # uses: webfactory/ssh-agent@v0.7.0
-      # with:
-      #   ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      # - name: Install SSH key of target
-      #   uses: shimataro/ssh-key-action@v2
-      #   with:
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     name: id_rsa
-      #     known_hosts: ${{ secrets.DIGITALOCEAN_DROPLET_IP }} # will be appended to existing .ssh/known_hosts
-      #     config: | # will be appended to existing .ssh/config
-      #       Host target
-      #         HostName $DIGITALOCEAN_DROPLET_IP
-      #         User user-of-target
-      #         IdentityFile ~/.ssh/id_rsa
-      #         StrictHostKeyChecking no
-
-      # - name: executing remote ssh commands using ssh key
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.DIGITALOCEAN_DROPLET_IP }}
-      #     username: ${{ secrets.USER_SERVER }}
-      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
-      #     # port: ${{ secrets.DIGITALOCEAN_DROPLET_IP }}
-      #     script: whoami
-
-      # - name: SCP via port-forwarding
-      #   run: scp \
-      #     ${GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/postgre ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh \
-      #     ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./web-bit
-
-      - name: copy file via ssh password
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.DIGITALOCEAN_DROPLET_IP }}
-          username: ${{ secrets.USER_SERVER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # port: ${{ secrets.PORT }}
-          source: "{GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/postgre ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh"
-          target: ./web-bit
+      - name: install ssh keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "ssh-keyscan -H ${{ secrets.SSH_KNOWN_HOST }}" > ~/.ssh/known_hosts
 
       - name: Create env file
         run: |
-          echo "${{ secrets.DOCKERCOMPOSE_ENV }}" >> .env
+          echo "${{ secrets.DOCKERCOMPOSE_ENV }}" > .env
 
       - name: Deploy
-        run:
-          # rsync -avz --chmod=ugo=rwX \
-          # ${GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/postgre ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh \
-          # ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./web-bit
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}  
+          rsync -avz --chmod=ugo=rwX \
+          ${GITHUB_WORKSPACE}/config ${GITHUB_WORKSPACE}/postgre ${GITHUB_WORKSPACE}/.env ${GITHUB_WORKSPACE}/docker-compose.yml ${GITHUB_WORKSPACE}/deploy.sh \
+          ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./web-bit
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
           cd web-bit &&
           chmod +x ./deploy.sh &&
