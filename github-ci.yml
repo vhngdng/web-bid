@@ -65,13 +65,6 @@ jobs:
           install -m 600 -D /dev/null ~/.ssh/id_rsa
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           echo -e "Host *\n\IdentityFile ~/.ssh/id_rsa\n\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-          # cat >>~/.ssh/config <<END
-          # Host staging
-          #   HostName $DIGITALOCEAN_DROPLET_IP
-          #   User $USER
-          #   IdentityFile ~/.ssh/id_rsa
-          #   StrictHostKeyChecking no
-          # END
           ssh -v ${{ secrets.DIGITALOCEAN_DROPLET_IP }} /bin/true
         # echo "ssh-keyscan -H ${{ secrets.DIGITALOCEAN_DROPLET_IP }}" >> ~/.ssh/known_hosts
         # uses: webfactory/ssh-agent@v0.7.0
