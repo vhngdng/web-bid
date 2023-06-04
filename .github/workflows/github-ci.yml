@@ -62,6 +62,9 @@ jobs:
 
       - name: install ssh keys
         run: |
+          install -m 600 -D /dev/null ~/.ssh/config
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          install -m 600 -D /dev/null ~/.ssh/known_hosts
           cat >>~/.ssh/config <<END
           Host staging
             HostName $DIGITALOCEAN_DROPLET_IP
@@ -69,8 +72,6 @@ jobs:
             IdentityFile ~/.ssh/id_rsa
             StrictHostKeyChecking no
           END
-          install -m 600 -D /dev/null ~/.ssh/id_rsa
-          install -m 600 -D /dev/null ~/.ssh/known_hosts
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
 
           ssh -v ${{ secrets.DIGITALOCEAN_DROPLET_IP }} /bin/true
