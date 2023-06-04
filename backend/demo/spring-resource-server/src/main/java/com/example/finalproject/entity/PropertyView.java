@@ -8,7 +8,7 @@ import org.hibernate.annotations.Immutable;
 
 import java.time.LocalDateTime;
 
-//@Table(name = "vproperty")
+@Table(name = "vproperty")
 @Entity
 @Immutable
 @Data
