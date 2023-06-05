@@ -52,6 +52,5 @@ public class PropertyView {
   private String avatar;
   @Column(name = "bid_type")
   private String bidType;
-  public class Owner {
-  }
+
 }

@@ -82,7 +82,5 @@ services:
 networks:
   web-bid-network:
     driver: bridge
-  my-networks:
-    external:
-      name: my-networks
+
 
