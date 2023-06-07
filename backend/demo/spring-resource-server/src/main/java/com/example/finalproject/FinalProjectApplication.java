@@ -43,7 +43,7 @@ public class FinalProjectApplication {
     return new Faker();
   }
 
-//  @Bean
+  @Bean
   @Transactional
   public CommandLineRunner initialValue(RoleRepository roleRepository,
                                         UserRepository userRepository,
