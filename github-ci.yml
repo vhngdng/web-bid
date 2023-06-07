@@ -78,10 +78,8 @@ jobs:
           ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }}:./web-bit
           ssh -o StrictHostKeyChecking=no ${{ secrets.USER_SERVER }}@${{ secrets.DIGITALOCEAN_DROPLET_IP }} "
           cd web-bit &&
-          cd 
           chmod +x ./deploy.sh &&
           ./deploy.sh"
 
       - name: cleanup
         run: rm -rf ~/.ssh
-##
