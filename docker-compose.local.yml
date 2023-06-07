@@ -53,9 +53,9 @@ services:
       - ./certbot/var:/var/lib/letsencrypt
       - ./log/nginx/:/var/log/nginx/
     tty: true
-    depends_on:
-      - frontend
-      - backend
+    # depends_on:
+      # - frontend
+      # - backend
     restart: unless-stopped
     networks:
       - web-bid-network
