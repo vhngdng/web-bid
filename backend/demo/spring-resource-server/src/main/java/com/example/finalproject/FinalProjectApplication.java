@@ -42,7 +42,6 @@ public class FinalProjectApplication {
   Faker faker() {
     return new Faker();
   }
-
   @Bean
   @Transactional
   public CommandLineRunner initialValue(RoleRepository roleRepository,
@@ -65,10 +64,10 @@ public class FinalProjectApplication {
         roleRepository.save(new Role("ROLE_GUEST"));
       }
       ;
-      if (userRepository.count() < 40) {
+      if (userRepository.count() < 60) {
         initUser(userRepository, roleRepository);
       }
-      if (bidRepository.count() < 40) {
+      if (bidRepository.count() < 100) {
         initProperty(propertyRepository, userRepository);
         initBid(propertyRepository,
                 roleRepository,
@@ -123,13 +122,13 @@ public class FinalProjectApplication {
             .filter(u -> u.getRoles().contains(role))
             .collect(Collectors.toList());
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 40; i++) {
 
        List<Property> properties = propertyRepository
               .findAllPropertyNotBid();
       Property property = properties.get((int) (Math.random() *( properties.size())));
 
-      long randomNumberInRange = rd.nextInt(10000);
+      long randomNumberInRange = rd.nextInt(100000);
       Bid bid = Bid.builder()
               .property(property)
               .auctioneer(userAdmin
@@ -177,7 +176,7 @@ public class FinalProjectApplication {
   @Transactional
   void initProperty(PropertyRepository propertyRepository, UserRepository userRepository) {
     Random rd = new Random();
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 100; i++) {
       Property property = Property.builder()
               .name(this.faker().commerce().productName())
               .category(this.faker().commerce().material())
