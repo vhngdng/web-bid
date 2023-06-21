@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class UserDTO implements Serializable {
+public class UserDTO{
   private Long id;
   private String username;
   private String email;

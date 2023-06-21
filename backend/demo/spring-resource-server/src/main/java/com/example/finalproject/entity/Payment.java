@@ -29,7 +29,7 @@ import java.time.LocalDateTime;
 @EntityListeners({AuditingEntityListener.class, PaymentListener.class})
 @DynamicUpdate
 @Table(name = "payment")
-public class Payment implements Serializable {
+public class Payment implements Serializable{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column
@@ -38,7 +38,7 @@ public class Payment implements Serializable {
   private String status;
   @OneToOne(cascade = {CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH}, fetch = FetchType.EAGER)
   @JoinColumn(name = "bid_id", nullable = false)
-  @JsonManagedReference
+  @JsonBackReference
   private Bid bid;
 
   @CreatedDate

@@ -29,6 +29,7 @@ public class BidController {
   public ResponseEntity<?> findAllBidPrivate(@RequestParam(name = "page", defaultValue = "0") int page,
                                             @RequestParam(name = "size", defaultValue = "7") int size,
                                             @RequestParam(name ="sort", defaultValue = "dayOfSale,desc") String[] sort) throws ExecutionException, InterruptedException {
+    bidService.findAllPrivateBid(page, size, sort, "private").get();
     return ResponseEntity.ok(bidService.findAllPrivateBid(page, size, sort, "private").get());
   }
   @GetMapping("admin/bid-room/paging")

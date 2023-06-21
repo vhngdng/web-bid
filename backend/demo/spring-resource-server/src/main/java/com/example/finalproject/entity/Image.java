@@ -31,7 +31,7 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "image")
 @EntityListeners({AuditingEntityListener.class})
-public class Image implements Serializable {
+public class Image implements Serializable{
   @Id
   @GeneratedValue(generator = "uuid")
   @GenericGenerator(name = "uuid", strategy = "uuid2")

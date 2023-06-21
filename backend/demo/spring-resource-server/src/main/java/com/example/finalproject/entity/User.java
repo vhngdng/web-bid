@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @EntityListeners(AuditingEntityListener.class)
-public class User implements Serializable {
+public class User implements Serializable{
   @Id
   @Column(name = "user_id")
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -24,7 +24,7 @@ import java.util.Set;
 @Setter
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-public class Message implements Serializable {
+public class Message implements Serializable{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Immutable;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Table(name = "vproperty")
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Immutable
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PropertyView {
+public class PropertyView implements Serializable {
 
   @Id
   @Column(name = "property_home_id")

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PropertyDTO implements Serializable {
+public class PropertyDTO{
 
   private Integer id;
   private String name;

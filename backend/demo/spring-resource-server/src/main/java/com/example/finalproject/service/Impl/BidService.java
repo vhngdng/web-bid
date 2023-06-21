@@ -199,6 +199,7 @@ public class BidService {
   }
   @Async
   public CompletableFuture<Page<BidDTO>> findAllPrivateBid(int page, int size, String[] sort, String type) {
+    findAllBidRoomPaging(page, size, sort, type);
     return CompletableFuture.completedFuture(findAllBidRoomPaging(page, size, sort, type));
   }
 

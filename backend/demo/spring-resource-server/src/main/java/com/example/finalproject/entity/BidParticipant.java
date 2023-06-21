@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BidParticipant implements Serializable {
+public class BidParticipant implements Serializable{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

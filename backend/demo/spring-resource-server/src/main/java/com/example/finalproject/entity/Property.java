@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 @EntityListeners({AuditingEntityListener.class, PropertyListener.class})
-public class Property implements Serializable {
+public class Property implements Serializable{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;

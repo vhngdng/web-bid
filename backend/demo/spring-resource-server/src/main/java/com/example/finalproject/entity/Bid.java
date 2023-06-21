@@ -30,7 +30,7 @@ import java.util.List;
 @Builder
 @EntityListeners({AuditingEntityListener.class, BidListener.class})
 @DynamicUpdate
-public class Bid implements Serializable {
+public class Bid implements Serializable{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
