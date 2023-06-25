@@ -554,12 +554,11 @@ function ListBidRoom({ isAdmin }) {
                                                                             Sale:
                                                                         </span>
                                                                         <span>
-                                                                            {
+                                                                            {!!bid.dayOfSale &&
                                                                                 formatDateTime(
                                                                                     bid.dayOfSale,
                                                                                 )
-                                                                                    .date
-                                                                            }
+                                                                                    .date}
                                                                         </span>
                                                                     </div>
                                                                 </div>

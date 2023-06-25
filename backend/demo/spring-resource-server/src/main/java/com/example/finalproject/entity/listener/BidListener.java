@@ -37,8 +37,6 @@ public class BidListener {
           simpMessagingTemplate.convertAndSend(destination, request);
           break;
         }
-
-
       }
     }
   }

@@ -59,11 +59,10 @@ function BidDetail() {
                                     </div>
                                     <div className="w-full">
                                         <p className="italic">
-                                            {
+                                            {!!bidDetail.dayOfSale &&
                                                 formatDateTime(
                                                     bidDetail.dayOfSale,
-                                                ).date
-                                            }
+                                                ).date}
                                         </p>
                                     </div>
                                 </div>

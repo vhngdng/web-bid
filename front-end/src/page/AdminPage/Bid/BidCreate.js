@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLazyGetImageByPropertyTypePropertyQuery } from '~/app/service/image.service';
 import Loader from '~/Loader';
 import { DOMAIN_URL } from '~/CONST/const';
+import { customToastStyle } from '~/utils/customStyle';
 // import styles from './BidCreate.module.scss';
 // const cx = classNames.bind(styles);
 function BidCreate() {
@@ -50,22 +51,29 @@ function BidCreate() {
     console.log(open);
     console.log(property);
     const handleCreate = () => {
-        createBid({
-            type,
-            dayOfSale: dateTime,
-            conditionReport,
-            reservePrice,
-            priceStep,
-            propertyId: property.id,
-        })
-            .unwrap()
-            .then(() => {
-                toast.success('Create bid success');
-                setTimeout(() => {
-                    navigate('/admin/open-bid');
-                }, 1000);
+        if (!dateTime || !reservePrice || !priceStep || !property.id || !type) {
+            toast.error(
+                'Not success because invalid data from 1 or more field',
+                customToastStyle,
+            );
+        } else {
+            createBid({
+                type,
+                dayOfSale: dateTime,
+                conditionReport,
+                reservePrice,
+                priceStep,
+                propertyId: property.id,
             })
-            .catch((err) => toast.error(err));
+                .unwrap()
+                .then(() => {
+                    toast.success('Create bid success');
+                    setTimeout(() => {
+                        navigate('/admin/open-bid');
+                    }, 1000);
+                })
+                .catch((err) => toast.error(err));
+        }
     };
     if (loadImage) return <Loader />;
     console.log(imageId);

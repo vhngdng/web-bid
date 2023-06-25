@@ -323,11 +323,11 @@ function HeaderDefault({ isOpenNotification, setIsOpenNotification }) {
                                                                 Time:
                                                             </p>
                                                             <p className="mb-2 text-sm font-normal italic hover:not-italic">
-                                                                {
+                                                                {n.lastModifiedDate !==
+                                                                    null &&
                                                                     formatDateTime(
                                                                         n.lastModifiedDate,
-                                                                    ).date
-                                                                }
+                                                                    ).date}
                                                             </p>
                                                         </div>
                                                     )}

@@ -57,7 +57,7 @@ public class BidService {
   }
   public BidDTO createBidRoom(UpSertBid upSertBid) {
     Bid bid = new Bid();
-
+    upSertBid.setDayOfSale(upSertBid.getDayOfSale().isBefore(LocalDateTime.now().plusMinutes(2)) ? upSertBid.getDayOfSale() : LocalDateTime.now().plusMinutes(2));
     mapper.createBid(upSertBid, bid, propertyRepository, userRepository);
     bidRepository.save(bid);
     return mapper.toDTO(bid, userRepository, imageRepository);
@@ -70,13 +70,13 @@ public class BidService {
       oldBid.setAuctioneer(
               userRepository
                       .findById(upSertBid.getAuctioneerId())
-                      .orElseThrow(() -> new NotFoundException("Auctionner with id " + upSertBid.getAuctioneerId() + " not found")));
+                      .orElseThrow(() -> new NotFoundException("Auctioneer with id " + upSertBid.getAuctioneerId() + " not found")));
     }
     if (upSertBid.getWinningBidderId() != null) {
       oldBid.setWinningBidder(
               userRepository
                       .findById(upSertBid.getWinningBidderId())
-                      .orElseThrow(() -> new NotFoundException("Auctionner with id " + upSertBid.getWinningBidderId() + " not found")));
+                      .orElseThrow(() -> new NotFoundException("Auctioneer with id " + upSertBid.getWinningBidderId() + " not found")));
     }
     if (upSertBid.getStatus().equalsIgnoreCase("DEACTIVE")) {
 

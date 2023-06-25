@@ -53,7 +53,9 @@ function ImageSlideShow({
                         </div>
                         <div className="w-2/3 flex justify-between items-center">
                             <div>Created At:</div>
-                            <div>{formatDateTime(createdAt).date}</div>
+                            <div>
+                                {!!createdAt && formatDateTime(createdAt).date}
+                            </div>
                         </div>
                         <div className="w-2/3 flex justify-between items-center">
                             <div>Quantity: </div>

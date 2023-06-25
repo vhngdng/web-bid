@@ -29,7 +29,7 @@ function BidHome({ bid }) {
                 </div>
                 <div>
                     <div className="pt-4 flex justify-center items-center">
-                        {formatDateTime(bid.dayOfSale).date}
+                        {!!bid.dayOfSale && formatDateTime(bid.dayOfSale).date}
                     </div>
 
                     <div className="mt-4 grid grid-cols-2 gap-2">

@@ -107,11 +107,10 @@ function Search() {
                                                     Day of Sale:{'  '}
                                                 </span>
                                                 <span className="font-semibold">
-                                                    {
+                                                    {!!result.dayOfSale &&
                                                         formatDateTime(
                                                             result.dayOfSale,
-                                                        ).date
-                                                    }
+                                                        ).date}
                                                 </span>
                                             </div>
                                         </div>

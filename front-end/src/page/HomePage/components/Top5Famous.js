@@ -203,6 +203,9 @@ function Top5Famous({ top5Famous }) {
                                                     <p className="text-start min-w-1/2">
                                                         {top5Famous.length >
                                                             0 &&
+                                                            !!top5Famous[
+                                                                indexImage
+                                                            ].dayOfSale &&
                                                             formatDateTime(
                                                                 top5Famous[
                                                                     indexImage

@@ -174,7 +174,33 @@ function AdminPropertyDetails() {
     };
     console.log(data);
     console.log('new noti console bottom', newNoti);
-    const handleAccept = () => {};
+    const handleAccept = async () => {
+        try {
+            if (!!reservePrice && !auctioneerPrice) {
+                const res = await updateProperty({
+                    propertyId,
+                    auctioneerPrice: !!auctioneerPrice
+                        ? auctioneerPrice
+                        : reservePrice,
+                    permission: 'ACCEPTED',
+                });
+                console.log('res', res);
+                toast.success('Updated successfully', customToastStyle);
+                setTimeout(() => {
+                    navigate('/admin/properties');
+                }, 1000);
+            } else if (reservePrice !== auctioneerPrice) {
+                toast.error(
+                    'reservePrice is difference from auctioneerPrice, can be accepted',
+                    customToastStyle,
+                );
+            }
+        } catch {
+            (err) => {
+                console.log(err);
+            };
+        }
+    };
     return (
         <AnimatePresence mode="wait" initial="false">
             <Modal

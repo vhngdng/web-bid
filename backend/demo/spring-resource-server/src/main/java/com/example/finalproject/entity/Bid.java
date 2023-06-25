@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedBy;
@@ -38,6 +39,7 @@ public class Bid implements Serializable{
   @Column
   private String type;
   @Column
+  @NotNull
   private LocalDateTime dayOfSale;
   @Column
   @JsonSerialize(using= LocalDateTimeSerializer.class)
@@ -46,6 +48,7 @@ public class Bid implements Serializable{
   @Column(name = "conditionReport", columnDefinition = "TEXT")
   private String conditionReport;
   @Column
+  @NotNull
   private Long reservePrice;   // giá khởi điểm
   @Column
   private Long priceStep;  // bước giá

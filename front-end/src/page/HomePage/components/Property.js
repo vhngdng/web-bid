@@ -42,7 +42,8 @@ function Property({ property }) {
                     <div>
                         <span className="">Created At: </span>{' '}
                         <span className="italic">
-                            {formatDateTime(property.createdAt).date}
+                            {!!property.createdAt &&
+                                formatDateTime(property.createdAt).date}
                         </span>
                     </div>
                     <div>
