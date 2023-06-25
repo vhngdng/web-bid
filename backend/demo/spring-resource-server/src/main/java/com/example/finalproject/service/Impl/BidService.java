@@ -7,6 +7,7 @@ import com.example.finalproject.dto.BidDetailsDTO;
 import com.example.finalproject.entity.Bid;
 import com.example.finalproject.entity.Property;
 import com.example.finalproject.entity.Payment;
+import com.example.finalproject.exception.BadRequestException;
 import com.example.finalproject.exception.NotFoundException;
 import com.example.finalproject.mapstruct.Mapper;
 import com.example.finalproject.projection.home.BidHomeProjection;
@@ -56,6 +57,9 @@ public class BidService {
     return mapper.toDTO(bidRepository.findById(id).orElseThrow(() -> new NotFoundException("Bid with: " + id + " is not found")), userRepository, imageRepository);
   }
   public BidDTO createBidRoom(UpSertBid upSertBid) {
+    if(upSertBid.getDayOfSale() == null || upSertBid.getReservePrice() == null || upSertBid.getPriceStep() == null) {
+      throw new BadRequestException("day of sale or reservice price or price step is null");
+    }
     Bid bid = new Bid();
     upSertBid.setDayOfSale(upSertBid.getDayOfSale().isBefore(LocalDateTime.now().plusMinutes(2)) ? upSertBid.getDayOfSale() : LocalDateTime.now().plusMinutes(2));
     mapper.createBid(upSertBid, bid, propertyRepository, userRepository);

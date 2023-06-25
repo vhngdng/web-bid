@@ -39,7 +39,7 @@ public class Bid implements Serializable{
   @Column
   private String type;
   @Column
-  @NotNull
+  @NotNull(message = "Day Of Sale can not be null")
   private LocalDateTime dayOfSale;
   @Column
   @JsonSerialize(using= LocalDateTimeSerializer.class)
@@ -48,9 +48,10 @@ public class Bid implements Serializable{
   @Column(name = "conditionReport", columnDefinition = "TEXT")
   private String conditionReport;
   @Column
-  @NotNull
+  @NotNull(message = "reserve Price can not be null")
   private Long reservePrice;   // giá khởi điểm
   @Column
+  @NotNull(message = "price step can not be null")
   private Long priceStep;  // bước giá
   @Column
   private Long updatePrice;
