@@ -179,9 +179,7 @@ function AdminPropertyDetails() {
             if (!!reservePrice && !auctioneerPrice) {
                 const res = await updateProperty({
                     propertyId,
-                    auctioneerPrice: !!auctioneerPrice
-                        ? auctioneerPrice
-                        : reservePrice,
+                    auctioneerPrice: reservePrice,
                     permission: 'ACCEPTED',
                 });
                 console.log('res', res);
@@ -192,7 +190,7 @@ function AdminPropertyDetails() {
             } else if (reservePrice !== auctioneerPrice) {
                 toast.error(
                     'reservePrice is difference from auctioneerPrice, can be accepted',
-                    customToastStyle,
+                    { ...customToastStyle, theme: 'colored' },
                 );
             }
         } catch {
@@ -445,6 +443,13 @@ function AdminPropertyDetails() {
                                             onClick={handleAccept}
                                             className={`h-fit flex ml-auto text-white bg-blue-400 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded 
                                             `}
+                                            disabled={
+                                                (!!reservePrice &&
+                                                    !auctioneerPrice) ||
+                                                reservePrice === auctioneerPrice
+                                                    ? false
+                                                    : true
+                                            }
                                         >
                                             Accept
                                         </button>

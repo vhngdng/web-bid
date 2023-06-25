@@ -54,7 +54,7 @@ function BidCreate() {
         if (!dateTime || !reservePrice || !priceStep || !property.id || !type) {
             toast.error(
                 'Not success because invalid data from 1 or more field',
-                customToastStyle,
+                { ...customToastStyle, theme: 'dark' },
             );
         } else {
             createBid({
