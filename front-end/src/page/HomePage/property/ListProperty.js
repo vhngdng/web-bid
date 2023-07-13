@@ -36,7 +36,7 @@ function ListProperty() {
 
     useEffect(() => {
         page > 1
-            ? setUrl((prev) => prev + `&page=${page - 1}`)
+            ? setUrl((prev) => prev.slice(0, url.indexOf("&page=")) + `&page=${page - 1}`)
             : setUrl(url ? url : '');
     }, [page]);
     useEffect(() => {
